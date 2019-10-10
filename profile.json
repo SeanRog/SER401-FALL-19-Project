@@ -1,0 +1,19 @@
+{
+	"firstname":"Amritpal",
+	"lastname": "Singh",
+	"ss": 1234,
+	"projects" : 
+	[{
+		"skills" : ["skill1", "skill4", "skill5", "skill6"],
+		"priority" : 2,
+		"online/oncampus": 1
+	},{
+		"skills" : ["skill3", "skill4"],
+		"priority" : 0,
+		"online/oncampus": 0
+	},{
+		"skills" : ["skill2", "skill5"],
+		"priority" : 1,
+		"online/oncampus": 2
+	}],
+}
