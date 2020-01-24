@@ -5,7 +5,7 @@ SRC_DIRS ?= ./src/main
 JSONS ?= ./*.json
 
 CXX := -c++
-LDFLAGS := -L/usr/lib -lstdc++ -pthread -lm -lfltk -lX11 -ldl
+LDFLAGS := -L/usr/lib -lstdc++ -pthread -lm -lfltk -lX11 -ldl -lXrender -lXfixes -lXext -lXft -lfontconfig -lpthread
 SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
@@ -31,7 +31,7 @@ clean:
 
 run:
 	./build/main.exe $(ARGS)
-	
+
 
 -include $(DEPS)
 
