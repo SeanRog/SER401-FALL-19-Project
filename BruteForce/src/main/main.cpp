@@ -45,6 +45,8 @@
 #include "StudentsToProjects.h"
 
 #include "MainWindow.h"
+#include "ClassSelectorGUI.h"
+#include "AuthTokenGUI.h"
 #include "main.h"
 
 #include <iostream>
