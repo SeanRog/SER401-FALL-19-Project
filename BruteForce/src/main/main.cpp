@@ -666,9 +666,9 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
 		studentsInSections[i] = 0;
 		projectsInSections[i] = 0;
 	}
-	//initialize to "x"
+	//initialize results
 	for(int i = 0; i < NUM_CLASS_SECTIONS*3; i++) {
-				results[i] = "x";
+				results[i] = " ";
 		}
 
 	//set the number of students in each class section to the indexes of studentsInSections[]
