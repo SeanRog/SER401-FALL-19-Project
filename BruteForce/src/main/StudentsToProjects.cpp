@@ -23,6 +23,8 @@
  *				Project projectPool[],const int numStudents,const int numProjects, const int numSkills,
  *				const int teamSize,const int numTopTeams)  -  a function to assign the students to projects.
  *
+ *		void updateProgressBar(int value, Fl_Progress* pW); - a function to update the progress bar.
+ *
  *		bool NegativeAffinityCheck(Student team[5]) - a function to check a student team to see if their is any negative affinity.
  *
  *		int getDuplicatesOfStudents(Team currentSet[], int size) - a function to find the number of duplicate students in a set of teams.
@@ -55,6 +57,11 @@
 #include "ClassSection.h"
 #include "json/json.h"
 #include "Utility.h"
+
+#include <FL/Fl.H>
+#include <FL/Fl_Progress.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Box.H>
 
 #include <iostream>
 #include <vector>
@@ -161,6 +168,31 @@ int StudentsToProjects::getValueVirt(){ //Note: this value is in KB!
     return result;
 }
 
+int progressBarValue = 0;
+
+
+/*********************************************************
+ * updateProgressBar
+ *
+ * Author: Sean Rogers
+ *
+ * Description:
+ *   updates the progress bar in the GUI window.
+ *
+ *Arguments:
+ *	int num, Fl_Progress* pb
+ *Returns:
+ *  integer value.
+ */
+void StudentsToProjects::updateProgressBar(int num, Fl_Progress* pb){
+			 progressBarValue += pb->value() + num;
+			 pb->value(progressBarValue/100.0);
+			 char percent[10];
+			 sprintf(percent, "%d%%", int((progressBarValue/100.0)*100.0));
+			 pb->label(percent);
+			 Fl::check();
+}
+
 /*********************************************************
  * StudentsToProjectsAssignment
  *
@@ -191,7 +223,7 @@ int StudentsToProjects::getValueVirt(){ //Note: this value is in KB!
  */
 string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	Project projectPool[], const int numStudents,const int numProjects,const int numSkills,
-	const int teamSize,const int numTopTeams) {
+	const int teamSize,const int numTopTeams, Fl_Progress* progressBar, int progressIncrement) {
 
 	string result = "";
 
@@ -375,7 +407,8 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
  //END---------------------Team Combination process
 
 
-
+    		//update the progress bar
+    		updateProgressBar(progressIncrement*(0.35), progressBar);
 
 
  // START--------------------Project Set combinations
@@ -508,6 +541,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 
 // END -------------------Project Set combinations
 
+
+    		//update the progress bar
+    		updateProgressBar(progressIncrement*(0.65), progressBar);
 
 
 	//Print out all the top teams with team scores for each project.
