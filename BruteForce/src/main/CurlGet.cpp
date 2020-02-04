@@ -15,7 +15,7 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
     return size * nmemb;
 }
 
-int main(void)
+int main1(void)
 {
   CURL *curl;
   CURLcode res;
