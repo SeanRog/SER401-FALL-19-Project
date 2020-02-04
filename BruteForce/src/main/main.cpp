@@ -722,7 +722,7 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
 	cout << endl;
 
 	//create a thread for each class section. store each thread in threads[]
-     thread threads[NUM_CLASS_SECTIONS];
+    // thread threads[NUM_CLASS_SECTIONS];
 
 	for(int i = 0; i < NUM_CLASS_SECTIONS; i++) {
 		//store students in a single class section to *STUDENT_POOL_SECTION_X
@@ -766,18 +766,21 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
 		//threads[i] = thread (threadFunction, STUDENT_POOL, PROJECT_POOL, NUM_STUDENTS, NUM_PROJECTS, NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS);
 
 		//call the thread (once for each class section)
-		threads[i] = thread (threadFunction, STUDENT_POOL_SECTION_X, PROJECT_POOL_SECTION_X, studentsInSections[i],
+/*		threads[i] = thread (threadFunction, STUDENT_POOL_SECTION_X, PROJECT_POOL_SECTION_X, studentsInSections[i],
 				projectsInSections[i], NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS, results, i, NUM_CLASS_SECTIONS);
+				*/
+		threadFunction(STUDENT_POOL_SECTION_X, PROJECT_POOL_SECTION_X, studentsInSections[i],
+						projectsInSections[i], NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS, results, i, NUM_CLASS_SECTIONS);
 
         //delete STUDENT_POOL_SECTION_X;
         //delete PROJECT_POOL_SECTION_X;
 	}
 
-    //join threads
+ /*   //join threads
 	for(int i = 0; i < NUM_CLASS_SECTIONS; i++) {
 		threads[i].join();
 
-	}
+	}*/
 
 	//print out the results
 	ofstream resultFile;
