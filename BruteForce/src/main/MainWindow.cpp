@@ -39,6 +39,7 @@
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_Progress.H>
+#include "ResultWindow.h"
 
 
 using namespace std;
@@ -251,6 +252,9 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget* w) {
 void MainWindow::DoneButtonClick(Fl_Widget* w){
 
 	 progressWindow->hide();
+	 ResultWindow windowResult;
+	 windowResult.buffer->loadfile("results.txt", 1000000);
+	 windowResult.addText();
 
 
 	//call and create the results window

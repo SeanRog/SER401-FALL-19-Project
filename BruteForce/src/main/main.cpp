@@ -566,10 +566,6 @@ Fl_Output *output;
 int main(){
 
 	MainWindow mainWin;
-	ResultWindow windowResult;
-	windowResult.buffer->loadfile("results.txt", 1000000);
-	windowResult.addText();
-
 	return 0;
 }
 
