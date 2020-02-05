@@ -136,6 +136,8 @@ void MainWindow::MainWindow1() {
     windowMain->color(ASU_WHITE);
     windowMain->box(FL_BORDER_BOX);
 
+    windowMain->resizable(boxHeader);
+
     //windowMain->color(ASU_GOLD);
     //windowMain->image(ASU_BLACK_LOGO);
 
@@ -299,7 +301,7 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 		        progressBar->selection_color(ASU_BLUE);     // progress bar color
 		        progressBar->labelcolor(FL_WHITE);            // percent text color
 
-
+		        progressWindow->resizable(progressBar);
 
 		        doneButton->color(ASU_GOLD);
 		        doneButton->selection_color(ASU_MAROON);
