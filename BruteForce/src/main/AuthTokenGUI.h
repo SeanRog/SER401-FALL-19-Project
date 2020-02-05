@@ -57,7 +57,7 @@ class AuthTokenGUI {
 	void ContinueClick(Fl_Widget* w);
 
 public:
-
+//global value for the Authentication token.
 	string Authentication_Token;
 	bool nextWindowFlag;
 

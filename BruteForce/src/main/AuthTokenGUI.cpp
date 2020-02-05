@@ -76,7 +76,7 @@ AuthTokenGUI::AuthTokenGUI(Fl_Window* prev, Fl_Window* next) {
 	    Continue->callback(static_ContinueClick, this);
 
 	    //Additions to the components
-
+	    Continue->deactivate();
 
 	    boxHeader->box(FL_UP_BOX);
 	    boxHeader->labelfont(FL_BOLD);
@@ -153,6 +153,7 @@ void AuthTokenGUI::FindFileClick(Fl_Widget* w){
 
 
 		  outputToken->value(token_char);
+		  Continue->activate();
 
 
 }

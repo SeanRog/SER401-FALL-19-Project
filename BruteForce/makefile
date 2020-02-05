@@ -3,11 +3,17 @@ TARGET_EXEC ?= main.exe
 BUILD_DIR ?= ./build
 SRC_DIRS ?= ./src/main
 JSONS ?= ./*.json
+TXT ?= ./*.txt
+CSV ?= ./*.csv
 
 CXX := -c++
 
 
+<<<<<<< HEAD
 LDFLAGS := -L/usr/lib -lstdc++ -pthread -lm -lfltk -lX11 -ldl -lXrender -lXcursor -lXfixes -lXinerama -lXext -lXft -lfontconfig -lpthread -lcurl
+=======
+LDFLAGS := -L/usr/lib -lstdc++ -lcurl -pthread -lm -lfltk -lX11 -ldl -lXrender -lXcursor -lXfixes -lXinerama -lXext -lXft -lfontconfig -lpthread
+>>>>>>> daadfb4f88851b786c57bc08f4ae24b20dafdfaf
 
 SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
@@ -31,6 +37,8 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 clean:
 	$(RM) -r $(BUILD_DIR)
 	$(RM) -r $(JSONS)
+	$(RM) -r $(TXT)
+	$(RM) -r $(CSV)
 
 run:
 	./build/main.exe $(ARGS)

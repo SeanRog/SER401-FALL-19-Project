@@ -74,6 +74,7 @@ ClassSelectorGUI::ClassSelectorGUI(Fl_Window* win) {
 	    //Additions to the components
 	    classBrowser->scrollbar;
 
+
 	    inputSemester->add("Spring");
 	    inputSemester->add("Summer");
 	    inputSemester->add("Fall");
@@ -149,6 +150,7 @@ void ClassSelectorGUI::FindCoursesClick(Fl_Widget* w){
 	  }
   }
 
+
 }
 
 /*************************************************************************************
@@ -167,7 +169,6 @@ void ClassSelectorGUI::FindCoursesClick(Fl_Widget* w){
 void ClassSelectorGUI::GobackClick(Fl_Widget* w){
 
 	classWindow->hide();
-
 	prevWindow->show();
 
 
