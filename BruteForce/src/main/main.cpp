@@ -566,6 +566,10 @@ Fl_Output *output;
 int main(){
 
 	MainWindow mainWin;
+
+	mainWin.MainWindow1();
+
+	//mainWin.MainWindow2();
 	return 0;
 }
 
@@ -739,6 +743,7 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
 				indexToAddStudent++;
 			}
 		}
+
 		//store projects in a single class section to *PROJECT_POOL_SECTION_X
 
 		//Project PROJECT_POOL_SECTION_X[projectsInSections[i]];

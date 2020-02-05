@@ -71,6 +71,10 @@ class MainWindow {
 		Fl_Int_Input* inputprojects;
 		Fl_Int_Input* inputstudents;
 
+
+
+		void MainWindow1();
+		void MainWindow2();
         MainWindow();
         ~MainWindow();
 
