@@ -17,18 +17,27 @@
 #include "Team.h"
 #include "Project.h"
 #include "ClassSection.h"
+#include <FL/Fl_Progress.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Box.H>
 
 using namespace std;
 
+//current value of the progress Bar
+extern int progressBarValue;
+
 class StudentsToProjects {
 	public:
+
 		StudentsToProjects(); //constructor
 		~StudentsToProjects(); //destructor
 
 		// Function to assign the students to projects.
 		string StudentsToProjectsAssignment(Student studentPool[],
 				Project projectPool[],const int numStudents,const int numProjects, const int numSkills,
-				const int teamSize,const int numTopTeams);
+				const int teamSize,const int numTopTeams,Fl_Progress* progressBar, int progressIncrement);
+
+		void updateProgressBar(int value, Fl_Progress* pW);//function to update the progress bar.
 
 		bool NegativeAffinityCheck(Student team[5]); //checks a student team to see if their is any negative affinity.
 		int getDuplicatesOfStudents(Team currentSet[], int size); //finds the number of duplicate students in a set of teams.

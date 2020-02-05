@@ -1,16 +1,28 @@
 {
-"class sections":[ 
-   {"ClassID": 0,
-    "Type": "O"},
+"courses":[ 
+   {"id": 02345,
+    "name": "SER 401: Computing Capstone I (2020 Fall)",
+    "course_code": "2019Fall-X-SER401-60550",
+    "course_format": "online",
+    "ClassID": 0},
 
-   {"ClassID": 1,
-    "Type": "G"},
+   {"id": 12345,
+    "name": "SER 401: Computing Capstone I (2020 Fall)",
+    "course_code": "2019Fall-X-SER401-70550",
+    "course_format": "on_campus",
+    "ClassID": 1},
 
-   {"ClassID": 2,
-    "Type": "G"},
+   {"id": 22345,
+    "name": "SER 401: Computing Capstone I (2020 Fall)",
+    "course_code": "2019Fall-X-SER401-80550",
+    "course_format": "on_campus",
+    "ClassID": 2},
     
-    {"ClassID": 3,
-    "Type": "O"}
+   {"id": 32345,
+    "name": "SER 401: Computing Capstone I (2020 Fall)",
+    "course_code": "2019Fall-X-SER401-90550",
+    "course_format": "online",
+    "ClassID": 3}
     
    ]
 }

@@ -3,6 +3,8 @@ TARGET_EXEC ?= main.exe
 BUILD_DIR ?= ./build
 SRC_DIRS ?= ./src/main
 JSONS ?= ./*.json
+TXT ?= ./*.txt
+CSV ?= ./*.csv
 
 CXX := -c++
 
@@ -31,6 +33,8 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 clean:
 	$(RM) -r $(BUILD_DIR)
 	$(RM) -r $(JSONS)
+	$(RM) -r $(TXT)
+	$(RM) -r $(CSV)
 
 run:
 	./build/main.exe $(ARGS)
