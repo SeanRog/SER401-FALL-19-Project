@@ -13,9 +13,8 @@
  *
  */
 
-
 #include "MainWindow.h"
-#include "ClassSelectorGUI.h"
+#include "DataEntryGUI.h"
 #include "AuthTokenGUI.h"
 #include "GUIStyles.h"
 #include "main.h"
@@ -100,8 +99,8 @@ void MainWindow::MainWindow1() {
 
      // GENERATE TEAMS BUTTON
     const int generateTeamsX = toConstInt(buttonStartX + buttonStartW + 130);
-    const int generateTeamsY = toConstInt(buttonStartY + 140);
-    const int generateTeamsW = toConstInt(buttonStartW);
+    const int generateTeamsY = toConstInt(buttonStartY + 150);
+    const int generateTeamsW = toConstInt(buttonStartW + 20);
     const int generateTeamsH = toConstInt(buttonStartH);
     const char generateTeamsStr[] = "Generate Teams";
 
@@ -135,7 +134,6 @@ void MainWindow::MainWindow1() {
 
     windowMain->color(ASU_WHITE);
     windowMain->box(FL_BORDER_BOX);
-
     windowMain->resizable(boxHeader);
 
     //windowMain->color(ASU_GOLD);
@@ -145,10 +143,14 @@ void MainWindow::MainWindow1() {
     buttonStart->box(FL_SHADOW_BOX);
     buttonStart->labelfont(FL_HELVETICA_BOLD);
     buttonStart->labelcolor(ASU_BLACK);
+    buttonStart->labelsize(15);
+    buttonStart->selection_color(ASU_MAROON);
 
     generateTeams->color(ASU_GOLD);
 	generateTeams->selection_color(ASU_MAROON);
     generateTeams->labelcolor(ASU_BLACK);
+    generateTeams->labelfont(FL_HELVETICA_BOLD);
+    generateTeams->labelsize(12);
     generateTeams->box(FL_SHADOW_BOX);
 
     buttonOpenProject->color(ASU_GOLD);
@@ -163,14 +165,13 @@ void MainWindow::MainWindow1() {
     boxHeader->color(ASU_MAROON);
     boxHeader->image(ASU_LOGO_BLACK1);
     boxHeader->labelfont(FL_HELVETICA_BOLD);
-    boxHeader->labelsize(40);
+    boxHeader->labelsize(15);
     boxHeader->labeltype(_FL_SHADOW_LABEL);
     boxHeader->labelcolor(ASU_WHITE);
     boxHeader->redraw();
 
     windowMain->show();
     windowMain->end();
-
 
     Fl::run();
 
@@ -195,7 +196,7 @@ void MainWindow::MainWindow2(){
 
    {
 	// Typical use of Fl_Tabs
-	Fl_Tabs *tabs = new Fl_Tabs(5,5,580,390);
+	Fl_Tabs *tabs = new Fl_Tabs(5,5,590,390);
 	tabs->selection_color(ASU_WHITE);
 	windowMain->resizable(tabs);
 	{
@@ -206,7 +207,7 @@ void MainWindow::MainWindow2(){
 	    	homeTab->selection_color(ASU_MAROON);
 	    	homeTab->labelcolor(ASU_WHITE);
 
-	    	boxHeader = new Fl_Box(40,40,500,200, windowMainStr);
+	    	boxHeader = new Fl_Box(20,40,550,175, windowMainStr);
 	    	buttonStart = new Fl_Button(80, 300, 80, 50, "START");
 
 		    boxHeader->box(FL_FLAT_BOX);
@@ -214,7 +215,7 @@ void MainWindow::MainWindow2(){
 		    boxHeader->image(ASU_LOGO_BLACK1);
 
 		    boxHeader->labelfont(FL_HELVETICA_BOLD);
-		    boxHeader->labelsize(40);
+		    boxHeader->labelsize(22);
 		    boxHeader->labeltype(_FL_SHADOW_LABEL);
 		    boxHeader->labelcolor(ASU_WHITE);
 		    boxHeader->redraw();
@@ -289,28 +290,34 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 
 				//PROGRESS BAR WINDOW
 
-		        progressWindow = new Fl_Window(350, 180, "Team Assignment Progress");
+		        progressWindow = new Fl_Window(450, 180, "Team Assignment Progress");
 		        progressWindow->begin();
-		        TeamsButton = new Fl_Button(10,10,100,40,"Generate Teams");//child 0
-		        doneButton = new Fl_Button(240,10,100,40,"Done");//child 1
-		        progressBar = new Fl_Progress(10,70,330,40);  //child 2
-		        progressBox = new Fl_Box(10, 120, 330, 40, ""); //child 3
+		        TeamsButton = new Fl_Button(10,10,140,40,"GENERATE TEAMS");//child 0
+		        doneButton = new Fl_Button(340,10,100,40,"DONE");//child 1
+		        progressBar = new Fl_Progress(10,70,430,40);  //child 2
+		        progressBox = new Fl_Box(10, 120, 430, 40, ""); //child 3
 		        progressBar->minimum(0);                      // set progress range to be 0.0 ~ 1.0
 		        progressBar->maximum(1);
-		        progressBar->color(ASU_GREY);               // background color
-		        progressBar->selection_color(ASU_BLUE);     // progress bar color
+		        progressBar->color(ASU_GOLD);               // background color
+		        progressBar->selection_color(ASU_MAROON);     // progress bar color
 		        progressBar->labelcolor(FL_WHITE);            // percent text color
+		        progressBar->labelfont(FL_HELVETICA_BOLD);
+		        progressBar->labelsize(15);
 
 		        progressWindow->resizable(progressBar);
 
 		        doneButton->color(ASU_GOLD);
 		        doneButton->selection_color(ASU_MAROON);
+		        doneButton->labelfont(FL_HELVETICA_BOLD);
+		        doneButton->labelsize(12);
 
 		        TeamsButton->color(ASU_GOLD);
 		        TeamsButton->selection_color(ASU_MAROON);
+		        TeamsButton->labelfont(FL_HELVETICA_BOLD);
+		        TeamsButton->labelsize(12);
 
 		        progressWindow->color(ASU_WHITE);
-
+		        progressWindow->box(FL_BORDER_BOX);
 
 		        doneButton->deactivate();
 
@@ -407,22 +414,11 @@ void MainWindow::StartButtonClick(Fl_Widget* w) {
 	cout <<"'Start' button clicked" <<endl;
 	cout<<endl;
 
-	buttonStart->color(ASU_MAROON);
 	windowMain->hide();
 
 	//call to next GUI window.
+	DataEntryGUI dataGUI(windowMain);
 
-	if(nextWindowFlag == false){
-
-	AuthTokenGUI tokenGUI(windowMain, nextWindow);
-
-	nextWindow = tokenGUI.tokenWindow;
-	nextWindowFlag = true;
-
-	}else{
-	nextWindow->show();
-
-	}
 
 }
 

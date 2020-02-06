@@ -567,9 +567,9 @@ int main(){
 
 	MainWindow mainWin;
 
-	mainWin.MainWindow1();
+	//mainWin.MainWindow1();
 
-	//mainWin.MainWindow2();
+	mainWin.MainWindow2();
 	return 0;
 }
 

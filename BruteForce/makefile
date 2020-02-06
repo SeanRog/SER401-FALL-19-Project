@@ -9,7 +9,7 @@ CSV ?= ./*.csv
 CXX := -c++
 
 
-LDFLAGS := -L/usr/lib `fltk-config --cxxflags` -lstdc++ -lcurl -pthread -lm `fltk-config --libs` -lfltk -lfltk_images -lpng -lftgl -lX11 -ldl -lXrender -lXcursor -lXfixes -lXinerama -lXext -lXft -lfontconfig -lpthread
+LDFLAGS := -L/usr/lib `fltk-config --cxxflags` -lstdc++ -lcurl -pthread -lm `fltk-config --libs` -lfltk -lfltk_images -lpng -lX11 -ldl -lXrender -lXcursor -lXfixes -lXinerama -lXext -lXft -lfontconfig -lpthread
 
 SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
