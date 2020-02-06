@@ -298,8 +298,8 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 		        progressBox = new Fl_Box(10, 120, 430, 40, ""); //child 3
 		        progressBar->minimum(0);                      // set progress range to be 0.0 ~ 1.0
 		        progressBar->maximum(1);
-		        progressBar->color(ASU_GOLD);               // background color
-		        progressBar->selection_color(ASU_MAROON);     // progress bar color
+		        progressBar->color(ASU_GREY);               // background color
+		        progressBar->selection_color(ASU_BLUE);     // progress bar color
 		        progressBar->labelcolor(FL_WHITE);            // percent text color
 		        progressBar->labelfont(FL_HELVETICA_BOLD);
 		        progressBar->labelsize(15);
