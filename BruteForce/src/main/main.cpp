@@ -788,7 +788,6 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
 	resultFile.close();
 
 
-
 	//END THREADS FOR EACH CLASS SECTION...Sean Rogers
 
 //END -STUDENTS TO PROJECTS ASSIGNMENT

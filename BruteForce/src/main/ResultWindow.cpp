@@ -26,12 +26,12 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Input.H>
-#include <FL/Fl_Int_Input.H>
 #include <FL/Fl_RGB_Image.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_Text_Display.H>
-
+#include <FL/Fl_Input_.H>
+#include <FL/Fl_Text_Buffer.H>
 
 
 using namespace std;
@@ -60,12 +60,15 @@ ResultWindow::ResultWindow() {
     buttonSave = new Fl_Button(20,20,100,50, "Save Report");
     buttonSave->callback(static_saveClicked, this);
 
+    permBox = new Fl_Box(150, 20, 200, 40, "");
+    swapBox = new Fl_Box(150, 40, 200, 40, "");
+
 }
 
 
 /* event handler for the save button. Saves file as .txt */
 void ResultWindow::saveClicked(Fl_Widget* w) {
-	cout <<"Saving Report as PDF" <<endl;
+	cout <<"Saving Report as .csv" <<endl;
 	buffer->savefile("results.csv", 1000000);
 }
 
@@ -73,6 +76,17 @@ void ResultWindow::saveClicked(Fl_Widget* w) {
 /* method to show the results window once the buffer has been filled */
 void ResultWindow::addText() {
     windowResult->resizable(textDisplay);
+
+    char permNum[50];
+    int buff = sprintf(permNum, "Number of possible permutations: %d", permutations);
+    const char* permNum1 = permNum;
+    permBox->label(permNum1);
+
+    char swapNum[50];
+    buff = sprintf(swapNum, "Number of students swapped: %d", swaps);
+    const char* swapNum1 = swapNum;
+    swapBox->label(swapNum1);
+
     windowResult->show();
     windowResult->end();
     Fl::run();
