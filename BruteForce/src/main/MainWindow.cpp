@@ -99,9 +99,9 @@ void MainWindow::MainWindow1() {
 
      // GENERATE TEAMS BUTTON
     const int generateTeamsX = toConstInt(buttonStartX + buttonStartW + 130);
-    const int generateTeamsY = toConstInt(buttonStartY + 150);
-    const int generateTeamsW = toConstInt(buttonStartW + 20);
-    const int generateTeamsH = toConstInt(buttonStartH);
+    const int generateTeamsY = toConstInt(buttonStartY + 120);
+    const int generateTeamsW = toConstInt(buttonStartW);
+    const int generateTeamsH = toConstInt(buttonStartH + 20);
     const char generateTeamsStr[] = "Generate Teams";
 
 
@@ -121,7 +121,7 @@ void MainWindow::MainWindow1() {
     		InputStudentW, InputStudentH, InputSStr );
 
      generateTeams = new Fl_Button(generateTeamsX, generateTeamsY,
-    		 generateTeamsW, generateTeamsH, generateTeamsStr);
+    		 generateTeamsW, generateTeamsH);
 
     //CALLBACKS
     generateTeams->callback(static_TeamsButtonClick, this);
@@ -131,6 +131,7 @@ void MainWindow::MainWindow1() {
     Fl_PNG_Image ASU_LOGO_BLACK1("./Images/asu_sunburst_rgb_black_150ppi_1.png");
     Fl_PNG_Image ASU_LOGO_BLACK2("/Images/asu_university_horiz_rgb_black_150_0.png");
 
+    Fl_PNG_Image TeamLogo1("./Images/TeamsButton.png");
 
     windowMain->color(ASU_WHITE);
     windowMain->box(FL_BORDER_BOX);
@@ -146,12 +147,15 @@ void MainWindow::MainWindow1() {
     buttonStart->labelsize(15);
     buttonStart->selection_color(ASU_MAROON);
 
+    generateTeams->image(TeamLogo1);
     generateTeams->color(ASU_GOLD);
 	generateTeams->selection_color(ASU_MAROON);
     generateTeams->labelcolor(ASU_BLACK);
     generateTeams->labelfont(FL_HELVETICA_BOLD);
     generateTeams->labelsize(12);
-    generateTeams->box(FL_SHADOW_BOX);
+    generateTeams->box(FL_NO_BOX);
+    generateTeams->tooltip("Generate Teams");
+    generateTeams->down_box(FL_NO_BOX);
 
     buttonOpenProject->color(ASU_GOLD);
     buttonOpenProject->labelcolor(ASU_BLACK);
