@@ -16,6 +16,7 @@
 #include <FL/Fl_RGB_Image.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Progress.H>
+#include <FL/names.h>
 
 #include "ClassSelectorGUI.h"
 #include "AuthTokenGUI.h"
@@ -46,6 +47,7 @@ class MainWindow {
 	void ProgressTeamsButtonClick(Fl_Widget* w);
 	void DoneButtonClick(Fl_Widget* w);
 	void StartButtonClick(Fl_Widget* w);
+	int handle(int);
 
     public:
 		int num_projects;
@@ -71,12 +73,17 @@ class MainWindow {
 		Fl_Int_Input* inputprojects;
 		Fl_Int_Input* inputstudents;
 
-
-
+		//virtual int handle(int event);
 		void MainWindow1();
 		void MainWindow2();
         MainWindow();
         ~MainWindow();
+
+
+
+
+
+
 
 };
 

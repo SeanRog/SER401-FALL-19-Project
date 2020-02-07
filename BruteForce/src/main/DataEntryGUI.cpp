@@ -81,7 +81,7 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 
 
 		findCourses->color(ASU_GOLD);
-	    findCourses->box(FL_SHADOW_BOX);
+	    //findCourses->box(FL_SHADOW_BOX);
 	    findCourses->labelfont(FL_HELVETICA);
 	    findCourses->labelcolor(ASU_BLACK);
 	    findCourses->labelsize(15);
@@ -91,7 +91,7 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    inputSemester->add("Summer");
 	    inputSemester->add("Fall");
 	    inputSemester->value("Fall");
-	    inputSemester->box(FL_SHADOW_BOX);
+	    //inputSemester->box(FL_SHADOW_BOX);
 	    inputSemester->labelfont(FL_HELVETICA);
 	    inputSemester->labelcolor(ASU_WHITE);
 	    inputSemester->textfont(FL_HELVETICA);
@@ -100,7 +100,7 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    inputSemester->menubutton()->textfont(FL_HELVETICA);
 	    inputSemester->menubutton()->box(FL_BORDER_BOX);
 
-	    inputYear->box(FL_SHADOW_BOX);
+	    //inputYear->box(FL_SHADOW_BOX);
 	    inputYear->labelfont(FL_HELVETICA);
 	    inputYear->labelcolor(ASU_WHITE);
 	    inputYear->textfont(FL_HELVETICA);
@@ -115,14 +115,14 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    boxHeader->labelcolor(ASU_WHITE);
 
 		goBack->color(ASU_GOLD);
-		goBack->box(FL_SHADOW_BOX);
+		//goBack->box(FL_SHADOW_BOX);
 		goBack->labelfont(FL_HELVETICA);
 		goBack->labelcolor(ASU_BLACK);
 		goBack->labelsize(15);
 		goBack->selection_color(ASU_MAROON);
 
 		Confirm->color(ASU_GOLD);
-		Confirm->box(FL_SHADOW_BOX);
+		//Confirm->box(FL_SHADOW_BOX);
 		Confirm->labelfont(FL_HELVETICA);
 		Confirm->labelcolor(ASU_BLACK);
 		Confirm->labelsize(15);
@@ -233,14 +233,14 @@ void DataEntryGUI::GobackClick(Fl_Widget* w){
 	backWindow->box(FL_BORDER_BOX);
 
 	yesButton->color(ASU_MAROON);
-	yesButton->box(FL_SHADOW_BOX);
+	//yesButton->box(FL_SHADOW_BOX);
 	yesButton->labelfont(FL_HELVETICA);
 	yesButton->labelcolor(ASU_WHITE);
 	yesButton->labelsize(15);
 	yesButton->selection_color(ASU_WHITE);
 
 	cancelButton1->color(ASU_MAROON);
-	cancelButton1->box(FL_SHADOW_BOX);
+	//cancelButton1->box(FL_SHADOW_BOX);
 	cancelButton1->labelfont(FL_HELVETICA);
 	cancelButton1->labelcolor(ASU_WHITE);
 	cancelButton1->labelsize(15);
@@ -319,14 +319,14 @@ void DataEntryGUI::ConfirmClick(Fl_Widget* w){
 	confirmWindow->box(FL_BORDER_BOX);
 
 	GenerateTeamsButton->color(ASU_MAROON);
-	GenerateTeamsButton->box(FL_SHADOW_BOX);
+	//GenerateTeamsButton->box(FL_SHADOW_BOX);
 	GenerateTeamsButton->labelfont(FL_HELVETICA);
 	GenerateTeamsButton->labelcolor(ASU_WHITE);
 	GenerateTeamsButton->labelsize(15);
 	GenerateTeamsButton->selection_color(ASU_WHITE);
 
 	cancelButton2->color(ASU_MAROON);
-	cancelButton2->box(FL_SHADOW_BOX);
+	//cancelButton2->box(FL_SHADOW_BOX);
 	cancelButton2->labelfont(FL_HELVETICA);
 	cancelButton2->labelcolor(ASU_WHITE);
 	cancelButton2->labelsize(15);

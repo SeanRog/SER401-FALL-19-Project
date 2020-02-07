@@ -23,6 +23,7 @@
 #include <string>
 #include <cstdlib>
 #include <stdio.h>
+#include <FL/names.h>
 
 #include <FL/Fl.H>
 #include <FL/Fl_Tabs.H>
@@ -51,6 +52,12 @@ constexpr int toConstInt(int constInt) {
 MainWindow::MainWindow(){
 
 }
+//ASU logos
+Fl_PNG_Image ASU_LOGO_BLACK1("./Images/asu_sunburst_rgb_black_150ppi_1.png");
+Fl_PNG_Image ASU_LOGO_BLACK2("/Images/asu_university_horiz_rgb_black_150_0.png");
+//team button
+Fl_PNG_Image TeamLogo1("./Images/TeamsButton.png");
+Fl_PNG_Image TeamLogo2("./Images/TeamsButton2.png");
 
 void MainWindow::MainWindow1() {
     // MAIN WINDOW
@@ -121,17 +128,13 @@ void MainWindow::MainWindow1() {
     		InputStudentW, InputStudentH, InputSStr );
 
      generateTeams = new Fl_Button(generateTeamsX, generateTeamsY,
-    		 generateTeamsW, generateTeamsH);
+    		 TeamLogo1.w(), TeamLogo1.h());
 
     //CALLBACKS
     generateTeams->callback(static_TeamsButtonClick, this);
     buttonStart->callback(static_StartButtonClick, this);
 
-    //ASU logos
-    Fl_PNG_Image ASU_LOGO_BLACK1("./Images/asu_sunburst_rgb_black_150ppi_1.png");
-    Fl_PNG_Image ASU_LOGO_BLACK2("/Images/asu_university_horiz_rgb_black_150_0.png");
 
-    Fl_PNG_Image TeamLogo1("./Images/TeamsButton.png");
 
     windowMain->color(ASU_WHITE);
     windowMain->box(FL_BORDER_BOX);
@@ -141,7 +144,7 @@ void MainWindow::MainWindow1() {
     //windowMain->image(ASU_BLACK_LOGO);
 
     buttonStart->color(ASU_GOLD);
-    buttonStart->box(FL_SHADOW_BOX);
+    //buttonStart->box(FL_SHADOW_BOX);
     buttonStart->labelfont(FL_HELVETICA_BOLD);
     buttonStart->labelcolor(ASU_BLACK);
     buttonStart->labelsize(15);
@@ -157,9 +160,10 @@ void MainWindow::MainWindow1() {
     generateTeams->tooltip("Generate Teams");
     generateTeams->down_box(FL_NO_BOX);
 
+
     buttonOpenProject->color(ASU_GOLD);
     buttonOpenProject->labelcolor(ASU_BLACK);
-    buttonOpenProject->box(FL_SHADOW_BOX);
+    //buttonOpenProject->box(FL_SHADOW_BOX);
 
     //buttonStart->activate();
 	//fltk::set_background(ASU_MAROON);
@@ -170,16 +174,20 @@ void MainWindow::MainWindow1() {
     boxHeader->image(ASU_LOGO_BLACK1);
     boxHeader->labelfont(FL_HELVETICA_BOLD);
     boxHeader->labelsize(15);
-    boxHeader->labeltype(_FL_SHADOW_LABEL);
+    //boxHeader->labeltype(_FL_SHADOW_LABEL);
     boxHeader->labelcolor(ASU_WHITE);
     boxHeader->redraw();
 
     windowMain->show();
     windowMain->end();
 
+
     Fl::run();
 
 }
+
+
+
 
 // DESTRUCTOR
 MainWindow::~MainWindow() {
@@ -194,12 +202,8 @@ void MainWindow::MainWindow2(){
    const char windowMainStr[] = "CAPSTONE TEAM ASSIGNMENT SYSTEM";
    windowMain = new Fl_Window(windowMainW, windowMainH, windowMainStr);
    windowMain->color(ASU_GOLD);
-	//fl_register_images();
-   Fl_PNG_Image ASU_LOGO_BLACK1("./Images/asu_sunburst_rgb_black_150ppi_12.png");
-   Fl_PNG_Image ASU_LOGO_BLACK2("/Images/asu_university_horiz_rgb_black_150_02.png");
 
    {
-	// Typical use of Fl_Tabs
 	Fl_Tabs *tabs = new Fl_Tabs(5,5,590,390);
 	tabs->selection_color(ASU_WHITE);
 	windowMain->resizable(tabs);
@@ -220,12 +224,12 @@ void MainWindow::MainWindow2(){
 
 		    boxHeader->labelfont(FL_HELVETICA_BOLD);
 		    boxHeader->labelsize(22);
-		    boxHeader->labeltype(_FL_SHADOW_LABEL);
+		    //boxHeader->labeltype(_FL_SHADOW_LABEL);
 		    boxHeader->labelcolor(ASU_WHITE);
 		    boxHeader->redraw();
 
 		    buttonStart->color(ASU_GOLD);
-		    buttonStart->box(FL_SHADOW_BOX);
+		    //buttonStart->box(FL_SHADOW_BOX);
 			buttonStart->labelfont(FL_HELVETICA_BOLD);
 			buttonStart->labelcolor(ASU_BLACK);
 			buttonStart->selection_color(ASU_MAROON);
@@ -260,6 +264,7 @@ void MainWindow::MainWindow2(){
 
 
 
+
 }
 
 /*****************************************************************************
@@ -285,7 +290,8 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
 
-
+	  generateTeams->image(TeamLogo2);
+	  generateTeams->deactivate();
 
 	cout <<"'Generate Teams' button clicked" <<endl;
 	cout << num_projects<<endl;
@@ -334,6 +340,7 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 
 		        TeamsButton->callback(static_ProgressTeamsButtonClick, this);
 		        doneButton->callback(static_DoneButtonClick, this);
+
 
 		        Fl::run();
 }
@@ -387,10 +394,15 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget* w) {
  */
 void MainWindow::DoneButtonClick(Fl_Widget* w){
 
+	  generateTeams->activate();
+	  generateTeams->image(TeamLogo1);
+
 	 progressWindow->hide();
 	 ResultWindow windowResult;
 	 windowResult.buffer->loadfile("results.txt", 1000000);
 	 windowResult.addText();
+
+
 
 
 	//call and create the results window
@@ -424,6 +436,21 @@ void MainWindow::StartButtonClick(Fl_Widget* w) {
 	DataEntryGUI dataGUI(windowMain);
 
 
+}
+
+int MainWindow::handle(int event) {
+
+	fprintf(stderr, "EVENT: %s(%d)\n", fl_eventnames[event], event);
+    switch(event) {
+    case FL_PUSH:
+    	  cout<<"FL_PUSH"<<endl;
+    	  Fl_PNG_Image TeamLogo2("./Images/button2.png");
+    	  generateTeams->image(TeamLogo2);
+    	  //windowMain.redraw();
+
+    	  return 1;
+    }
+  return 0;
 }
 
 
