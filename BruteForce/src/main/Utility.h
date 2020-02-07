@@ -63,6 +63,8 @@ class Utility {
 		void makeStudentJSON(int numStud, int numSkill);
 		int calc_projects(int numStudents, int teamSize, int minTeamSize);
 		int NumOfTeamsOf4(int numStudents, int teamSize);
+		vector<vector<string>> toCSVsse (string filename);
+		vector<vector<string>> toCSVcse (string filename);
 		~Utility();
 };
 

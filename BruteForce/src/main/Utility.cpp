@@ -1520,5 +1520,91 @@ int Utility::NumOfTeamsOf4(int numStudents, int teamSize){
 
 }
 
+/*********************************************************
+ * toCSVsse
+ *
+ * Author: Sean Rogers
+ *
+ * Description:
+ * 	Takes in a file, then outputs the comma separated values from that file.
+ * 	This assumes the elements in arrays are separated by spaces
+ *
+ *Arguments:
+ *	string filename
+ *
+ *Returns:
+ *  vector<vector<string>> containing the comma separated values.
+ */
+vector<vector<string>> Utility::toCSVsse (string filename) {
+	ifstream file(filename);
+
+		vector<vector<string>> dataList;
+
+		string line = "";
+
+		while(getline(file,line)) {
+			vector<string> vec;
+			string element = "";
+			for(int i = 0; i < line.length(); i++) {
+
+				if(line.at(i) == ',') {
+					vec.push_back(element);
+					element = "";
+				} else {
+					element.push_back(line.at(i));
+				}
+			}
+			dataList.push_back(vec);
+		}
+		file.close();
+	return dataList;
+}
+
+/*********************************************************
+ * toCSVsse
+ *
+ * Author: Sean Rogers
+ *
+ * Description:
+ * 	Just like the previous method, takes in a file, then outputs the comma separated values from that file.
+ * 	This assumes the elements in arrays are separated by commas
+ *
+ *Arguments:
+ *	string filename
+ *
+ *Returns:
+ *  vector<vector<string>> containing the comma separated values.
+ */
+vector<vector<string>> Utility::toCSVcse (string filename) {
+	ifstream file(filename);
+
+	vector<vector<string>> dataList;
+
+		string line = "";
+
+		int bracketCount = 0;
+		while(getline(file,line)) {
+			vector<string> vec;
+			string element = "";
+			for(int i = 0; i < line.length(); i++) {
+				if(line.at(i) == '[') {
+					bracketCount++;
+				}
+				if(line.at(i) == ']') {
+					bracketCount--;
+				}
+				if(line.at(i) == ',' && bracketCount == 0) {
+					vec.push_back(element);
+					element = "";
+				} else {
+					element.push_back(line.at(i));
+				}
+			}
+			dataList.push_back(vec);
+		}
+		file.close();
+	return dataList;
+}
+
 
 

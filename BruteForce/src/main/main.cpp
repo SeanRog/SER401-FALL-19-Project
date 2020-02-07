@@ -74,6 +74,9 @@
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Output.H>
 
+#include <curl/curl.h>
+
+
 
 using namespace std;
 using namespace std::chrono;
@@ -563,7 +566,9 @@ Fl_Output *output;
  *Returns:
  *	int value 0.
  */
+
 int main(){
+
 
 	MainWindow mainWin;
 
