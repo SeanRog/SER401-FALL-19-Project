@@ -81,12 +81,20 @@ MainWindow::MainWindow() {
     const int buttonOpenProjectH = toConstInt(buttonStartH);
     const char buttonOpenProjectStr[] = "Open Project";
 
+    // GENERATE PROJECT FILE INPUT
+    const int generatePFileInputX = toConstInt(buttonOpenProjectX + buttonOpenProjectY + 20);
+    const int generatePFileInputY = toConstInt(buttonStartY);
+    const int generatePFileInputW = toConstInt(buttonOpenProjectW);
+    const int generatePFileInputH = toConstInt(buttonOpenProjectH);
+    const char generatePFileInputStr[] = ".";
+
     // PROJECT INPUT
     const int InputProjectX = toConstInt(buttonStartX + buttonStartW + 20);
     const int InputProjectY = toConstInt(buttonStartY + 70);
     const int InputProjectW = toConstInt(buttonStartW);
     const int InputProjectH = toConstInt(buttonStartH);
     const char InputPStr[] = "#Projects";
+
 
     // STUDENT INPUT
     const int InputStudentX = toConstInt(buttonStartX + buttonStartW + 20);
@@ -103,6 +111,7 @@ MainWindow::MainWindow() {
     const char generateTeamsStr[] = "Generate Teams";
 
 
+
     // INITIALIZE COMPONENTS
     windowMain = new Fl_Window(windowMainW, windowMainH, windowMainStr);
     boxHeader = new Fl_Box(boxHeaderX, boxHeaderY, boxHeaderW,
@@ -111,7 +120,8 @@ MainWindow::MainWindow() {
         buttonStartW, buttonStartH, buttonStartStr);
     buttonOpenProject = new Fl_Button(buttonOpenProjectX, buttonOpenProjectY,
         buttonOpenProjectW, buttonOpenProjectH, buttonOpenProjectStr);
-
+    projectFileInput = new Fl_Input(generatePFileInputX, generatePFileInputY,
+    		generatePFileInputW, generatePFileInputH, generatePFileInputStr);
     inputprojects = new Fl_Int_Input(InputProjectX, InputProjectY,
     		InputProjectW, InputProjectH, InputPStr );
 
@@ -124,6 +134,7 @@ MainWindow::MainWindow() {
     //CALLBACKS
     generateTeams->callback(static_TeamsButtonClick, this);
     buttonStart->callback(static_StartButtonClick, this);
+
 
     boxHeader->box(FL_UP_BOX);
     boxHeader->labelfont(FL_BOLD + FL_ITALIC);
@@ -260,6 +271,22 @@ void MainWindow::DoneButtonClick(Fl_Widget* w){
 	//call and create the results window
 	//show results window.
 
+}
+
+void chooseProjectFile_cb(Fl_Widget*, void*){
+	Fl_Native_File_Chooser fileChooser;
+	fileChooser.title("Choose File");
+	fileChooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
+	fileChooser.preset_file(fileInput_Project->value());
+	switch ( fileChooser.show() ) {
+		default:
+			if ( fileChooser.filename() ) {
+				fileInput_Project->value(fileChooser.filename());
+			} else {
+				fileInput_Project->value("NULL");
+			}
+			break;
+	}
 }
 
 /*****************************************************************************

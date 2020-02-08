@@ -16,6 +16,7 @@
 #include <FL/Fl_RGB_Image.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Progress.H>
+#include <FL/Fl_Native_File_Chooser.H>
 
 #include "ClassSelectorGUI.h"
 #include "AuthTokenGUI.h"
@@ -40,12 +41,17 @@ class MainWindow {
 	static void static_StartButtonClick(Fl_Widget* w, void * data) {
 		((MainWindow*)data)->StartButtonClick(w);
 	}
+	static void static_chooseProjectFile_cb(Fl_Widget* w, void * data) {
+			((MainWindow*)data)->StartButtonClick(w);
+		}
 
 	// callback functions
 	void TeamsButtonClick(Fl_Widget* w);
 	void ProgressTeamsButtonClick(Fl_Widget* w);
 	void DoneButtonClick(Fl_Widget* w);
 	void StartButtonClick(Fl_Widget* w);
+	void chooseProjectFile_cb(Fl_Widget*);
+
 
     public:
 		int num_projects;
@@ -59,7 +65,7 @@ class MainWindow {
 		Fl_Box *progressBox;
 		Fl_Button *TeamsButton;
 		Fl_Button *doneButton;
-
+		Fl_Input *projectFileInput;
 		//main window
 		Fl_Window *windowMain;
 		//ClassSelectorGUI *nextWindow;
@@ -67,9 +73,11 @@ class MainWindow {
 		Fl_Box *boxHeader;
 		Fl_Button *buttonStart;
 		Fl_Button *buttonOpenProject;
+
 		Fl_Button *generateTeams;
 		Fl_Int_Input* inputprojects;
 		Fl_Int_Input* inputstudents;
+
 
         MainWindow();
         ~MainWindow();
