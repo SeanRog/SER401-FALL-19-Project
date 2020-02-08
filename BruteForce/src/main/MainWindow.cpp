@@ -121,7 +121,7 @@ MainWindow::MainWindow() {
     buttonOpenProject = new Fl_Button(buttonOpenProjectX, buttonOpenProjectY,
         buttonOpenProjectW, buttonOpenProjectH, buttonOpenProjectStr);
     projectFileInput = new Fl_Input(generatePFileInputX, generatePFileInputY,
-    		generatePFileInputW, generatePFileInputH, generatePFileInputStr);
+    		generatePFileInputW, generatePFileInputH);
     inputprojects = new Fl_Int_Input(InputProjectX, InputProjectY,
     		InputProjectW, InputProjectH, InputPStr );
 
@@ -134,7 +134,7 @@ MainWindow::MainWindow() {
     //CALLBACKS
     generateTeams->callback(static_TeamsButtonClick, this);
     buttonStart->callback(static_StartButtonClick, this);
-
+    buttonOpenProject->callback(static_chooseProjectFile_cb, this);
 
     boxHeader->box(FL_UP_BOX);
     boxHeader->labelfont(FL_BOLD + FL_ITALIC);
@@ -273,17 +273,17 @@ void MainWindow::DoneButtonClick(Fl_Widget* w){
 
 }
 
-void chooseProjectFile_cb(Fl_Widget*, void*){
+void MainWindow::chooseProjectFile_cb(Fl_Widget*){
 	Fl_Native_File_Chooser fileChooser;
 	fileChooser.title("Choose File");
 	fileChooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
-	fileChooser.preset_file(fileInput_Project->value());
+	//fileChooser.preset_file(fileInput_Project->value());
 	switch ( fileChooser.show() ) {
 		default:
 			if ( fileChooser.filename() ) {
-				fileInput_Project->value(fileChooser.filename());
+				//fileInput_Project->value(fileChooser.filename());
 			} else {
-				fileInput_Project->value("NULL");
+				//fileInput_Project->value("NULL");
 			}
 			break;
 	}
