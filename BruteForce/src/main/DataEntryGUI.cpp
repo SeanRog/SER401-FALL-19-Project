@@ -48,6 +48,12 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 
 	    masterWindow = new Fl_Window(800, 1000, "CAPSTONE TEAM ASSIGNMENT SYSTEM");
 
+
+	    //background box 1
+	    Fl_Box boxBack2(20,200,760,500);
+	    boxBack2.box(FL_NO_BOX);
+	    boxBack2.color(ASU_WHITE);
+
 	    //background box 3
 	    Fl_Box boxBack3(20,600,760,300);
 	    boxBack3.box(FL_FLAT_BOX);
@@ -128,7 +134,7 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 		Confirm->labelsize(15);
 		Confirm->selection_color(ASU_MAROON);
 
-
+	    masterWindow->resizable(boxBack2);
 	    masterWindow->color(ASU_WHITE);
 		masterWindow->box(FL_BORDER_BOX);
 
