@@ -11,10 +11,11 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Input.H>
-#include <FL/Fl_Int_Input.H>
 #include <FL/Fl_RGB_Image.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Text_Display.H>
+#include <FL/Fl_Input_.H>
+#include <FL/Fl_Text_Buffer.H>
 
 
 using namespace std;
@@ -22,21 +23,24 @@ using namespace std;
 class ResultWindow {
 
 	static void static_saveClicked(Fl_Widget* w, void * data) {
-		((ResultWindow*)data)->saveClicked(w);
-	}
+		((ResultWindow*)data)->saveClicked(w);	}
 
 	void saveClicked(Fl_Widget* w);
 
-
     public:
+		static int permutations;
+		static int swaps;
 
 		Fl_Window *windowResult;
 		Fl_Text_Display *textDisplay;
 		Fl_Text_Buffer *buffer;
 		Fl_Button *buttonSave;
+		Fl_Box *permBox;
+		Fl_Box *swapBox;
+
         ResultWindow();
         ~ResultWindow();
-        void addText(void);
+        void addText();
 
 };
 
