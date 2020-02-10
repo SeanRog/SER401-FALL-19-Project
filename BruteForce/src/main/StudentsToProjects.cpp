@@ -3,7 +3,7 @@
  *
  *  Created on: Oct 30, 2019
  *  Created on: Oct 30, 2019
- *      Created by: Sean, Myles, Cristi, Matthew
+ *      Created by: Sean, Myles, Cristi, Matthew, Elizabeth
  *
  *
  * Description:
@@ -57,6 +57,7 @@
 #include "ClassSection.h"
 #include "json/json.h"
 #include "Utility.h"
+#include "ResultWindow.h"
 
 #include <FL/Fl.H>
 #include <FL/Fl_Progress.H>
@@ -78,6 +79,8 @@
 
 using namespace std;
 using namespace std::chrono;
+int ResultWindow::permutations = 0;
+int ResultWindow::swaps = 0;
 //Constructor
 StudentsToProjects::StudentsToProjects() {
 }
@@ -313,6 +316,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
  //START--------------Team Combination process to find every student team combination for each project
     cout << "STUDENTS TO PROJECTS ASSIGNMENT RUNNING..." << endl;
     cout << getValueVirt() + getValuePhy() << " KB of memory usage: Start of Assignment" << endl;
+
         	for(int i = 0; i < numProjects; i++) {
 
         		//new combination process
@@ -335,6 +339,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
         				//for(int k = 0; k < numSkills; k++) {
         				//	teamskillscore += studentPool[studentIndexes[j] - 1].Skills[k] * projectPool[i].Skills[k];
         				//}
+        				ResultWindow::permutations ++;
         			}
         			//----Now the team for this combination is formed.-----
 
@@ -633,6 +638,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	             		fakeStudents.push_back(fakeStudent);
 	             	}
 
+
 	             	//if number of teams of 4 needed is the same as the number of projects,
 	             	//swap a fake student into the first team
 	             	int minTeamCount = 0;
@@ -716,7 +722,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	             	            	 //If a duplicate is found, find the best replacement student,
 	             	            	 //and swap that student into the team.
 	             	                 if (uniqueStudents[k] == bestSet[i].team[j].StudentID){
-	             	                     numDuplicates++;
+	             	                	 numDuplicates++;
 	             	                     isduplicate =true;
 	             	                     DuplicateFound = true;
 
@@ -768,8 +774,11 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	             	                 }}
 	             	             isduplicate = false;
 
+	             	             ResultWindow::swaps++;
 
 	             	         }//end j loop
+
+
 
              	            //recalculate team score, now that all the duplicate
              	           	//students have been swapped out.
