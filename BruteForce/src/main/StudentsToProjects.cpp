@@ -343,10 +343,13 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
         			}
         			//----Now the team for this combination is formed.-----
 
-        			//Negative Affinity Check
-        			//check returns true if there is negative affinity on the team,
-        	        //and false if there is no negative affinity.
-        			if (NegativeAffinityCheck(currentTeam.team) == false){
+        			//Negative Affinity Check and NDA/IPR agreement check
+        			//
+        			//Continues if there is no negative affinity between any of the members, AND
+        			//all the students agree to sign an NDA or IPR if the project requires it.
+        			//otherwise, the current team combination is skipped.
+
+        			if ((NegativeAffinityCheck(currentTeam.team) == false)&&(NDA_IPRCheck(currentTeam.team, projectPool[i]) == true)){
 
         				//call to 3 team score functions
         				//TeamScore = func1() + func2() + func3()
@@ -1213,7 +1216,6 @@ int StudentsToProjects::StudentToStudentSkill( int skillsum1, int skillsum2){
  * Author: Matthew Cilibraise
  *
  * Description:
- * currently takes in a vector of students, which represents a possible team combination.
  * function checks to see if any students have negative affinity toward one another.
  * If negative affinity between team members IS NOT found, function will return a boolean value of false,
  * If negative affinity between team member IS found, function will return a boolean value of true.
@@ -1269,4 +1271,42 @@ bool StudentsToProjects::NegativeAffinityCheck(Student team[5]){
 		}
 	} // end studentTeamCounter loop
 	return negativeAffinity;
+}
+
+
+/*********************************************************
+* NDA_IPRCheck(
+*
+*
+* Description:
+* function checks to see if any students on this team do not want to sign an NDA or IPR agreement.
+* returns false if there the project requires an NDA or an IPR, and a student on the team does not
+* agree to sign one of them.
+*
+*Arguments:
+*	Student team[5] (the team of students to check)
+*	Project project
+*
+*Returns:
+*  boolean value
+*
+*/
+bool StudentsToProjects::NDA_IPRCheck(Student team[5], Project project){
+
+for (int i = 0; i < 5 ; i++){
+
+	if((team[i].NDA == false)&&(project.NDA==true)){
+		return false;
+	}
+
+	if((team[i].IPR == false)&&(project.IPR==true)){
+		return false;
+	}
+
+}
+
+
+
+return true;
+
 }

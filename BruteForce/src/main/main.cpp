@@ -570,6 +570,7 @@ Fl_Output *output;
 int main(){
 
 
+	XInitThreads();
 	MainWindow mainWin;
 
 	//mainWin.MainWindow1();

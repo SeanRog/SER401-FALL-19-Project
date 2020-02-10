@@ -1212,6 +1212,29 @@ void Utility::makeProjectJSON(int numProj, int numSkill) {
 	        file << "{\"ProjectID\": " << projectID << ",\n";
 
 
+	        /*Prints out schema: {"NDA": bool, */
+	        /*Prints out schema: {"IPR": bool, */
+	        //25 percent of projects will require students sign an IPR and NDA agreement.
+	        int percent = (int) numProjects * (0.25);
+	        if(projectID < (percent+1)) {
+	        	file << "\"NDA\": true,\n";
+	        	file << "\"IPR\": true,\n";
+	        }else {
+	        file << "\"NDA\": false,\n";
+	    	file << "\"IPR\": false,\n";}
+
+
+	        /*Prints out schema: {"NDA": bool, */
+	        /*Prints out schema: {"IPR": bool, */
+	        //5 percent of projects will require students use shared hardware.
+	        percent = (int) numProjects * (0.05);
+	        if(projectID < (percent+1)) {
+	        	file << "\"sharedHardware\": true,\n";
+	        }else {
+	        	file << "\"sharedHardware\": false,\n";}
+
+
+
 	        /*Prints out schema: "Priority": (Priority), priority can be
 	         * 0,1, or 2. This file randomizes it between the three options.  */
 	        file << " \"Priority\": " << rand() % (2 +1) << ",\n";
@@ -1235,7 +1258,7 @@ void Utility::makeProjectJSON(int numProj, int numSkill) {
 
 
 	        file << " \"Type\": ";
-	        int percent = (int) numProjects * (0.10);
+	        percent = (int) numProjects * (0.10);
 	        if(projectID < (percent+1)) {
 	            file << "\"O\" }, \n\n"; }
 	        else if ( projectID > percent && projectID < ((percent+percent+1))) {
@@ -1302,6 +1325,18 @@ void Utility::makeStudentJSON(int numStud, int numSkill) {
             file << " \"ClassID\": 2,\n";   }
         if(studentID > student_75 && studentID <= numStudent) {
             file << " \"ClassID\": 3,\n";   }
+
+        /*Prints out schema: {"NDA": bool, */
+        /*Prints out schema: {"IPR": bool, */
+        //5 percent of students will not want to sign the agreements.
+
+        int percent = (int) numStudent * (0.05);
+        if(studentID < (percent+1)) {
+        	file << "\"NDA\": false,\n";
+        	file << "\"IPR\": false,\n";
+        }else {
+        file << "\"NDA\": true,\n";
+    	file << "\"IPR\": true,\n";}
 
 
         /*Prints out schema: "Skills": [(skills)],  ramdomly generates skills

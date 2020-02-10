@@ -91,6 +91,17 @@ Project ProjectJson::getProjectJsonObject(string filename, int i){
 		project.Skills[j] = (obj["projects"].get((int)i, "")["Skills"][j].asInt());
 	}
 
+	project.NDA = obj["projects"].get((int)i, "")["NDA"].asBool();
+	project.IPR = obj["projects"].get((int)i, "")["IPR"].asBool();
+	project.sharedHardware = obj["projects"].get((int)i, "")["sharedHardware"].asBool();
+
+	//If the project requires shared hardware, change the type of the class to G.
+	//this limits the projects to ground section students only.
+	if(project.sharedHardware == true){
+		project.Type = 'G';
+
+	}
+
 	return project;
 }
 

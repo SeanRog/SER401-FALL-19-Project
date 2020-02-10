@@ -29,7 +29,7 @@ struct Project {
 	int PoolID;    	// Common integer to keep track of project in data structures. Used in determining index number in StudetsToProjects.
     bool NDA;		//bool value depicting whether this project requires that the students sign an NDA
     bool IPR;		//bool value depicting whether this project requires that the students sign an IPR
-    bool shardeHardware; //bool value depicting if this project requires shared hardware-limit to ground students
+    bool sharedHardware; //bool value depicting if this project requires shared hardware-limit to ground students
 
 	/* char Type - 	Projects can be dedicated to local students of the university, online students, or a combination.
 	 * 				Type is defined as: O = online | G = ground | H = hybrid

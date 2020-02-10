@@ -1,61 +1,62 @@
 RESULT FOR SECTION 0:
-Project#1: 13 21 16 4 40  TeamScore: 86Results Score:76
-Project#35: 8 30 34 7 5  TeamScore: 83Results Score:83
-Project#23: 2 22 19 50 25  TeamScore: 62Results Score:41
-Project#20: 1 49 36 31 29  TeamScore: 88Results Score:86
+Project#4: 35 24 41 28 12  TeamScore: 88
+Project#34: 9 6 19 4 34  TeamScore: 77
+Project#18: 13 42 29 33 20  TeamScore: 69
 
 RESULT FOR SECTION 0:
-Project#27: 11 9 46 38 28  TeamScore: 84Results Score:90
-Project#11: 45 17 44 48 41  TeamScore: 68Results Score:71
-Project#17: 42 6 26 20 37  TeamScore: 78Results Score:80
+Project#26: 5 36 18 50 11  TeamScore: 84
+Project#30: 44 32 46 49 15  TeamScore: 66
+Project#38: 23 2 47 43 21  TeamScore: 66
 
 RESULT FOR SECTION 0:
-Project#41: 18 33 12 15 43  TeamScore: 75Results Score:85
-Project#39: 14 32 47 27 39  TeamScore: 76Results Score:91
-Project#33: 24 3 35 10 23  TeamScore: 51Results Score:48
+Project#40: 30 17 7 10 14  TeamScore: 78
+Project#41: 22 8 31 37 25  TeamScore: 59
+Project#14: 1 48 38 26 45  TeamScore: 67
+Project#22: 16 39 27 40 3  TeamScore: 42
 
 RESULT FOR SECTION 1:
-Project#25: 87 93 64 76 54  TeamScore: 91Results Score:90
-Project#7: 94 51 68 84 72  TeamScore: 67Results Score:46
-Project#21: 67 63 92 65 88  TeamScore: 59Results Score:43
-Project#3: 77 89 70 90 52  TeamScore: 69Results Score:73
+Project#20: 78 74 61 62 59  TeamScore: 84
+Project#1: 57 81 87 80 55  TeamScore: 83
+Project#5: 73 92 56 68 66  TeamScore: 68
+Project#17: 79 85 94 53 83  TeamScore: 66
 
  
 RESULT FOR SECTION 1:
-Project#5: 61 62 100 71 56  TeamScore: 80Results Score:93
-Project#30: 75 86 98 96 82  TeamScore: 76Results Score:86
-Project#31: 78 85 81 66 53  TeamScore: 57Results Score:55
-Project#36: 95 73 59 58 57  TeamScore: 53Results Score:46
-Project#13: 79 97 74 83 69  TeamScore: 47Results Score:46
-Project#16: 91 80 60 99 55  TeamScore: 57Results Score:60
+Project#24: 65 86 54 95 52  TeamScore: 85
+Project#27: 67 77 76 99 69  TeamScore: 82
+Project#32: 84 63 51 60 71  TeamScore: 68
+Project#36: 93 88 75 98 72  TeamScore: 55
+Project#7: 89 70 82 58 64  TeamScore: 65
+Project#13: 97 90 100 96 91  TeamScore: 60
 
 RESULT FOR SECTION 2:
-Project#4: 146 119 107 125 120  TeamScore: 87Results Score:93
-Project#6: 137 103 102 113 108  TeamScore: 89Results Score:93
-Project#38: 116 135 112 110 142  TeamScore: 74Results Score:63
-Project#12: 143 147 139 140 122  TeamScore: 68Results Score:51
-Project#24: 109 126 123 115 136  TeamScore: 78Results Score:75
-Project#19: 121 148 129 144 131  TeamScore: 63Results Score:58
-Project#29: 118 130 106 101 105  TeamScore: 61Results Score:56
+Project#2: 108 118 149 138 130  TeamScore: 81
+Project#37: 107 140 134 117 137  TeamScore: 76
 
 RESULT FOR SECTION 2:
-Project#18: 114 134 133 141 127  TeamScore: 77Results Score:86
-Project#8: 132 150 128 104 138  TeamScore: 68Results Score:78
-Project#32: 111 149 124 117 145  TeamScore: 58Results Score:65
+Project#12: 124 145 111 126 147  TeamScore: 89
+Project#16: 115 144 127 114 133  TeamScore: 81
+Project#21: 142 146 125 121 119  TeamScore: 67
+Project#6: 148 105 109 136 102  TeamScore: 86
+
+RESULT FOR SECTION 2:
+Project#33: 131 141 122 110 101  TeamScore: 85
+Project#8: 103 112 139 123 104  TeamScore: 68
+Project#29: 129 132 120 116 135  TeamScore: 72
+Project#23: 113 150 106 143 128  TeamScore: 58
+
+RESULT FOR SECTION 3:
+Project#42: 171 180 161 153 155  TeamScore: 84
+Project#31: 193 169 197 199 165  TeamScore: 72
+
+RESULT FOR SECTION 3:
+Project#19: 189 179 184 200 170  TeamScore: 87
+Project#25: 154 185 177 166 198  TeamScore: 70
+Project#28: 192 164 178 156 195  TeamScore: 71
+Project#15: 188 174 167 196 162  TeamScore: 71
+Project#35: 152 158 172 159 151  TeamScore: 72
+Project#39: 190 182 186 160 157  TeamScore: 56
+Project#11: 191 187 175 183 173  TeamScore: 52
+Project#3: 168 163 194 176 181  TeamScore: 38
 
  
-RESULT FOR SECTION 3:
-Project#37: 177 188 192 162 174  TeamScore: 87Results Score:90
-Project#26: 183 163 171 193 156  TeamScore: 85Results Score:85
-Project#42: 160 186 168 185 180  TeamScore: 67Results Score:51
-Project#28: 190 159 184 189 191  TeamScore: 68Results Score:61
-
- 
-RESULT FOR SECTION 3:
-Project#34: 167 157 178 199 182  TeamScore: 85Results Score:86
-Project#14: 154 181 166 155 194  TeamScore: 82Results Score:95
-Project#40: 158 179 172 152 176  TeamScore: 80Results Score:88
-Project#15: 173 197 175 195 169  TeamScore: 59Results Score:56
-Project#2: 200 165 153 161 164  TeamScore: 70Results Score:75
-Project#22: 196 198 151 170 187  TeamScore: 62Results Score:71
-
