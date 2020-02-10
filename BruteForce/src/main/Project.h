@@ -21,10 +21,15 @@
 
 #include <array>
 
+//template<std::size_t ArraySize>
 struct Project {
+	public:
 	int ProjectID; 	// Unique integer identifying the project uniquely in the whole project population.
 	int ClassID; 	// Unique integer depicting the Class/Section the project is contained in.
 	int PoolID;    	// Common integer to keep track of project in data structures. Used in determining index number in StudetsToProjects.
+    bool NDA;		//bool value depicting whether this project requires that the students sign an NDA
+    bool IPR;		//bool value depicting whether this project requires that the students sign an IPR
+    bool shardeHardware; //bool value depicting if this project requires shared hardware-limit to ground students
 
 	/* char Type - 	Projects can be dedicated to local students of the university, online students, or a combination.
 	 * 				Type is defined as: O = online | G = ground | H = hybrid
@@ -49,7 +54,7 @@ struct Project {
 	 * 			Project Skills are defined as:
 	 * 			0 = not required | 1 = nice to have skill | 2 = required skill
 	 */
-	int Skills[7];
+	int Skills[15];
 
 	Project(){}
 	//Constructor

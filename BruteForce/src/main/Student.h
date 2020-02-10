@@ -27,14 +27,23 @@
 
 using namespace std;
 
+//template<std::size_t ArraySize>
 struct Student {
+
+	public:
+
 	string ASUriteID; //unique String ID for each ASU student.
+	string Fname; //Student's first name.
+	string Lname; //Student's last name.
 	int StudentID; //Unique integer identifying the student uniquely in the whole student population.
 	int StID; //Common integer to keep track of student in data structures. ID depicting from [0 - NumOfStudents] in that class section.
 	int ClassID; //Unique integer depicting the Class/Section the student is assigned to.
+    bool NDA;		//bool value depicting whether this student will agree to sign an NDA
+    bool IPR;		//bool value depicting whether this student will agree to sign an IPR
 	int PoolID;//for use in determining index number in StudetsToProjects.
 	bool Assigned;  //for use to see if the student is assigned to a project yet.
 	int ProjectID; //Value given once the student is assigned to a project.
+
 
 
 	/* Skills - Students are given a survey in which they indicate their familiarity or
@@ -43,7 +52,7 @@ struct Student {
 	 * 			of the predefined skills. Each value is rated on a five point scale:
 	 * 			0 = none | 1 = some | 2 = average | 3 = proficient | 4 = expert
 	 */
-	int Skills[7];
+	int Skills[15];
 	double skillAverage; //Average skill of the student, used from skills above
 
 	 /* vector<pair<int,bool>> StudentAffinity	- Students, additionally, are allowed in indicate other students that they

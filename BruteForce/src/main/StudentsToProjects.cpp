@@ -697,6 +697,10 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	             	        	  for (int x= 0; x< numProjects; x ++){
 	             	        	 if (bestSet[x].projectID == projectPool[x].ProjectID){
 	             	        	 CurrentProject = projectPool[x];
+	             	        	 //assign a class ID to this team.
+	             	        	 bestSet[x].ClassID = projectPool[x].ClassID;
+	             	        	 bestSet[x].project = CurrentProject;
+
 	             	        	 }}
 
 
@@ -843,6 +847,28 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	             	    	newProjectSetScore += bestSet[i].TeamScore;
 	             	    }
 
+	             	    //Now that the teams have been assigned,
+	             	    //compute the teams results score- which is the student to student skill
+	             	    //comparison score added with the team availability score.
+	             	   for(int i = 0; i < numProjects; i++){
+
+	             		  for(int j = 0; j < 5; j++){
+	             		  studentSkills[j] =*(ProjectXStudentSkills + (bestSet[i].project.PoolID * numStudents) + bestSet[i].team[j].PoolID);
+	             		  skillSums[j] = studentSkillSums[bestSet[i].team[j].PoolID];
+	             		  }
+
+
+	             		   bestSet[i].ResultScore = SkillCompareTeamScore(skillSums) + AvailabilityTeamScore(bestSet[i].team);
+	             			float percent= 0;
+	             			float max = 60;
+	             			percent = bestSet[i].ResultScore/ max;
+	             			percent = percent * 100;
+	             		  bestSet[i].ResultScore = (int)percent;
+	             		   //cout<<"Team skill score: "<< SkillCompareTeamScore(skillSums)<<" Avail score: "<<AvailabilityTeamScore(bestSet[i].team)<<endl;
+
+	             	   }
+
+
 
 	             		//Prints out the best project set found, without duplicates.
 	             		cout << endl;
@@ -860,6 +886,8 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	             		        	result.append(to_string(bestSet[i].team[k].StudentID) + " ");
 	             		        	bestSet[i].team[k].ProjectID = bestSet[i].projectID;
 	             		    }
+	             		    result.append(" TeamScore: " + to_string(bestSet[i].TeamScore));
+
 	             		    result.append("\n");
 	             		    cout << endl;
 	             		    cout << "Team Score: "<<bestSet[i].TeamScore <<endl;
@@ -1082,6 +1110,16 @@ int StudentsToProjects::StudentToStudentSkill( int skillsum1, int skillsum2){
 	percent = teamSkillSum/ max;
 	percent = percent * 40;
 	percent = (int)percent;
+
+	//increase the initial score, because getting a perfect score in this area
+	//is nearly impossible. most scores will be low, so increase to better
+	//reflect the quality of the assignment.
+	percent = (int)(percent + (percent*0.50));
+
+	//cap score at 40.
+	if(percent >= 40){
+		percent = 40;
+	}
 
     //return the score 0-40
 	return percent;

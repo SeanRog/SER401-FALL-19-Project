@@ -624,7 +624,7 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
 
 	const int NUM_PROJECTS = toConstInt(tempProj);
 	const int NUM_STUDENTS = toConstInt(tempStud);
-	const int NUM_SKILLS = 7;
+	const int NUM_SKILLS = 15;
 	const int NUM_CLASS_SECTIONS = 4;
 
 	Utility util;
@@ -640,6 +640,8 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
 
 	//Change this value to change the number of top teams stored.
     int tempNumTopTeams = 5;
+
+    //Team size, (must be 5)
     int tempTeamSize = 5;
 
 	const int NUM_TOP_TEAMS = toConstInt(tempNumTopTeams);
