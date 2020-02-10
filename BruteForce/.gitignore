@@ -4,6 +4,10 @@
 *.cproject
 *.settings
 
+# Compiled JSON Files
+newProjects.json
+newStudents.json
+
 # Prerequisites
 *.d
 

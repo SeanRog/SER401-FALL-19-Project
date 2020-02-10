@@ -2,7 +2,7 @@
 Version=1.0
 Type=Application
 Categories=Application;
-Terminal=true
-Exec=/home/myles/git/SER401-FALL-19-Project35/BruteForce/build/main.exe
+Terminal=false
+Exec= /home/myles/git/SER401-FALL-19-Project35/BruteForce/build/main.exe
 Name=Capstone Teams
-Icon=/home/myles/git/SER401-FALL-19-Project35/BruteForce/Images/Teams.png
+Icon=/home/myles/git/SER401-FALL-19-Project35/BruteForce/Images/CapstoneTeamsLogo1.png

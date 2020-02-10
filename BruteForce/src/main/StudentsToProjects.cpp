@@ -3,7 +3,7 @@
  *
  *  Created on: Oct 30, 2019
  *  Created on: Oct 30, 2019
- *      Created by: Sean, Myles, Cristi, Matthew
+ *      Created by: Sean, Myles, Cristi, Matthew, Elizabeth
  *
  *
  * Description:
@@ -22,6 +22,8 @@
  *		void StudentsToProjectsAssignment(Student studentPool[],
  *				Project projectPool[],const int numStudents,const int numProjects, const int numSkills,
  *				const int teamSize,const int numTopTeams)  -  a function to assign the students to projects.
+ *
+ *		void updateProgressBar(int value, Fl_Progress* pW); - a function to update the progress bar.
  *
  *		bool NegativeAffinityCheck(Student team[5]) - a function to check a student team to see if their is any negative affinity.
  *
@@ -55,6 +57,12 @@
 #include "ClassSection.h"
 #include "json/json.h"
 #include "Utility.h"
+#include "ResultWindow.h"
+
+#include <FL/Fl.H>
+#include <FL/Fl_Progress.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Box.H>
 
 #include <iostream>
 #include <vector>
@@ -71,6 +79,8 @@
 
 using namespace std;
 using namespace std::chrono;
+int ResultWindow::permutations = 0;
+int ResultWindow::swaps = 0;
 //Constructor
 StudentsToProjects::StudentsToProjects() {
 }
@@ -161,6 +171,31 @@ int StudentsToProjects::getValueVirt(){ //Note: this value is in KB!
     return result;
 }
 
+int progressBarValue = 0;
+
+
+/*********************************************************
+ * updateProgressBar
+ *
+ * Author: Sean Rogers
+ *
+ * Description:
+ *   updates the progress bar in the GUI window.
+ *
+ *Arguments:
+ *	int num, Fl_Progress* pb
+ *Returns:
+ *  integer value.
+ */
+void StudentsToProjects::updateProgressBar(int num, Fl_Progress* pb){
+			 progressBarValue += pb->value() + num;
+			 pb->value(progressBarValue/100.0);
+			 char percent[10];
+			 sprintf(percent, "%d%%", int((progressBarValue/100.0)*100.0));
+			 pb->label(percent);
+			 Fl::check();
+}
+
 /*********************************************************
  * StudentsToProjectsAssignment
  *
@@ -191,7 +226,7 @@ int StudentsToProjects::getValueVirt(){ //Note: this value is in KB!
  */
 string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	Project projectPool[], const int numStudents,const int numProjects,const int numSkills,
-	const int teamSize,const int numTopTeams) {
+	const int teamSize,const int numTopTeams, Fl_Progress* progressBar, int progressIncrement) {
 
 	string result = "";
 
@@ -281,6 +316,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
  //START--------------Team Combination process to find every student team combination for each project
     cout << "STUDENTS TO PROJECTS ASSIGNMENT RUNNING..." << endl;
     cout << getValueVirt() + getValuePhy() << " KB of memory usage: Start of Assignment" << endl;
+
         	for(int i = 0; i < numProjects; i++) {
 
         		//new combination process
@@ -303,6 +339,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
         				//for(int k = 0; k < numSkills; k++) {
         				//	teamskillscore += studentPool[studentIndexes[j] - 1].Skills[k] * projectPool[i].Skills[k];
         				//}
+        				ResultWindow::permutations ++;
         			}
         			//----Now the team for this combination is formed.-----
 
@@ -375,7 +412,8 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
  //END---------------------Team Combination process
 
 
-
+    		//update the progress bar
+    		updateProgressBar(progressIncrement*(0.35), progressBar);
 
 
  // START--------------------Project Set combinations
@@ -509,6 +547,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 // END -------------------Project Set combinations
 
 
+    		//update the progress bar
+    		updateProgressBar(progressIncrement*(0.65), progressBar);
+
 
 	//Print out all the top teams with team scores for each project.
 	cout<< "Top "<<TOP_TEAMS<<" teams for each project"<<endl;
@@ -597,6 +638,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	             		fakeStudents.push_back(fakeStudent);
 	             	}
 
+
 	             	//if number of teams of 4 needed is the same as the number of projects,
 	             	//swap a fake student into the first team
 	             	int minTeamCount = 0;
@@ -680,7 +722,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	             	            	 //If a duplicate is found, find the best replacement student,
 	             	            	 //and swap that student into the team.
 	             	                 if (uniqueStudents[k] == bestSet[i].team[j].StudentID){
-	             	                     numDuplicates++;
+	             	                	 numDuplicates++;
 	             	                     isduplicate =true;
 	             	                     DuplicateFound = true;
 
@@ -732,8 +774,11 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	             	                 }}
 	             	             isduplicate = false;
 
+	             	             ResultWindow::swaps++;
 
 	             	         }//end j loop
+
+
 
              	            //recalculate team score, now that all the duplicate
              	           	//students have been swapped out.

@@ -8,6 +8,13 @@ As of 11/09/2019, the computational time is at 11.9 minutes.
 ## Technologies
 This project is written in C++.
 
+### Libraries
+Instructions to install libcurl (required for Canvas LMS API requests):
+
+```
+$ sudo apt-get install libcurl4-openssl-dev
+```
+
 ## Setup
 To run this project, install it locally using git and use make commands (both steps are detailed below):
 
