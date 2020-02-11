@@ -150,14 +150,14 @@ void MainWindow::MainWindow1() {
     //buttonStart->box(FL_SHADOW_BOX);
     buttonStart->labelfont(FL_HELVETICA_BOLD);
     buttonStart->labelcolor(ASU_BLACK);
-    buttonStart->labelsize(15);
+    buttonStart->labelsize(12);
     buttonStart->selection_color(ASU_MAROON);
 
     generateTeams->image(TeamLogo1);
     generateTeams->color(ASU_GOLD);
 	generateTeams->selection_color(ASU_MAROON);
     generateTeams->labelcolor(ASU_BLACK);
-    generateTeams->labelfont(FL_HELVETICA_BOLD);
+    generateTeams->labelfont(FL_HELVETICA_ITALIC);
     generateTeams->labelsize(12);
     generateTeams->box(FL_NO_BOX);
     generateTeams->tooltip("Generate Teams");
@@ -175,7 +175,7 @@ void MainWindow::MainWindow1() {
     boxHeader->box(FL_FLAT_BOX);
     boxHeader->color(ASU_MAROON);
     boxHeader->image(ASU_LOGO_BLACK1);
-    boxHeader->labelfont(FL_HELVETICA_BOLD);
+    boxHeader->labelfont(FL_HELVETICA_ITALIC);
     boxHeader->labelsize(15);
     //boxHeader->labeltype(_FL_SHADOW_LABEL);
     boxHeader->labelcolor(ASU_WHITE);
@@ -200,40 +200,42 @@ MainWindow::~MainWindow() {
 
 void MainWindow::MainWindow2(){
 
-   const int windowMainW = 600;
-   const int windowMainH = 400;
-   const char windowMainStr[] = "CAPSTONE TEAM ASSIGNMENT SYSTEM";
-   windowMain = new Fl_Window(windowMainW, windowMainH, windowMainStr);
-   windowMain->color(ASU_GOLD);
+   const int windowMainW = 750;
+   const int windowMainH = 370;
+   const char windowMainStr[] =
+		   "_______________________________________________\nCAPSTONE TEAM ASSIGNMENT SYSTEM";
+   windowMain = new Fl_Window(windowMainW, windowMainH, "Capstone Team Assignment System");
+   windowMain->color(ASU_GREY);
 
    {
-	Fl_Tabs *tabs = new Fl_Tabs(5,5,590,390);
+	Fl_Tabs *tabs = new Fl_Tabs(20,5,740,360);
 	tabs->selection_color(ASU_WHITE);
 	windowMain->resizable(tabs);
 	{
-	    Fl_Group *homeTab = new Fl_Group(20,30,600,400,"HOME");
+	    Fl_Group *homeTab = new Fl_Group(20,30,750,360,"   Home   ");
+	    homeTab->labelsize(15);
+	    homeTab->labelfont(FL_HELVETICA_BOLD);
 	    windowMain->box(FL_BORDER_BOX);
 	    {
 	    	homeTab->color(ASU_WHITE);
-	    	homeTab->selection_color(ASU_MAROON);
+	    	homeTab->selection_color(ASU_BLACK);
 	    	homeTab->labelcolor(ASU_WHITE);
 
-	    	boxHeader = new Fl_Box(20,40,550,175, windowMainStr);
-	    	buttonStart = new Fl_Button(80, 300, 80, 50, "START");
+	    	boxHeader = new Fl_Box(25,33,710,250, windowMainStr);
+	    	buttonStart = new Fl_Button(20, 303, 710, 50, "Start");
 
-		    boxHeader->box(FL_FLAT_BOX);
+		    boxHeader->box(FL_BORDER_BOX);
 		    boxHeader->color(ASU_MAROON);
 		    boxHeader->image(ASU_LOGO_WHITE2);
 
-		    boxHeader->labelfont(FL_HELVETICA_BOLD);
+		    boxHeader->labelfont(FL_HELVETICA);
 		    boxHeader->labelsize(22);
-		    //boxHeader->labeltype(_FL_SHADOW_LABEL);
 		    boxHeader->labelcolor(ASU_WHITE);
 		    boxHeader->redraw();
 
 		    buttonStart->color(ASU_GOLD);
-		    //buttonStart->box(FL_SHADOW_BOX);
-			buttonStart->labelfont(FL_HELVETICA_BOLD);
+			buttonStart->labelfont(FL_HELVETICA_ITALIC);
+			buttonStart->labelsize(20);
 			buttonStart->labelcolor(ASU_BLACK);
 			buttonStart->selection_color(ASU_MAROON);
 
@@ -241,12 +243,14 @@ void MainWindow::MainWindow2(){
 	    }
 
 	    homeTab->end();
-	    Fl_Group *aboutTab = new Fl_Group(20,30,280,170,"ABOUT");
+	    Fl_Group *aboutTab = new Fl_Group(30,30,750,360,"   About   ");
 	    {
 
 	    	aboutTab->color(ASU_WHITE);
-	    	aboutTab->selection_color(ASU_MAROON);
+	    	aboutTab->selection_color(ASU_BLACK);
 	    	aboutTab->labelcolor(ASU_WHITE);
+	    	aboutTab->labelsize(15);
+	    	aboutTab->labelfont(FL_HELVETICA_BOLD);
 
 	    }
 	    aboutTab->end();
