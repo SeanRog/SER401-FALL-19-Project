@@ -61,6 +61,8 @@ Fl_PNG_Image ASU_LOGO_WHITE2("./Images/asu_university_horiz_rgb_white_150.png");
 Fl_PNG_Image TeamLogo1("./Images/TeamsButton.png");
 Fl_PNG_Image TeamLogo2("./Images/TeamsButton2.png");
 
+Fl_PNG_Image TeamBlank("./Images/TeamBlank.png");
+
 
 void MainWindow::MainWindow1() {
     // MAIN WINDOW
@@ -262,11 +264,10 @@ void MainWindow::MainWindow2(){
 	//tabs->show();
     Fl::run();
 
-
-
-
-
 }
+
+
+
 
 /*****************************************************************************
  * TeamsButtonClick
@@ -301,7 +302,7 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 
 				//PROGRESS BAR WINDOW
 
-		        progressWindow = new Fl_Window(450, 180, "Team Assignment Progress");
+		        progressWindow = new Fl_Window(800, 800, "Team Assignment Progress");
 		        progressWindow->begin();
 		        TeamsButton = new Fl_Button(10,10,140,40,"GENERATE TEAMS");//child 0
 		        doneButton = new Fl_Button(340,10,100,40,"DONE");//child 1
@@ -316,6 +317,10 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 		        progressBar->labelsize(15);
 
 		        progressWindow->resizable(progressBar);
+
+		    	imageBox = new Fl_Box(10, 200, 780, 590);
+		    	imageBox->color(ASU_GOLD);
+		    	imageBox->box(FL_FLAT_BOX);
 
 		        doneButton->color(ASU_GOLD);
 		        doneButton->selection_color(ASU_MAROON);
@@ -342,9 +347,9 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 		        TeamsButton->callback(static_ProgressTeamsButtonClick, this);
 		        doneButton->callback(static_DoneButtonClick, this);
 
-
 		        Fl::run();
 }
+
 
 /*****************************************************************************
  * ProgressTeamsButtonClick
@@ -369,6 +374,19 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget* w) {
 
 	TeamsButton->deactivate();
 	progressBox->label("Team Assignment System Running...");
+
+
+  /*  for( int i=0;  i<60 ; i++){
+
+    	imageBox->image(TeamBlank);
+
+    	progressWindow->redraw();
+
+
+    }*/
+
+
+
 	//call to main.cpp function main_run, to run the team assignment system.
 		main m;
 		m.main_run(num_projects, num_students, progressBar);
@@ -377,6 +395,12 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget* w) {
 	progressBox->label("Team Assignment Complete! Click 'Done' to continue.");
 
 }
+
+
+
+
+
+
 
 /*****************************************************************************
  * DoneButtonClick

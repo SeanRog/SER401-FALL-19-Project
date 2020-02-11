@@ -24,6 +24,7 @@
 #include "Project.h"
 #include "Student.h"
 #include "ClassSection.h"
+#include "FakeStudentNames.h"
 
 #include <iostream>
 #include <utility>
@@ -1308,12 +1309,17 @@ void Utility::makeStudentJSON(int numStud, int numSkill) {
       //Loops through studentIDs to print
       for(int studentID = 1; studentID <= numStudent; studentID++) {
 
+
+
        string asuID = "ASU"+to_string(studentID);
        /*Prints out schema: {"StudentID": (studentID#), */
        file << "{\"ASUriteID\": \"" << asuID << "\",\n";
 
        /*Prints out schema: {"StudentID": (studentID#), */
        file << "\"StudentID\": " << studentID << ",\n";
+
+       /*Prints out schema: {"StudentID": (studentID#), */
+       file << "\"name\": \"" << names[studentID] << "\",\n";
 
         /*Prints out schema: "ClassID": (classID), classID is divided
          * equally into 4 sections   */

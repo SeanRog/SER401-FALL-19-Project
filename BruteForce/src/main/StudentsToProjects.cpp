@@ -886,10 +886,10 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	             			result.append("Project#" + to_string(bestSet[i].projectID) + ": ");
 	             		    for(int k = 0; k < teamSize; k++) {
 	             		        	cout<< to_string(bestSet[i].team[k].StudentID) + " ";
-	             		        	result.append(to_string(bestSet[i].team[k].StudentID) + " ");
+	             		        	result.append(" "+(bestSet[i].team[k].name) + ", ");
 	             		        	bestSet[i].team[k].ProjectID = bestSet[i].projectID;
 	             		    }
-	             		    result.append(" TeamScore: " + to_string(bestSet[i].TeamScore));
+	             		    result.append("\n Score: " + to_string(bestSet[i].TeamScore)+"\n");
 
 	             		    result.append("\n");
 	             		    cout << endl;

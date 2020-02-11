@@ -42,6 +42,9 @@ class MainWindow {
 		((MainWindow*)data)->StartButtonClick(w);
 	}
 
+
+
+
 	// callback functions
 	void TeamsButtonClick(Fl_Widget* w);
 	void ProgressTeamsButtonClick(Fl_Widget* w);
@@ -61,6 +64,7 @@ class MainWindow {
 		Fl_Box *progressBox;
 		Fl_Button *TeamsButton;
 		Fl_Button *doneButton;
+		Fl_Box *imageBox;
 
 		//main window
 		Fl_Window *windowMain;

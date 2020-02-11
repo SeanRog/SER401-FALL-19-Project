@@ -33,8 +33,7 @@ struct Student {
 	public:
 
 	string ASUriteID; //unique String ID for each ASU student.
-	string Fname; //Student's first name.
-	string Lname; //Student's last name.
+	string name; //Student's first and last name.
 	int StudentID; //Unique integer identifying the student uniquely in the whole student population.
 	int StID; //Common integer to keep track of student in data structures. ID depicting from [0 - NumOfStudents] in that class section.
 	int ClassID; //Unique integer depicting the Class/Section the student is assigned to.
