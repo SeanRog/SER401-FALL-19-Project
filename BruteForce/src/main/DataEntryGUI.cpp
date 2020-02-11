@@ -64,7 +64,11 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    goBack = new Fl_Button(460, 920, 110, 50, "GO BACK");
 	    Confirm = new Fl_Button(600, 920, 110, 50, "CONFIRM");
 
-	//INITIALIZE CLASS SECTION SELECTOR COMPONENTS
+	    //Initialize Project File Chooser
+		projectFileInstructionsBox = new Fl_Box(20,90,760,30);
+		//Fl_Button *projectFileChooserButton
+
+	    //INITIALIZE CLASS SECTION SELECTOR COMPONENTS
 	    classBrowser = new Fl_Check_Browser(40,650,300,200, "Class Section List");
 	    inputYear = new Fl_Input(480, 650, 100, 30, "Enter Year (YYYY)");
 	    inputSemester = new Fl_Input_Choice(480,700, 100, 30, "Select Semester ");
@@ -118,6 +122,16 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    boxHeader->labelfont(FL_BOLD);
 	    boxHeader->labelsize(20);
 	    boxHeader->labelcolor(ASU_WHITE);
+
+	    //Project File Chooser Instructions
+	    projectFileInstructionsBox->box(FL_FLAT_BOX);
+	    projectFileInstructionsBox->color(ASU_GOLD);
+	    projectFileInstructionsBox->labelfont(FL_HELVETICA_BOLD);
+	    projectFileInstructionsBox->labelcolor(ASU_BLACK);
+	    projectFileInstructionsBox->labelsize(20);
+	    projectFileInstructionsBox->label("Step 1: Choose the Project .csv File to be used.");
+	    projectFileInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
+	    //projectFileInstructionsBox->align(FL_ALIGN_LEFT);
 
 		goBack->color(ASU_GOLD);
 		//goBack->box(FL_SHADOW_BOX);
