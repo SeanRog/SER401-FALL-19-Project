@@ -128,7 +128,7 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    projectFileInstructionsBox->color(ASU_GOLD);
 	    projectFileInstructionsBox->labelfont(FL_HELVETICA_BOLD);
 	    projectFileInstructionsBox->labelcolor(ASU_BLACK);
-	    projectFileInstructionsBox->labelsize(20);
+	    projectFileInstructionsBox->labelsize(15);
 	    projectFileInstructionsBox->label("Step 1: Choose the Project .csv File to be used.");
 	    projectFileInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
 	    //projectFileInstructionsBox->align(FL_ALIGN_LEFT);
