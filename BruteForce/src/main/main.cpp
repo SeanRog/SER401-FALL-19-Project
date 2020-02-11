@@ -569,13 +569,14 @@ Fl_Output *output;
 
 int main(){
 
-
-	XInitThreads();
+	Utility util;
+	util.csvToProjectsVector("sampleProjectCSV.csv");
+	/*XInitThreads();
 	MainWindow mainWin;
 
 	//mainWin.MainWindow1();
 
-	mainWin.MainWindow2();
+	mainWin.MainWindow2();*/
 	return 0;
 }
 

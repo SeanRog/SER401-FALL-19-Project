@@ -1641,5 +1641,47 @@ vector<vector<string>> Utility::toCSVcse (string filename) {
 	return dataList;
 }
 
+//returns a vector of Project objects that's populated by a CSV file
+vector<Project> Utility::csvToProjectsVector(string filename) {
+	vector<Project> projects;
+
+	vector<vector<string>> dataList;
+
+	ifstream file(filename);
+
+	string line = "";
+	int bracketCount = 0;
+	while(getline(file,line)) {
+		vector<string> vec;
+		string element = "";
+		for(int i = 0; i < line.length(); i++) {
+			if(line.at(i) == '[') {
+				bracketCount++;
+			}
+			if(line.at(i) == ']') {
+				bracketCount--;
+			}
+			if(line.at(i) == ',' && bracketCount == 0) {
+				vec.push_back(element);
+				element = "";
+			} else {
+				element.push_back(line.at(i));
+			}
+		}
+		dataList.push_back(vec);
+	}
+	file.close();
+
+	//display contents
+
+	for (int i = 0; i < dataList.size(); i++) {
+		for (int j = 0; j < dataList.at(i).size(); j++) {
+			cout << dataList.at(i).at(j) << " ";
+		}
+		cout << endl;
+	}
+	return projects;
+}
+
 
 
