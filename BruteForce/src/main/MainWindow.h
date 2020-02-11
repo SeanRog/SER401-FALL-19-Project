@@ -80,11 +80,6 @@ class MainWindow {
         ~MainWindow();
 
 
-
-
-
-
-
 };
 
 #endif /*SRC_MAIN_MAINWINDOW_H_*/

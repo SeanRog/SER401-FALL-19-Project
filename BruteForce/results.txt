@@ -1,12 +1,62 @@
+RESULT FOR SECTION 0:
+Project#4: 35 24 41 28 12  TeamScore: 88
+Project#34: 9 6 19 4 34  TeamScore: 77
+Project#18: 13 42 29 33 20  TeamScore: 69
+
+RESULT FOR SECTION 0:
+Project#26: 5 36 18 50 11  TeamScore: 84
+Project#30: 44 32 46 49 15  TeamScore: 66
+Project#38: 23 2 47 43 21  TeamScore: 66
+
+RESULT FOR SECTION 0:
+Project#40: 30 17 7 10 14  TeamScore: 78
+Project#41: 22 8 31 37 25  TeamScore: 59
+Project#14: 1 48 38 26 45  TeamScore: 67
+Project#22: 16 39 27 40 3  TeamScore: 42
+
+RESULT FOR SECTION 1:
+Project#20: 78 74 61 62 59  TeamScore: 84
+Project#1: 57 81 87 80 55  TeamScore: 83
+Project#5: 73 92 56 68 66  TeamScore: 68
+Project#17: 79 85 94 53 83  TeamScore: 66
+
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+RESULT FOR SECTION 1:
+Project#24: 65 86 54 95 52  TeamScore: 85
+Project#27: 67 77 76 99 69  TeamScore: 82
+Project#32: 84 63 51 60 71  TeamScore: 68
+Project#36: 93 88 75 98 72  TeamScore: 55
+Project#7: 89 70 82 58 64  TeamScore: 65
+Project#13: 97 90 100 96 91  TeamScore: 60
+
+RESULT FOR SECTION 2:
+Project#2: 108 118 149 138 130  TeamScore: 81
+Project#37: 107 140 134 117 137  TeamScore: 76
+
+RESULT FOR SECTION 2:
+Project#12: 124 145 111 126 147  TeamScore: 89
+Project#16: 115 144 127 114 133  TeamScore: 81
+Project#21: 142 146 125 121 119  TeamScore: 67
+Project#6: 148 105 109 136 102  TeamScore: 86
+
+RESULT FOR SECTION 2:
+Project#33: 131 141 122 110 101  TeamScore: 85
+Project#8: 103 112 139 123 104  TeamScore: 68
+Project#29: 129 132 120 116 135  TeamScore: 72
+Project#23: 113 150 106 143 128  TeamScore: 58
+
+RESULT FOR SECTION 3:
+Project#42: 171 180 161 153 155  TeamScore: 84
+Project#31: 193 169 197 199 165  TeamScore: 72
+
+RESULT FOR SECTION 3:
+Project#19: 189 179 184 200 170  TeamScore: 87
+Project#25: 154 185 177 166 198  TeamScore: 70
+Project#28: 192 164 178 156 195  TeamScore: 71
+Project#15: 188 174 167 196 162  TeamScore: 71
+Project#35: 152 158 172 159 151  TeamScore: 72
+Project#39: 190 182 186 160 157  TeamScore: 56
+Project#11: 191 187 175 183 173  TeamScore: 52
+Project#3: 168 163 194 176 181  TeamScore: 38
+
  

@@ -113,7 +113,6 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 
 
 	//End CLASS SECTION SELECTOR COMPONENTS
-
 	    boxHeader->box(FL_FLAT_BOX);
 	    boxHeader->color(ASU_MAROON);
 	    boxHeader->labelfont(FL_BOLD);

@@ -54,10 +54,13 @@ MainWindow::MainWindow(){
 }
 //ASU logos
 Fl_PNG_Image ASU_LOGO_BLACK1("./Images/asu_sunburst_rgb_black_150ppi_1.png");
-Fl_PNG_Image ASU_LOGO_BLACK2("/Images/asu_university_horiz_rgb_black_150_0.png");
+Fl_PNG_Image ASU_LOGO_BLACK2("./Images/asu_sunburst_rgb_black_150ppi_0.png");
+Fl_PNG_Image ASU_LOGO_WHITE2("./Images/asu_university_horiz_rgb_white_150.png");
+
 //team button
 Fl_PNG_Image TeamLogo1("./Images/TeamsButton.png");
 Fl_PNG_Image TeamLogo2("./Images/TeamsButton2.png");
+
 
 void MainWindow::MainWindow1() {
     // MAIN WINDOW
@@ -220,7 +223,7 @@ void MainWindow::MainWindow2(){
 
 		    boxHeader->box(FL_FLAT_BOX);
 		    boxHeader->color(ASU_MAROON);
-		    boxHeader->image(ASU_LOGO_BLACK1);
+		    boxHeader->image(ASU_LOGO_WHITE2);
 
 		    boxHeader->labelfont(FL_HELVETICA_BOLD);
 		    boxHeader->labelsize(22);
@@ -241,11 +244,9 @@ void MainWindow::MainWindow2(){
 	    Fl_Group *aboutTab = new Fl_Group(20,30,280,170,"ABOUT");
 	    {
 
-
 	    	aboutTab->color(ASU_WHITE);
 	    	aboutTab->selection_color(ASU_MAROON);
 	    	aboutTab->labelcolor(ASU_WHITE);
-
 
 	    }
 	    aboutTab->end();

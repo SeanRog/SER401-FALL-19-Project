@@ -94,6 +94,9 @@ Student StudentJson::getStudentJsonObject(string filename, int i){
 		student.Skills[j] = (obj["students"].get((int)i, "")["Skills"][j].asInt());
 	}
 
+	student.NDA = obj["students"].get((int)i, "")["NDA"].asBool();
+	student.IPR = obj["students"].get((int)i, "")["IPR"].asBool();
+
 	return student;
 }
 
