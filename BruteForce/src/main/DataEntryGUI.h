@@ -82,6 +82,10 @@ class DataEntryGUI {
 		Fl_Window* masterWindow;
 		Fl_Window* prevWindow;
 
+		//Choose Project File Components
+		Fl_Box *projectFileInstructionsBox;
+		Fl_Button *projectFileChooserButton;
+
 		//Class Section Selector Components
 		Fl_Box *boxHeader;
 		Fl_Check_Browser *classBrowser;
@@ -90,7 +94,6 @@ class DataEntryGUI {
 		Fl_Button *goBack;
 		Fl_Input* inputYear;
 		Fl_Input_Choice* inputSemester;
-
 
 		//Go Back window Components
 		Fl_Window* backWindow;
