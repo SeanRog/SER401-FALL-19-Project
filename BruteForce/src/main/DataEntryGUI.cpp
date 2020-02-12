@@ -67,6 +67,8 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    //Initialize Project File Chooser - Step 1 Choose Project File
 		projectFileInstructionsBox = new Fl_Box(20,90,760,30);
 		projectFileChooserButton = new Fl_Button(20,140,50,50,"@+3fileopen");
+		fileInput_Project = new Fl_Input(90,150,690,30);
+		fileInput_Project->value(".");
 
 	    //INITIALIZE CLASS SECTION SELECTOR COMPONENTS
 	    classBrowser = new Fl_Check_Browser(40,650,300,200, "Class Section List");

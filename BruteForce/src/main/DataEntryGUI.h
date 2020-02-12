@@ -85,6 +85,7 @@ class DataEntryGUI {
 		//Choose Project File Components
 		Fl_Box *projectFileInstructionsBox;
 		Fl_Button *projectFileChooserButton;
+		Fl_Input *fileInput_Project;
 
 		//Class Section Selector Components
 		Fl_Box *boxHeader;
