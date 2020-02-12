@@ -205,31 +205,31 @@ void MainWindow::MainWindow2(){
    const char windowMainStr[] =
 		   "_______________________________________________\nCAPSTONE TEAM ASSIGNMENT SYSTEM";
    windowMain = new Fl_Window(windowMainW, windowMainH, "Capstone Team Assignment System");
-   windowMain->color(ASU_GREY);
+   windowMain->color(ASU_WHITE);
 
    {
-	Fl_Tabs *tabs = new Fl_Tabs(20,5,740,360);
-	tabs->selection_color(ASU_WHITE);
+	Fl_Tabs *tabs = new Fl_Tabs(10,10,730,350);
+	tabs->selection_color(ASU_GOLD);
 	windowMain->resizable(tabs);
 	{
-	    Fl_Group *homeTab = new Fl_Group(20,30,750,360,"   Home   ");
+	    Fl_Group *homeTab = new Fl_Group(10,40,720,300,"   Home   ");
 	    homeTab->labelsize(15);
 	    homeTab->labelfont(FL_HELVETICA_BOLD);
 	    windowMain->box(FL_BORDER_BOX);
 	    {
-	    	homeTab->color(ASU_WHITE);
+	    	homeTab->color(ASU_BLACK);
 	    	homeTab->selection_color(ASU_BLACK);
 	    	homeTab->labelcolor(ASU_WHITE);
 
-	    	boxHeader = new Fl_Box(25,33,710,250, windowMainStr);
-	    	buttonStart = new Fl_Button(20, 303, 710, 50, "Start");
+	    	boxHeader = new Fl_Box(20,50,710,250, windowMainStr);
+	    	buttonStart = new Fl_Button(20, 305, 710, 50, "Start");
 
 		    boxHeader->box(FL_BORDER_BOX);
 		    boxHeader->color(ASU_MAROON);
 		    boxHeader->image(ASU_LOGO_WHITE2);
 
-		    boxHeader->labelfont(FL_HELVETICA);
-		    boxHeader->labelsize(22);
+		    boxHeader->labelfont(FL_HELVETICA_BOLD);
+		    boxHeader->labelsize(24);
 		    boxHeader->labelcolor(ASU_WHITE);
 		    boxHeader->redraw();
 
@@ -243,7 +243,7 @@ void MainWindow::MainWindow2(){
 	    }
 
 	    homeTab->end();
-	    Fl_Group *aboutTab = new Fl_Group(30,30,750,360,"   About   ");
+	    Fl_Group *aboutTab = new Fl_Group(40,50,750,360,"   About   ");
 	    {
 
 	    	aboutTab->color(ASU_WHITE);
