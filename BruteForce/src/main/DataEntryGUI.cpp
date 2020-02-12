@@ -64,9 +64,9 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    goBack = new Fl_Button(460, 920, 110, 50, "GO BACK");
 	    Confirm = new Fl_Button(600, 920, 110, 50, "CONFIRM");
 
-	    //Initialize Project File Chooser
+	    //Initialize Project File Chooser - Step 1 Choose Project File
 		projectFileInstructionsBox = new Fl_Box(20,90,760,30);
-		//Fl_Button *projectFileChooserButton
+		projectFileChooserButton = new Fl_Button(20,140,50,50,"@+3fileopen");
 
 	    //INITIALIZE CLASS SECTION SELECTOR COMPONENTS
 	    classBrowser = new Fl_Check_Browser(40,650,300,200, "Class Section List");
