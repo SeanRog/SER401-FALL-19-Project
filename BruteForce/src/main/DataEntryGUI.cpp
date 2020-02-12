@@ -231,7 +231,7 @@ void DataEntryGUI::GobackClick(Fl_Widget* w){
 	promptBox3.labelsize(20);
 
 	yesButton = new Fl_Button(220,120,80,50,"YES");
-	cancelButton1 = new Fl_Button(100,120,80,50, "CANCEL");
+	cancelButton1 = new Fl_Button(100,120,100,50, "CANCEL");
 
 
 	backWindow->color(ASU_GOLD);
@@ -239,17 +239,17 @@ void DataEntryGUI::GobackClick(Fl_Widget* w){
 
 	yesButton->color(ASU_MAROON);
 	//yesButton->box(FL_SHADOW_BOX);
-	yesButton->labelfont(FL_HELVETICA);
+	yesButton->labelfont(FL_HELVETICA_BOLD);
 	yesButton->labelcolor(ASU_WHITE);
 	yesButton->labelsize(15);
-	yesButton->selection_color(ASU_WHITE);
+	yesButton->selection_color(ASU_GREY);
 
 	cancelButton1->color(ASU_MAROON);
 	//cancelButton1->box(FL_SHADOW_BOX);
-	cancelButton1->labelfont(FL_HELVETICA);
+	cancelButton1->labelfont(FL_HELVETICA_BOLD);
 	cancelButton1->labelcolor(ASU_WHITE);
 	cancelButton1->labelsize(15);
-	cancelButton1->selection_color(ASU_WHITE);
+	cancelButton1->selection_color(ASU_GREY);
 
 	//callbacks
 	yesButton->callback(static_YesClick, this);
@@ -317,25 +317,25 @@ void DataEntryGUI::ConfirmClick(Fl_Widget* w){
 
 	promptBox1.labelsize(20);
 
-	GenerateTeamsButton = new Fl_Button(220,120,150,50,"GENERATE TEAMS");
-	cancelButton2 = new Fl_Button(100,120,80,50,"CANCEL");
+	GenerateTeamsButton = new Fl_Button(200,120,170,50,"GENERATE TEAMS");
+	cancelButton2 = new Fl_Button(80,120,80,50,"CANCEL");
 
 	confirmWindow->color(ASU_GOLD);
 	confirmWindow->box(FL_BORDER_BOX);
 
 	GenerateTeamsButton->color(ASU_MAROON);
 	//GenerateTeamsButton->box(FL_SHADOW_BOX);
-	GenerateTeamsButton->labelfont(FL_HELVETICA);
+	GenerateTeamsButton->labelfont(FL_HELVETICA_BOLD);
 	GenerateTeamsButton->labelcolor(ASU_WHITE);
 	GenerateTeamsButton->labelsize(15);
-	GenerateTeamsButton->selection_color(ASU_WHITE);
+	GenerateTeamsButton->selection_color(ASU_GREY);
 
 	cancelButton2->color(ASU_MAROON);
 	//cancelButton2->box(FL_SHADOW_BOX);
-	cancelButton2->labelfont(FL_HELVETICA);
+	cancelButton2->labelfont(FL_HELVETICA_BOLD);
 	cancelButton2->labelcolor(ASU_WHITE);
 	cancelButton2->labelsize(15);
-	cancelButton2->selection_color(ASU_WHITE);
+	cancelButton2->selection_color(ASU_GREY);
 
 	//callbacks
 	GenerateTeamsButton->callback(static_GenerateTeamsClick, this);

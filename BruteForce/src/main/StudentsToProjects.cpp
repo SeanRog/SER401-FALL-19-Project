@@ -193,7 +193,7 @@ void StudentsToProjects::updateProgressBar(int num, Fl_Progress* pb){
 			 char percent[10];
 			 sprintf(percent, "%d%%", int((progressBarValue/100.0)*100.0));
 			 pb->label(percent);
-			 Fl::check();
+			// Fl::check();
 }
 
 /*********************************************************

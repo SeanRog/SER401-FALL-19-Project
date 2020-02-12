@@ -789,7 +789,6 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
     //join threads
 	for(int i = 0; i < NUM_CLASS_SECTIONS; i++) {
 		threads[i].join();
-
 	}
 
 	//print out the results
