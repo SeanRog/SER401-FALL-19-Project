@@ -15,7 +15,6 @@
 
 #include "MainWindow.h"
 #include "DataEntryGUI.h"
-#include "AuthTokenGUI.h"
 #include "GUIStyles.h"
 #include "main.h"
 
@@ -97,7 +96,7 @@ void MainWindow::MainWindow1() {
     const int buttonStartY = toConstInt(boxHeaderY + boxHeaderH + 20);
     const int buttonStartW = 100;
     const int buttonStartH = 50;
-    const char buttonStartStr[] = "Start";
+    const char buttonStartStr[] = "START";
 
     // OPEN PROJECT BUTTON
     const int buttonOpenProjectX = toConstInt(buttonStartX + buttonStartW + 20);
@@ -160,7 +159,6 @@ void MainWindow::MainWindow1() {
     //windowMain->image(ASU_BLACK_LOGO);
 
     buttonStart->color(ASU_GOLD);
-    //buttonStart->box(FL_SHADOW_BOX);
     buttonStart->labelfont(FL_HELVETICA_BOLD);
     buttonStart->labelcolor(ASU_BLACK);
     buttonStart->labelsize(15);
@@ -179,18 +177,13 @@ void MainWindow::MainWindow1() {
 
     buttonOpenProject->color(ASU_GOLD);
     buttonOpenProject->labelcolor(ASU_BLACK);
-    //buttonOpenProject->box(FL_SHADOW_BOX);
 
-    //buttonStart->activate();
-	//fltk::set_background(ASU_MAROON);
-	//boxHeader->color(FL_WHITE);
 
     boxHeader->box(FL_FLAT_BOX);
     boxHeader->color(ASU_MAROON);
     boxHeader->image(ASU_LOGO_BLACK1);
     boxHeader->labelfont(FL_HELVETICA_BOLD);
     boxHeader->labelsize(15);
-    //boxHeader->labeltype(_FL_SHADOW_LABEL);
     boxHeader->labelcolor(ASU_WHITE);
     boxHeader->redraw();
 
@@ -240,12 +233,10 @@ void MainWindow::MainWindow2(){
 
 		    boxHeader->labelfont(FL_HELVETICA_BOLD);
 		    boxHeader->labelsize(22);
-		    //boxHeader->labeltype(_FL_SHADOW_LABEL);
 		    boxHeader->labelcolor(ASU_WHITE);
 		    boxHeader->redraw();
 
 		    buttonStart->color(ASU_GOLD);
-		    //buttonStart->box(FL_SHADOW_BOX);
 			buttonStart->labelfont(FL_HELVETICA_BOLD);
 			buttonStart->labelcolor(ASU_BLACK);
 			buttonStart->selection_color(ASU_MAROON);
@@ -313,12 +304,13 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 
 				//PROGRESS BAR WINDOW
 
-		        progressWindow = new Fl_Window(800, 800, "Team Assignment Progress");
+		        progressWindow = new Fl_Window(550, 400, "Team Assignment Progress");
 		        progressWindow->begin();
+		        //Fl_Box backBox(10, 55, 430, 390);
 		        TeamsButton = new Fl_Button(10,10,140,40,"GENERATE TEAMS");//child 0
-		        doneButton = new Fl_Button(340,10,100,40,"DONE");//child 1
-		        progressBar = new Fl_Progress(10,70,430,40);  //child 2
-		        progressBox = new Fl_Box(10, 120, 430, 40, ""); //child 3
+		        doneButton = new Fl_Button(440,10,100,40,"DONE");//child 1
+		        progressBar = new Fl_Progress(10,70,530,40);  //child 2
+		        progressBox = new Fl_Box(10, 120, 530, 40, ""); //child 3
 		        progressBar->minimum(0);                      // set progress range to be 0.0 ~ 1.0
 		        progressBar->maximum(1);
 		        progressBar->color(ASU_GREY);               // background color
@@ -330,11 +322,14 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 		        progressWindow->resizable(progressBar);
 
 		       //Fl_GIF_Image* TeamGIF = new Fl_GIF_Image("./Images/Team1.gif");
+		    	Fl_PNG_Image* baseImage = new Fl_PNG_Image("./Images/Loading/1.png");
 
-		    	imageBox = new Fl_Box(10, 200, 780, 590);
-		    	imageBox->color(ASU_GOLD);
+		    	//backBox.color(ASU_GREY);
+
+		    	imageBox = new Fl_Box(10, 170, 530, 200);
+		    	imageBox->color(ASU_WHITE);
 		    	imageBox->box(FL_FLAT_BOX);
-		    	//imageBox->image(TeamGIF);
+		    	imageBox->image(baseImage);
 
 			    imageBox->redraw();
 
@@ -365,44 +360,38 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 		        progressWindow->redraw();
 
 		        Fl::run();
-
 }
 
 
 void animate(Fl_Window* w, Fl_Box* b, Fl_Progress* progressBar){
 
 	int i =0;
-				while(progressBar->value() != 100){
+	while(progressBar->value() != 100){
 
-					int x = i+1;
-					string filename = "./Images/pngs/"+to_string(x)+".png";
-					 int length = filename.length();
-					char png_char[length+1];
+	string filename = "./Images/Loading/"+to_string(i+1)+".png";
+	int length = filename.length();
+	char png_char[length+1];
+    strcpy(png_char, filename.c_str());
 
-					strcpy(png_char, filename.c_str());
+	Fl_PNG_Image* TeamLoading = new Fl_PNG_Image(png_char);
+	b->image(TeamLoading);
+	b->redraw();
+	usleep(50000);
+	Fl::check();
 
-				Fl_PNG_Image* TeamLoading = new Fl_PNG_Image(png_char);
-				b->image(TeamLoading);
-				b->redraw();
-				Fl::check();
-				i++;
-				if (i==17){
-					i=0;
-				}
-				cout<<"Image updating?-----------------------------++++++++++++++++++++++++++++++++++++++++"<<endl;
+	i++;
+		if (i==23){
+			i=0;}
 
-				}
-
+	}
 
 }
 
-void teamAssignment(int num_students, int num_projects, Fl_Progress* progressBar){
 
+void teamAssignment(int num_students, int num_projects, Fl_Progress* progressBar){
 
 	main m;
 	m.main_run(num_projects, num_students, progressBar);
-
-
 }
 
 
@@ -429,16 +418,15 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget* w) {
 
 	TeamsButton->deactivate();
 	progressBox->label("Team Assignment System Running...");
-	//imageBox->redraw();
+	imageBox->redraw();
 
 
 	XInitThreads();
 	thread threads[1];
 
-	//threads[0] = thread (teamAssignment, num_projects, num_students, progressBar);
-
 	threads[0] = thread (animate, progressWindow, imageBox, progressBar);
 
+	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
 	m.main_run(num_projects, num_students, progressBar);
 
@@ -447,65 +435,9 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget* w) {
 		threads[i].join();
 	}
 
-/*
-				int x = 1;
-				string filename = "./Images/"+to_string(x)+".png";
-				int length = filename.length();
-				char png_char[length+1];
-
-				strcpy(png_char, filename.c_str());
-
-				Fl_PNG_Image* TeamLoading = new Fl_PNG_Image(png_char);
-				imageBox->image(TeamLoading);
-				imageBox->redraw();*/
-
-  /*  for( int i=0;  i<60 ; i++){
-    	imageBox->image(TeamBlank);
-    	progressWindow->redraw();
-    }*/
-/*
-	pid_t pid = fork();
-
-	if (pid == 0){
-
-		main m;
-		m.main_run(num_projects, num_students, progressBar);
-
-		cout<<"Main fork"<<endl;
-
-
-	}else{
-			int value =0;
-			while(value != 1000){
-			//for(int x=0; x<100000000;x++){}
-			for(int i = 0; i<17; i++) {
-				int x = i+1;
-				string filename = "./Images/"+to_string(x)+".png";
-				 int length = filename.length();
-				char png_char[length+1];
-
-				strcpy(png_char, filename.c_str());
-
-			Fl_PNG_Image* TeamLoading = new Fl_PNG_Image(png_char);
-			imageBox->image(TeamLoading);
-			imageBox->redraw();
-			value ++;
-			//progressWindow->redraw();
-			cout<<png_char<<"---------------------+++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;}
-
-			}
-		cout<<"Gif fork---------------------+++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;
-
-	}
-
-	wait(0);
-	cout<<"Done"<<endl;*/
-
-	//call to main.cpp function main_run, to run the team assignment system.
-/*
-		main m;
-		m.main_run(num_projects, num_students, progressBar);*/
-
+	Fl_PNG_Image* doneImage = new Fl_PNG_Image("./Images/Loading/done.png");
+	imageBox->image(doneImage);
+	imageBox->redraw();
 
 	doneButton->activate();
 	progressBox->label("Team Assignment Complete! Click 'Done' to continue.");
@@ -543,12 +475,6 @@ void MainWindow::DoneButtonClick(Fl_Widget* w){
 	 ResultWindow windowResult;
 	 windowResult.buffer->loadfile("results.txt", 1000000);
 	 windowResult.addText();
-
-
-
-
-	//call and create the results window
-	//show results window.
 
 }
 

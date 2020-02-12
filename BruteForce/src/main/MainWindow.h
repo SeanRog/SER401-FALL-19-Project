@@ -18,8 +18,6 @@
 #include <FL/Fl_Progress.H>
 #include <FL/names.h>
 
-#include "ClassSelectorGUI.h"
-#include "AuthTokenGUI.h"
 
 using namespace std;
 
@@ -65,6 +63,7 @@ class MainWindow {
 		Fl_Button *TeamsButton;
 		Fl_Button *doneButton;
 		Fl_Box *imageBox;
+		//Fl_Box *backBox;
 
 		//main window
 		Fl_Window *windowMain;
