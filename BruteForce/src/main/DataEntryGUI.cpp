@@ -27,6 +27,8 @@
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_File_Chooser.H>
 
+Fl_PNG_Image LOGO_BLACK1("./Images/asu_sunburst_rgb_maroongold_150ppi.png");
+
 
 /*************************************************************************************
  * ClassSelectorGUI
@@ -45,98 +47,97 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	   //reference to the homepage window
 	   prevWindow = win;
 
+	    masterWindow = new Fl_Window(750, 580, "Capstone Team Assignment System");
 
-	    masterWindow = new Fl_Window(800, 1000, "CAPSTONE TEAM ASSIGNMENT SYSTEM");
-
-
-	    //background box 1
-	    Fl_Box boxBack2(20,200,760,500);
-	    boxBack2.box(FL_NO_BOX);
-	    boxBack2.color(ASU_WHITE);
-
-	    //background box 3
-	    Fl_Box boxBack3(20,600,760,300);
+	    //background box 3 - course selector
+	    Fl_Box boxBack3(10,170,730,400);
 	    boxBack3.box(FL_FLAT_BOX);
-	    boxBack3.color(ASU_GREY);
+	    boxBack3.color(ASU_MAROON);
 
-	    //FL_(X, Y, W, H, STRING)
-	    boxHeader = new Fl_Box(20,20,760,50,"Please Complete The Following");
-	    goBack = new Fl_Button(460, 920, 110, 50, "GO BACK");
-	    Confirm = new Fl_Button(600, 920, 110, 50, "CONFIRM");
+	    //Header box with logo
+	    boxHeader = new Fl_Box(10,10,450,150,"Select courses        \n to generate teams   ");
+	    boxHeader->box(FL_BORDER_BOX);
+	    boxHeader->color(ASU_BLACK);
+	    boxHeader->labelfont(FL_HELVETICA_BOLD_ITALIC);
+	    boxHeader->labelsize(30);
+	    boxHeader->labelcolor(ASU_WHITE);
+	    boxHeader->redraw();
 
-	//INITIALIZE CLASS SECTION SELECTOR COMPONENTS
-	    classBrowser = new Fl_Check_Browser(40,650,300,200, "Class Section List");
-	    inputYear = new Fl_Input(480, 650, 100, 30, "Enter Year (YYYY)");
-	    inputSemester = new Fl_Input_Choice(480,700, 100, 30, "Select Semester ");
-	    findCourses = new Fl_Button(480, 750, 120, 30, "Find Courses");
+	    boxHeader2 = new Fl_Box(450,10,290,150);
+	    boxHeader2->box(FL_BORDER_BOX);
+	    boxHeader2->color(ASU_BLACK);
+	    boxHeader2->image(LOGO_BLACK1);
+	    boxHeader2->redraw();
 
-	     //callbacks
-	    findCourses->callback(static_FindCoursesClick, this);
-	    classBrowser->callback(static_BrowserSelection, this);
-	    goBack->callback(static_GobackClick, this);
+	    // Go back button
+	    goBack = new Fl_Button(420, 508, 150, 50, "Go Back");
+		goBack->color(ASU_GOLD);
+		goBack->labelfont(FL_HELVETICA_ITALIC);
+		goBack->labelcolor(ASU_BLACK);
+		goBack->labelsize(18);
+		goBack->selection_color(ASU_MAROON);
+		goBack->callback(static_GobackClick, this);
+
+	    // Confirm button
+	    Confirm = new Fl_Button(580, 508, 150, 50, "Confirm");
+	    Confirm->color(ASU_GOLD);
+	    Confirm->labelfont(FL_HELVETICA_ITALIC);
+	    Confirm->labelcolor(ASU_BLACK);
+	    Confirm->labelsize(18);
+	    Confirm->selection_color(ASU_MAROON);
 	    Confirm->callback(static_ConfirmClick, this);
 
-	    //Additions to the components
+
+
+	    //INITIALIZE CLASS SECTION SELECTOR COMPONENTS
+
+	    // input year
+	    inputYear = new Fl_Input(230,180,100,40, "Enter Year (YYYY):  ");
+	    inputYear->labelfont(FL_HELVETICA_BOLD);
+	    inputYear->labelcolor(ASU_WHITE);
+	    inputYear->textfont(FL_HELVETICA);
+	    inputYear->labelsize(18);
+
+	    // Class Browser / selector
+	    classBrowser = new Fl_Check_Browser(360, 180, 370, 260, "\nSelect classes, then click confirm");
 	    classBrowser->scrollbar;
 	    classBrowser->color(ASU_WHITE);
-		classBrowser->textfont(FL_HELVETICA);
-		classBrowser->textsize(16);
+		classBrowser->textfont(FL_HELVETICA_ITALIC);
+		classBrowser->textsize(18);
 		classBrowser->labelcolor(ASU_WHITE);
 	    classBrowser->labelfont(FL_HELVETICA_BOLD);
-	    classBrowser->labelsize(15);
+	    classBrowser->labelsize(18);
+	    classBrowser->callback(static_BrowserSelection, this);
 
-
-		findCourses->color(ASU_GOLD);
-	    //findCourses->box(FL_SHADOW_BOX);
-	    findCourses->labelfont(FL_HELVETICA);
-	    findCourses->labelcolor(ASU_BLACK);
-	    findCourses->labelsize(15);
-	    findCourses->selection_color(ASU_MAROON);
-
+	    // Semester Selector
+	    inputSemester = new Fl_Input_Choice(230,240, 100, 40, "Select Semester:    ");
 	    inputSemester->add("Spring");
 	    inputSemester->add("Summer");
 	    inputSemester->add("Fall");
 	    inputSemester->value("Fall");
-	    //inputSemester->box(FL_SHADOW_BOX);
-	    inputSemester->labelfont(FL_HELVETICA);
+	    inputSemester->textsize(18);
+	    inputSemester->labelfont(FL_HELVETICA_BOLD);
 	    inputSemester->labelcolor(ASU_WHITE);
 	    inputSemester->textfont(FL_HELVETICA);
+	    inputSemester->labelsize(18);
 	    inputSemester->menubutton()->color(ASU_GOLD);
 	    inputSemester->menubutton()->selection_color(ASU_MAROON);
 	    inputSemester->menubutton()->textfont(FL_HELVETICA);
 	    inputSemester->menubutton()->box(FL_BORDER_BOX);
+	    inputSemester->menubutton()->textsize(18);
 
-	    //inputYear->box(FL_SHADOW_BOX);
-	    inputYear->labelfont(FL_HELVETICA);
-	    inputYear->labelcolor(ASU_WHITE);
-	    inputYear->textfont(FL_HELVETICA);
+	    // Generates course broswer with selections
+	    findCourses = new Fl_Button(30, 310, 300, 40, "Search for Courses");
+		findCourses->color(ASU_GOLD);
+	    findCourses->labelfont(FL_HELVETICA);
+	    findCourses->labelcolor(ASU_BLACK);
+	    findCourses->labelsize(18);
+	    findCourses->selection_color(ASU_MAROON);
+	    findCourses->callback(static_FindCoursesClick, this);
 
 
-	//End CLASS SECTION SELECTOR COMPONENTS
-	    boxHeader->box(FL_FLAT_BOX);
-	    boxHeader->color(ASU_MAROON);
-	    boxHeader->labelfont(FL_BOLD);
-	    boxHeader->labelsize(20);
-	    boxHeader->labelcolor(ASU_WHITE);
-
-		goBack->color(ASU_GOLD);
-		//goBack->box(FL_SHADOW_BOX);
-		goBack->labelfont(FL_HELVETICA);
-		goBack->labelcolor(ASU_BLACK);
-		goBack->labelsize(15);
-		goBack->selection_color(ASU_MAROON);
-
-		Confirm->color(ASU_GOLD);
-		//Confirm->box(FL_SHADOW_BOX);
-		Confirm->labelfont(FL_HELVETICA);
-		Confirm->labelcolor(ASU_BLACK);
-		Confirm->labelsize(15);
-		Confirm->selection_color(ASU_MAROON);
-
-	    masterWindow->resizable(boxBack2);
 	    masterWindow->color(ASU_WHITE);
 		masterWindow->box(FL_BORDER_BOX);
-
 	    masterWindow->show();
 	    masterWindow->end();
 
@@ -217,44 +218,48 @@ void DataEntryGUI::FindCoursesClick(Fl_Widget* w){
  */
 void DataEntryGUI::GobackClick(Fl_Widget* w){
 
-
-	backWindow = new Fl_Window(400, 200, "WARNING");
-
-	const char prompt1[] = "You are about to return to the main screen.";
-	const char prompt2[] = "If you do, you will lose all information entered.";
-	const char prompt3[] = "Are you sure?";
+	backWindow = new Fl_Window(650, 220, "Capstone Team Assignment System");
 	backWindow->begin();
-	Fl_Box promptBox1(10,10,390,20,prompt1);
-	Fl_Box promptBox2(10,30,390,20, prompt2);
-	Fl_Box promptBox3(10,50,390,40, prompt3);
 
+	Fl_Box promptBox1(0,10,650,50, "WARNING!");
+	promptBox1.align(FL_ALIGN_CENTER);
+	promptBox1.labelsize(40);
+
+	Fl_Box promptBox2(50,70,550,20, "You are about to return to the main screen,");
+	promptBox2.align(FL_ALIGN_CENTER);
+	promptBox2.labelsize(20);
+	promptBox2.labelfont(FL_HELVETICA);
+
+	Fl_Box promptBox3(50,90,550,20, "All information entered will be lost");
+	promptBox3.align(FL_ALIGN_CENTER);
 	promptBox3.labelsize(20);
+	promptBox3.labelfont(FL_HELVETICA_BOLD_ITALIC);
 
-	yesButton = new Fl_Button(220,120,80,50,"YES");
-	cancelButton1 = new Fl_Button(100,120,80,50, "CANCEL");
+	Fl_Box promptBox4(50,110,550,20, "Are you sure?");
+	promptBox4.align(FL_ALIGN_CENTER);
+	promptBox4.labelsize(20);
+	promptBox4.labelfont(FL_HELVETICA);
+
+	yesButton = new Fl_Button(425,150,175,50,"Yes");
+	yesButton->color(ASU_WHITE);
+	yesButton->labelfont(FL_HELVETICA);
+	yesButton->labelcolor(ASU_BLACK);
+	yesButton->labelsize(15);
+	yesButton->selection_color(ASU_MAROON);
+	yesButton->callback(static_YesClick, this);
+
+	cancelButton1 = new Fl_Button(40,150,175,50,"Cancel");
+	cancelButton1->color(ASU_WHITE);
+	cancelButton1->labelfont(FL_HELVETICA);
+	cancelButton1->labelcolor(ASU_BLACK);
+	cancelButton1->labelsize(15);
+	cancelButton1->selection_color(ASU_MAROON);
+	cancelButton1->callback(static_CancelClick1, this);
 
 
 	backWindow->color(ASU_GOLD);
 	backWindow->box(FL_BORDER_BOX);
-
-	yesButton->color(ASU_MAROON);
-	//yesButton->box(FL_SHADOW_BOX);
-	yesButton->labelfont(FL_HELVETICA);
-	yesButton->labelcolor(ASU_WHITE);
-	yesButton->labelsize(15);
-	yesButton->selection_color(ASU_WHITE);
-
-	cancelButton1->color(ASU_MAROON);
-	//cancelButton1->box(FL_SHADOW_BOX);
-	cancelButton1->labelfont(FL_HELVETICA);
-	cancelButton1->labelcolor(ASU_WHITE);
-	cancelButton1->labelsize(15);
-	cancelButton1->selection_color(ASU_WHITE);
-
-	//callbacks
-	yesButton->callback(static_YesClick, this);
-	cancelButton1->callback(static_CancelClick1, this);
-
+	backWindow->resizable(w);
 	backWindow->end();
 	backWindow->show();
 
@@ -305,42 +310,64 @@ void DataEntryGUI::CancelClick2(Fl_Widget* w){
 void DataEntryGUI::ConfirmClick(Fl_Widget* w){
 
 
-	confirmWindow = new Fl_Window(400, 200, "Confirmation Window");
+	confirmWindow = new Fl_Window(650, 220, "Confirmation Window");
 
-	const char prompt1[] = "Does all the information look correct?";
-	const char prompt2[] = "Project file:  Blank    Survey Name:  Blank  ";
-	const char prompt3[] = "Courses:  Blank ";
+	const char prompt1[] = "./Images/asu_sunburst_rgb_maroongold_150ppi.png";
+	const char prompt2[] = "Capstone Questionnaire";
+	const char prompt3[] = "2020_Projects.csv";
 	confirmWindow->begin();
-	Fl_Box promptBox1(10,10,390,40,prompt1);
-	Fl_Box promptBox2(10,50,390,20, prompt2);
-	Fl_Box promptBox3(10,70,390,20, prompt3);
 
-	promptBox1.labelsize(20);
+	Fl_Box promptBox1(0,10,650,30, "Does all the information look correct?");
+	promptBox1.align(FL_ALIGN_CENTER);
+	promptBox1.labelsize(30);
 
-	GenerateTeamsButton = new Fl_Button(220,120,150,50,"GENERATE TEAMS");
-	cancelButton2 = new Fl_Button(100,120,80,50,"CANCEL");
+	Fl_Box promptBox2(20,60,20,20, "Project file:");
+	promptBox2.align(FL_ALIGN_RIGHT);
+	promptBox2.labelsize(15);
+	promptBox2.labelfont(FL_HELVETICA_BOLD);
+	Fl_Box promptBox2R(130,60,50,20, prompt1);
+	promptBox2R.align(FL_ALIGN_RIGHT);
+	promptBox2R.labelsize(15);
+	promptBox2R.labelfont(FL_HELVETICA);
+
+	Fl_Box promptBox3(20,80,20,20, "Survey Name:");
+	promptBox3.align(FL_ALIGN_RIGHT);
+	promptBox3.labelsize(15);
+	promptBox3.labelfont(FL_HELVETICA_BOLD);
+	Fl_Box promptBox3R(130,80,50,20, prompt2);
+	promptBox3R.align(FL_ALIGN_RIGHT);
+	promptBox3R.labelsize(15);
+	promptBox3R.labelfont(FL_HELVETICA);
+
+	Fl_Box promptBox4(20,100,20,20, "Courses:");
+	promptBox4.align(FL_ALIGN_RIGHT);
+	promptBox4.labelsize(15);
+	promptBox4.labelfont(FL_HELVETICA_BOLD);
+	Fl_Box promptBox4R(130,100,50,20, prompt3);
+	promptBox4R.align(FL_ALIGN_RIGHT);
+	promptBox4R.labelsize(15);
+	promptBox4R.labelfont(FL_HELVETICA);
+
+	GenerateTeamsButton = new Fl_Button(425,150,175,50,"Generate Teams");
+	GenerateTeamsButton->color(ASU_WHITE);
+	GenerateTeamsButton->labelfont(FL_HELVETICA);
+	GenerateTeamsButton->labelcolor(ASU_BLACK);
+	GenerateTeamsButton->labelsize(15);
+	GenerateTeamsButton->selection_color(ASU_MAROON);
+	GenerateTeamsButton->callback(static_GenerateTeamsClick, this);
+
+	cancelButton2 = new Fl_Button(40,150,175,50,"Cancel");
+	cancelButton2->color(ASU_WHITE);
+	//cancelButton2->box(FL_SHADOW_BOX);
+	cancelButton2->labelfont(FL_HELVETICA);
+	cancelButton2->labelcolor(ASU_BLACK);
+	cancelButton2->labelsize(15);
+	cancelButton2->selection_color(ASU_MAROON);
+	cancelButton2->callback(static_CancelClick2, this);
 
 	confirmWindow->color(ASU_GOLD);
 	confirmWindow->box(FL_BORDER_BOX);
-
-	GenerateTeamsButton->color(ASU_MAROON);
-	//GenerateTeamsButton->box(FL_SHADOW_BOX);
-	GenerateTeamsButton->labelfont(FL_HELVETICA);
-	GenerateTeamsButton->labelcolor(ASU_WHITE);
-	GenerateTeamsButton->labelsize(15);
-	GenerateTeamsButton->selection_color(ASU_WHITE);
-
-	cancelButton2->color(ASU_MAROON);
-	//cancelButton2->box(FL_SHADOW_BOX);
-	cancelButton2->labelfont(FL_HELVETICA);
-	cancelButton2->labelcolor(ASU_WHITE);
-	cancelButton2->labelsize(15);
-	cancelButton2->selection_color(ASU_WHITE);
-
-	//callbacks
-	GenerateTeamsButton->callback(static_GenerateTeamsClick, this);
-	cancelButton2->callback(static_CancelClick2, this);
-
+	confirmWindow->resizable(w);
 	confirmWindow->end();
 	confirmWindow->show();
 

@@ -84,6 +84,7 @@ class DataEntryGUI {
 
 		//Class Section Selector Components
 		Fl_Box *boxHeader;
+		Fl_Box *boxHeader2;
 		Fl_Check_Browser *classBrowser;
 		Fl_Button *findCourses;
 		Fl_Button *Confirm;

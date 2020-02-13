@@ -143,8 +143,6 @@ void MainWindow::MainWindow1() {
     windowMain->box(FL_BORDER_BOX);
     windowMain->resizable(boxHeader);
 
-    //windowMain->color(ASU_GOLD);
-    //windowMain->image(ASU_BLACK_LOGO);
 
     buttonStart->color(ASU_GOLD);
     //buttonStart->box(FL_SHADOW_BOX);
