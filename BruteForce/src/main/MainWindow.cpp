@@ -313,20 +313,26 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 
 				//PROGRESS BAR WINDOW
 
-		        progressWindow = new Fl_Window(550, 400, "Team Assignment Progress");
+		        progressWindow = new Fl_Window(570, 400, "Team Assignment Progress");
 		        progressWindow->begin();
-		        //Fl_Box backBox(10, 55, 430, 390);
-		        TeamsButton = new Fl_Button(10,10,140,40,"GENERATE TEAMS");//child 0
-		        doneButton = new Fl_Button(440,10,100,40,"DONE");//child 1
-		        progressBar = new Fl_Progress(10,70,530,40);  //child 2
-		        progressBox = new Fl_Box(10, 120, 530, 40, ""); //child 3
+
+		        Fl_Box *backBox = new Fl_Box(10, 60, 550,60 );
+		        backBox->box(FL_BORDER_BOX);
+		        backBox->color(ASU_GREY);
+
+		        TeamsButton = new Fl_Button(10,10,140,40,"GENERATE TEAMS");
+		        doneButton = new Fl_Button(440,10,100,40,"DONE");
+		        progressBar = new Fl_Progress(20,70,530,40);
+		        progressBox = new Fl_Box(10, 120, 530, 40, "");
+
 		        progressBar->minimum(0);                      // set progress range to be 0.0 ~ 1.0
 		        progressBar->maximum(1);
-		        progressBar->color(ASU_GREY);               // background color
-		        progressBar->selection_color(ASU_BLUE);     // progress bar color
+		        progressBar->color(ASU_GOLD);               // background color
+		        progressBar->selection_color(ASU_MAROON);     // progress bar color
 		        progressBar->labelcolor(FL_WHITE);            // percent text color
 		        progressBar->labelfont(FL_HELVETICA_BOLD);
 		        progressBar->labelsize(15);
+		        progressBar->box(FL_RFLAT_BOX);
 
 		        progressWindow->resizable(progressBar);
 

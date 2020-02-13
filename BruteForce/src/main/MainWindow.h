@@ -60,6 +60,7 @@ class MainWindow {
 
 		//progress bar window
 		int barCount;
+		//Fl_Box *backBox;
 		Fl_Window *progressWindow;
 		Fl_Progress *progressBar;
 		Fl_Box *progressBox;
@@ -67,7 +68,6 @@ class MainWindow {
 		Fl_Button *doneButton;
 		Fl_Box *imageBox;
 
-		//Fl_Box *backBox;
 
 		//main window
 		Fl_Window *windowMain;
