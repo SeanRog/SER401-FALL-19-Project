@@ -1641,7 +1641,21 @@ vector<vector<string>> Utility::toCSVcse (string filename) {
 	return dataList;
 }
 
-//returns a vector of Project objects that's populated by a CSV file
+/*********************************************************
+ * csvToProjectsVector
+ *
+ * Author: Sean Rogers
+ *
+ * Description:
+ * 	Just like the previous method, takes in a CSV file, puts the projects in the CSV file into
+ * 	project objects, then places each project object into a vector, then returns that vector.
+ *
+ *Arguments:
+ *	string filename
+ *
+ *Returns:
+ *  vector<Project> containing the project objects obtained from the projects in the CSV file.
+ */
 vector<Project> Utility::csvToProjectsVector(string filename) {
 	vector<Project> projects;
 
@@ -1667,18 +1681,35 @@ vector<Project> Utility::csvToProjectsVector(string filename) {
 			} else {
 				element.push_back(line.at(i));
 			}
+
+			if(i + 1 == line.length()) {
+				vec.push_back(element);
+			}
 		}
 		dataList.push_back(vec);
 	}
 	file.close();
 
-	//display contents
+	//put csv data into a project object, add that project object to vector<Project> projects,
+	//repeat for all project data in CSV, return projects
+	for (int i = 1; i < dataList.size(); i++) {
+		Project p = Project();
+		p.ProjectID = i;
+		p.NDA = atoi((dataList.at(i).at(dataList.at(i).size() - 6)).c_str());
+		p.IPR = atoi((dataList.at(i).at(dataList.at(i).size() - 5)).c_str());
+		p.sharedHardware = atoi((dataList.at(i).at(dataList.at(i).size() - 4)).c_str());
+		p.Type = (dataList.at(i).at(dataList.at(i).size() - 3)).at(0);
+		p.ClassID = atoi((dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
+		p.Priority = atoi((dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
 
-	for (int i = 0; i < dataList.size(); i++) {
-		for (int j = 0; j < dataList.at(i).size(); j++) {
-			cout << dataList.at(i).at(j) << " ";
+		projects.push_back(p);
+		for (int j = dataList.at(i).size() - 1; j > dataList.at(i).size() - 7; j--) {
+			cout << dataList.at(i).at(j) << " | ";
+			if(j == dataList.at(i).size() - 6) {
+				cout << dataList.at(i).at(j) << " | ";
+			}
 		}
-		cout << endl;
+		cout << " end line"<< endl;
 	}
 	return projects;
 }

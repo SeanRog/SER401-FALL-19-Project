@@ -570,7 +570,35 @@ Fl_Output *output;
 int main(){
 
 	Utility util;
-	util.csvToProjectsVector("sampleProjectCSV.csv");
+
+	vector<Project> jects;
+
+	jects = util.csvToProjectsVector("sampleProjectCSV.csv");
+
+	for(int i = 0; i < jects.size(); i++) {
+		cout << jects.at(i).NDA << endl;
+	}
+	cout << endl;
+	for(int i = 0; i < jects.size(); i++) {
+		cout << jects.at(i).IPR << endl;
+	}
+	cout << endl;
+	for(int i = 0; i < jects.size(); i++) {
+		cout << jects.at(i).sharedHardware << endl;
+	}
+	cout << endl;
+	for(int i = 0; i < jects.size(); i++) {
+		cout << jects.at(i).Type << endl;
+	}
+	cout << endl;
+	for(int i = 0; i < jects.size(); i++) {
+		cout << jects.at(i).ClassID << endl;
+	}
+	cout << endl;
+	for(int i = 0; i < jects.size(); i++) {
+		cout << jects.at(i).Priority << endl;
+	}
+
 	/*XInitThreads();
 	MainWindow mainWin;
 
