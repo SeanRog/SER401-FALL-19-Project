@@ -14,12 +14,15 @@
 #include <FL/Fl_Int_Input.H>
 #include <FL/Fl_File_Chooser.H>
 #include <FL/Fl_RGB_Image.H>
+#include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Progress.H>
 #include <FL/names.h>
 
 
 using namespace std;
+
+
 
 class MainWindow {
 
@@ -63,6 +66,7 @@ class MainWindow {
 		Fl_Button *TeamsButton;
 		Fl_Button *doneButton;
 		Fl_Box *imageBox;
+
 		//Fl_Box *backBox;
 
 		//main window

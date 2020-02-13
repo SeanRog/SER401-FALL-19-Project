@@ -71,7 +71,8 @@ Fl_PNG_Image TeamLogo2("./Images/TeamsButton2.png");
 
 Fl_PNG_Image TeamBlank("./Images/TeamBlank.png");
 
-//Fl_GIF_Image TeamGIF("./Images/Team1.gif");
+Fl_PNG_Image *LoadingPngs[22];
+
 
 
 void MainWindow::MainWindow1() {
@@ -196,8 +197,6 @@ void MainWindow::MainWindow1() {
 }
 
 
-
-
 // DESTRUCTOR
 MainWindow::~MainWindow() {
 
@@ -262,7 +261,6 @@ void MainWindow::MainWindow2(){
     windowMain->show();
     windowMain->end();
 
-
 	//tabs->show();
     Fl::run();
 
@@ -302,6 +300,17 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 	cout<< num_students<<endl;
 	cout<<endl;
 
+
+	for (int i = 0; i<22 ;i++){
+
+	string filename = "./Images/Loading/"+to_string(i+1)+".png";
+	int length = filename.length();
+	char png_char[length+1];
+    strcpy(png_char, filename.c_str());
+
+	LoadingPngs[i] = new Fl_PNG_Image(png_char);
+	}
+
 				//PROGRESS BAR WINDOW
 
 		        progressWindow = new Fl_Window(550, 400, "Team Assignment Progress");
@@ -321,10 +330,9 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 
 		        progressWindow->resizable(progressBar);
 
-		       //Fl_GIF_Image* TeamGIF = new Fl_GIF_Image("./Images/Team1.gif");
 		    	Fl_PNG_Image* baseImage = new Fl_PNG_Image("./Images/Loading/1.png");
+		    	//Fl_PNG_Image* baseImage = new Fl_PNG_Image("./Images/cookies/0.png");
 
-		    	//backBox.color(ASU_GREY);
 
 		    	imageBox = new Fl_Box(10, 170, 530, 200);
 		    	imageBox->color(ASU_WHITE);
@@ -354,7 +362,6 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 		        progressBar->value(0);
 		        progressBar->label(0);
 
-
 		        TeamsButton->callback(static_ProgressTeamsButtonClick, this);
 		        doneButton->callback(static_DoneButtonClick, this);
 		        progressWindow->redraw();
@@ -362,28 +369,40 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 		        Fl::run();
 }
 
-
-void animate(Fl_Window* w, Fl_Box* b, Fl_Progress* progressBar){
+void cookieLoad(Fl_Window* w, Fl_Box* b, Fl_Progress* progressBar){
 
 	int i =0;
 	while(progressBar->value() != 100){
 
-	string filename = "./Images/Loading/"+to_string(i+1)+".png";
-	int length = filename.length();
-	char png_char[length+1];
-    strcpy(png_char, filename.c_str());
+		string filename = "./Images/cookies/"+to_string(i)+".png";
+		int length = filename.length();
+		char png_char[length+1];
+	    strcpy(png_char, filename.c_str());
 
-	Fl_PNG_Image* TeamLoading = new Fl_PNG_Image(png_char);
-	b->image(TeamLoading);
+		Fl_PNG_Image *cookies = new Fl_PNG_Image(png_char);
+	Fl::check();
+	b->image(cookies);
+	b->redraw();
+	usleep(100000);
+	i++;
+		if (i==10){
+			i=0;}
+	}//end while loop
+
+}
+
+void animate(Fl_Window* w, Fl_Box* b, Fl_Progress* progressBar, Fl_PNG_Image *loadingPngs[23]){
+
+	int i =0;
+	while(progressBar->value() != 100){
+	Fl::check();
+	b->image(loadingPngs[i]);
 	b->redraw();
 	usleep(50000);
-	Fl::check();
-
 	i++;
-		if (i==23){
+		if (i==22){
 			i=0;}
-
-	}
+	}//end while loop
 
 }
 
@@ -424,7 +443,10 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget* w) {
 	XInitThreads();
 	thread threads[1];
 
-	threads[0] = thread (animate, progressWindow, imageBox, progressBar);
+	threads[0] = thread (animate, progressWindow, imageBox, progressBar, LoadingPngs);
+
+	//if you want to load cookies.
+	//threads[0] = thread (cookieLoad, progressWindow, imageBox, progressBar);
 
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
@@ -435,6 +457,9 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget* w) {
 		threads[i].join();
 	}
 
+	//Fl_PNG_Image* doneImage = new Fl_PNG_Image("./Images/cookies/0.png");
+	//imageBox->image(doneImage);
+
 	Fl_PNG_Image* doneImage = new Fl_PNG_Image("./Images/Loading/done.png");
 	imageBox->image(doneImage);
 	imageBox->redraw();
@@ -444,11 +469,6 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget* w) {
 
 
 }
-
-
-
-
-
 
 
 /*****************************************************************************
