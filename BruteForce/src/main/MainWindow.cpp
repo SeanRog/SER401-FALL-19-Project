@@ -321,7 +321,7 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 		        backBox->color(ASU_GREY);
 
 		        TeamsButton = new Fl_Button(10,10,140,40,"GENERATE TEAMS");
-		        doneButton = new Fl_Button(440,10,100,40,"DONE");
+		        doneButton = new Fl_Button(460,10,100,40,"DONE");
 		        progressBar = new Fl_Progress(20,70,530,40);
 		        progressBox = new Fl_Box(10, 120, 530, 40, "");
 
@@ -340,7 +340,7 @@ void MainWindow::TeamsButtonClick(Fl_Widget* w) {
 		    	//Fl_PNG_Image* baseImage = new Fl_PNG_Image("./Images/cookies/0.png");
 
 
-		    	imageBox = new Fl_Box(10, 170, 530, 200);
+		    	imageBox = new Fl_Box(10, 170, 550, 200);
 		    	imageBox->color(ASU_WHITE);
 		    	imageBox->box(FL_FLAT_BOX);
 		    	imageBox->image(baseImage);
