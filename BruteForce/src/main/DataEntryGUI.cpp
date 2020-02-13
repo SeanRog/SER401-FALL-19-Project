@@ -28,6 +28,7 @@
 #include <FL/Fl_File_Chooser.H>
 
 
+
 /*************************************************************************************
  * ClassSelectorGUI
  *
@@ -81,6 +82,7 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    classBrowser->callback(static_BrowserSelection, this);
 	    goBack->callback(static_GobackClick, this);
 	    Confirm->callback(static_ConfirmClick, this);
+	    projectFileChooserButton->callback(static_chooseProjectFile_cb, this);
 
 	    //Additions to the components
 	    classBrowser->scrollbar;
@@ -271,6 +273,7 @@ void DataEntryGUI::GobackClick(Fl_Widget* w){
 	yesButton->callback(static_YesClick, this);
 	cancelButton1->callback(static_CancelClick1, this);
 
+
 	backWindow->end();
 	backWindow->show();
 
@@ -374,3 +377,21 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget* w){
 	mainWin.MainWindow1();
 
 }
+
+void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*){
+	Fl_Native_File_Chooser fileChooser;
+	fileChooser.title("Choose File");
+	fileChooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
+	fileChooser.preset_file(fileInput_Project->value());
+	switch ( fileChooser.show() ) {
+		default:
+			if ( fileChooser.filename() ) {
+				fileInput_Project->value(fileChooser.filename());
+			} else {
+				fileInput_Project->value("NULL");
+			}
+			break;
+	}
+}
+
+
