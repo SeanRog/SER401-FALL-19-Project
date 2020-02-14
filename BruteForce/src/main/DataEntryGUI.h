@@ -46,6 +46,9 @@ public:
 	Fl_Button *projectFileChooserButton;
 	Fl_Input *fileInput_Project;
 
+	//Enter Student Survey Quiz Components
+	Fl_Box *quizFileInstructionsBox;
+
 	//Class Section Selector Components
 	Fl_Box *boxHeader;
 	Fl_Check_Browser *classBrowser;
