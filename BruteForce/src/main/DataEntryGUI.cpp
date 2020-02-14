@@ -71,6 +71,10 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 		fileInput_Project = new Fl_Input(90,150,690,30);
 		fileInput_Project->value(".");
 
+		//Initialize Student Quiz Textbox - Step 2 Enter name of Capstone Survey
+		quizFileInstructionsBox = new Fl_Box(20,210, 760, 30);
+		fileInput_StudentQuizName = new Fl_Input(20,260,760,30);
+
 	    //INITIALIZE CLASS SECTION SELECTOR COMPONENTS
 	    classBrowser = new Fl_Check_Browser(40,650,300,200, "Class Section List");
 	    inputYear = new Fl_Input(480, 650, 100, 30, "Enter Year (YYYY)");
@@ -135,7 +139,16 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    projectFileInstructionsBox->labelsize(15);
 	    projectFileInstructionsBox->label("Step 1: Choose the Project .csv File to be used.");
 	    projectFileInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
-	    //projectFileInstructionsBox->align(FL_ALIGN_LEFT);
+
+	    // Student Quiz Name Instructions
+	    quizFileInstructionsBox->box(FL_FLAT_BOX);
+	    quizFileInstructionsBox->color(ASU_GOLD);
+	    quizFileInstructionsBox->labelfont(FL_HELVETICA_BOLD);
+	    quizFileInstructionsBox->labelcolor(ASU_BLACK);
+	    quizFileInstructionsBox->labelsize(15);
+	    quizFileInstructionsBox->label("Step 2: Enter name of Capstone Survey Quiz.");
+	    quizFileInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
+
 
 		goBack->color(ASU_GOLD);
 		//goBack->box(FL_SHADOW_BOX);
