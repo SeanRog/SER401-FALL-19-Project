@@ -14,14 +14,15 @@
 #include <FL/Fl_Int_Input.H>
 #include <FL/Fl_File_Chooser.H>
 #include <FL/Fl_RGB_Image.H>
+#include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Progress.H>
 #include <FL/names.h>
 
-#include "ClassSelectorGUI.h"
-#include "AuthTokenGUI.h"
 
 using namespace std;
+
+
 
 class MainWindow {
 
@@ -42,6 +43,9 @@ class MainWindow {
 		((MainWindow*)data)->StartButtonClick(w);
 	}
 
+
+
+
 	// callback functions
 	void TeamsButtonClick(Fl_Widget* w);
 	void ProgressTeamsButtonClick(Fl_Widget* w);
@@ -56,11 +60,14 @@ class MainWindow {
 
 		//progress bar window
 		int barCount;
+		//Fl_Box *backBox;
 		Fl_Window *progressWindow;
 		Fl_Progress *progressBar;
 		Fl_Box *progressBox;
 		Fl_Button *TeamsButton;
 		Fl_Button *doneButton;
+		Fl_Box *imageBox;
+
 
 		//main window
 		Fl_Window *windowMain;

@@ -47,21 +47,21 @@ constexpr int toConstInt(int constInt) {
 ResultWindow::ResultWindow() {
 
     // MAIN WINDOW
-    windowResult = new Fl_Window(640, 480, "Project 35");
+    windowResult = new Fl_Window(840, 480, "Project 35");
 
     // Buffer
     buffer = new Fl_Text_Buffer();
 
     //Text Display
-    textDisplay = new Fl_Text_Display(20,90,640-40,480-110, "Results:");
+    textDisplay = new Fl_Text_Display(20,90,840-40,480-110, "Results:");
     textDisplay->buffer(buffer);
 
     //Save BUTTON
     buttonSave = new Fl_Button(20,20,100,50, "Save Report");
     buttonSave->callback(static_saveClicked, this);
 
-    permBox = new Fl_Box(150, 20, 200, 40, "");
-    swapBox = new Fl_Box(150, 40, 200, 40, "");
+    permBox = new Fl_Box(150, 20, 400, 40, "");
+    swapBox = new Fl_Box(150, 40, 400, 40, "");
 
 }
 
