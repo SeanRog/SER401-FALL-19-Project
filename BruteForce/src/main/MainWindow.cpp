@@ -16,6 +16,7 @@
 #include "MainWindow.h"
 #include "DataEntryGUI.h"
 #include "GUIStyles.h"
+#include "ResultWindow.h"
 #include "main.h"
 
 #include <iostream>
@@ -31,7 +32,6 @@
 #include <sys/time.h>
 #include <sys/wait.h>
 
-
 #include <FL/Fl.H>
 #include <FL/Fl_Tabs.H>
 #include <FL/Fl_Window.H>
@@ -46,7 +46,9 @@
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_Progress.H>
-#include "ResultWindow.h"
+#include <FL/Fl_Text_Display.H>
+#include <FL/Fl_Text_Buffer.H>
+
 
 
 using namespace std;
@@ -69,7 +71,7 @@ Fl_PNG_Image ASU_LOGO_WHITE2("./Images/asu_university_horiz_rgb_white_150.png");
 Fl_PNG_Image TeamLogo1("./Images/TeamsButton.png");
 Fl_PNG_Image TeamLogo2("./Images/TeamsButton2.png");
 
-Fl_PNG_Image TeamBlank("./Images/TeamBlank.png");
+Fl_PNG_Image AboutLogo("./Images/About3.png");
 
 Fl_PNG_Image *LoadingPngs[22];
 
@@ -205,18 +207,18 @@ MainWindow::~MainWindow() {
 
 void MainWindow::MainWindow2(){
 
-   const int windowMainW = 600;
-   const int windowMainH = 400;
+   const int windowMainW = 750;
+   const int windowMainH = 370;
    const char windowMainStr[] = "CAPSTONE TEAM ASSIGNMENT SYSTEM";
    windowMain = new Fl_Window(windowMainW, windowMainH, windowMainStr);
-   windowMain->color(ASU_GOLD);
+   windowMain->color(ASU_WHITE);
 
    {
-	Fl_Tabs *tabs = new Fl_Tabs(5,5,590,390);
-	tabs->selection_color(ASU_WHITE);
+	Fl_Tabs *tabs = new Fl_Tabs(10,10,730,350);
+	tabs->selection_color(ASU_GOLD);
 	windowMain->resizable(tabs);
 	{
-	    Fl_Group *homeTab = new Fl_Group(20,30,600,400,"HOME");
+		 Fl_Group *homeTab = new Fl_Group(10,40,720,300,"   Home   ");
 	    windowMain->box(FL_BORDER_BOX);
 	    {
 	    	homeTab->color(ASU_WHITE);
@@ -244,12 +246,98 @@ void MainWindow::MainWindow2(){
 	    }
 
 	    homeTab->end();
-	    Fl_Group *aboutTab = new Fl_Group(20,30,280,170,"ABOUT");
+	    Fl_Group *aboutTab = new Fl_Group(40,50,750,360,"   About   ");
 	    {
 
-	    	aboutTab->color(ASU_WHITE);
-	    	aboutTab->selection_color(ASU_MAROON);
+	    	aboutTab->color(ASU_BLACK);
+	    	aboutTab->selection_color(ASU_BLACK);
 	    	aboutTab->labelcolor(ASU_WHITE);
+	    	aboutTab->labelsize(15);
+	    	aboutTab->labelfont(FL_HELVETICA_BOLD);
+
+
+			Fl_Box *aboutBox1;
+			Fl_Box *aboutBox2;
+			Fl_Box *TextBox1;
+			Fl_Box *TextBox2;
+			Fl_Text_Display *aboutTextDisplay;
+			Fl_Text_Buffer *aboutBuffer;
+
+
+	    	aboutBox1 = new Fl_Box(20,55,345,295);
+
+	    	aboutBox1->box(FL_FLAT_BOX);
+	    	aboutBox1->color(ASU_WHITE);
+	    	aboutBox1->labelcolor(ASU_WHITE);
+	    	aboutBox1->labelsize(15);
+	    	aboutBox1->labelfont(FL_HELVETICA_BOLD);
+	    	aboutBox1->image(AboutLogo);
+	    	const char AboutStr[] = "\nThe Capstone Team Assignment System\n was developed "
+	    			"by five senior software \n engineering students during the \n Fall 2019 and Spring 2020 semesters.\n "
+	    			"\n SOFTWARE TEAM ";
+	    	const char TeamStr[] = "\n Elizabeth Marquise\n Myles Colina          \n Sean Rogers          \n"
+	    			" Cristi Deleo           \n Matthew Cilibraise\n";
+
+	    	TextBox1 = new Fl_Box(20,55,345, 100,AboutStr);
+	    	TextBox1->labelcolor(ASU_BLACK);
+	    	TextBox1->labelsize(15);
+	    	TextBox1->labelfont(FL_HELVETICA_BOLD);
+
+
+	    	TextBox2 = new Fl_Box(20,125,345,200,TeamStr);
+	    	TextBox2->labelcolor(ASU_MAROON);
+	    	TextBox2->labelsize(20);
+	    	TextBox2->labelfont(FL_HELVETICA_BOLD);
+
+
+	    	aboutBox2 = new Fl_Box(375,55,355,30,"About The Software");
+	    	aboutBox2->box(FL_FLAT_BOX);
+	    	aboutBox2->color(ASU_MAROON);
+	    	aboutBox2->labelcolor(ASU_WHITE);
+	    	aboutBox2->labelsize(15);
+	    	aboutBox2->labelfont(FL_HELVETICA_BOLD);
+
+	        // Buffer
+	        aboutBuffer = new Fl_Text_Buffer();
+
+
+	        //Text Display
+	        aboutTextDisplay = new Fl_Text_Display(375,85,355,265);
+	        aboutTextDisplay->buffer(aboutBuffer);
+
+	        aboutTextDisplay->textfont(FL_HELVETICA);
+	        aboutTextDisplay->textcolor(ASU_BLACK);
+	        aboutTextDisplay->textsize(15);
+	        aboutTextDisplay->selection_color(ASU_GOLD);
+
+
+	        aboutBuffer->text("\nThis software application creates \n"
+	        		"high-quality assignments of student teams\n"
+	        		"to ASU Capstone projects.This automizes a\n"
+	        		"previously manual task reducing the time\n"
+	        		"to just minutes. The task of assigning\n"
+	        		"teams to projects is of NP-hard complexity,\n"
+	        		"with the ‘brute force’ method of finding\n "
+	        		"all possible combinations to arrive at\n"
+	        		"the most optimal solution taking more\n"
+	        		"years than there are atoms in the\n"
+	        		"universe!\n"
+	        		"The team has devised a software solution\n "
+	        		"that reduces this time to minutes, \n"
+	        		"and provides excellent student teams\n "
+	        		"to project matches.\n \n"
+	        		"The algorithm that the team created takes\n"
+	        		"into account the student's skills, among\n"
+	        		"other factors, and matches them to \n"
+	        		"projects based on the required skills.\n"
+	        		"The algorithm focuses on the quality of the\n"
+	        		"entire team, ensuring that students are\n"
+	        		"assigned to teams that closely match their\n"
+	        		"own skill level, and the skills required\n"
+	        		"for the project.\n"
+
+
+	        );
 
 	    }
 	    aboutTab->end();

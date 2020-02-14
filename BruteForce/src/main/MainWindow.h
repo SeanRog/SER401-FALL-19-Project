@@ -17,6 +17,8 @@
 #include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Progress.H>
+#include <FL/Fl_Text_Display.H>
+#include <FL/Fl_Text_Buffer.H>
 #include <FL/names.h>
 
 
@@ -80,11 +82,14 @@ class MainWindow {
 		Fl_Int_Input* inputprojects;
 		Fl_Int_Input* inputstudents;
 
+
 		//virtual int handle(int event);
 		void MainWindow1();
 		void MainWindow2();
         MainWindow();
         ~MainWindow();
+
+
 
 
 };
