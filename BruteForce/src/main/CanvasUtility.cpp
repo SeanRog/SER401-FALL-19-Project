@@ -140,7 +140,7 @@ print_cookies(CURL *curl)
 }
  
 int
-main(void)
+main2(void)
 {
   CURL *curl;
   CURLcode res;

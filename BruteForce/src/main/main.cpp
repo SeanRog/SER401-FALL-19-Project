@@ -542,15 +542,6 @@ void dobut(Fl_Widget *){
 }
 */
 
-/*
-Fl_Window *window;
-Fl_Box *box;
-Fl_Button *button;
-Fl_Input *input;
-Fl_Output *output;
-*/
-
-
 /*************************************************************************************
  * main
  *
@@ -569,7 +560,6 @@ Fl_Output *output;
 
 int main(){
 
-
 	MainWindow mainWin;
 
 	//mainWin.MainWindow1();
@@ -577,7 +567,6 @@ int main(){
 	mainWin.MainWindow2();
 	return 0;
 }
-
 
 
 /*************************************************************************************
@@ -598,7 +587,7 @@ int main(){
  */
 
 int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
-
+    
 	//timer to keep track of program runtime
 	  auto start = high_resolution_clock::now();
 		srand(time(NULL));
