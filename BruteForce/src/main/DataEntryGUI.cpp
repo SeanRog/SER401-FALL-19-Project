@@ -30,6 +30,7 @@
 Fl_PNG_Image LOGO_BLACK1("./Images/asu_sunburst_rgb_maroongold_150ppi.png");
 
 
+
 /*************************************************************************************
  * ClassSelectorGUI
  *
@@ -87,10 +88,35 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    Confirm->selection_color(ASU_MAROON);
 	    Confirm->callback(static_ConfirmClick, this);
 
+	    //background box 3
+	    Fl_Box boxBack3(20,360,760,300);
+	    boxBack3.box(FL_FLAT_BOX);
+	    boxBack3.color(ASU_GREY);
 
+	    //FL_(X, Y, W, H, STRING)
+	    boxHeader = new Fl_Box(20,20,760,50,"Please Complete The Following");
+
+	    //Initialize Project File Chooser - Step 1 Choose Project File
+		projectFileInstructionsBox = new Fl_Box(20,90,760,30);
+		projectFileChooserButton = new Fl_Button(20,140,50,50,"@+3fileopen");
+		fileInput_Project = new Fl_Input(90,150,690,30);
+		fileInput_Project->value(".");
+
+		//Initialize Student Quiz Textbox - Step 2 Enter name of Capstone Survey
+		quizFileInstructionsBox = new Fl_Box(20,210, 760, 30);
+		fileInput_StudentQuizName = new Fl_Input(20,260,760,30);
 
 	    //INITIALIZE CLASS SECTION SELECTOR COMPONENTS
+		classSectionInstructionsBox = new Fl_Box(20,310,760,30);
 
+	    //Intialize Go Back or Confirm Component
+	    Confirm = new Fl_Button(160, 730, 110, 50, "CONFIRM");
+
+	     //callbacks
+	    Confirm->callback(static_ConfirmClick, this);
+	    projectFileChooserButton->callback(static_chooseProjectFile_cb, this);
+
+	    //INITIALIZE CLASS SECTION SELECTOR COMPONENTS
 	    // input year
 	    inputYear = new Fl_Input(230,180,100,40, "Enter Year (YYYY):  ");
 	    inputYear->labelfont(FL_HELVETICA_BOLD);
@@ -98,13 +124,14 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    inputYear->textfont(FL_HELVETICA);
 	    inputYear->labelsize(18);
 
+
 	    // Class Browser / selector
 	    classBrowser = new Fl_Check_Browser(360, 180, 370, 260, "\nSelect classes, then click confirm");
 	    classBrowser->scrollbar;
 	    classBrowser->color(ASU_WHITE);
-		classBrowser->textfont(FL_HELVETICA_ITALIC);
-		classBrowser->textsize(18);
-		classBrowser->labelcolor(ASU_WHITE);
+		  classBrowser->textfont(FL_HELVETICA_ITALIC);
+		  classBrowser->textsize(18);
+		  classBrowser->labelcolor(ASU_WHITE);
 	    classBrowser->labelfont(FL_HELVETICA_BOLD);
 	    classBrowser->labelsize(18);
 	    classBrowser->callback(static_BrowserSelection, this);
@@ -126,9 +153,62 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    inputSemester->menubutton()->box(FL_BORDER_BOX);
 	    inputSemester->menubutton()->textsize(18);
 
+	//End CLASS SECTION SELECTOR COMPONENTS
+	    boxHeader->box(FL_FLAT_BOX);
+	    boxHeader->color(ASU_MAROON);
+	    boxHeader->labelfont(FL_BOLD);
+	    boxHeader->labelsize(20);
+	    boxHeader->labelcolor(ASU_WHITE);
+
+	    //Project File Chooser Instructions
+	    projectFileInstructionsBox->box(FL_FLAT_BOX);
+	    projectFileInstructionsBox->color(ASU_GOLD);
+	    projectFileInstructionsBox->labelfont(FL_HELVETICA_BOLD);
+	    projectFileInstructionsBox->labelcolor(ASU_BLACK);
+	    projectFileInstructionsBox->labelsize(15);
+	    projectFileInstructionsBox->label("Step 1: Choose the Project .csv File to be used.");
+	    projectFileInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
+
+	    // Student Quiz Name Instructions
+	    quizFileInstructionsBox->box(FL_FLAT_BOX);
+	    quizFileInstructionsBox->color(ASU_GOLD);
+	    quizFileInstructionsBox->labelfont(FL_HELVETICA_BOLD);
+	    quizFileInstructionsBox->labelcolor(ASU_BLACK);
+	    quizFileInstructionsBox->labelsize(15);
+	    quizFileInstructionsBox->label("Step 2: Enter name of Capstone Survey Quiz.");
+	    quizFileInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
+
+	    // Class Section Instructions
+	    classSectionInstructionsBox->box(FL_FLAT_BOX);
+	    classSectionInstructionsBox->color(ASU_GOLD);
+	    classSectionInstructionsBox->labelfont(FL_HELVETICA_BOLD);
+	    classSectionInstructionsBox->labelcolor(ASU_BLACK);
+	    classSectionInstructionsBox->labelsize(15);
+	    classSectionInstructionsBox->label("Step 3: Select Class Sections below.");
+	    classSectionInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
+
+	    // Go Back or Confirm Instructions
+      goBackorConfirmInstructionsBox = new Fl_Box(20,680,760,30);
+	    goBackorConfirmInstructionsBox->box(FL_FLAT_BOX);
+	    goBackorConfirmInstructionsBox->color(ASU_GOLD);
+	    goBackorConfirmInstructionsBox->labelfont(FL_HELVETICA_BOLD);
+	    goBackorConfirmInstructionsBox->labelcolor(ASU_BLACK);
+	    goBackorConfirmInstructionsBox->labelsize(15);
+	    goBackorConfirmInstructionsBox->label("Step 4: Go Back or Confirm");
+	    goBackorConfirmInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
+
+    goBack = new Fl_Button(20, 730, 110, 50, "GO BACK");
+		goBack->color(ASU_GOLD);
+		//goBack->box(FL_SHADOW_BOX);
+		goBack->labelfont(FL_HELVETICA);
+		goBack->labelcolor(ASU_BLACK);
+		goBack->labelsize(15);
+		goBack->selection_color(ASU_MAROON);
+    goBack->callback(static_GobackClick, this);
+
 	    // Generates course broswer with selections
 	    findCourses = new Fl_Button(30, 310, 300, 40, "Search for Courses");
-		findCourses->color(ASU_GOLD);
+		  findCourses->color(ASU_GOLD);
 	    findCourses->labelfont(FL_HELVETICA);
 	    findCourses->labelcolor(ASU_BLACK);
 	    findCourses->labelsize(18);
@@ -136,8 +216,9 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    findCourses->callback(static_FindCoursesClick, this);
 
 
+
 	    masterWindow->color(ASU_WHITE);
-		masterWindow->box(FL_BORDER_BOX);
+		  masterWindow->box(FL_BORDER_BOX);
 	    masterWindow->show();
 	    masterWindow->end();
 
@@ -255,6 +336,7 @@ void DataEntryGUI::GobackClick(Fl_Widget* w){
 	cancelButton1->labelsize(15);
 	cancelButton1->selection_color(ASU_MAROON);
 	cancelButton1->callback(static_CancelClick1, this);
+
 
 	backWindow->color(ASU_GOLD);
 	backWindow->box(FL_BORDER_BOX);
@@ -383,3 +465,21 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget* w){
 	mainWin.callTeams(w);
 
 }
+
+void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*){
+	Fl_Native_File_Chooser fileChooser;
+	fileChooser.title("Choose File");
+	fileChooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
+	fileChooser.preset_file(fileInput_Project->value());
+	switch ( fileChooser.show() ) {
+		default:
+			if ( fileChooser.filename() ) {
+				fileInput_Project->value(fileChooser.filename());
+			} else {
+				fileInput_Project->value("NULL");
+			}
+			break;
+	}
+}
+
+
