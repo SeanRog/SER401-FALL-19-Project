@@ -568,6 +568,12 @@ Fl_Output *output;
 
 int main(){
 
+	Utility util;
+	vector<Project> projects = util.csvToProjectsVector("100Projects.csv");
+
+	for(int i = 0; i < projects.size(); i++) {
+		cout << projects.at(i).Type << endl;
+	}
 
 	XInitThreads();
 	MainWindow mainWin;
