@@ -51,6 +51,7 @@ public:
 	Fl_Input *fileInput_StudentQuizName;
 
 	//Class Section Selector Components
+	Fl_Box *classSectionInstructionsBox;
 	Fl_Box *boxHeader;
 	Fl_Check_Browser *classBrowser;
 	Fl_Button *findCourses;

@@ -56,14 +56,14 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    boxBack2.color(ASU_WHITE);
 
 	    //background box 3
-	    Fl_Box boxBack3(20,600,760,300);
+	    Fl_Box boxBack3(20,360,760,300);
 	    boxBack3.box(FL_FLAT_BOX);
 	    boxBack3.color(ASU_GREY);
 
 	    //FL_(X, Y, W, H, STRING)
 	    boxHeader = new Fl_Box(20,20,760,50,"Please Complete The Following");
-	    goBack = new Fl_Button(460, 920, 110, 50, "GO BACK");
-	    Confirm = new Fl_Button(600, 920, 110, 50, "CONFIRM");
+	    goBack = new Fl_Button(460, 680, 110, 50, "GO BACK");
+	    Confirm = new Fl_Button(600, 680, 110, 50, "CONFIRM");
 
 	    //Initialize Project File Chooser - Step 1 Choose Project File
 		projectFileInstructionsBox = new Fl_Box(20,90,760,30);
@@ -76,10 +76,11 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 		fileInput_StudentQuizName = new Fl_Input(20,260,760,30);
 
 	    //INITIALIZE CLASS SECTION SELECTOR COMPONENTS
-	    classBrowser = new Fl_Check_Browser(40,650,300,200, "Class Section List");
-	    inputYear = new Fl_Input(480, 650, 100, 30, "Enter Year (YYYY)");
-	    inputSemester = new Fl_Input_Choice(480,700, 100, 30, "Select Semester ");
-	    findCourses = new Fl_Button(480, 750, 120, 30, "Find Courses");
+		classSectionInstructionsBox = new Fl_Box(20,310,760,30);
+	    classBrowser = new Fl_Check_Browser(40,410,300,200, "Class Section List");
+	    inputYear = new Fl_Input(480, 410, 100, 30, "Enter Year (YYYY)");
+	    inputSemester = new Fl_Input_Choice(480,460, 100, 30, "Select Semester ");
+	    findCourses = new Fl_Button(480, 510, 120, 30, "Find Courses");
 
 	     //callbacks
 	    findCourses->callback(static_FindCoursesClick, this);
@@ -148,6 +149,15 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    quizFileInstructionsBox->labelsize(15);
 	    quizFileInstructionsBox->label("Step 2: Enter name of Capstone Survey Quiz.");
 	    quizFileInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
+
+	    // Student Quiz Name Instructions
+	    classSectionInstructionsBox->box(FL_FLAT_BOX);
+	    classSectionInstructionsBox->color(ASU_GOLD);
+	    classSectionInstructionsBox->labelfont(FL_HELVETICA_BOLD);
+	    classSectionInstructionsBox->labelcolor(ASU_BLACK);
+	    classSectionInstructionsBox->labelsize(15);
+	    classSectionInstructionsBox->label("Step 3: Select Class Sections below.");
+	    classSectionInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
 
 
 		goBack->color(ASU_GOLD);
