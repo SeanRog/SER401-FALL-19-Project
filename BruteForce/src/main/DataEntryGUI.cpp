@@ -380,6 +380,6 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget* w){
 	confirmWindow->hide();
 
 	MainWindow mainWin;
-	mainWin.MainWindow1();
+	mainWin.callTeams(w);
 
 }

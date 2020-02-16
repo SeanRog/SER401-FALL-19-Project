@@ -49,15 +49,15 @@ class MainWindow {
 
 
 	// callback functions
-	void TeamsButtonClick(Fl_Widget* w);
 	void ProgressTeamsButtonClick(Fl_Widget* w);
 	void DoneButtonClick(Fl_Widget* w);
 	void StartButtonClick(Fl_Widget* w);
 	int handle(int);
+	void TeamsButtonClick(Fl_Widget* w);
 
     public:
-		int num_projects;
-		int num_students;
+		static int num_projects;
+		static int num_students;
 		bool nextWindowFlag;
 
 		//progress bar window
@@ -88,6 +88,7 @@ class MainWindow {
 		void MainWindow2();
         MainWindow();
         ~MainWindow();
+        void callTeams(Fl_Widget* w);
 
 
 
