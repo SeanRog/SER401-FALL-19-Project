@@ -28,6 +28,7 @@
 #include <FL/Fl_File_Chooser.H>
 
 
+
 /*************************************************************************************
  * ClassSelectorGUI
  *
@@ -64,7 +65,17 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    goBack = new Fl_Button(460, 920, 110, 50, "GO BACK");
 	    Confirm = new Fl_Button(600, 920, 110, 50, "CONFIRM");
 
-	//INITIALIZE CLASS SECTION SELECTOR COMPONENTS
+	    //Initialize Project File Chooser - Step 1 Choose Project File
+		projectFileInstructionsBox = new Fl_Box(20,90,760,30);
+		projectFileChooserButton = new Fl_Button(20,140,50,50,"@+3fileopen");
+		fileInput_Project = new Fl_Input(90,150,690,30);
+		fileInput_Project->value(".");
+
+		//Initialize Student Quiz Textbox - Step 2 Enter name of Capstone Survey
+		quizFileInstructionsBox = new Fl_Box(20,210, 760, 30);
+		fileInput_StudentQuizName = new Fl_Input(20,260,760,30);
+
+	    //INITIALIZE CLASS SECTION SELECTOR COMPONENTS
 	    classBrowser = new Fl_Check_Browser(40,650,300,200, "Class Section List");
 	    inputYear = new Fl_Input(480, 650, 100, 30, "Enter Year (YYYY)");
 	    inputSemester = new Fl_Input_Choice(480,700, 100, 30, "Select Semester ");
@@ -75,6 +86,7 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    classBrowser->callback(static_BrowserSelection, this);
 	    goBack->callback(static_GobackClick, this);
 	    Confirm->callback(static_ConfirmClick, this);
+	    projectFileChooserButton->callback(static_chooseProjectFile_cb, this);
 
 	    //Additions to the components
 	    classBrowser->scrollbar;
@@ -118,6 +130,25 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    boxHeader->labelfont(FL_BOLD);
 	    boxHeader->labelsize(20);
 	    boxHeader->labelcolor(ASU_WHITE);
+
+	    //Project File Chooser Instructions
+	    projectFileInstructionsBox->box(FL_FLAT_BOX);
+	    projectFileInstructionsBox->color(ASU_GOLD);
+	    projectFileInstructionsBox->labelfont(FL_HELVETICA_BOLD);
+	    projectFileInstructionsBox->labelcolor(ASU_BLACK);
+	    projectFileInstructionsBox->labelsize(15);
+	    projectFileInstructionsBox->label("Step 1: Choose the Project .csv File to be used.");
+	    projectFileInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
+
+	    // Student Quiz Name Instructions
+	    quizFileInstructionsBox->box(FL_FLAT_BOX);
+	    quizFileInstructionsBox->color(ASU_GOLD);
+	    quizFileInstructionsBox->labelfont(FL_HELVETICA_BOLD);
+	    quizFileInstructionsBox->labelcolor(ASU_BLACK);
+	    quizFileInstructionsBox->labelsize(15);
+	    quizFileInstructionsBox->label("Step 2: Enter name of Capstone Survey Quiz.");
+	    quizFileInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
+
 
 		goBack->color(ASU_GOLD);
 		//goBack->box(FL_SHADOW_BOX);
@@ -255,6 +286,7 @@ void DataEntryGUI::GobackClick(Fl_Widget* w){
 	yesButton->callback(static_YesClick, this);
 	cancelButton1->callback(static_CancelClick1, this);
 
+
 	backWindow->end();
 	backWindow->show();
 
@@ -358,3 +390,21 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget* w){
 	mainWin.MainWindow1();
 
 }
+
+void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*){
+	Fl_Native_File_Chooser fileChooser;
+	fileChooser.title("Choose File");
+	fileChooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
+	fileChooser.preset_file(fileInput_Project->value());
+	switch ( fileChooser.show() ) {
+		default:
+			if ( fileChooser.filename() ) {
+				fileInput_Project->value(fileChooser.filename());
+			} else {
+				fileInput_Project->value("NULL");
+			}
+			break;
+	}
+}
+
+
