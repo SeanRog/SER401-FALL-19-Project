@@ -45,8 +45,7 @@
 #include "StudentsToProjects.h"
 #include "ResultWindow.h"
 #include "MainWindow.h"
-#include "ClassSelectorGUI.h"
-#include "AuthTokenGUI.h"
+#include "GUIStyles.h"
 #include "main.h"
 
 #include <iostream>
@@ -789,7 +788,6 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
     //join threads
 	for(int i = 0; i < NUM_CLASS_SECTIONS; i++) {
 		threads[i].join();
-
 	}
 
 	//print out the results
@@ -822,6 +820,7 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
 		//Set the progress bar to 100%
 		pb->value(100);
 		sprintf(percent, "%d%%", int(100));
+		pb->selection_color(ASU_GREEN);
 		pb->label(percent);
 		Fl::check();
 

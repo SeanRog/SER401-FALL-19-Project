@@ -256,7 +256,6 @@ void DataEntryGUI::GobackClick(Fl_Widget* w){
 	cancelButton1->selection_color(ASU_MAROON);
 	cancelButton1->callback(static_CancelClick1, this);
 
-
 	backWindow->color(ASU_GOLD);
 	backWindow->box(FL_BORDER_BOX);
 	backWindow->resizable(w);
@@ -358,7 +357,6 @@ void DataEntryGUI::ConfirmClick(Fl_Widget* w){
 
 	cancelButton2 = new Fl_Button(40,150,175,50,"Cancel");
 	cancelButton2->color(ASU_WHITE);
-	//cancelButton2->box(FL_SHADOW_BOX);
 	cancelButton2->labelfont(FL_HELVETICA);
 	cancelButton2->labelcolor(ASU_BLACK);
 	cancelButton2->labelsize(15);
