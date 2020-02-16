@@ -60,6 +60,9 @@ public:
 	Fl_Input* inputYear;
 	Fl_Input_Choice* inputSemester;
 
+	// Confirm or Go Back
+	Fl_Box *goBackorConfirmInstructionsBox;
+
 	//Go Back window Components
 	Fl_Window* backWindow;
 	Fl_Button* yesButton;
