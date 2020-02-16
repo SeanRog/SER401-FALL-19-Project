@@ -48,15 +48,25 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	   //reference to the homepage window
 	   prevWindow = win;
 
-	    masterWindow = new Fl_Window(750, 580, "Capstone Team Assignment System");
+	    masterWindow = new Fl_Window(750,760, "Capstone Team Assignment System");
 
-	    //background box 3 - course selector
-	    Fl_Box boxBack3(10,170,730,400);
+	    //background box 3 - background file chooser
+	    Fl_Box boxBack3(10,170,730,100);
 	    boxBack3.box(FL_FLAT_BOX);
 	    boxBack3.color(ASU_MAROON);
 
+	    //background for course selector
+	    Fl_Box boxBack5(10,390,730,240);
+	    boxBack5.box(FL_FLAT_BOX);
+	    boxBack5.color(ASU_MAROON);
+
+	    //background for course selector
+	    Fl_Box boxBack6(10,640,730,110);
+	    boxBack6.box(FL_FLAT_BOX);
+	    boxBack6.color(ASU_MAROON);
+
 	    //Header box with logo
-	    boxHeader = new Fl_Box(10,10,450,150,"Select courses        \n to generate teams   ");
+	    boxHeader = new Fl_Box(10,10,450,150,"Complete the \ninformation below");
 	    boxHeader->box(FL_BORDER_BOX);
 	    boxHeader->color(ASU_BLACK);
 	    boxHeader->labelfont(FL_HELVETICA_BOLD_ITALIC);
@@ -71,154 +81,121 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    boxHeader2->redraw();
 
 	    // Go back button
-	    goBack = new Fl_Button(420, 508, 150, 50, "Go Back");
+	    goBack = new Fl_Button(420, 680, 150, 60, "Go Back");
 		goBack->color(ASU_GOLD);
 		goBack->labelfont(FL_HELVETICA_ITALIC);
 		goBack->labelcolor(ASU_BLACK);
-		goBack->labelsize(18);
+		goBack->labelsize(20);
 		goBack->selection_color(ASU_MAROON);
 		goBack->callback(static_GobackClick, this);
 
 	    // Confirm button
-	    Confirm = new Fl_Button(580, 508, 150, 50, "Confirm");
+	    Confirm = new Fl_Button(580, 680, 150, 60, "Confirm");
 	    Confirm->color(ASU_GOLD);
 	    Confirm->labelfont(FL_HELVETICA_ITALIC);
 	    Confirm->labelcolor(ASU_BLACK);
-	    Confirm->labelsize(18);
+	    Confirm->labelsize(20);
 	    Confirm->selection_color(ASU_MAROON);
 	    Confirm->callback(static_ConfirmClick, this);
 
-	    //background box 3
-	    Fl_Box boxBack3(20,360,760,300);
-	    boxBack3.box(FL_FLAT_BOX);
-	    boxBack3.color(ASU_GREY);
-
-	    //FL_(X, Y, W, H, STRING)
-	    boxHeader = new Fl_Box(20,20,760,50,"Please Complete The Following");
-
 	    //Initialize Project File Chooser - Step 1 Choose Project File
-		projectFileInstructionsBox = new Fl_Box(20,90,760,30);
-		projectFileChooserButton = new Fl_Button(20,140,50,50,"@+3fileopen");
-		fileInput_Project = new Fl_Input(90,150,690,30);
+		projectFileChooserButton = new Fl_Button(20,210,50,50,"@+3fileopen");
+		projectFileChooserButton->callback(static_chooseProjectFile_cb, this);
+		fileInput_Project = new Fl_Input(80,220,650,30);
 		fileInput_Project->value(".");
 
 		//Initialize Student Quiz Textbox - Step 2 Enter name of Capstone Survey
-		quizFileInstructionsBox = new Fl_Box(20,210, 760, 30);
-		fileInput_StudentQuizName = new Fl_Input(20,260,760,30);
-
-	    //INITIALIZE CLASS SECTION SELECTOR COMPONENTS
-		classSectionInstructionsBox = new Fl_Box(20,310,760,30);
-
-	    //Intialize Go Back or Confirm Component
-	    Confirm = new Fl_Button(160, 730, 110, 50, "CONFIRM");
-
-	     //callbacks
-	    Confirm->callback(static_ConfirmClick, this);
-	    projectFileChooserButton->callback(static_chooseProjectFile_cb, this);
+	    //background box 3 - background quiz questionnaire
+	    Fl_Box boxBack4(10,310,730,50);
+	    boxBack4.box(FL_FLAT_BOX);
+	    boxBack4.color(ASU_MAROON);
+		fileInput_StudentQuizName = new Fl_Input(20,320,710,30);
 
 	    //INITIALIZE CLASS SECTION SELECTOR COMPONENTS
 	    // input year
-	    inputYear = new Fl_Input(230,180,100,40, "Enter Year (YYYY):  ");
+	    inputYear = new Fl_Input(220,460,100,40, "Enter Year (YYYY):  ");
 	    inputYear->labelfont(FL_HELVETICA_BOLD);
 	    inputYear->labelcolor(ASU_WHITE);
 	    inputYear->textfont(FL_HELVETICA);
-	    inputYear->labelsize(18);
+	    inputYear->labelsize(15);
 
 
 	    // Class Browser / selector
-	    classBrowser = new Fl_Check_Browser(360, 180, 370, 260, "\nSelect classes, then click confirm");
+	    classBrowser = new Fl_Check_Browser(360, 410, 370, 210);
 	    classBrowser->scrollbar;
 	    classBrowser->color(ASU_WHITE);
-		  classBrowser->textfont(FL_HELVETICA_ITALIC);
-		  classBrowser->textsize(18);
-		  classBrowser->labelcolor(ASU_WHITE);
-	    classBrowser->labelfont(FL_HELVETICA_BOLD);
-	    classBrowser->labelsize(18);
+		classBrowser->textfont(FL_HELVETICA_ITALIC);
+		classBrowser->textsize(18);
 	    classBrowser->callback(static_BrowserSelection, this);
 
 	    // Semester Selector
-	    inputSemester = new Fl_Input_Choice(230,240, 100, 40, "Select Semester:    ");
+	    inputSemester = new Fl_Input_Choice(220,410, 100, 40, "Select Semester:    ");
 	    inputSemester->add("Spring");
 	    inputSemester->add("Summer");
 	    inputSemester->add("Fall");
 	    inputSemester->value("Fall");
-	    inputSemester->textsize(18);
+	    inputSemester->textsize(15);
 	    inputSemester->labelfont(FL_HELVETICA_BOLD);
 	    inputSemester->labelcolor(ASU_WHITE);
 	    inputSemester->textfont(FL_HELVETICA);
-	    inputSemester->labelsize(18);
+	    inputSemester->labelsize(15);
 	    inputSemester->menubutton()->color(ASU_GOLD);
 	    inputSemester->menubutton()->selection_color(ASU_MAROON);
 	    inputSemester->menubutton()->textfont(FL_HELVETICA);
 	    inputSemester->menubutton()->box(FL_BORDER_BOX);
 	    inputSemester->menubutton()->textsize(18);
 
-	//End CLASS SECTION SELECTOR COMPONENTS
-	    boxHeader->box(FL_FLAT_BOX);
-	    boxHeader->color(ASU_MAROON);
-	    boxHeader->labelfont(FL_BOLD);
-	    boxHeader->labelsize(20);
-	    boxHeader->labelcolor(ASU_WHITE);
-
 	    //Project File Chooser Instructions
+	    projectFileInstructionsBox = new Fl_Box(10,170,730,30);
 	    projectFileInstructionsBox->box(FL_FLAT_BOX);
 	    projectFileInstructionsBox->color(ASU_GOLD);
 	    projectFileInstructionsBox->labelfont(FL_HELVETICA_BOLD);
 	    projectFileInstructionsBox->labelcolor(ASU_BLACK);
-	    projectFileInstructionsBox->labelsize(15);
+	    projectFileInstructionsBox->labelsize(18);
 	    projectFileInstructionsBox->label("Step 1: Choose the Project .csv File to be used.");
 	    projectFileInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
 
 	    // Student Quiz Name Instructions
+	    quizFileInstructionsBox = new Fl_Box(10,280, 730, 30);
 	    quizFileInstructionsBox->box(FL_FLAT_BOX);
 	    quizFileInstructionsBox->color(ASU_GOLD);
 	    quizFileInstructionsBox->labelfont(FL_HELVETICA_BOLD);
 	    quizFileInstructionsBox->labelcolor(ASU_BLACK);
-	    quizFileInstructionsBox->labelsize(15);
+	    quizFileInstructionsBox->labelsize(18);
 	    quizFileInstructionsBox->label("Step 2: Enter name of Capstone Survey Quiz.");
 	    quizFileInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
 
 	    // Class Section Instructions
+		classSectionInstructionsBox = new Fl_Box(10,370,730,30);
 	    classSectionInstructionsBox->box(FL_FLAT_BOX);
 	    classSectionInstructionsBox->color(ASU_GOLD);
 	    classSectionInstructionsBox->labelfont(FL_HELVETICA_BOLD);
 	    classSectionInstructionsBox->labelcolor(ASU_BLACK);
-	    classSectionInstructionsBox->labelsize(15);
+	    classSectionInstructionsBox->labelsize(18);
 	    classSectionInstructionsBox->label("Step 3: Select Class Sections below.");
 	    classSectionInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
 
 	    // Go Back or Confirm Instructions
-      goBackorConfirmInstructionsBox = new Fl_Box(20,680,760,30);
+	    goBackorConfirmInstructionsBox = new Fl_Box(10,640,730,30);
 	    goBackorConfirmInstructionsBox->box(FL_FLAT_BOX);
 	    goBackorConfirmInstructionsBox->color(ASU_GOLD);
 	    goBackorConfirmInstructionsBox->labelfont(FL_HELVETICA_BOLD);
 	    goBackorConfirmInstructionsBox->labelcolor(ASU_BLACK);
-	    goBackorConfirmInstructionsBox->labelsize(15);
+	    goBackorConfirmInstructionsBox->labelsize(18);
 	    goBackorConfirmInstructionsBox->label("Step 4: Go Back or Confirm");
 	    goBackorConfirmInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
 
-    goBack = new Fl_Button(20, 730, 110, 50, "GO BACK");
-		goBack->color(ASU_GOLD);
-		//goBack->box(FL_SHADOW_BOX);
-		goBack->labelfont(FL_HELVETICA);
-		goBack->labelcolor(ASU_BLACK);
-		goBack->labelsize(15);
-		goBack->selection_color(ASU_MAROON);
-    goBack->callback(static_GobackClick, this);
-
 	    // Generates course broswer with selections
-	    findCourses = new Fl_Button(30, 310, 300, 40, "Search for Courses");
-		  findCourses->color(ASU_GOLD);
+	    findCourses = new Fl_Button(30, 530, 300, 40, "Search for Courses");
+		findCourses->color(ASU_GOLD);
 	    findCourses->labelfont(FL_HELVETICA);
 	    findCourses->labelcolor(ASU_BLACK);
 	    findCourses->labelsize(18);
 	    findCourses->selection_color(ASU_MAROON);
 	    findCourses->callback(static_FindCoursesClick, this);
 
-
-
 	    masterWindow->color(ASU_WHITE);
-		  masterWindow->box(FL_BORDER_BOX);
+		masterWindow->box(FL_BORDER_BOX);
 	    masterWindow->show();
 	    masterWindow->end();
 

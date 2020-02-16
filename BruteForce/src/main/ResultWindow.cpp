@@ -87,7 +87,7 @@ ResultWindow::ResultWindow() {
     permBox->box(FL_FLAT_BOX);
     permBox->color(ASU_MAROON);
     permBox->align(FL_ALIGN_RIGHT);
-    permBox->labelfont(FL_HELVETICA_BOLD_ITALIC);
+    permBox->labelfont(FL_HELVETICA_BOLD);
     permBox->labelsize(15);
     permBox->labelcolor(ASU_WHITE);
 
@@ -95,7 +95,7 @@ ResultWindow::ResultWindow() {
     swapBox->box(FL_FLAT_BOX);
     swapBox->color(ASU_MAROON);
     swapBox->align(FL_ALIGN_RIGHT);
-    swapBox->labelfont(FL_HELVETICA_BOLD_ITALIC);
+    swapBox->labelfont(FL_HELVETICA_BOLD);
     swapBox->labelsize(15);
     swapBox->labelcolor(ASU_WHITE);
 
