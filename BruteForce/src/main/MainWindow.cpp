@@ -254,7 +254,6 @@ void MainWindow::MainWindow2(){
 	    Fl_Group *aboutTab = new Fl_Group(40,50,750,360,"   About   ");
 	    {
 
-
 	    	aboutTab->color(ASU_WHITE);
 	    	aboutTab->selection_color(ASU_BLACK);
 	    	aboutTab->labelcolor(ASU_WHITE);
@@ -569,6 +568,7 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget* w) {
 	progressBox->label("Team Assignment Complete! Click 'Done' to continue.");
 	progressBox->labelsize(18);
 	progressBox->labelfont(FL_HELVETICA);
+
 
 
 }

@@ -314,7 +314,6 @@ void DataEntryGUI::GobackClick(Fl_Widget* w){
 	cancelButton1->selection_color(ASU_MAROON);
 	cancelButton1->callback(static_CancelClick1, this);
 
-
 	backWindow->color(ASU_GOLD);
 	backWindow->box(FL_BORDER_BOX);
 	backWindow->resizable(w);
