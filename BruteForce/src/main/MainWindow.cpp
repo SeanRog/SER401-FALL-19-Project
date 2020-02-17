@@ -48,7 +48,7 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
-
+#include <curl/curl.h>
 
 
 using namespace std;
@@ -541,6 +541,9 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget* w) {
 
 	TeamsButton->deactivate();
 	progressBox->label("Team Assignment System Running...");
+	progressBox->labelfont(FL_HELVETICA);
+	progressBox->labelsize(20);
+	progressBox->labelcolor(ASU_BLACK);
 	imageBox->redraw();
 
 	XInitThreads();
@@ -598,6 +601,39 @@ void MainWindow::DoneButtonClick(Fl_Widget* w){
 
 }
 
+static void print_cookies(CURL *curl)
+{
+  CURLcode res;
+  struct curl_slist *cookies;
+  struct curl_slist *nc;
+  int i;
+
+  printf("Cookies, curl knows:\n");
+  res = curl_easy_getinfo(curl, CURLINFO_COOKIELIST, &cookies);
+  if(res != CURLE_OK) {
+    fprintf(stderr, "Curl curl_easy_getinfo failed: %s\n",
+            curl_easy_strerror(res));
+    exit(1);
+  }
+  nc = cookies;
+  i = 1;
+  while(nc) {
+    printf("[%d]: %s\n", i, nc->data);
+    nc = nc->next;
+    i++;
+  }
+  if(i == 1) {
+    printf("(none)\n");
+  }
+  curl_slist_free_all(cookies);
+}
+
+static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
+{
+    ((std::string*)userp)->append((char*)contents, size * nmemb);
+    return size * nmemb;
+}
+
 /*****************************************************************************
  * StartButtonClick
  *
@@ -615,12 +651,49 @@ void MainWindow::DoneButtonClick(Fl_Widget* w){
  */
 void MainWindow::StartButtonClick(Fl_Widget* w) {
 
+	//open the firefox browser for ASU canvas login page.
+
+
+	system("firefox https://canvas.asu.edu/login");
+
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
 	windowMain->hide();
 
+
+		CURL *curl;
+		  CURLcode res;
+
+	       std::string readBuffer;
+
+		  curl = curl_easy_init();
+		  if(curl) {
+		     curl_easy_setopt(curl, CURLOPT_URL, "https://canvas.asu.edu/?login_success=1");
+			  //curl_easy_setopt(curl, CURLOPT_URL, "https://canvas.asu.edu/login");
+		    // example.com is redirected, so we tell libcurl to follow redirection
+		    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+		    curl_easy_setopt(curl, CURLOPT_POST, 1L);
+		    curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt"); /* start cookie engine */
+		    curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
+
+		    // Perform the request, res will get the return code
+		    res = curl_easy_perform(curl);
+
+		    if(res != CURLE_OK)
+		      fprintf(stderr, "curl_easy_perform() failed: %s\n",
+		              curl_easy_strerror(res));
+		  }
+		       print_cookies(curl);
+
+
+		    curl_easy_cleanup(curl);
+
+
+
+
 	//call to next GUI window.
 	DataEntryGUI dataGUI(windowMain);
+
 
 }
 
