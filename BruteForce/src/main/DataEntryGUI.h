@@ -28,62 +28,12 @@
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_File_Chooser.H>
+#include <FL/Fl_Native_File_Chooser.H>
 
 
 using namespace std;
 
-
-
 class DataEntryGUI {
-
-public:
-
-	Fl_Window* masterWindow;
-	Fl_Window* prevWindow;
-
-	//Choose Project File Components
-	Fl_Box *projectFileInstructionsBox;
-	Fl_Button *projectFileChooserButton;
-	Fl_Input *fileInput_Project;
-
-	//Enter Student Survey Quiz Components
-	Fl_Box *quizFileInstructionsBox;
-	Fl_Input *fileInput_StudentQuizName;
-
-	//Class Section Selector Components
-	Fl_Box *classSectionInstructionsBox;
-	Fl_Box *boxHeader;
-	Fl_Check_Browser *classBrowser;
-	Fl_Button *findCourses;
-	Fl_Button *Confirm;
-	Fl_Button *goBack;
-	Fl_Input* inputYear;
-	Fl_Input_Choice* inputSemester;
-
-	// Confirm or Go Back
-	Fl_Box *goBackorConfirmInstructionsBox;
-
-	//Go Back window Components
-	Fl_Window* backWindow;
-	Fl_Button* yesButton;
-	Fl_Button* cancelButton1;
-
-	//Go Back window Components
-	Fl_Window* confirmWindow;
-	Fl_Button* GenerateTeamsButton;
-	Fl_Button* cancelButton2;
-
-
-	DataEntryGUI(Fl_Window* win);
-	virtual ~DataEntryGUI();
-
-	//string array of courses for use in testing.
-	string courses[17]={"2020Fall-X-SER401-90586","2019Fall-X-SER401-80888",
-			"2020Fall-X-SER401-84566","2019Fall-X-SER401-91286","2020Fall-X-SER401-70346",
-			"2018Fall-X-SER401-65686","2018Fall-X-SER401-52586","2020Spring-X-SER401-43586",
-			"2020Spring-X-SER401-65686","2018Spring-X-SER401-93286","2020Spring-X-SER401-45586",
-			"2019Fall-X-SER486-21686","2019Fall-X-SER455-10286","2019Fall-X-SER423-45336",
-			"2018Summer-X-SER530-14186","2019Summer-X-SER219-10986","2020Summer-X-SER323-55536",};
 
 	//'static' callback functions which call the real callbacks
 		static void static_BrowserSelection(Fl_Widget* w, void * data) {
@@ -132,6 +82,56 @@ public:
 		void GenerateTeamsClick(Fl_Widget* w);
 		void chooseProjectFile_cb(Fl_Widget* w);
 
+
+	public:
+
+		Fl_Window* masterWindow;
+		Fl_Window* prevWindow;
+
+		//Class Section Selector Components
+		Fl_Box *boxHeader;
+		Fl_Box *boxHeader2;
+		Fl_Check_Browser *classBrowser;
+		Fl_Button *findCourses;
+		Fl_Button *Confirm;
+		Fl_Button *goBack;
+		Fl_Input* inputYear;
+		Fl_Input_Choice* inputSemester;
+		Fl_Box* classSectionInstructionsBox;
+
+		//Go Back window Components
+		Fl_Window* backWindow;
+		Fl_Button* yesButton;
+		Fl_Button* cancelButton1;
+
+		//Go Back window Components
+		Fl_Window* confirmWindow;
+		Fl_Button* GenerateTeamsButton;
+		Fl_Button* cancelButton2;
+
+		//Choose Project File Components
+		Fl_Box *projectFileInstructionsBox;
+		Fl_Button *projectFileChooserButton;
+		Fl_Input *fileInput_Project;
+
+		//Enter Student Survey Quiz Components
+		Fl_Box *quizFileInstructionsBox;
+		Fl_Input *fileInput_StudentQuizName;
+
+		// Confirm or Go Back
+		Fl_Box *goBackorConfirmInstructionsBox;
+
+
+		DataEntryGUI(Fl_Window* win);
+		virtual ~DataEntryGUI();
+
+		//string array of courses for use in testing.
+		string courses[17]={"2020Fall-X-SER401-90586","2019Fall-X-SER401-80888",
+				"2020Fall-X-SER401-84566","2019Fall-X-SER401-91286","2020Fall-X-SER401-70346",
+				"2018Fall-X-SER401-65686","2018Fall-X-SER401-52586","2020Spring-X-SER401-43586",
+				"2020Spring-X-SER401-65686","2018Spring-X-SER401-93286","2020Spring-X-SER401-45586",
+				"2019Fall-X-SER486-21686","2019Fall-X-SER455-10286","2019Fall-X-SER423-45336",
+				"2018Summer-X-SER530-14186","2019Summer-X-SER219-10986","2020Summer-X-SER323-55536",};
 
 
 };

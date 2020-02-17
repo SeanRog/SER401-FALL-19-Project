@@ -37,6 +37,7 @@ class ResultWindow {
 		Fl_Button *buttonSave;
 		Fl_Box *permBox;
 		Fl_Box *swapBox;
+		Fl_Box *borderBox;
 
         ResultWindow();
         ~ResultWindow();
