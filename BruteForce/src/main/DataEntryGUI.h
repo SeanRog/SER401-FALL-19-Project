@@ -51,6 +51,7 @@ public:
 	Fl_Input *fileInput_StudentQuizName;
 
 	//Class Section Selector Components
+	Fl_Box *classSectionInstructionsBox;
 	Fl_Box *boxHeader;
 	Fl_Check_Browser *classBrowser;
 	Fl_Button *findCourses;
@@ -58,6 +59,9 @@ public:
 	Fl_Button *goBack;
 	Fl_Input* inputYear;
 	Fl_Input_Choice* inputSemester;
+
+	// Confirm or Go Back
+	Fl_Box *goBackorConfirmInstructionsBox;
 
 	//Go Back window Components
 	Fl_Window* backWindow;
