@@ -193,6 +193,7 @@ void StudentsToProjects::updateProgressBar(int num, Fl_Progress* pb){
 			 char percent[10];
 			 sprintf(percent, "%d%%", int((progressBarValue/100.0)*100.0));
 			 pb->label(percent);
+			 pb->redraw();
 			 Fl::check();
 }
 
@@ -343,10 +344,13 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
         			}
         			//----Now the team for this combination is formed.-----
 
-        			//Negative Affinity Check
-        			//check returns true if there is negative affinity on the team,
-        	        //and false if there is no negative affinity.
-        			if (NegativeAffinityCheck(currentTeam.team) == false){
+        			//Negative Affinity Check and NDA/IPR agreement check
+        			//
+        			//Continues if there is no negative affinity between any of the members, AND
+        			//all the students agree to sign an NDA or IPR if the project requires it.
+        			//otherwise, the current team combination is skipped.
+
+        			if ((NegativeAffinityCheck(currentTeam.team) == false)&&(NDA_IPRCheck(currentTeam.team, projectPool[i]) == true)){
 
         				//call to 3 team score functions
         				//TeamScore = func1() + func2() + func3()
@@ -697,6 +701,10 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	             	        	  for (int x= 0; x< numProjects; x ++){
 	             	        	 if (bestSet[x].projectID == projectPool[x].ProjectID){
 	             	        	 CurrentProject = projectPool[x];
+	             	        	 //assign a class ID to this team.
+	             	        	 bestSet[x].ClassID = projectPool[x].ClassID;
+	             	        	 bestSet[x].project = CurrentProject;
+
 	             	        	 }}
 
 
@@ -843,6 +851,28 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	             	    	newProjectSetScore += bestSet[i].TeamScore;
 	             	    }
 
+	             	    //Now that the teams have been assigned,
+	             	    //compute the teams results score- which is the student to student skill
+	             	    //comparison score added with the team availability score.
+	             	   for(int i = 0; i < numProjects; i++){
+
+	             		  for(int j = 0; j < 5; j++){
+	             		  studentSkills[j] =*(ProjectXStudentSkills + (bestSet[i].project.PoolID * numStudents) + bestSet[i].team[j].PoolID);
+	             		  skillSums[j] = studentSkillSums[bestSet[i].team[j].PoolID];
+	             		  }
+
+
+	             		   bestSet[i].ResultScore = SkillCompareTeamScore(skillSums) + AvailabilityTeamScore(bestSet[i].team);
+	             			float percent= 0;
+	             			float max = 60;
+	             			percent = bestSet[i].ResultScore/ max;
+	             			percent = percent * 100;
+	             		  bestSet[i].ResultScore = (int)percent;
+	             		   //cout<<"Team skill score: "<< SkillCompareTeamScore(skillSums)<<" Avail score: "<<AvailabilityTeamScore(bestSet[i].team)<<endl;
+
+	             	   }
+
+
 
 	             		//Prints out the best project set found, without duplicates.
 	             		cout << endl;
@@ -857,9 +887,11 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	             			result.append("Project#" + to_string(bestSet[i].projectID) + ": ");
 	             		    for(int k = 0; k < teamSize; k++) {
 	             		        	cout<< to_string(bestSet[i].team[k].StudentID) + " ";
-	             		        	result.append(to_string(bestSet[i].team[k].StudentID) + " ");
+	             		        	result.append(" "+(bestSet[i].team[k].name) + ", ");
 	             		        	bestSet[i].team[k].ProjectID = bestSet[i].projectID;
 	             		    }
+	             		    result.append("\n Score: " + to_string(bestSet[i].TeamScore)+"\n");
+
 	             		    result.append("\n");
 	             		    cout << endl;
 	             		    cout << "Team Score: "<<bestSet[i].TeamScore <<endl;
@@ -1083,6 +1115,16 @@ int StudentsToProjects::StudentToStudentSkill( int skillsum1, int skillsum2){
 	percent = percent * 40;
 	percent = (int)percent;
 
+	//increase the initial score, because getting a perfect score in this area
+	//is nearly impossible. most scores will be low, so increase to better
+	//reflect the quality of the assignment.
+	percent = (int)(percent + (percent*0.50));
+
+	//cap score at 40.
+	if(percent >= 40){
+		percent = 40;
+	}
+
     //return the score 0-40
 	return percent;
 
@@ -1175,7 +1217,6 @@ int StudentsToProjects::StudentToStudentSkill( int skillsum1, int skillsum2){
  * Author: Matthew Cilibraise
  *
  * Description:
- * currently takes in a vector of students, which represents a possible team combination.
  * function checks to see if any students have negative affinity toward one another.
  * If negative affinity between team members IS NOT found, function will return a boolean value of false,
  * If negative affinity between team member IS found, function will return a boolean value of true.
@@ -1231,4 +1272,42 @@ bool StudentsToProjects::NegativeAffinityCheck(Student team[5]){
 		}
 	} // end studentTeamCounter loop
 	return negativeAffinity;
+}
+
+
+/*********************************************************
+* NDA_IPRCheck(
+*
+*
+* Description:
+* function checks to see if any students on this team do not want to sign an NDA or IPR agreement.
+* returns false if there the project requires an NDA or an IPR, and a student on the team does not
+* agree to sign one of them.
+*
+*Arguments:
+*	Student team[5] (the team of students to check)
+*	Project project
+*
+*Returns:
+*  boolean value
+*
+*/
+bool StudentsToProjects::NDA_IPRCheck(Student team[5], Project project){
+
+for (int i = 0; i < 5 ; i++){
+
+	if((team[i].NDA == false)&&(project.NDA==true)){
+		return false;
+	}
+
+	if((team[i].IPR == false)&&(project.IPR==true)){
+		return false;
+	}
+
+}
+
+
+
+return true;
+
 }

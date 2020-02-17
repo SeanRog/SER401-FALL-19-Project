@@ -28,11 +28,13 @@
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_File_Chooser.H>
+#include <FL/Fl_Native_File_Chooser.H>
 
 
 using namespace std;
 
 class DataEntryGUI {
+
 	//'static' callback functions which call the real callbacks
 		static void static_BrowserSelection(Fl_Widget* w, void * data) {
 			((DataEntryGUI*)data)->BrowserSelection(w);
@@ -65,7 +67,9 @@ class DataEntryGUI {
 		static void static_YesClick(Fl_Widget* w, void * data) {
 				((DataEntryGUI*)data)->YesClick(w);
 			}
-
+		static void static_chooseProjectFile_cb(Fl_Widget* w, void * data) {
+						((DataEntryGUI*)data)->chooseProjectFile_cb(w);
+					}
 
 	//callback functions
 		void BrowserSelection(Fl_Widget* w);
@@ -76,6 +80,8 @@ class DataEntryGUI {
 		void CancelClick1(Fl_Widget* w);
 		void CancelClick2(Fl_Widget* w);
 		void GenerateTeamsClick(Fl_Widget* w);
+		void chooseProjectFile_cb(Fl_Widget* w);
+
 
 	public:
 
@@ -84,13 +90,14 @@ class DataEntryGUI {
 
 		//Class Section Selector Components
 		Fl_Box *boxHeader;
+		Fl_Box *boxHeader2;
 		Fl_Check_Browser *classBrowser;
 		Fl_Button *findCourses;
 		Fl_Button *Confirm;
 		Fl_Button *goBack;
 		Fl_Input* inputYear;
 		Fl_Input_Choice* inputSemester;
-
+		Fl_Box* classSectionInstructionsBox;
 
 		//Go Back window Components
 		Fl_Window* backWindow;
@@ -101,6 +108,18 @@ class DataEntryGUI {
 		Fl_Window* confirmWindow;
 		Fl_Button* GenerateTeamsButton;
 		Fl_Button* cancelButton2;
+
+		//Choose Project File Components
+		Fl_Box *projectFileInstructionsBox;
+		Fl_Button *projectFileChooserButton;
+		Fl_Input *fileInput_Project;
+
+		//Enter Student Survey Quiz Components
+		Fl_Box *quizFileInstructionsBox;
+		Fl_Input *fileInput_StudentQuizName;
+
+		// Confirm or Go Back
+		Fl_Box *goBackorConfirmInstructionsBox;
 
 
 		DataEntryGUI(Fl_Window* win);

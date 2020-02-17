@@ -44,6 +44,7 @@ class StudentsToProjects {
 
 		//Team scoring functions
 		int AvailabilityTeamScore(Student team[5]); //compares the availability of students on a team, returns a score 0-20
+		bool NDA_IPRCheck(Student team[5], Project project); //checks the students against the project's NDA/IPR
 		int SkillCompareTeamScore(int studentSkills[5]); //compares the skills of students on a team, returns a score 0-40
 		//compares the student's skills to the project, returns a score 0-40
 	    int ProjectCompareTeamScore( int studentSkills[5], int maxProjectScore);

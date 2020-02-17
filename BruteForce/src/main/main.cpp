@@ -45,8 +45,7 @@
 #include "StudentsToProjects.h"
 #include "ResultWindow.h"
 #include "MainWindow.h"
-#include "ClassSelectorGUI.h"
-#include "AuthTokenGUI.h"
+#include "GUIStyles.h"
 #include "main.h"
 
 #include <iostream>
@@ -570,6 +569,7 @@ Fl_Output *output;
 int main(){
 
 
+	XInitThreads();
 	MainWindow mainWin;
 
 	//mainWin.MainWindow1();
@@ -624,7 +624,7 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
 
 	const int NUM_PROJECTS = toConstInt(tempProj);
 	const int NUM_STUDENTS = toConstInt(tempStud);
-	const int NUM_SKILLS = 7;
+	const int NUM_SKILLS = 15;
 	const int NUM_CLASS_SECTIONS = 4;
 
 	Utility util;
@@ -640,6 +640,8 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
 
 	//Change this value to change the number of top teams stored.
     int tempNumTopTeams = 5;
+
+    //Team size, (must be 5)
     int tempTeamSize = 5;
 
 	const int NUM_TOP_TEAMS = toConstInt(tempNumTopTeams);
@@ -786,7 +788,6 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
     //join threads
 	for(int i = 0; i < NUM_CLASS_SECTIONS; i++) {
 		threads[i].join();
-
 	}
 
 	//print out the results
@@ -819,6 +820,7 @@ int main::main_run(int projects_input, int students_input, Fl_Progress* pb){
 		//Set the progress bar to 100%
 		pb->value(100);
 		sprintf(percent, "%d%%", int(100));
+		pb->selection_color(ASU_GREEN);
 		pb->label(percent);
 		Fl::check();
 

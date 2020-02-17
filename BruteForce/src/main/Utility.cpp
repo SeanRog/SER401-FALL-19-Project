@@ -24,6 +24,7 @@
 #include "Project.h"
 #include "Student.h"
 #include "ClassSection.h"
+#include "FakeStudentNames.h"
 
 #include <iostream>
 #include <utility>
@@ -1212,6 +1213,29 @@ void Utility::makeProjectJSON(int numProj, int numSkill) {
 	        file << "{\"ProjectID\": " << projectID << ",\n";
 
 
+	        /*Prints out schema: {"NDA": bool, */
+	        /*Prints out schema: {"IPR": bool, */
+	        //25 percent of projects will require students sign an IPR and NDA agreement.
+	        int percent = (int) numProjects * (0.25);
+	        if(projectID < (percent+1)) {
+	        	file << "\"NDA\": true,\n";
+	        	file << "\"IPR\": true,\n";
+	        }else {
+	        file << "\"NDA\": false,\n";
+	    	file << "\"IPR\": false,\n";}
+
+
+	        /*Prints out schema: {"NDA": bool, */
+	        /*Prints out schema: {"IPR": bool, */
+	        //5 percent of projects will require students use shared hardware.
+	        percent = (int) numProjects * (0.05);
+	        if(projectID < (percent+1)) {
+	        	file << "\"sharedHardware\": true,\n";
+	        }else {
+	        	file << "\"sharedHardware\": false,\n";}
+
+
+
 	        /*Prints out schema: "Priority": (Priority), priority can be
 	         * 0,1, or 2. This file randomizes it between the three options.  */
 	        file << " \"Priority\": " << rand() % (2 +1) << ",\n";
@@ -1235,7 +1259,7 @@ void Utility::makeProjectJSON(int numProj, int numSkill) {
 
 
 	        file << " \"Type\": ";
-	        int percent = (int) numProjects * (0.10);
+	        percent = (int) numProjects * (0.10);
 	        if(projectID < (percent+1)) {
 	            file << "\"O\" }, \n\n"; }
 	        else if ( projectID > percent && projectID < ((percent+percent+1))) {
@@ -1285,12 +1309,17 @@ void Utility::makeStudentJSON(int numStud, int numSkill) {
       //Loops through studentIDs to print
       for(int studentID = 1; studentID <= numStudent; studentID++) {
 
+
+
        string asuID = "ASU"+to_string(studentID);
        /*Prints out schema: {"StudentID": (studentID#), */
        file << "{\"ASUriteID\": \"" << asuID << "\",\n";
 
        /*Prints out schema: {"StudentID": (studentID#), */
        file << "\"StudentID\": " << studentID << ",\n";
+
+       /*Prints out schema: {"StudentID": (studentID#), */
+       file << "\"name\": \"" << names[studentID] << "\",\n";
 
         /*Prints out schema: "ClassID": (classID), classID is divided
          * equally into 4 sections   */
@@ -1302,6 +1331,18 @@ void Utility::makeStudentJSON(int numStud, int numSkill) {
             file << " \"ClassID\": 2,\n";   }
         if(studentID > student_75 && studentID <= numStudent) {
             file << " \"ClassID\": 3,\n";   }
+
+        /*Prints out schema: {"NDA": bool, */
+        /*Prints out schema: {"IPR": bool, */
+        //5 percent of students will not want to sign the agreements.
+
+        int percent = (int) numStudent * (0.05);
+        if(studentID < (percent+1)) {
+        	file << "\"NDA\": false,\n";
+        	file << "\"IPR\": false,\n";
+        }else {
+        file << "\"NDA\": true,\n";
+    	file << "\"IPR\": true,\n";}
 
 
         /*Prints out schema: "Skills": [(skills)],  ramdomly generates skills
@@ -1604,6 +1645,79 @@ vector<vector<string>> Utility::toCSVcse (string filename) {
 		}
 		file.close();
 	return dataList;
+}
+
+/*********************************************************
+ * csvToProjectsVector
+ *
+ * Author: Sean Rogers
+ *
+ * Description:
+ * 	Just like the previous method, takes in a CSV file, puts the projects in the CSV file into
+ * 	project objects, then places each project object into a vector, then returns that vector.
+ *
+ *Arguments:
+ *	string filename
+ *
+ *Returns:
+ *  vector<Project> containing the project objects obtained from the projects in the CSV file.
+ */
+vector<Project> Utility::csvToProjectsVector(string filename) {
+	vector<Project> projects;
+
+	vector<vector<string>> dataList;
+
+	ifstream file(filename);
+
+	string line = "";
+	int bracketCount = 0;
+	while(getline(file,line)) {
+		vector<string> vec;
+		string element = "";
+		for(int i = 0; i < line.length(); i++) {
+			if(line.at(i) == '[') {
+				bracketCount++;
+			}
+			if(line.at(i) == ']') {
+				bracketCount--;
+			}
+			if(line.at(i) == ',' && bracketCount == 0) {
+				vec.push_back(element);
+				element = "";
+			} else {
+				element.push_back(line.at(i));
+			}
+
+			if(i + 1 == line.length()) {
+				vec.push_back(element);
+			}
+		}
+		dataList.push_back(vec);
+	}
+	file.close();
+
+	//put csv data into a project object, add that project object to vector<Project> projects,
+	//repeat for all project data in CSV, return projects
+	for (int i = 1; i < dataList.size(); i++) {
+		Project p = Project();
+		p.ProjectID = i;
+		p.NDA = atoi((dataList.at(i).at(dataList.at(i).size() - 6)).c_str());
+		p.IPR = atoi((dataList.at(i).at(dataList.at(i).size() - 5)).c_str());
+		p.sharedHardware = atoi((dataList.at(i).at(dataList.at(i).size() - 4)).c_str());
+		p.Type = (dataList.at(i).at(dataList.at(i).size() - 3)).at(0);
+		p.ClassID = atoi((dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
+		p.Priority = atoi((dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
+
+		projects.push_back(p);
+		for (int j = dataList.at(i).size() - 1; j > dataList.at(i).size() - 7; j--) {
+			cout << dataList.at(i).at(j) << " | ";
+			if(j == dataList.at(i).size() - 6) {
+				cout << dataList.at(i).at(j) << " | ";
+			}
+		}
+		cout << " end line"<< endl;
+	}
+	return projects;
 }
 
 

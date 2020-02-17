@@ -14,14 +14,17 @@
 #include <FL/Fl_Int_Input.H>
 #include <FL/Fl_File_Chooser.H>
 #include <FL/Fl_RGB_Image.H>
+#include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Progress.H>
+#include <FL/Fl_Text_Display.H>
+#include <FL/Fl_Text_Buffer.H>
 #include <FL/names.h>
 
-#include "ClassSelectorGUI.h"
-#include "AuthTokenGUI.h"
 
 using namespace std;
+
+
 
 class MainWindow {
 
@@ -42,25 +45,31 @@ class MainWindow {
 		((MainWindow*)data)->StartButtonClick(w);
 	}
 
+
+
+
 	// callback functions
-	void TeamsButtonClick(Fl_Widget* w);
 	void ProgressTeamsButtonClick(Fl_Widget* w);
 	void DoneButtonClick(Fl_Widget* w);
 	void StartButtonClick(Fl_Widget* w);
 	int handle(int);
+	void TeamsButtonClick(Fl_Widget* w);
 
     public:
-		int num_projects;
-		int num_students;
+		static int num_projects;
+		static int num_students;
 		bool nextWindowFlag;
 
 		//progress bar window
 		int barCount;
+		//Fl_Box *backBox;
 		Fl_Window *progressWindow;
 		Fl_Progress *progressBar;
 		Fl_Box *progressBox;
 		Fl_Button *TeamsButton;
 		Fl_Button *doneButton;
+		Fl_Box *imageBox;
+
 
 		//main window
 		Fl_Window *windowMain;
@@ -73,12 +82,13 @@ class MainWindow {
 		Fl_Int_Input* inputprojects;
 		Fl_Int_Input* inputstudents;
 
+
 		//virtual int handle(int event);
 		void MainWindow1();
 		void MainWindow2();
         MainWindow();
         ~MainWindow();
-
+        void callTeams(Fl_Widget* w);
 
 
 

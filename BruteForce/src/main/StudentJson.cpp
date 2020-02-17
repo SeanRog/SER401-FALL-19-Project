@@ -79,6 +79,7 @@ Student StudentJson::getStudentJsonObject(string filename, int i){
 
 	student.ASUriteID = obj["students"].get((int)i, "")["ASUriteID"].asString();
 	student.StudentID = obj["students"].get((int)i, "")["StudentID"].asInt();
+	student.name = obj["students"].get((int)i, "")["name"].asString();
 	student.ClassID = obj["students"].get((int)i, "")["ClassID"].asInt();
 
 	for(int j = 0; j < numAffinities; j =j+2) {
@@ -93,6 +94,9 @@ Student StudentJson::getStudentJsonObject(string filename, int i){
 	for (int j = 0; j < numSkills; j++) {
 		student.Skills[j] = (obj["students"].get((int)i, "")["Skills"][j].asInt());
 	}
+
+	student.NDA = obj["students"].get((int)i, "")["NDA"].asBool();
+	student.IPR = obj["students"].get((int)i, "")["IPR"].asBool();
 
 	return student;
 }
