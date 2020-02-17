@@ -86,7 +86,7 @@ int main(void) {
         curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt"); /* start cookie engine */ 
         curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
         curl_easy_setopt(curl, CURLOPT_LOGIN_OPTIONS, "AUTH=*");
-        curl_easy_setopt(curl, CURLOPT_USERPWD, "cdeleo1:salohcin72(");
+        //curl_easy_setopt(curl, CURLOPT_USERPWD, "");
 
         headers = curl_slist_append(headers, 
                 "Content-Type: application/json");
