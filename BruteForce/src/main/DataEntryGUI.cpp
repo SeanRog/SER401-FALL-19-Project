@@ -30,7 +30,6 @@
 Fl_PNG_Image LOGO_BLACK1("./Images/asu_sunburst_rgb_maroongold_150ppi.png");
 
 
-
 /*************************************************************************************
  * ClassSelectorGUI
  *
@@ -99,10 +98,14 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    Confirm->callback(static_ConfirmClick, this);
 
 	    //Initialize Project File Chooser - Step 1 Choose Project File
-		projectFileChooserButton = new Fl_Button(20,210,50,50,"@+3fileopen");
+		projectFileChooserButton = new Fl_Button(20,210,50,50);
 		projectFileChooserButton->callback(static_chooseProjectFile_cb, this);
 		fileInput_Project = new Fl_Input(80,220,650,30);
 		fileInput_Project->value(".");
+		Fl_PNG_Image Folder("./Images/folder.png");
+		projectFileChooserButton->color(ASU_GOLD);
+		projectFileChooserButton->selection_color(ASU_MAROON);
+		projectFileChooserButton->image(Folder);
 
 		//Initialize Student Quiz Textbox - Step 2 Enter name of Capstone Survey
 	    //background box 3 - background quiz questionnaire
@@ -118,7 +121,6 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	    inputYear->labelcolor(ASU_WHITE);
 	    inputYear->textfont(FL_HELVETICA);
 	    inputYear->labelsize(15);
-
 
 	    // Class Browser / selector
 	    classBrowser = new Fl_Check_Browser(360, 410, 370, 210);
@@ -366,15 +368,42 @@ void DataEntryGUI::CancelClick2(Fl_Widget* w){
  */
 void DataEntryGUI::ConfirmClick(Fl_Widget* w){
 
+	confirmWindow = new Fl_Window(850, 220, "Confirmation Window");
 
-	confirmWindow = new Fl_Window(650, 220, "Confirmation Window");
+	//project file values
+	string proj = fileInput_Project->value();
+	int length = proj.length();
+	char prompt1[length+1];
+	strcpy(prompt1, proj.c_str());
 
-	const char prompt1[] = "./Images/asu_sunburst_rgb_maroongold_150ppi.png";
-	const char prompt2[] = "Capstone Questionnaire";
-	const char prompt3[] = "2020_Projects.csv";
+	// questionnaire name value
+	string quest = fileInput_StudentQuizName->value();
+	length = quest.length();
+	char prompt2[length+1];
+	strcpy(prompt2, quest.c_str());
+
+	// broswer selection values
+	string classes = "";
+	int first = 0;
+	for(int i = 0; i<=classBrowser->nitems(); i++) {
+		if(classBrowser->checked(i)) {
+			if(first == 0) {
+				classes = classes + classBrowser->text(i);
+				first = 1;
+			} else {
+			classes = classes + ", " + classBrowser->text(i);
+			}
+		}
+	}
+	length = classes.length();
+	char prompt3[length+1];
+	strcpy(prompt3, classes.c_str());
+
+
+
 	confirmWindow->begin();
 
-	Fl_Box promptBox1(0,10,650,30, "Does all the information look correct?");
+	Fl_Box promptBox1(0,10,850,30, "Does all the information look correct?");
 	promptBox1.align(FL_ALIGN_CENTER);
 	promptBox1.labelsize(30);
 
@@ -405,7 +434,7 @@ void DataEntryGUI::ConfirmClick(Fl_Widget* w){
 	promptBox4R.labelsize(15);
 	promptBox4R.labelfont(FL_HELVETICA);
 
-	GenerateTeamsButton = new Fl_Button(425,150,175,50,"Generate Teams");
+	GenerateTeamsButton = new Fl_Button(635,150,175,50,"Generate Teams");
 	GenerateTeamsButton->color(ASU_WHITE);
 	GenerateTeamsButton->labelfont(FL_HELVETICA);
 	GenerateTeamsButton->labelcolor(ASU_BLACK);
