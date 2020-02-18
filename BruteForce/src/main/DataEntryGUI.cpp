@@ -256,7 +256,6 @@ void DataEntryGUI::FindCoursesClick(Fl_Widget *w) {
 
 			int length = course.length();
 			char course_char[length + 1];
-
 			strcpy(course_char, course.c_str());
 
 			cout << course << endl;
