@@ -643,7 +643,7 @@ static void getCourses() {
 
         headers = curl_slist_append(headers, "Content-Type: application/json");
         char auth[] = "Authorization: Bearer ";
-        char AuthToken[] = "";
+        char AuthToken[] = "7236~BaJovpsxyZBXoE5Y69xHYhYMHkINIJJ6VfrbsOwnJjIpeaJMTlOBsWdB2ULeqssv";
         strcat(auth, AuthToken);
 
         const char* authT = toConstChar(auth);
@@ -700,7 +700,7 @@ static void getQuizzes() {
 
         headers = curl_slist_append(headers, "Content-Type: application/json");
         char auth[] = "Authorization: Bearer " ;
-        char AuthToken[] = "";
+        char AuthToken[] = "7236~BaJovpsxyZBXoE5Y69xHYhYMHkINIJJ6VfrbsOwnJjIpeaJMTlOBsWdB2ULeqssv";
         strcat(auth, AuthToken);
         headers = curl_slist_append(headers, auth);
 
@@ -759,7 +759,7 @@ static void getQuizzes() {
 void MainWindow::StartButtonClick(Fl_Widget *w) {
 
 	//open the firefox browser for ASU canvas login page.
-	//system("firefox https://canvas.asu.edu/login");
+	system("firefox https://canvas.asu.edu/login");
 
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
