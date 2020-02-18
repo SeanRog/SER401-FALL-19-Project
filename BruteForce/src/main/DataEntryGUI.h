@@ -7,16 +7,13 @@
 
 #ifndef SRC_MAIN_DATAENTRYGUI_H_
 #define SRC_MAIN_DATAENTRYGUI_H_
-
 #include "MainWindow.h"
 #include "GUIStyles.h"
 #include "main.h"
-
 #include <iostream>
 #include <string>
 #include <cstdlib>
 #include <stdio.h>
-
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
@@ -30,60 +27,18 @@
 #include <FL/Fl_File_Chooser.H>
 #include <FL/Fl_Native_File_Chooser.H>
 
-
 using namespace std;
 
 class DataEntryGUI {
-
-	//'static' callback functions which call the real callbacks
-		static void static_BrowserSelection(Fl_Widget* w, void * data) {
-			((DataEntryGUI*)data)->BrowserSelection(w);
-		}
-
-		static void static_FindCoursesClick(Fl_Widget* w, void * data) {
-			((DataEntryGUI*)data)->FindCoursesClick(w);
-		}
-
-		static void static_GobackClick(Fl_Widget* w,void * data) {
-				((DataEntryGUI*)data)->GobackClick(w);
-			}
-
-		static void static_ConfirmClick(Fl_Widget* w, void * data) {
-				((DataEntryGUI*)data)->ConfirmClick(w);
-			}
-
-		static void static_GenerateTeamsClick(Fl_Widget* w, void * data) {
-				((DataEntryGUI*)data)->GenerateTeamsClick(w);
-			}
-
-		static void static_CancelClick1(Fl_Widget* w, void * data) {
-				((DataEntryGUI*)data)->CancelClick1(w);
-			}
-
-		static void static_CancelClick2(Fl_Widget* w, void * data) {
-				((DataEntryGUI*)data)->CancelClick2(w);
-			}
-
-		static void static_YesClick(Fl_Widget* w, void * data) {
-				((DataEntryGUI*)data)->YesClick(w);
-			}
-		static void static_chooseProjectFile_cb(Fl_Widget* w, void * data) {
-						((DataEntryGUI*)data)->chooseProjectFile_cb(w);
-					}
-
-	//callback functions
-		void BrowserSelection(Fl_Widget* w);
-		void FindCoursesClick(Fl_Widget* w);
-		void GobackClick(Fl_Widget* w);
-		void ConfirmClick(Fl_Widget* w);
-		void YesClick(Fl_Widget* w);
-		void CancelClick1(Fl_Widget* w);
-		void CancelClick2(Fl_Widget* w);
-		void GenerateTeamsClick(Fl_Widget* w);
-		void chooseProjectFile_cb(Fl_Widget* w);
-
-
 	public:
+		//string array of courses for use in testing.
+		string courses[17] =
+			{"2020Fall-X-SER401-90586","2019Fall-X-SER401-80888",
+			"2020Fall-X-SER401-84566","2019Fall-X-SER401-91286","2020Fall-X-SER401-70346",
+			"2018Fall-X-SER401-65686","2018Fall-X-SER401-52586","2020Spring-X-SER401-43586",
+			"2020Spring-X-SER401-65686","2018Spring-X-SER401-93286","2020Spring-X-SER401-45586",
+			"2019Fall-X-SER486-21686","2019Fall-X-SER455-10286","2019Fall-X-SER423-45336",
+			"2018Summer-X-SER530-14186","2019Summer-X-SER219-10986","2020Summer-X-SER323-55536",};
 
 		Fl_Window* masterWindow;
 		Fl_Window* prevWindow;
@@ -121,19 +76,30 @@ class DataEntryGUI {
 		// Confirm or Go Back
 		Fl_Box *goBackorConfirmInstructionsBox;
 
-
 		DataEntryGUI(Fl_Window* win);
 		virtual ~DataEntryGUI();
 
-		//string array of courses for use in testing.
-		string courses[17]={"2020Fall-X-SER401-90586","2019Fall-X-SER401-80888",
-				"2020Fall-X-SER401-84566","2019Fall-X-SER401-91286","2020Fall-X-SER401-70346",
-				"2018Fall-X-SER401-65686","2018Fall-X-SER401-52586","2020Spring-X-SER401-43586",
-				"2020Spring-X-SER401-65686","2018Spring-X-SER401-93286","2020Spring-X-SER401-45586",
-				"2019Fall-X-SER486-21686","2019Fall-X-SER455-10286","2019Fall-X-SER423-45336",
-				"2018Summer-X-SER530-14186","2019Summer-X-SER219-10986","2020Summer-X-SER323-55536",};
+		//callback functions
+		void BrowserSelection(Fl_Widget* w);
+		void FindCoursesClick(Fl_Widget* w);
+		void GobackClick(Fl_Widget* w);
+		void ConfirmClick(Fl_Widget* w);
+		void YesClick(Fl_Widget* w);
+		void CancelClick1(Fl_Widget* w);
+		void CancelClick2(Fl_Widget* w);
+		void GenerateTeamsClick(Fl_Widget* w);
+		void chooseProjectFile_cb(Fl_Widget* w);
 
-
+		//'static' callback functions which call the real callbacks
+		static void static_BrowserSelection(Fl_Widget* w, void * data) {((DataEntryGUI*)data)->BrowserSelection(w);}
+		static void static_FindCoursesClick(Fl_Widget* w, void * data) {((DataEntryGUI*)data)->FindCoursesClick(w);}
+		static void static_GobackClick(Fl_Widget* w,void * data) {((DataEntryGUI*)data)->GobackClick(w);}
+		static void static_ConfirmClick(Fl_Widget* w, void * data) {((DataEntryGUI*)data)->ConfirmClick(w);}
+		static void static_GenerateTeamsClick(Fl_Widget* w, void * data) {((DataEntryGUI*)data)->GenerateTeamsClick(w);}
+		static void static_CancelClick1(Fl_Widget* w, void * data) {((DataEntryGUI*)data)->CancelClick1(w);}
+		static void static_CancelClick2(Fl_Widget* w, void * data) {((DataEntryGUI*)data)->CancelClick2(w);}
+		static void static_YesClick(Fl_Widget* w, void * data) {((DataEntryGUI*)data)->YesClick(w);}
+		static void static_chooseProjectFile_cb(Fl_Widget* w, void * data) {((DataEntryGUI*)data)->chooseProjectFile_cb(w);}
 };
 
 #endif /* SRC_MAIN_DATAENTRYGUI_H_ */
