@@ -44,6 +44,7 @@ constexpr int toConstInt(int constInt) {
 ResultWindow::ResultWindow() {
 
 	// MAIN WINDOW
+
 	windowResult = new Fl_Window(900, 600, "Capstone Team Assignment Results");
 
 	Fl_Box *backBox1 = new Fl_Box(0, 0, 10, 200);

@@ -20,10 +20,6 @@ using namespace std;
  * </DESC>
  */
 
-
-
-
-
 static void print_cookies(CURL *curl) {
 	CURLcode res;
 	struct curl_slist *cookies;
@@ -57,7 +53,8 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb,
 	return size * nmemb;
 }
 
-//Function to convert integers into constant expressions.
+
+//Function to convert char[] into constant expressions.
 constexpr char* toConstChar(char* constInt) {
 	return constInt;
 }

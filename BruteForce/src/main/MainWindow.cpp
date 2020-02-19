@@ -48,7 +48,9 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
+
 #include <curl/curl.h>
+
 
 using namespace std;
 int MainWindow::num_projects = 0;
@@ -409,7 +411,8 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	TeamsButton = new Fl_Button(25, 260, 200, 50, "Generate Teams");
 	doneButton = new Fl_Button(345, 260, 200, 50, "Done");
 	progressBar = new Fl_Progress(20, 325, 530, 40);
-	progressBox = new Fl_Box(10, 330, 550, 40, "");
+
+	//progressBox = new Fl_Box(10, 330, 550, 40, "");
 
 	progressBar->minimum(0);               // set progress range to be 0.0 ~ 1.0
 	progressBar->maximum(1);
@@ -430,6 +433,8 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	imageBox->box(FL_FLAT_BOX);
 	imageBox->image(baseImage);
 	imageBox->redraw();
+
+	progressBox = new Fl_Box(10, 210, 550, 40, "");
 
 	doneButton->color(ASU_GOLD);
 	doneButton->selection_color(ASU_MAROON);
@@ -457,6 +462,7 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	TeamsButton->callback(static_ProgressTeamsButtonClick, this);
 	doneButton->callback(static_DoneButtonClick, this);
 	progressWindow->redraw();
+
 
 	Fl::run();
 }
@@ -604,6 +610,7 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
  *		nothing
  */
 void MainWindow::StartButtonClick(Fl_Widget *w) {
+
 
 	//open the firefox browser for ASU canvas login page.
 	//system("firefox https://canvas.asu.edu/login");
