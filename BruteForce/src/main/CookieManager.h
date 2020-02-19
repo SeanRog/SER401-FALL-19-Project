@@ -8,8 +8,8 @@
  * 
  */
 
-#ifndef COOKIE_MANAGER_H_
-#define COOKIE_MANAGER_H_
+#ifndef COOKIEMANAGER_H_
+#define COOKIEMANAGER_H_
 
 #include <string>
 
@@ -18,8 +18,10 @@ using namespace std;
 class CookieManager {
     public:
         CookieManager();
-        void initSession(string url);
-        ~Utility();
+        ~CookieManager();
+        void newHttpsSession(string url);
+        int WriteCallback(void *contents, size_t size, size_t nmemb, void *userp);
+        
 };
 
-#endif /* SRC_MAIN_COOKIE_MANAGER_H_ */
+#endif /* SRC_MAIN_COOKIEMANAGER_H_ */

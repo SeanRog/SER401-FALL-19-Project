@@ -47,6 +47,7 @@
 #include "MainWindow.h"
 #include "GUIStyles.h"
 #include "main.h"
+#include "CookieManager.h"
 
 #include <iostream>
 #include <utility>
@@ -568,7 +569,9 @@ Fl_Output *output;
 
 int main(){
 
-
+    CookieManager testHttpsSession;
+    testHttpsSession.newHttpsSession("https://www.asu.edu");
+    
 	XInitThreads();
 	MainWindow mainWin;
 
