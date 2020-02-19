@@ -19,8 +19,8 @@ class CookieManager {
     public:
         CookieManager();
         ~CookieManager();
-        void newHttpsSession(string url);
-        int WriteCallback(void *contents, size_t size, size_t nmemb, void *userp);
+        int newHttpsSession(string url);
+        static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp);
         
 };
 

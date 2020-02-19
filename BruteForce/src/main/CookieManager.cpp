@@ -14,7 +14,6 @@
 
 #include <curl/curl.h>
 #include <iostream>
-#include <utility>
 #include <algorithm>
 #include <fstream>
 #include <string>
@@ -31,6 +30,7 @@ CookieManager::CookieManager() {
 CookieManager::~CookieManager() {
 	// TODO Auto-generated destructor stub
 }
+
 //std::system(R"("C:\Program Files\Mozilla Firefox\firefox.exe" google.com)");
 /***********************************************
  * newHttpsSession
@@ -44,7 +44,7 @@ CookieManager::~CookieManager() {
  * returns -
  * 
  */
-void CookieManager::newHttpsSession(string url) {
+int CookieManager::newHttpsSession(string url) {
     CURL *curl;
     CURLcode res;
     std::string readBuffer;
@@ -94,14 +94,13 @@ void CookieManager::newHttpsSession(string url) {
         std::cout << readBuffer << std::endl;
     }
     curl_global_cleanup();
-    return ;
+    return 0;
 }
 
 /*
  * Simple HTTPS GET
  */ 
-int CookieManager::WriteCallback(void *contents, size_t size, 
-        size_t nmemb, void *userp) {
+size_t CookieManager::WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
     ((std::string*)userp)->append((char*)contents, size * nmemb);
     return size * nmemb;
 }
