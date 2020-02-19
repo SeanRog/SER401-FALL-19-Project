@@ -21,7 +21,6 @@ using namespace std;
  */
 
 
-//char AuthToken[] = "";
 
 
 
@@ -63,6 +62,8 @@ constexpr char* toConstChar(char* constInt) {
 	return constInt;
 }
 
+
+//function to get all courses
 void CanvasUtility::getCourses() {
 
 	CURL *curl;
@@ -75,16 +76,14 @@ void CanvasUtility::getCourses() {
 		curl_easy_setopt(curl, CURLOPT_URL,
 				"https://canvas.asu.edu/api/v1/courses?page=1&per_page=100");
 
-		headers = curl_slist_append(headers, "Content-Type: application/json");
+	/*	headers = curl_slist_append(headers, "Content-Type: application/json");
 		char auth[] = "Authorization: Bearer ";
 		char AuthToken[] = "";
 		strcat(auth, AuthToken);
-
 		const char* authT = toConstChar(auth);
+		headers = curl_slist_append(headers, authT);*/
 
-		headers = curl_slist_append(headers, authT);
-
-		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+		//curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 0);
@@ -132,13 +131,13 @@ void CanvasUtility::getQuizzes() {
 		curl_easy_setopt(curl, CURLOPT_URL,
 				"https://canvas.asu.edu/api/v1/courses/47570/quizzes?page=1&per_page=100");
 
-		headers = curl_slist_append(headers, "Content-Type: application/json");
+   /*	headers = curl_slist_append(headers, "Content-Type: application/json");
 		char auth[] = "Authorization: Bearer " ;
 		char AuthToken[] = "";
 		strcat(auth, AuthToken);
 		headers = curl_slist_append(headers, auth);
 
-		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);*/
 
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
 		//curl_easy_setopt(curl, CURLOPT_HEADER, 0);
