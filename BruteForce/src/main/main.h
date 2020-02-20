@@ -10,14 +10,17 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Box.H>
 
+
 using namespace std;
 
 class main {
 
-public:
+    public:
 
-	int main_run(int projects_input, int students_input, Fl_Progress *pb);
+        int main_run(int projects_input, int students_input, Fl_Progress* pb);
 
 };
+
+
 
 #endif /* SRC_MAIN_MAIN_H_ */

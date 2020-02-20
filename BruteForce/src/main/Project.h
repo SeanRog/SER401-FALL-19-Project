@@ -21,15 +21,10 @@
 
 #include <array>
 
-//template<std::size_t ArraySize>
 struct Project {
-public:
-	int ProjectID; // Unique integer identifying the project uniquely in the whole project population.
-	int ClassID; // Unique integer depicting the Class/Section the project is contained in.
-	int PoolID; // Common integer to keep track of project in data structures. Used in determining index number in StudetsToProjects.
-	bool NDA;//bool value depicting whether this project requires that the students sign an NDA
-	bool IPR;//bool value depicting whether this project requires that the students sign an IPR
-	bool sharedHardware; //bool value depicting if this project requires shared hardware-limit to ground students
+	int ProjectID; 	// Unique integer identifying the project uniquely in the whole project population.
+	int ClassID; 	// Unique integer depicting the Class/Section the project is contained in.
+	int PoolID;    	// Common integer to keep track of project in data structures. Used in determining index number in StudetsToProjects.
 
 	/* char Type - 	Projects can be dedicated to local students of the university, online students, or a combination.
 	 * 				Type is defined as: O = online | G = ground | H = hybrid
@@ -54,17 +49,16 @@ public:
 	 * 			Project Skills are defined as:
 	 * 			0 = not required | 1 = nice to have skill | 2 = required skill
 	 */
-	int Skills[15];
+	int Skills[7];
 
-	Project() {
-	}
+	Project(){}
 	//Constructor
-	Project(int pID, char t, int priority, int pskills[]) {
+	Project(int pID, char t, int priority, int pskills[]){
 		ProjectID = pID;
 		Type = t;
 		Priority = priority;
-		for (int i = 0; i < 7; i++) {
-			Skills[i] = pskills[i];
+		for (int i = 0; i < 7; i++){
+		      Skills[i] = pskills[i];
 		}
 	}
 };
