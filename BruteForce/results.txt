@@ -1,148 +1,146 @@
 RESULT FOR SECTION 0:
-Project#13:  Jane Bailey,  Jeff Hughes,  Amelia Marshall,  Belinda Louis,  Rick Buckland, 
- Score: 83
+Project#42:  Matthew Cilibraise,  Stewart Forsyth,  Penelope Oliver,  Evan Carr,  Belinda Louis, 
+ Score: 91
 
-Project#18:  Adam Abraham,  Sofia Kozlov,  Wally Payne,  Vladimir Petrov,  Allen Langdon, 
- Score: 66
+Project#24:  Sofia Kozlov,  Wally Payne,  Mateo Forsyth,  Josiah Edmunds,  Jasmine Short, 
+ Score: 65
 
+Project#12:  Simon Burgess,  Carl Davidson,  Julia Russell,  Alan Hamilton,  Grace Turner, 
+ Score: 67
 
-RESULT FOR SECTION 0:
-Project#21:  Carl Davidson,  Elizabeth Marquise,  Matthew Cilibraise,  Fiona Churchill,  Alan Hamilton, 
- Score: 90
-
-Project#26:  Donna Paige,  Steven Black,  Nolan Sanchez,  Anthony North,  Xavier Flynn, 
- Score: 80
-
-Project#30:  Steven Moore,  Mateo Forsyth,  Christian Mackay,  Emma Langdon,  Piers Chapman, 
- Score: 62
-
-Project#34:  Josiah Edmunds,  Julia Russell,  Jasmine Short,  Grace Turner,  Kylie Manning, 
- Score: 81
-
-Project#4:  Caleb Johnston,  Ramone Garcia,  Evan Carr,  Cooper Smith,  Alexander Stewart, 
- Score: 54
-
-Project#40:  Trevor Watson,  Tracey Young,  Nathan Lambert,  Nicholas Rees,  Stewart Forsyth, 
- Score: 63
-
-Project#42:  Gabrielle Walker,  Jacob Fraser,  Yvonne Simpson,  Andrew Bower,  Daniel Hernandez, 
- Score: 55
-
-Project#38:  Tyler Smith,  Ian Walker,  Simon Burgess,  Carl Allan,  Penelope Oliver, 
- Score: 47
+Project#28:  Caleb Johnston,  Piers Chapman,  Jane Bailey,  Daniel Hernandez,  Steven Black, 
+ Score: 68
 
 
  
-RESULT FOR SECTION 1:
-Project#5:  Audrey Jackson,  Claire Clark,  Anthony Davies,  Simon Sutherland,  Chloe Springer, 
- Score: 88
+RESULT FOR SECTION 0:
+Project#32:  Carl Allan,  Nicholas Rees,  Vladimir Petrov,  Elizabeth Marquise,  Jacob Fraser, 
+ Score: 87
 
-Project#7:  Tim Peters,  Winston Berry,  Tommy Brown,  William Parr,  Grace Brown, 
- Score: 88
+Project#37:  Gabrielle Walker,  Emma Langdon,  Nolan Sanchez,  Ramone Garcia,  Jeff Hughes, 
+ Score: 73
 
-Project#1:  Cristi Deleo,  Anthony Hughes,  Felicity King,  Trevor Robertson,  Nicholas Avery, 
- Score: 69
+Project#39:  Kylie Manning,  Donna Paige,  Alexander Stewart,  Anthony North,  Nathan Lambert, 
+ Score: 68
 
-Project#15:  Lucas Newman,  Leah Hudson,  Chris Coleman,  Zack Wilcox,  Heather Henderson, 
- Score: 66
-
-
-RESULT FOR SECTION 1:
-Project#19:  Maggie Wallace,  Morty Baxter,  Anthony Simpson,  Jessica Clark,  Rebecca Coleman, 
- Score: 81
-
-Project#11:  Colin Coleman,  Lydia Stone,  Donna Nash,  Jane Tucker,  , 
- Score: 59
-
-Project#39:  Sean Robertson,  Peter Miller,  Ruth King,  Jonah Terry,  Tracey Gill, 
+Project#17:  Xavier Flynn,  Yvonne Simpson,  Steven Moore,  Ian Walker,  Fiona Churchill, 
  Score: 74
 
-Project#36:  Dylan Chapman,  Jonathan Young,  Wanda Young,  Caroline Powell,  Una Watson, 
- Score: 66
+Project#4:  Adam Abraham,  Andrew Bower,  Cooper Smith,  Trevor Watson,  Tracey Young, 
+ Score: 40
+
+Project#21:  Christian Mackay,  Rick Buckland,  Allen Langdon,  Amelia Marshall,  Tyler Smith, 
+ Score: 39
 
 
 RESULT FOR SECTION 1:
-Project#32:  Justin Brown,  Lily Murray,  Michael Bailey,  James Quincy,  , 
- Score: 74
+Project#14:  Felicity King,  Colin Coleman,  Tommy Brown,  Lily Murray,  Nicholas Avery, 
+ Score: 88
 
-Project#28:  ,  Leonard Hamilton,  Lisa Thompson,  Dominic Ince,  Sean Rogers, 
- Score: 47
-
-Project#23:  Blake Robertson,  ,  Sophie Cornish,  Edward Jones,  Oliver Smith, 
- Score: 37
-
-
-RESULT FOR SECTION 2:
-Project#2:  Robert Walsh,  Chase Langdon,  James Forrester,  Beverly Dunn,  Steven Knox, 
+Project#5:  Edward Jones,  Blake Robertson,  Jonah Terry,  Donna Nash,  Chloe Springer, 
  Score: 85
 
-Project#6:  Stacy Johnson,  Helen Welch,  Faith North,  Sarah Scott,  Emily May, 
- Score: 88
-
-Project#31:  Juan Rodriguez,  Andrea Grant,  Peter Parr,  Jennifer Lewis,  Asher Grey, 
- Score: 64
-
-Project#12:  Christopher Lee,  Eric Underwood,  Lucian Bower,  Will Rose,  Wanda Gill, 
- Score: 58
-
-Project#20:  Neil North,  Benjamin Jones,  Trevor Ogden,  Colin Butler,  Conner Churchill, 
- Score: 66
-
-Project#35:  Trevor Harris,  Oliver Chapman,  Ruth Nash,  Samantha King,  Nicola Davies, 
- Score: 86
-
-Project#27:  Edward Lawrence,  Roberto Clark,  Eric Fisher,  Mary Martin,  Joan Blake, 
- Score: 83
+Project#22:  Sean Rogers,  Zack Wilcox,  Michael Bailey,  Jonathan Young,  Heather Henderson, 
+ Score: 77
 
 
  
-RESULT FOR SECTION 2:
-Project#16:  Karen Simpson,  Caroline Harris,  Zoe Jones,  Ruby Roberts,  Harrison Martin, 
- Score: 80
+RESULT FOR SECTION 1:
+Project#18:  Lydia Stone,  William Parr,  Caroline Powell,  Simon Sutherland,  Jessica Clark, 
+ Score: 85
 
-Project#8:  Nick Glover,  Ian Hill,  Jeremy Evans,  Jake Springer,  Christopher Baker, 
- Score: 54
+Project#26:  Anthony Hughes,  Lisa Thompson,  Chris Coleman,  Claire Clark,  , 
+ Score: 87
 
-Project#24:  Dorothy Skinner,  Henry Clarkson,  Bella Hudson,  Oliver Scott,  Jason Sharp, 
+Project#30:  Oliver Smith,  Audrey Jackson,  ,  Sean Robertson,  Dominic Ince, 
  Score: 48
 
+Project#34:  ,  James Quincy,  Sophie Cornish,  Tracey Gill,  Cristi Deleo, 
+ Score: 54
 
-RESULT FOR SECTION 3:
-Project#44:  Rose Rockwell,  Ryan Tucker,  Alison Metcalfe,  Leo Alsop,  Max Russell, 
- Score: 89
+Project#38:  ,  Trevor Robertson,  Grace Brown,  Rebecca Coleman,  Peter Miller, 
+ Score: 45
 
-Project#14:  Joe Clarkson,  Jacob Alsop,  Ruth Paige,  Lily Pullman,  Joe Reid, 
- Score: 64
+Project#41:  Winston Berry,  Justin Brown,  Jane Tucker,  Lucas Newman,  Morty Baxter, 
+ Score: 58
 
-Project#17:  Joshua Chapman,  Lillian Russell,  Yvonne Sanderson,  Lucas Morgan,  Karen Clarkson, 
- Score: 75
-
-Project#29:  Jonah Greene,  Preston Vance,  Alex Kerr,  Steven Arnold,  Scott Avery, 
- Score: 90
-
-Project#25:  Melanie Simpson,  Robert Reid,  Vanessa Ball,  Frank Mitchell,  Paul Wright, 
- Score: 63
-
-
-RESULT FOR SECTION 3:
-Project#43:  Benjamin Kerr,  Matt James,  Abigail Hardacre,  John Howard,  Andrew Wilson, 
- Score: 81
-
-Project#37:  Alexandra Bell,  Rebecca Jones,  Andrew Scott,  ,  Wendy Brown, 
+Project#7:  Una Watson,  Dylan Chapman,  Anthony Simpson,  Wanda Young,  Tim Peters, 
  Score: 56
 
-Project#41:  Sean Parsons,  Howard Mill,  Myles Colina,  Paxton Morgan,  Alexander Kelly, 
+Project#1:  Maggie Wallace,  Anthony Davies,  Ruth King,  Leonard Hamilton,  Simon Sutherland, 
+ Score: 47
+
+
+RESULT FOR SECTION 2:
+Project#2:  Ruby Roberts,  Bella Hudson,  Zoe Jones,  Neil North,  Wanda Gill, 
+ Score: 90
+
+Project#31:  Benjamin Jones,  Will Rose,  Joan Blake,  Christopher Lee,  Eric Underwood, 
+ Score: 88
+
+Project#8:  Peter Parr,  Trevor Ogden,  Chase Langdon,  Nicola Davies,  Asher Grey, 
+ Score: 79
+
+Project#27:  Robert Walsh,  Lucian Bower,  Steven Knox,  Jeremy Evans,  Colin Butler, 
+ Score: 75
+
+Project#15:  Jennifer Lewis,  Helen Welch,  Karen Simpson,  Oliver Chapman,  Harrison Martin, 
+ Score: 66
+
+Project#20:  Andrea Grant,  Christopher Baker,  Faith North,  Stacy Johnson,  Ian Hill, 
  Score: 78
 
+Project#23:  James Forrester,  Juan Rodriguez,  Henry Clarkson,  Edward Lawrence,  Sarah Scott, 
+ Score: 65
 
+
+RESULT FOR SECTION 2:
+Project#11:  Caroline Harris,  Trevor Harris,  Emily May,  Jason Sharp,  Roberto Clark, 
+ Score: 75
+
+Project#35:  Dorothy Skinner,  Samantha King,  Conner Churchill,  Nick Glover,  Oliver Scott, 
+ Score: 71
+
+Project#6:  Eric Fisher,  Beverly Dunn,  Jake Springer,  Mary Martin,  Ruth Nash, 
+ Score: 68
+
+
+ 
 RESULT FOR SECTION 3:
-Project#22:  Ava Pullman,  Sophie Walker,  Oliver Paterson,  Luke Coleman,  , 
- Score: 69
+Project#44:  Lily Pullman,  Paxton Morgan,  Jonah Greene,  Wendy Brown,  Yvonne Sanderson, 
+ Score: 84
 
-Project#3:  David Hamilton,  ,  Harry Newman,  Adrian Ross,  Sandra Mitchell, 
- Score: 38
+Project#19:  Sandra Mitchell,  John Howard,  Luke Coleman,  Andrew Scott,  Rebecca Jones, 
+ Score: 81
 
-Project#33:  ,  Lucas Avery,  Cameron Smith,  Carolina Oliver,  Sam Cameron, 
+Project#43:  Benjamin Kerr,  Oliver Paterson,  Frank Mitchell,  Scott Avery,  Sophie Walker, 
+ Score: 73
+
+Project#29:  Ruth Paige,  Karen Clarkson,  Abigail Hardacre,  Jacob Alsop,  Steven Arnold, 
+ Score: 86
+
+
+ 
+RESULT FOR SECTION 3:
+Project#33:  David Hamilton,  Sean Parsons,  Joe Clarkson,  Cameron Smith,  Alex Kerr, 
+ Score: 83
+
+Project#36:  Leo Alsop,  ,  Preston Vance,  Max Russell,  Lucas Morgan, 
+ Score: 52
+
+Project#40:  Joshua Chapman,  Adrian Ross,  Melanie Simpson,  Ryan Tucker,  , 
+ Score: 85
+
+Project#25:  ,  Joe Reid,  Matt James,  Alexander Kelly,  Lucas Avery, 
+ Score: 49
+
+Project#13:  ,  Paul Wright,  Alison Metcalfe,  Ava Pullman,  Sam Cameron, 
  Score: 40
+
+Project#3:  Robert Reid,  Myles Colina,  Rose Rockwell,  Carolina Oliver,  Alexandra Bell, 
+ Score: 71
+
+Project#16:  Harry Newman,  Andrew Wilson,  Howard Mill,  Vanessa Ball,  Lillian Russell, 
+ Score: 54
 
 

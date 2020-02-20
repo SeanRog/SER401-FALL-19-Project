@@ -9,6 +9,7 @@
 #include "MainWindow.h"
 #include "GUIStyles.h"
 #include "main.h"
+#include "SteamPunkGUI1.h"
 
 #include <iostream>
 #include <string>
@@ -477,7 +478,8 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 	masterWindow->hide();
 	confirmWindow->hide();
 
-	MainWindow mainWin;
+	//MainWindow mainWin;
+	SteamPunkGUI1 mainWin;
 	mainWin.callTeams(w);
 
 }

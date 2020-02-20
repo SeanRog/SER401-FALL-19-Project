@@ -66,6 +66,10 @@ constexpr int toConstInt(int constInt) {
 
 Fl_PNG_Image *LoadingPngsSP[22];
 
+Fl_PNG_Image *TrainPngs[5];
+Fl_PNG_Image *PreTrainPngs[8];
+Fl_PNG_Image *EndTrainPngs[9];
+
 Fl_PNG_Image *Gears1Pngs[10];
 Fl_PNG_Image *Gears2Pngs[10];
 
@@ -336,6 +340,31 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 
 	}
 
+	//read in pngs for Pre-Train
+	for (int i = 0; i < 8; i++) {
+		string filename = "./Images/Steampunk/PreTrain/" + to_string(i) + ".png";
+		int length = filename.length();
+		char png_char[length + 1];
+		strcpy(png_char, filename.c_str());
+		PreTrainPngs[i] = new Fl_PNG_Image(png_char);
+	}
+
+	for (int i = 0; i < 5; i++) {
+		string filename = "./Images/Steampunk/Train/" + to_string(i) + ".png";
+		int length = filename.length();
+		char png_char[length + 1];
+		strcpy(png_char, filename.c_str());
+		TrainPngs[i] = new Fl_PNG_Image(png_char);
+	}
+
+	for (int i = 0; i < 9; i++) {
+		string filename = "./Images/Steampunk/EndTrain/" + to_string(i) + ".png";
+		int length = filename.length();
+		char png_char[length + 1];
+		strcpy(png_char, filename.c_str());
+		EndTrainPngs[i] = new Fl_PNG_Image(png_char);
+	}
+
 	//PROGRESS BAR WINDOW
 
 	progressWindow = new Fl_Window(570, 400, "Team Assignment Progress");
@@ -343,19 +372,19 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 
 	Fl_Box *backBox = new Fl_Box(0, 250, 570, 150);
 	backBox->box(FL_BORDER_BOX);
-	backBox->color(ASU_GREY);
+	backBox->color(DARK_TAUPE);
 
 	Fl_Box *backBox1 = new Fl_Box(0, 0, 10, 400);
 	backBox1->box(FL_FLAT_BOX);
-	backBox1->color(ASU_GREY);
+	backBox1->color(DARK_TAUPE);
 
 	Fl_Box *backBox2 = new Fl_Box(0, 0, 570, 10);
 	backBox2->box(FL_FLAT_BOX);
-	backBox2->color(ASU_GREY);
+	backBox2->color(DARK_TAUPE);
 
 	Fl_Box *backBox3 = new Fl_Box(560, 0, 10, 400);
 	backBox3->box(FL_FLAT_BOX);
-	backBox3->color(ASU_GREY);
+	backBox3->color(DARK_TAUPE);
 
 	TeamsButton = new Fl_Button(25, 260, 200, 50, "Generate Teams");
 	doneButton = new Fl_Button(345, 260, 200, 50, "Done");
@@ -374,30 +403,31 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 
 	progressWindow->resizable(progressBar);
 
-	Fl_PNG_Image *baseImage = new Fl_PNG_Image("./Images/Loading/1.png");
+	//Fl_PNG_Image *baseImage = new Fl_PNG_Image("./Images/Loading/1.png");
+	Fl_PNG_Image *baseImage = new Fl_PNG_Image("./Images/Steampunk/PreTrain/0.png");
 	//Fl_PNG_Image* baseImage = new Fl_PNG_Image("./Images/cookies/0.png");
 
 	imageBox = new Fl_Box(10, 20, 550, 200);
-	imageBox->color(ASU_WHITE);
+	imageBox->color(DARK_BRASS);
 	imageBox->box(FL_FLAT_BOX);
 	imageBox->image(baseImage);
 	imageBox->redraw();
 
 	progressBox = new Fl_Box(10, 210, 550, 40, "");
 
-	doneButton->color(ASU_GOLD);
-	doneButton->selection_color(ASU_MAROON);
-	doneButton->labelfont(FL_HELVETICA_ITALIC);
+	doneButton->color(DARK_BRASS);
+	doneButton->selection_color(DARK_GREY);
+	doneButton->labelfont(FL_TIMES_ITALIC);
 	doneButton->labelsize(15);
 	doneButton->labelcolor(ASU_BLACK);
 
-	TeamsButton->color(ASU_GOLD);
-	TeamsButton->selection_color(ASU_MAROON);
-	TeamsButton->labelfont(FL_HELVETICA_ITALIC);
+	TeamsButton->color(DARK_BRASS);
+	TeamsButton->selection_color(DARK_GREY);
+	TeamsButton->labelfont(FL_TIMES_ITALIC);
 	TeamsButton->labelsize(15);
 	TeamsButton->labelcolor(ASU_BLACK);
 
-	progressWindow->color(ASU_WHITE);
+	progressWindow->color(DARK_BRASS);
 	progressWindow->box(FL_BORDER_BOX);
 
 	doneButton->deactivate();
@@ -411,9 +441,6 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	TeamsButton->callback(static_ProgressTeamsButtonClick, this);
 	doneButton->callback(static_DoneButtonClick, this);
 	progressWindow->redraw();
-
-
-
 
 
 	Fl::run();
@@ -445,17 +472,33 @@ void cookieLoadSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar) {
 void animateSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 		Fl_PNG_Image *loadingPngs[23]) {
 
+	for (int i = 0; i < 8; i++) {
+		Fl::check();
+			b->image(PreTrainPngs[i]);
+			b->redraw();
+			usleep(50000);
+	}
+
+
 	int i = 0;
 	while (progressBar->value() != 100) {
 		Fl::check();
-		b->image(loadingPngs[i]);
+		b->image(TrainPngs[i]);
 		b->redraw();
 		usleep(50000);
 		i++;
-		if (i == 22) {
+		if (i == 5) {
 			i = 0;
 		}
 	}            //end while loop
+
+	for (int i = 0; i < 9; i++) {
+		Fl::check();
+			b->image(EndTrainPngs[i]);
+			b->redraw();
+			usleep(50000);
+	}
+
 
 }
 
@@ -512,7 +555,7 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 		threads[i].join();
 	}
 
-	Fl_PNG_Image *doneImage = new Fl_PNG_Image("./Images/Loading/done.png");
+	Fl_PNG_Image *doneImage = new Fl_PNG_Image("./Images/Steampunk/EndTrain/8.png");
 	imageBox->image(doneImage);
 	imageBox->redraw();
 
