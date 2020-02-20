@@ -1,26 +1,26 @@
 /****************
-* ProjectJson.cpp
-*
-*Author(s) Myles, Crsti, Sean
-*
-*Description:
-*A class to store all the functions for Project Json data.
-*Includes reading in Project Json Files.
-*
-*
-* ProjectJson() - Constructor
-* ~ProjectJson()- Destructor
-* ProjectWriter - to be implemented in a later sprint
-*
-* getProjectJsonObject(string filename, int i) - Reads a json file given by string filename then reads a project object from the json file.
-* int i selects the project object to be read. The project object from the json file is
-* then stored into a c++ Project object with all the properties defined by the json project object.
-*
-* ProjectReaderVector(string filename)  - Reads a json file given by string filename, gets the number of projects in the json file,
-* gets the information of each project, stores each project in a c++ Project instance,
-* then pushes that into vector<Project> allProjects.
-*
-*/
+ * ProjectJson.cpp
+ *
+ *Author(s) Myles, Crsti, Sean
+ *
+ *Description:
+ *A class to store all the functions for Project Json data.
+ *Includes reading in Project Json Files.
+ *
+ *
+ * ProjectJson() - Constructor
+ * ~ProjectJson()- Destructor
+ * ProjectWriter - to be implemented in a later sprint
+ *
+ * getProjectJsonObject(string filename, int i) - Reads a json file given by string filename then reads a project object from the json file.
+ * int i selects the project object to be read. The project object from the json file is
+ * then stored into a c++ Project object with all the properties defined by the json project object.
+ *
+ * ProjectReaderVector(string filename)  - Reads a json file given by string filename, gets the number of projects in the json file,
+ * gets the information of each project, stores each project in a c++ Project instance,
+ * then pushes that into vector<Project> allProjects.
+ *
+ */
 
 #include "ProjectJson.h"
 #include "Project.h"
@@ -44,7 +44,7 @@ ProjectJson::~ProjectJson() {
 	// TODO Auto-generated destructor stub
 }
 
-void ProjectJson::ProjectWriter(string filename){
+void ProjectJson::ProjectWriter(string filename) {
 	//to be implemented in a later sprint.
 }
 
@@ -68,7 +68,7 @@ void ProjectJson::ProjectWriter(string filename){
  *
  *
  */
-Project ProjectJson::getProjectJsonObject(string filename, int i){
+Project ProjectJson::getProjectJsonObject(string filename, int i) {
 
 	ifstream ifs(filename);
 	Json::Reader reader;
@@ -77,18 +77,33 @@ Project ProjectJson::getProjectJsonObject(string filename, int i){
 
 	Project project;
 
-	project.ProjectID = (char)obj["projects"].get((int)i, "")["ProjectID"].asInt();
+	project.ProjectID =
+			(char) obj["projects"].get((int) i, "")["ProjectID"].asInt();
 
 	string temp;
-	temp = obj["projects"].get((int)i, "")["Type"].asString();
+	temp = obj["projects"].get((int) i, "")["Type"].asString();
 	project.Type = temp[0];
 
-	project.Priority = (char)obj["projects"].get((int)i, "")["Priority"].asInt();
+	project.Priority =
+			(char) obj["projects"].get((int) i, "")["Priority"].asInt();
 
-	int numSkills = obj["projects"].get((int)i, "")["Skills"].size();
+	int numSkills = obj["projects"].get((int) i, "")["Skills"].size();
 
 	for (int j = 0; j < numSkills; j++) {
-		project.Skills[j] = (obj["projects"].get((int)i, "")["Skills"][j].asInt());
+		project.Skills[j] =
+				(obj["projects"].get((int) i, "")["Skills"][j].asInt());
+	}
+
+	project.NDA = obj["projects"].get((int) i, "")["NDA"].asBool();
+	project.IPR = obj["projects"].get((int) i, "")["IPR"].asBool();
+	project.sharedHardware =
+			obj["projects"].get((int) i, "")["sharedHardware"].asBool();
+
+	//If the project requires shared hardware, change the type of the class to G.
+	//this limits the projects to ground section students only.
+	if (project.sharedHardware == true) {
+		project.Type = 'G';
+
 	}
 
 	return project;
@@ -114,7 +129,7 @@ Project ProjectJson::getProjectJsonObject(string filename, int i){
  *
  *
  */
-void ProjectJson::ProjectReaderVector(string filename){
+void ProjectJson::ProjectReaderVector(string filename) {
 	//read file named profile.json, then parse it as json, then store that parse into obj
 	ifstream ifs(filename);
 	Json::Reader reader;
@@ -132,27 +147,28 @@ void ProjectJson::ProjectReaderVector(string filename){
 
 	// for each project in the json file, store the information into a Project object,
 	//then push that object to vector<Project> allProjects
-	for(int i = 0; i < numberOfProjects; i++) {
+	for (int i = 0; i < numberOfProjects; i++) {
 
 		// read in the ProjectID
-		ProjectID = (char)obj["projects"].get((int)i, "")["ProjectID"].asInt();
+		ProjectID =
+				(char) obj["projects"].get((int) i, "")["ProjectID"].asInt();
 
 		// read in the priority
-		Priority = (char)obj["projects"].get((int)i, "")["Priority"].asInt();
+		Priority = (char) obj["projects"].get((int) i, "")["Priority"].asInt();
 
 		//read in the skills
-		numberOfSkills = obj["projects"].get((int)i, "")["Skills"].size();
-					for(int j = 0; j < numberOfSkills; j++) {
-						skills[j] = (obj["projects"].get((int)i, "")["Skills"][j].asInt());
-					}
+		numberOfSkills = obj["projects"].get((int) i, "")["Skills"].size();
+		for (int j = 0; j < numberOfSkills; j++) {
+			skills[j] = (obj["projects"].get((int) i, "")["Skills"][j].asInt());
+		}
 
 		// read in the type
 		string temp;
-		temp = obj["projects"].get((int)i, "")["Type"].asString();
+		temp = obj["projects"].get((int) i, "")["Type"].asString();
 		Type = temp[0];
 
 		//create the project object
-		Project p( ProjectID, Type, Priority, skills);
+		Project p(ProjectID, Type, Priority, skills);
 		allProjects.push_back(p);
 	}
 }

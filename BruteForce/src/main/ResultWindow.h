@@ -17,30 +17,31 @@
 #include <FL/Fl_Input_.H>
 #include <FL/Fl_Text_Buffer.H>
 
-
 using namespace std;
 
 class ResultWindow {
 
-	static void static_saveClicked(Fl_Widget* w, void * data) {
-		((ResultWindow*)data)->saveClicked(w);	}
+	static void static_saveClicked(Fl_Widget *w, void *data) {
+		((ResultWindow*) data)->saveClicked(w);
+	}
 
-	void saveClicked(Fl_Widget* w);
+	void saveClicked(Fl_Widget *w);
 
-    public:
-		static int permutations;
-		static int swaps;
+public:
+	static int permutations;
+	static int swaps;
 
-		Fl_Window *windowResult;
-		Fl_Text_Display *textDisplay;
-		Fl_Text_Buffer *buffer;
-		Fl_Button *buttonSave;
-		Fl_Box *permBox;
-		Fl_Box *swapBox;
+	Fl_Window *windowResult;
+	Fl_Text_Display *textDisplay;
+	Fl_Text_Buffer *buffer;
+	Fl_Button *buttonSave;
+	Fl_Box *permBox;
+	Fl_Box *swapBox;
+	Fl_Box *borderBox;
 
-        ResultWindow();
-        ~ResultWindow();
-        void addText();
+	ResultWindow();
+	~ResultWindow();
+	void addText();
 
 };
 

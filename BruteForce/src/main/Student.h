@@ -27,15 +27,21 @@
 
 using namespace std;
 
+//template<std::size_t ArraySize>
 struct Student {
+
+public:
+
 	string ASUriteID; //unique String ID for each ASU student.
+	string name; //Student's first and last name.
 	int StudentID; //Unique integer identifying the student uniquely in the whole student population.
 	int StID; //Common integer to keep track of student in data structures. ID depicting from [0 - NumOfStudents] in that class section.
 	int ClassID; //Unique integer depicting the Class/Section the student is assigned to.
-	int PoolID;//for use in determining index number in StudetsToProjects.
-	bool Assigned;  //for use to see if the student is assigned to a project yet.
+	bool NDA;//bool value depicting whether this student will agree to sign an NDA
+	bool IPR;//bool value depicting whether this student will agree to sign an IPR
+	int PoolID;		//for use in determining index number in StudetsToProjects.
+	bool Assigned; //for use to see if the student is assigned to a project yet.
 	int ProjectID; //Value given once the student is assigned to a project.
-
 
 	/* Skills - Students are given a survey in which they indicate their familiarity or
 	 * 			strengths among [seven] predefined skills. Skills will hold an integer array
@@ -43,10 +49,10 @@ struct Student {
 	 * 			of the predefined skills. Each value is rated on a five point scale:
 	 * 			0 = none | 1 = some | 2 = average | 3 = proficient | 4 = expert
 	 */
-	int Skills[7];
+	int Skills[15];
 	double skillAverage; //Average skill of the student, used from skills above
 
-	 /* vector<pair<int,bool>> StudentAffinity	- Students, additionally, are allowed in indicate other students that they
+	/* vector<pair<int,bool>> StudentAffinity	- Students, additionally, are allowed in indicate other students that they
 	 * 											would prefer to work with and not work with. This is defined as the
 	 * 											the student's affinity toward other students. Affinity is instrumental
 	 * 											for creating teams of students to allocate to class projects.
@@ -57,9 +63,9 @@ struct Student {
 	 * 											current Student wants to avoid working with the other student.
 	 * 											[0]PeerID | 0 = negative affinity | 1 = positive affinity
 	 */
-	 vector< pair <int, bool> > StudentAffinity;
+	vector<pair<int, bool> > StudentAffinity;
 
-	 /* Availability -	Students indicate their preferred meeting times on the student survey.
+	/* Availability -	Students indicate their preferred meeting times on the student survey.
 	 * 					A students preferred meeting times are stored in an integer array
 	 * 					containing [Four] availability slots represented by the number of elements
 	 * 					allowed in the array. The time slots are defined as the following:
@@ -79,7 +85,8 @@ struct Student {
 	 *
 	 * Creates default student object
 	 */
-	Student(){}
+	Student() {
+	}
 	/*
 	 * Defined Student Constructor
 	 *
@@ -92,34 +99,33 @@ struct Student {
 	 * vector<pair<int,bool>> aff - Student's affinity vector
 	 * int times[] - student's availablity or preferred meeting times array
 	 */
-	Student(int stID, int cID, int s[], vector< pair <int, bool> > aff,
-            int times[]){
+	Student(int stID, int cID, int s[], vector<pair<int, bool> > aff,
+			int times[]) {
 
 		StudentID = stID;
-        ClassID = cID;
+		ClassID = cID;
 
-        for (int i = 0; i < 7; i++){
-        	Skills[i] = s[i];
-        }
+		for (int i = 0; i < 7; i++) {
+			Skills[i] = s[i];
+		}
 
-        for (int i = 0; i < aff.size(); i++){
-        	pair <int, bool> x = {aff[i].first, aff[i].second};
-        	StudentAffinity.push_back(x);
-        }
+		for (int i = 0; i < aff.size(); i++) {
+			pair<int, bool> x = { aff[i].first, aff[i].second };
+			StudentAffinity.push_back(x);
+		}
 
-        for (int i = 0; i < 4; i++){
-        	Availability[i] = times[i];
-        }
+		for (int i = 0; i < 4; i++) {
+			Availability[i] = times[i];
+		}
 	}
 
 	bool operator==(const Student &studentToCompare) const {
-		if(this->StudentID == StudentID) {
+		if (this->StudentID == StudentID) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-
 
 };
 
