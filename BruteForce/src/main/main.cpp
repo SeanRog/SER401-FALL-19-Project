@@ -539,14 +539,6 @@ int tempProj, tempStud, textInput;
  }
  */
 
-/*
- Fl_Window *window;
- Fl_Box *box;
- Fl_Button *button;
- Fl_Input *input;
- Fl_Output *output;
- */
-
 /*************************************************************************************
  * main
  *
@@ -564,6 +556,7 @@ int tempProj, tempStud, textInput;
  */
 
 int main() {
+    
 	XInitThreads();
 	MainWindow mainWin;
 
@@ -589,9 +582,7 @@ int main() {
  *Returns:
  *	int value 0.
  */
-
 int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
-
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
 	srand(time(NULL));
