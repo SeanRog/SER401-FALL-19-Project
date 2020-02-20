@@ -41,12 +41,14 @@ Test::~Test() {
 
 // Task #107
 // Author: Cristi DeLeo
-void Test::PrintProjectPool(Project projectPool[], int numProjects, int numSkills) {
+void Test::PrintProjectPool(Project projectPool[], int numProjects,
+		int numSkills) {
 
 	Project project;
 
 	cout << endl << endl;
-	cout << "----------------------------------------------------------" << endl;
+	cout << "----------------------------------------------------------"
+			<< endl;
 	cout << "BEGIN: Test::PrintProjectPool Task#107" << endl << endl;
 
 	cout << "Number of Projects: " << to_string(numProjects) << endl << endl;
@@ -58,11 +60,11 @@ void Test::PrintProjectPool(Project projectPool[], int numProjects, int numSkill
 		cout << "Project ID: ";
 		cout << project.ProjectID << endl;
 
-		cout << "Type:  " ;
+		cout << "Type:  ";
 		cout << project.Type << endl;
 
-		cout << "Class ID:  " ;
-				cout << project.ClassID << endl;
+		cout << "Class ID:  ";
+		cout << project.ClassID << endl;
 
 		cout << "Priority: ";
 		cout << project.Priority << endl;
@@ -81,7 +83,8 @@ void Test::PrintProjectPool(Project projectPool[], int numProjects, int numSkill
 
 // Task #107
 // Author: Cristi DeLeo
-void Test::PrintStudentPool(Student studentPool[], int numStudents, int numSkills) {
+void Test::PrintStudentPool(Student studentPool[], int numStudents,
+		int numSkills) {
 
 	Student student;
 
@@ -89,7 +92,8 @@ void Test::PrintStudentPool(Student studentPool[], int numStudents, int numSkill
 	int numAffinities = 0;
 
 	cout << endl;
-	cout << "----------------------------------------------------------" << endl;
+	cout << "----------------------------------------------------------"
+			<< endl;
 	cout << "BEGIN: Test::PrintStudentPool Task#107" << endl << endl;
 
 	cout << "Number of Students: " << to_string(numStudents) << endl << endl;
@@ -114,15 +118,16 @@ void Test::PrintStudentPool(Student studentPool[], int numStudents, int numSkill
 
 		cout << endl << endl;
 		cout << "Begin Affinities: " << endl;
-		for (int i = 0; i < numAffinities; i++){
-			cout << "Peer ID: "
-					+ to_string(student.StudentAffinity[i].first)
-					+ "  Affinity: "
-					+ to_string(student.StudentAffinity[i].second)<<endl;
+		for (int i = 0; i < numAffinities; i++) {
+			cout
+					<< "Peer ID: " + to_string(student.StudentAffinity[i].first)
+							+ "  Affinity: "
+							+ to_string(student.StudentAffinity[i].second)
+					<< endl;
 		}
 
 		cout << "Available Times: ";
-		for(int j = 0; j < numTimes; j++) {
+		for (int j = 0; j < numTimes; j++) {
 			cout << student.Availability[j];
 		}
 		cout << endl << endl;
@@ -133,10 +138,12 @@ void Test::PrintStudentPool(Student studentPool[], int numStudents, int numSkill
 	cout << endl << endl;
 }
 
-void Test::PrintProjectStudentSkills(int projectStudentSkills[], int numProjects, int numStudents) {
+void Test::PrintProjectStudentSkills(int projectStudentSkills[],
+		int numProjects, int numStudents) {
 
 	cout << endl;
-	cout << "----------------------------------------------------------" << endl;
+	cout << "----------------------------------------------------------"
+			<< endl;
 	cout << "BEGIN: Test::PrintProjectStudentSkills" << endl << endl;
 
 	for (int i = 0; i < numProjects; i++) {
@@ -155,10 +162,12 @@ void Test::PrintProjectStudentSkills(int projectStudentSkills[], int numProjects
 
 // AUTHOR: CRISTI DELEO
 // DATE: 11/07/2019
-void Test::PrintPercentMatrix(int percentMatrix[], int numProjects, int numClassSections) {
+void Test::PrintPercentMatrix(int percentMatrix[], int numProjects,
+		int numClassSections) {
 
 	cout << endl;
-	cout << "----------------------------------------------------------" << endl;
+	cout << "----------------------------------------------------------"
+			<< endl;
 	cout << "BEGIN: Test::PrintPercentMatrix" << endl << endl;
 
 	for (int i = 0; i < numProjects; i++) {
@@ -179,104 +188,110 @@ void Test::PrintPercentMatrix(int percentMatrix[], int numProjects, int numClass
 // Task#97
 void Test::StructTest() {
 
-		//Task#97 Testing the student project and class section structs.
-		cout<<endl;
-		cout << "----------------------------------------------------------" << endl;
-		cout << "BEGIN: Test::StructTest Student|Project|ClassSection Task#97" << endl;
+	//Task#97 Testing the student project and class section structs.
+	cout << endl;
+	cout << "----------------------------------------------------------"
+			<< endl;
+	cout << "BEGIN: Test::StructTest Student|Project|ClassSection Task#97"
+			<< endl;
 
-		const int count = 12;//the highest number of students in the affinity list.
+	const int count = 12; //the highest number of students in the affinity list.
 
-	    //Student Struct test
-		//creating student object
+	//Student Struct test
+	//creating student object
 
-		//skills
-		 int s[7] = {1,0,2,0,3,2,2};
-		 //StudentAffinity
-			     vector< pair <int, bool> > aff;
-			     for (int i = 0; i < count; i++){
-			    	 pair <int, bool> x = {12310+i,true};
-			    	 aff.push_back(x);
-			    	 if(i>=5){
-			    		 pair <int, bool> x= {12310+i,false};
-			    		 aff.push_back(x);}
-			    	 }
-	    //Availability
-	    int times[4] = { 0,1,2,3};
+	//skills
+	int s[7] = { 1, 0, 2, 0, 3, 2, 2 };
+	//StudentAffinity
+	vector<pair<int, bool> > aff;
+	for (int i = 0; i < count; i++) {
+		pair<int, bool> x = { 12310 + i, true };
+		aff.push_back(x);
+		if (i >= 5) {
+			pair<int, bool> x = { 12310 + i, false };
+			aff.push_back(x);
+		}
+	}
+	//Availability
+	int times[4] = { 0, 1, 2, 3 };
 
-		//call student constructor
-		 Student s1(123456, 1, s,  aff,  times);
+	//call student constructor
+	Student s1(123456, 1, s, aff, times);
 
-	     //print Student results
-		 cout <<"Student Info " << endl;
-		 cout <<"-------------------------" << endl;
-		 cout << "Student ID: " + to_string(s1.StudentID) << endl;
-		 cout << "Skills: ";
-		 for (int i = 0; i < 7; i++){
-			 cout << to_string(s1.Skills[i]) + " ";
-		 }
-		 cout << endl;
-		 for (int i = 0; i < count; i++){
-		 cout << "Peer ID: " + to_string(s1.StudentAffinity[i].first) + "  Affinity: " + to_string(s1.StudentAffinity[i].second)<<endl;
-		 	 }
-	     cout << endl;
-	     cout << "Available times to meet: ";
-	     for (int i = 0; i < 4; i++){
-	     	 cout <<  to_string(s1.Availability[i]) + " ";
-	     	 	 }
-	      cout << "\n \n  " << endl;
+	//print Student results
+	cout << "Student Info " << endl;
+	cout << "-------------------------" << endl;
+	cout << "Student ID: " + to_string(s1.StudentID) << endl;
+	cout << "Skills: ";
+	for (int i = 0; i < 7; i++) {
+		cout << to_string(s1.Skills[i]) + " ";
+	}
+	cout << endl;
+	for (int i = 0; i < count; i++) {
+		cout
+				<< "Peer ID: " + to_string(s1.StudentAffinity[i].first)
+						+ "  Affinity: "
+						+ to_string(s1.StudentAffinity[i].second) << endl;
+	}
+	cout << endl;
+	cout << "Available times to meet: ";
+	for (int i = 0; i < 4; i++) {
+		cout << to_string(s1.Availability[i]) + " ";
+	}
+	cout << "\n \n  " << endl;
 
+	//Project Struct test
+	//creating Project object
 
-	     //Project Struct test
-	      //creating Project object
+	int pskills[7] = { 1, 0, 0, 0, 1, 2, 2 };
+	Project p1(35, 'O', 1, pskills);
 
-	         int pskills[7] = {1,0,0,0,1,2,2};
-	     	 Project p1( 35,'O', 1, pskills);
+	//print Project results
+	cout << "Project Info " << endl;
+	cout << "-------------------------" << endl;
+	cout << "Project ID: " + to_string(p1.ProjectID) << endl;
+	cout << "Type:  ";
+	cout.put(p1.Type);
+	cout << endl;
+	cout << "Priority:  " + to_string(p1.Priority);
+	cout << "Skills: ";
+	for (int i = 0; i < 7; i++) {
+		cout << to_string(p1.Skills[i]) + " ";
+	}
+	cout << "\n \n  " << endl;
 
-	     	//print Project results
-	     		 cout <<"Project Info " << endl;
-	     		 cout <<"-------------------------" << endl;
-	     		 cout << "Project ID: " + to_string(p1.ProjectID) << endl;
-	     		 cout << "Type:  " ;
-	     	     cout.put(p1.Type);
-	     		 cout << endl;
-	     	     cout << "Priority:  " +  to_string(p1.Priority);
-	     		 cout << "Skills: ";
-	     		 for (int i = 0; i < 7; i++){
-	     			 cout << to_string(p1.Skills[i]) + " ";
-	     		 }
-	     		 cout << "\n \n  " << endl;
+	//Class Section struct test
+	const int NumOfStudents = 15;
+	const int NumOfProjects = 3;
 
-	 //Class Section struct test
-	     	const int NumOfStudents = 15;
-	     	const int NumOfProjects = 3;
+	//ClassSection<NumOfStudents> c1(1, 'O');
+	ClassSection c1(1, 'O');
+	//for (int i = 0; i < NumOfStudents; i++){
+	//c1.Enrollment[i]=i;}
 
-	     	 //ClassSection<NumOfStudents> c1(1, 'O');
-	     	ClassSection c1(1,'O');
-	     	//for (int i = 0; i < NumOfStudents; i++){
-	     	 //c1.Enrollment[i]=i;}
+	//for (int i = 0; i < NumOfProjects; i++){
+	//c1.ProjectPool.push_back(i);}
 
-	     	//for (int i = 0; i < NumOfProjects; i++){
-	     	 //c1.ProjectPool.push_back(i);}
+	//print Project results
+	cout << "Class Section Info " << endl;
+	cout << "-------------------------" << endl;
+	cout << "Class ID: " + to_string(c1.ClassID) << endl;
+	cout << "Type:  ";
+	cout.put(c1.Type);
+	cout << endl;
+	//cout << "Number of Students in this section: " + to_string(NumOfStudents) << endl;
+	//cout << "Students: ";
+	//for (int i = 0; i < NumOfStudents; i++){
+	//	 	 cout << to_string(c1.Enrollment[i]) + ", ";}
+	cout << endl;
+	//cout << "Number of Projects in pool: " + to_string(NumOfProjects) << endl;
+	//cout << "Projects: ";
+	//for (int i = 0; i < NumOfProjects; i++){
+	//	     cout << to_string(c1.ProjectPool[i]) + ", ";}
 
-	     	//print Project results
-	     		 cout <<"Class Section Info " << endl;
-	     		 cout <<"-------------------------" << endl;
-	     		 cout << "Class ID: " + to_string(c1.ClassID) << endl;
-	     	     cout << "Type:  " ;
-	     	     cout.put(c1.Type);
-	     	    		 cout << endl;
-	     		 //cout << "Number of Students in this section: " + to_string(NumOfStudents) << endl;
-	     		 //cout << "Students: ";
-	     		 //for (int i = 0; i < NumOfStudents; i++){
-	     		//	 	 cout << to_string(c1.Enrollment[i]) + ", ";}
-	     		cout << endl;
-	     		//cout << "Number of Projects in pool: " + to_string(NumOfProjects) << endl;
-	     		//cout << "Projects: ";
-	     		//for (int i = 0; i < NumOfProjects; i++){
-	     		//	     cout << to_string(c1.ProjectPool[i]) + ", ";}
-
-	     	   cout << endl << endl;
-	     	   cout << "END: Test::StructTest Student|Project|ClassSection Task#97" << endl;
-	     	   cout << "----------------------------------------------------------";
-		// end testing for Task#97
+	cout << endl << endl;
+	cout << "END: Test::StructTest Student|Project|ClassSection Task#97"
+			<< endl;
+	cout << "----------------------------------------------------------";
+	// end testing for Task#97
 }
