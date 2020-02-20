@@ -101,5 +101,4 @@ class DataEntryGUI {
 		static void static_YesClick(Fl_Widget* w, void * data) {((DataEntryGUI*)data)->YesClick(w);}
 		static void static_chooseProjectFile_cb(Fl_Widget* w, void * data) {((DataEntryGUI*)data)->chooseProjectFile_cb(w);}
 };
-
 #endif /* SRC_MAIN_DATAENTRYGUI_H_ */

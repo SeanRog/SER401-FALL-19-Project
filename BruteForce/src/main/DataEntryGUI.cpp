@@ -434,5 +434,3 @@ void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*) {
 			break;
 	}
 }
-
-
