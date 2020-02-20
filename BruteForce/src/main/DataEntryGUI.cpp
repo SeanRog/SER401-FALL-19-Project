@@ -102,6 +102,7 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win) {
 	projectFileChooserButton->callback(static_chooseProjectFile_cb, this);
 	fileInput_Project = new Fl_Input(80, 220, 650, 30);
 	fileInput_Project->value(".");
+
 	Fl_PNG_Image Folder("./Images/folder.png");
 	projectFileChooserButton->color(ASU_GOLD);
 	projectFileChooserButton->selection_color(ASU_MAROON);
@@ -151,9 +152,11 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win) {
 	//Project File Chooser Instructions
 	projectFileInstructionsBox = new Fl_Box(10, 170, 730, 30);
 	projectFileInstructionsBox->box(FL_FLAT_BOX);
+
 	projectFileInstructionsBox->color(ASU_GREY);
 	projectFileInstructionsBox->labelfont(FL_HELVETICA_BOLD);
 	projectFileInstructionsBox->labelcolor(ASU_WHITE);
+
 	projectFileInstructionsBox->labelsize(18);
 	projectFileInstructionsBox->label(
 			"Step 1: Choose the Project .csv File to be used.");
@@ -162,9 +165,11 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win) {
 	// Student Quiz Name Instructions
 	quizFileInstructionsBox = new Fl_Box(10, 280, 730, 30);
 	quizFileInstructionsBox->box(FL_FLAT_BOX);
+
 	quizFileInstructionsBox->color(ASU_GREY);
 	quizFileInstructionsBox->labelfont(FL_HELVETICA_BOLD);
 	quizFileInstructionsBox->labelcolor(ASU_WHITE);
+
 	quizFileInstructionsBox->labelsize(18);
 	quizFileInstructionsBox->label(
 			"Step 2: Enter name of Capstone Survey Quiz.");
@@ -173,9 +178,11 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win) {
 	// Class Section Instructions
 	classSectionInstructionsBox = new Fl_Box(10, 370, 730, 30);
 	classSectionInstructionsBox->box(FL_FLAT_BOX);
+
 	classSectionInstructionsBox->color(ASU_GREY);
 	classSectionInstructionsBox->labelfont(FL_HELVETICA_BOLD);
 	classSectionInstructionsBox->labelcolor(ASU_WHITE);
+
 	classSectionInstructionsBox->labelsize(18);
 	classSectionInstructionsBox->label("Step 3: Select Class Sections below.");
 	classSectionInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
@@ -183,9 +190,11 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win) {
 	// Go Back or Confirm Instructions
 	goBackorConfirmInstructionsBox = new Fl_Box(10, 640, 730, 30);
 	goBackorConfirmInstructionsBox->box(FL_FLAT_BOX);
+
 	goBackorConfirmInstructionsBox->color(ASU_GREY);
 	goBackorConfirmInstructionsBox->labelfont(FL_HELVETICA_BOLD);
 	goBackorConfirmInstructionsBox->labelcolor(ASU_WHITE);
+
 	goBackorConfirmInstructionsBox->labelsize(18);
 	goBackorConfirmInstructionsBox->label("Step 4: Go Back or Confirm");
 	goBackorConfirmInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
@@ -203,6 +212,7 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win) {
 	masterWindow->box(FL_BORDER_BOX);
 	masterWindow->show();
 	masterWindow->end();
+
 
 	Fl::run();
 
@@ -248,6 +258,7 @@ void DataEntryGUI::FindCoursesClick(Fl_Widget *w) {
 	cout << year << endl;
 	cout << semester << endl;
 
+
 	for (auto &course : courses) {
 
 		if ((course.find(year) != string::npos)
@@ -255,7 +266,6 @@ void DataEntryGUI::FindCoursesClick(Fl_Widget *w) {
 
 			int length = course.length();
 			char course_char[length + 1];
-
 			strcpy(course_char, course.c_str());
 
 			cout << course << endl;
@@ -400,9 +410,11 @@ void DataEntryGUI::ConfirmClick(Fl_Widget *w) {
 	char prompt3[length + 1];
 	strcpy(prompt3, classes.c_str());
 
+
 	confirmWindow->begin();
 
 	Fl_Box promptBox1(0, 10, 850, 30, "Does all the information look correct?");
+
 	promptBox1.align(FL_ALIGN_CENTER);
 	promptBox1.labelsize(30);
 
@@ -432,6 +444,7 @@ void DataEntryGUI::ConfirmClick(Fl_Widget *w) {
 	promptBox4R.align(FL_ALIGN_RIGHT);
 	promptBox4R.labelsize(15);
 	promptBox4R.labelfont(FL_HELVETICA);
+
 
 	GenerateTeamsButton = new Fl_Button(635, 150, 175, 50, "Generate Teams");
 	GenerateTeamsButton->color(ASU_WHITE);
