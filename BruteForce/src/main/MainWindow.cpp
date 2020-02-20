@@ -51,6 +51,16 @@
 
 #include <curl/curl.h>
 
+#define WEBVIEW_GTK
+//don't forget to define WEBVIEW_WINAPI,WEBVIEW_GTK or WEBVIEW_COCAO
+#include "webview.h"
+
+#ifdef WIN32
+int WINAPI WinMain(HINSTANCE hInt, HINSTANCE hPrevInst, LPSTR lpCmdLine,
+                   int nCmdShow) {
+#else
+
+
 
 using namespace std;
 int MainWindow::num_projects = 0;
@@ -611,6 +621,10 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
  */
 void MainWindow::StartButtonClick(Fl_Widget *w) {
 
+
+#endif
+	webview("Web login exapmle",
+		  "https://canvas.asu.edu/login", 800, 600, 1);
 
 	//open the firefox browser for ASU canvas login page.
 	//system("firefox https://canvas.asu.edu/login");
