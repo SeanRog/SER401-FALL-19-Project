@@ -148,7 +148,8 @@ int CookieManager::newHttpsSession(const char *hostURL) {
 /*
  * Simple HTTPS GET
  */ 
-size_t CookieManager::WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
+size_t CookieManager::WriteCallback(void *contents, size_t size, size_t nmemb, 
+        void *userp) {
     ((std::string*)userp)->append((char*)contents, size * nmemb);
     return size * nmemb;
 }
@@ -185,6 +186,7 @@ void CookieManager::print_cookies(CURL *curl) {
 
 //function to get all courses
 void CookieManager::getCourses() {
+    
     CURL *curl;
     CURLcode res;
     std::string readBuffer;
@@ -225,7 +227,7 @@ void CookieManager::getCourses() {
     curl_easy_cleanup(curl);
 }
 
-void CanvasUtility::getQuizzes() {
+void CookieManager::getQuizzes() {
     CURL *curl;
     CURLcode res;
     std::string readBuffer;
