@@ -20,7 +20,6 @@
 #include "CookieManager.h"
 
 #include <curl/curl.h>
-#include <openssl/ssl.h>
 #include <iostream>
 #include <algorithm>
 #include <fstream>
@@ -44,7 +43,6 @@ constexpr char* toConstChar(char* constInt) {
 	return constInt;
 }
 
-//std::system(R"("C:\Program Files\Mozilla Firefox\firefox.exe" google.com)");
 /***********************************************
  * newHttpsSession
  *
