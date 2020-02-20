@@ -31,6 +31,16 @@ const Fl_Color ASU_BLUE = fl_rgb_color(0, 163, 224);
 const Fl_Color ASU_ORANGE = fl_rgb_color(255, 127, 50);
 const Fl_Color ASU_GREY = fl_rgb_color(92, 102, 112);
 
+
+//Steampunk colors
+const Fl_Color DARK_BRASS = fl_rgb_color(165, 110, 6);
+
+const Fl_Color DARK_GREY = fl_rgb_color(58, 58, 58);
+
+const Fl_Color DARK_TAUPE = fl_rgb_color(74, 58, 27);
+
+
+
 class Styles {
 
 };

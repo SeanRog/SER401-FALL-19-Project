@@ -47,6 +47,7 @@
 #include "MainWindow.h"
 #include "GUIStyles.h"
 #include "main.h"
+#include "SteamPunkGUI1.h"
 
 #include <iostream>
 #include <utility>
@@ -565,7 +566,8 @@ int tempProj, tempStud, textInput;
 int main() {
 
 	XInitThreads();
-	MainWindow mainWin;
+   //MainWindow mainWin;
+	SteamPunkGUI1 mainWin;
 
 	//mainWin.MainWindow1();
 
