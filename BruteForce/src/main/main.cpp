@@ -562,18 +562,7 @@ int tempProj, tempStud, textInput;
  *	int value 0.
  */
 
-<<<<<<< HEAD
-int main(){
-
-	Utility util;
-	vector<Project> projects = util.csvToProjectsVector("100Projects.csv");
-
-	for(int i = 0; i < projects.size(); i++) {
-		cout << projects.at(i).Type << endl;
-	}
-=======
 int main() {
->>>>>>> dev
 
 	XInitThreads();
 	MainWindow mainWin;
