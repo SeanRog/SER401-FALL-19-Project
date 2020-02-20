@@ -20,7 +20,6 @@
 #include "CookieManager.h"
 
 #include <curl/curl.h>
-#include <openssl/ssl.h>
 #include <iostream>
 #include <algorithm>
 #include <fstream>
@@ -39,7 +38,11 @@ CookieManager::~CookieManager() {
 	// TODO Auto-generated destructor stub
 }
 
-//std::system(R"("C:\Program Files\Mozilla Firefox\firefox.exe" google.com)");
+//Function to convert char[] into constant expressions.
+constexpr char* toConstChar(char* constInt) {
+	return constInt;
+}
+
 /***********************************************
  * newHttpsSession
  *
@@ -143,7 +146,8 @@ int CookieManager::newHttpsSession(const char *hostURL) {
 /*
  * Simple HTTPS GET
  */ 
-size_t CookieManager::WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
+size_t CookieManager::WriteCallback(void *contents, size_t size, size_t nmemb, 
+        void *userp) {
     ((std::string*)userp)->append((char*)contents, size * nmemb);
     return size * nmemb;
 }
@@ -176,4 +180,89 @@ void CookieManager::print_cookies(CURL *curl) {
         printf("(none)\n");
     }
     curl_slist_free_all(cookies);
+}
+
+//function to get all courses
+void CookieManager::getCourses() {
+    
+    CURL *curl;
+    CURLcode res;
+    std::string readBuffer;
+    
+    curl = curl_easy_init();
+    
+    if (curl) {
+        curl_easy_setopt(curl, CURLOPT_URL, 
+                "https://canvas.asu.edu/api/v1/courses?page=1&per_page=100");
+        
+        curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
+        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
+        
+        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt");
+        curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
+        
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+        
+        res = curl_easy_perform(curl);
+        
+        std::cout << readBuffer << std::endl;
+        
+        //write all the courses to a json file.
+        ofstream courses;
+        courses.open("allCourses.json");
+        courses.close();
+
+		/* Check for errors */
+        if (res != CURLE_OK) {
+            fprintf(stderr, "second curl_easy_perform() failed: %s\n",
+                curl_easy_strerror(res));
+        }
+    }
+    
+    print_cookies(curl);
+    /* always cleanup */
+    curl_easy_cleanup(curl);
+}
+
+void CookieManager::getQuizzes() {
+    CURL *curl;
+    CURLcode res;
+    std::string readBuffer;
+    struct curl_slist *headers = NULL;
+
+    curl = curl_easy_init();
+    if (curl) {
+        curl_easy_setopt(curl, CURLOPT_URL,
+                "https://canvas.asu.edu/api/v1/courses/47570/quizzes?page=1&per_page=100");
+
+        curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
+        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
+
+        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt");
+        curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
+
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+
+        res = curl_easy_perform(curl);
+
+        std::cout << readBuffer << std::endl;
+
+        //write all the quizzes to a json file.
+        ofstream courses;
+        courses.open("allQuizzes.json");
+        courses << readBuffer;
+        courses.close();
+
+        /* Check for errors */
+        if (res != CURLE_OK) {
+            fprintf(stderr, "second curl_easy_perform() failed: %s\n",
+                curl_easy_strerror(res));
+        }
+    }
+
+    print_cookies(curl);
+    /* always cleanup */
+    curl_easy_cleanup(curl);
 }
