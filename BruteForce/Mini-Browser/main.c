@@ -4,8 +4,11 @@
 //don't forget to define WEBVIEW_WINAPI,WEBVIEW_GTK or WEBVIEW_COCAO
 
 #include "webview.h"
+
 #include <stdio.h>
 #include <string.h>
+#include <gtk/gtk.h>
+#include <webkit2/webkit2.h>
 
 #ifdef WIN32
 int WINAPI WinMain(HINSTANCE hInt, HINSTANCE hPrevInst, LPSTR lpCmdLine,
