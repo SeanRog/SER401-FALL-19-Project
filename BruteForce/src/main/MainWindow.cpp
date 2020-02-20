@@ -19,7 +19,6 @@
 #include "ResultWindow.h"
 //#include "CanvasUtility.h"
 #include "main.h"
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -31,7 +30,6 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <sys/wait.h>
-
 #include <FL/Fl.H>
 #include <FL/Fl_Tabs.H>
 #include <FL/Fl_Window.H>
@@ -48,9 +46,7 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
-
 #include <curl/curl.h>
-
 
 using namespace std;
 int MainWindow::num_projects = 0;
@@ -62,24 +58,19 @@ constexpr int toConstInt(int constInt) {
 }
 
 // CONSTRUCTOR
-MainWindow::MainWindow() {
+MainWindow::MainWindow() {}
 
-}
 //ASU logos
 Fl_PNG_Image ASU_LOGO_BLACK1("./Images/asu_sunburst_rgb_black_150ppi_1.png");
 Fl_PNG_Image ASU_LOGO_BLACK2("./Images/asu_sunburst_rgb_black_150ppi_0.png");
 Fl_PNG_Image ASU_LOGO_WHITE2("./Images/asu_university_horiz_rgb_white_150.png");
-
 //team button
 Fl_PNG_Image TeamLogo1("./Images/TeamsButton.png");
 Fl_PNG_Image TeamLogo2("./Images/TeamsButton2.png");
-
 Fl_PNG_Image AboutLogo("./Images/About3.png");
-
 Fl_PNG_Image *LoadingPngs[22];
 
 void MainWindow::MainWindow1() {
-
 	/*
 	 // MAIN WINDOW
 	 num_students=0;
@@ -200,12 +191,9 @@ void MainWindow::MainWindow1() {
 }
 
 // DESTRUCTOR
-MainWindow::~MainWindow() {
-
-}
+MainWindow::~MainWindow() {}
 
 void MainWindow::MainWindow2() {
-
 	const int windowMainW = 750;
 	const int windowMainH = 450;
 	const char windowMainStr[] =
@@ -213,7 +201,6 @@ void MainWindow::MainWindow2() {
 	windowMain = new Fl_Window(windowMainW, windowMainH,
 			"Capstone Team Assignment System");
 	windowMain->color(ASU_WHITE);
-
 	{
 		Fl_Tabs *tabs = new Fl_Tabs(10, 10, 730, 350);
 		tabs->selection_color(ASU_GOLD);
@@ -333,25 +320,19 @@ void MainWindow::MainWindow2() {
 						"assigned to teams that closely match their\n"
 						"own skill level, and the skills required\n"
 						"for the project.\n"
-
 				);
-
 			}
 			aboutTab->end();
 		}
-
 		tabs->end();
-
 	}
 
 	/* for running / testing inputs */
 	inputprojects = new Fl_Int_Input(150, 400, 200, 30, "#Projects:");
 	inputstudents = new Fl_Int_Input(500, 400, 200, 30, "#Students:");
 	/* end */
-
 	windowMain->show();
 	windowMain->end();
-
 	//tabs->show();
 	Fl::run();
 
@@ -378,17 +359,14 @@ void MainWindow::MainWindow2() {
 void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 
 	for (int i = 0; i < 22; i++) {
-
 		string filename = "./Images/Loading/" + to_string(i + 1) + ".png";
 		int length = filename.length();
 		char png_char[length + 1];
 		strcpy(png_char, filename.c_str());
 		LoadingPngs[i] = new Fl_PNG_Image(png_char);
-
 	}
 
 	//PROGRESS BAR WINDOW
-
 	progressWindow = new Fl_Window(570, 400, "Team Assignment Progress");
 	progressWindow->begin();
 
@@ -413,7 +391,6 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	progressBar = new Fl_Progress(20, 325, 530, 40);
 
 	//progressBox = new Fl_Box(10, 330, 550, 40, "");
-
 	progressBar->minimum(0);               // set progress range to be 0.0 ~ 1.0
 	progressBar->maximum(1);
 	progressBar->color(ASU_GOLD);               // background color
@@ -463,20 +440,16 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	doneButton->callback(static_DoneButtonClick, this);
 	progressWindow->redraw();
 
-
 	Fl::run();
 }
 
 void cookieLoad(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar) {
-
 	int i = 0;
 	while (progressBar->value() != 100) {
-
 		string filename = "./Images/cookies/" + to_string(i) + ".png";
 		int length = filename.length();
 		char png_char[length + 1];
 		strcpy(png_char, filename.c_str());
-
 		Fl_PNG_Image *cookies = new Fl_PNG_Image(png_char);
 		Fl::check();
 		b->image(cookies);
@@ -490,9 +463,7 @@ void cookieLoad(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar) {
 
 }
 
-void animate(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
-		Fl_PNG_Image *loadingPngs[23]) {
-
+void animate(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,Fl_PNG_Image *loadingPngs[23]) {
 	int i = 0;
 	while (progressBar->value() != 100) {
 		Fl::check();
@@ -504,12 +475,9 @@ void animate(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 			i = 0;
 		}
 	}            //end while loop
-
 }
 
-void teamAssignment(int num_students, int num_projects,
-		Fl_Progress *progressBar) {
-
+void teamAssignment(int num_students, int num_projects,Fl_Progress *progressBar) {
 	main m;
 	m.main_run(num_projects, num_students, progressBar);
 }
@@ -534,7 +502,6 @@ void teamAssignment(int num_students, int num_projects,
  *		nothing
  */
 void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
-
 	TeamsButton->deactivate();
 	progressBox->label("Team Assignment System Running...");
 	progressBox->labelfont(FL_HELVETICA);
@@ -544,9 +511,7 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	XInitThreads();
 	thread threads[1];
-
-	threads[0] = thread(animate, progressWindow, imageBox, progressBar,
-			LoadingPngs);
+	threads[0] = thread(animate, progressWindow, imageBox, progressBar,LoadingPngs);
 
 	//if you want to load cookies.
 	//threads[0] = thread (cookieLoad, progressWindow, imageBox, progressBar);
@@ -563,12 +528,10 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 	Fl_PNG_Image *doneImage = new Fl_PNG_Image("./Images/Loading/done.png");
 	imageBox->image(doneImage);
 	imageBox->redraw();
-
 	doneButton->activate();
 	progressBox->label("Team Assignment Complete! Click 'Done' to continue.");
 	progressBox->labelsize(18);
 	progressBox->labelfont(FL_HELVETICA);
-
 }
 
 /*****************************************************************************
@@ -587,7 +550,6 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
  *		nothing
  */
 void MainWindow::DoneButtonClick(Fl_Widget *w) {
-
 	progressWindow->hide();
 	ResultWindow windowResult;
 	windowResult.buffer->loadfile("results.txt", 1000000);
@@ -610,8 +572,6 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
  *		nothing
  */
 void MainWindow::StartButtonClick(Fl_Widget *w) {
-
-
 	//open the firefox browser for ASU canvas login page.
 	//system("firefox https://canvas.asu.edu/login");
 
@@ -625,11 +585,9 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 
 	//call to next GUI window.
 	DataEntryGUI dataGUI(windowMain);
-
 }
 
 int MainWindow::handle(int event) {
-
 	fprintf(stderr, "EVENT: %s(%d)\n", fl_eventnames[event], event);
 	switch (event) {
 	case FL_PUSH:
@@ -637,15 +595,12 @@ int MainWindow::handle(int event) {
 		Fl_PNG_Image TeamLogo2("./Images/button2.png");
 		generateTeams->image(TeamLogo2);
 		//windowMain.redraw();
-
 		return 1;
 	}
 	return 0;
 }
 
 void MainWindow::callTeams(Fl_Widget *w) {
-
 	TeamsButtonClick(windowMain);
-
 }
 
