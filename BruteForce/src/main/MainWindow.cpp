@@ -574,7 +574,6 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
 void MainWindow::StartButtonClick(Fl_Widget *w) {
 	//open the firefox browser for ASU canvas login page.
 	//system("firefox https://canvas.asu.edu/login");
-
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
 	windowMain->hide();
