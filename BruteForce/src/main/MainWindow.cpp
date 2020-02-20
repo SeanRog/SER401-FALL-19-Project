@@ -17,6 +17,7 @@
 #include "DataEntryGUI.h"
 #include "GUIStyles.h"
 #include "ResultWindow.h"
+//#include "CanvasUtility.h"
 #include "main.h"
 
 #include <iostream>
@@ -26,7 +27,6 @@
 #include <thread>
 #include <stdio.h>
 #include <FL/names.h>
-#include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/time.h>
@@ -48,6 +48,9 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
+
+#include <curl/curl.h>
+
 
 using namespace std;
 int MainWindow::num_projects = 0;
@@ -408,6 +411,7 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	TeamsButton = new Fl_Button(25, 260, 200, 50, "Generate Teams");
 	doneButton = new Fl_Button(345, 260, 200, 50, "Done");
 	progressBar = new Fl_Progress(20, 325, 530, 40);
+
 	//progressBox = new Fl_Box(10, 330, 550, 40, "");
 
 	progressBar->minimum(0);               // set progress range to be 0.0 ~ 1.0
@@ -458,6 +462,7 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	TeamsButton->callback(static_ProgressTeamsButtonClick, this);
 	doneButton->callback(static_DoneButtonClick, this);
 	progressWindow->redraw();
+
 
 	Fl::run();
 }
@@ -532,6 +537,9 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	TeamsButton->deactivate();
 	progressBox->label("Team Assignment System Running...");
+	progressBox->labelfont(FL_HELVETICA);
+	progressBox->labelsize(20);
+	progressBox->labelcolor(ASU_BLACK);
 	imageBox->redraw();
 
 	XInitThreads();
@@ -584,7 +592,6 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
 	ResultWindow windowResult;
 	windowResult.buffer->loadfile("results.txt", 1000000);
 	windowResult.addText();
-
 }
 
 /*****************************************************************************
@@ -604,9 +611,17 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
  */
 void MainWindow::StartButtonClick(Fl_Widget *w) {
 
+
+	//open the firefox browser for ASU canvas login page.
+	//system("firefox https://canvas.asu.edu/login");
+
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
 	windowMain->hide();
+
+	//CanvasUtility Canvas;
+	 //Canvas.getCourses();
+	 //Canvas.getQuizzes();
 
 	//call to next GUI window.
 	DataEntryGUI dataGUI(windowMain);
