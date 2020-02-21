@@ -105,10 +105,15 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	Confirm->callback(static_ConfirmClick, this);
 
 	//Initialize Project File Chooser - Step 1 Choose Project File
-	projectFileChooserButton = new Fl_Button(20,210,50,50,"@+3fileopen");
+	projectFileChooserButton = new Fl_Button(20,210,50,50);
 	projectFileChooserButton->callback(static_chooseProjectFile_cb, this);
 	fileInput_Project = new Fl_Input(80,220,650,30);
 	fileInput_Project->value(".");
+
+	Fl_PNG_Image Folder("./Images/folder.png");
+	projectFileChooserButton->color(ASU_GOLD);
+	projectFileChooserButton->selection_color(ASU_MAROON);
+	projectFileChooserButton->image(Folder);
 
 	//Initialize Student Quiz Textbox - Step 2 Enter name of Capstone Survey
 	//background box 3 - background quiz questionnaire
@@ -153,9 +158,9 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	//Project File Chooser Instructions
 	projectFileInstructionsBox = new Fl_Box(10,170,730,30);
 	projectFileInstructionsBox->box(FL_FLAT_BOX);
-	projectFileInstructionsBox->color(ASU_GOLD);
+	projectFileInstructionsBox->color(ASU_GREY);
 	projectFileInstructionsBox->labelfont(FL_HELVETICA_BOLD);
-	projectFileInstructionsBox->labelcolor(ASU_BLACK);
+	projectFileInstructionsBox->labelcolor(ASU_WHITE);
 	projectFileInstructionsBox->labelsize(18);
 	projectFileInstructionsBox->label("Step 1: Choose the Project .csv File to be used.");
 	projectFileInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
@@ -163,9 +168,9 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	// Student Quiz Name Instructions
 	quizFileInstructionsBox = new Fl_Box(10,280, 730, 30);
 	quizFileInstructionsBox->box(FL_FLAT_BOX);
-	quizFileInstructionsBox->color(ASU_GOLD);
+	quizFileInstructionsBox->color(ASU_GREY);
 	quizFileInstructionsBox->labelfont(FL_HELVETICA_BOLD);
-	quizFileInstructionsBox->labelcolor(ASU_BLACK);
+	quizFileInstructionsBox->labelcolor(ASU_WHITE);
 	quizFileInstructionsBox->labelsize(18);
 	quizFileInstructionsBox->label("Step 2: Enter name of Capstone Survey Quiz.");
 	quizFileInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
@@ -173,9 +178,9 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	// Class Section Instructions
 	classSectionInstructionsBox = new Fl_Box(10,370,730,30);
 	classSectionInstructionsBox->box(FL_FLAT_BOX);
-	classSectionInstructionsBox->color(ASU_GOLD);
+	classSectionInstructionsBox->color(ASU_GREY);
 	classSectionInstructionsBox->labelfont(FL_HELVETICA_BOLD);
-	classSectionInstructionsBox->labelcolor(ASU_BLACK);
+	classSectionInstructionsBox->labelcolor(ASU_WHITE);
 	classSectionInstructionsBox->labelsize(18);
 	classSectionInstructionsBox->label("Step 3: Select Class Sections below.");
 	classSectionInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
@@ -183,9 +188,9 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 	// Go Back or Confirm Instructions
 	goBackorConfirmInstructionsBox = new Fl_Box(10,640,730,30);
 	goBackorConfirmInstructionsBox->box(FL_FLAT_BOX);
-	goBackorConfirmInstructionsBox->color(ASU_GOLD);
+	goBackorConfirmInstructionsBox->color(ASU_GREY);
 	goBackorConfirmInstructionsBox->labelfont(FL_HELVETICA_BOLD);
-	goBackorConfirmInstructionsBox->labelcolor(ASU_BLACK);
+	goBackorConfirmInstructionsBox->labelcolor(ASU_WHITE);
 	goBackorConfirmInstructionsBox->labelsize(18);
 	goBackorConfirmInstructionsBox->label("Step 4: Go Back or Confirm");
 	goBackorConfirmInstructionsBox->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
