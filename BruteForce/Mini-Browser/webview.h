@@ -86,7 +86,7 @@ struct webview_priv {
   int should_exit;
 };
 #else
-#error "Define one of: WEBVIEW_GTK, WEBVIEW_COCOA or WEBVIEW_WINAPI"
+
 #endif
 
 struct webview;
