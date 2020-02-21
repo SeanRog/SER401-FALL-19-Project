@@ -66,7 +66,7 @@ constexpr int toConstInt(int constInt) {
 
 Fl_PNG_Image *LoadingPngsSP[22];
 
-Fl_PNG_Image *TrainPngs[5];
+Fl_PNG_Image *TrainPngs[7];
 Fl_PNG_Image *PreTrainPngs[8];
 Fl_PNG_Image *EndTrainPngs[9];
 
@@ -349,7 +349,7 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 		PreTrainPngs[i] = new Fl_PNG_Image(png_char);
 	}
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 7; i++) {
 		string filename = "./Images/Steampunk/Train/" + to_string(i) + ".png";
 		int length = filename.length();
 		char png_char[length + 1];
@@ -367,28 +367,28 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 
 	//PROGRESS BAR WINDOW
 
-	progressWindow = new Fl_Window(570, 400, "Team Assignment Progress");
+	progressWindow = new Fl_Window(870, 700, "Team Assignment Progress");
 	progressWindow->begin();
 
-	Fl_Box *backBox = new Fl_Box(0, 250, 570, 150);
+	Fl_Box *backBox = new Fl_Box(0, 550, 870, 150);
 	backBox->box(FL_BORDER_BOX);
 	backBox->color(DARK_TAUPE);
 
-	Fl_Box *backBox1 = new Fl_Box(0, 0, 10, 400);
+	Fl_Box *backBox1 = new Fl_Box(0, 0, 75, 550);
 	backBox1->box(FL_FLAT_BOX);
 	backBox1->color(DARK_TAUPE);
 
-	Fl_Box *backBox2 = new Fl_Box(0, 0, 570, 10);
+	Fl_Box *backBox2 = new Fl_Box(0, 0, 870, 20);
 	backBox2->box(FL_FLAT_BOX);
 	backBox2->color(DARK_TAUPE);
 
-	Fl_Box *backBox3 = new Fl_Box(560, 0, 10, 400);
+	Fl_Box *backBox3 = new Fl_Box(795, 0, 75, 550);
 	backBox3->box(FL_FLAT_BOX);
 	backBox3->color(DARK_TAUPE);
 
-	TeamsButton = new Fl_Button(25, 260, 200, 50, "Generate Teams");
-	doneButton = new Fl_Button(345, 260, 200, 50, "Done");
-	progressBar = new Fl_Progress(20, 325, 530, 40);
+	TeamsButton = new Fl_Button(25, 560, 200, 50, "Generate Teams");
+	doneButton = new Fl_Button(645, 560, 200, 50, "Done");
+	progressBar = new Fl_Progress(20, 625, 830, 40);
 
 	//progressBox = new Fl_Box(10, 330, 550, 40, "");
 
@@ -407,13 +407,13 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	Fl_PNG_Image *baseImage = new Fl_PNG_Image("./Images/Steampunk/PreTrain/0.png");
 	//Fl_PNG_Image* baseImage = new Fl_PNG_Image("./Images/cookies/0.png");
 
-	imageBox = new Fl_Box(10, 20, 550, 200);
+	imageBox = new Fl_Box(75, 20, 720, 390);
 	imageBox->color(DARK_BRASS);
 	imageBox->box(FL_FLAT_BOX);
 	imageBox->image(baseImage);
 	imageBox->redraw();
 
-	progressBox = new Fl_Box(10, 210, 550, 40, "");
+	//progressBox = new Fl_Box(85, 500, 550, 40, "");
 
 	doneButton->color(DARK_BRASS);
 	doneButton->selection_color(DARK_GREY);
@@ -427,7 +427,7 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	TeamsButton->labelsize(15);
 	TeamsButton->labelcolor(ASU_BLACK);
 
-	progressWindow->color(DARK_BRASS);
+	progressWindow->color(ASU_WHITE);
 	progressWindow->box(FL_BORDER_BOX);
 
 	doneButton->deactivate();
@@ -476,7 +476,7 @@ void animateSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 		Fl::check();
 			b->image(PreTrainPngs[i]);
 			b->redraw();
-			usleep(50000);
+			usleep(80000);
 	}
 
 
@@ -487,7 +487,7 @@ void animateSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 		b->redraw();
 		usleep(50000);
 		i++;
-		if (i == 5) {
+		if (i == 7) {
 			i = 0;
 		}
 	}            //end while loop
@@ -496,7 +496,7 @@ void animateSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 		Fl::check();
 			b->image(EndTrainPngs[i]);
 			b->redraw();
-			usleep(50000);
+			usleep(80000);
 	}
 
 
@@ -532,9 +532,9 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	TeamsButton->deactivate();
 	progressBox->label("Team Assignment System Running...");
-	progressBox->labelfont(FL_HELVETICA);
-	progressBox->labelsize(20);
-	progressBox->labelcolor(ASU_BLACK);
+	//progressBox->labelfont(FL_HELVETICA);
+	//progressBox->labelsize(20);
+	//progressBox->labelcolor(ASU_BLACK);
 	imageBox->redraw();
 
 	XInitThreads();
@@ -560,9 +560,9 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 	imageBox->redraw();
 
 	doneButton->activate();
-	progressBox->label("Team Assignment Complete! Click 'Done' to continue.");
-	progressBox->labelsize(18);
-	progressBox->labelfont(FL_HELVETICA);
+	//progressBox->label("Team Assignment Complete! Click 'Done' to continue.");
+	//progressBox->labelsize(18);
+	//progressBox->labelfont(FL_HELVETICA);
 
 }
 
