@@ -8,21 +8,23 @@ CSV ?= ./*.csv
 
 CXX := -c++
 
-
-LDFLAGS := -L/usr/lib -lstdc++ -lcurl -pthread -lm -lfltk -lfltk_images -lpng -lX11 -ldl -lXrender -lXcursor -lXfixes -lXinerama -lXext -lXft -lfontconfig -lpthread
+LDFLAGS := -L/usr/lib -lstdc++ -lcurl -lm -lfltk -lfltk_images -lpng -lX11 -ldl -lXrender -lXcursor -lXfixes -lXinerama -lXext -lXft -lfontconfig -lpthread
 
 
 SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
+GTKINC := `pkg-config --cflags gtk+-3.0 webkitgtk-3.0`
+GTKLIB := `pkg-config --libs gtk+-3.0 webkitgtk-3.0`
+
 INC_DIRS ?= ./include
-INC_FLAGS := $(addprefix -I,$(INC_DIRS))
+INC_FLAGS := -I$(INC_DIRS)
 
 CPPFLAGS ?= $(INC_FLAGS) -MMD -MP
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
-	$(CC) $(OBJS) -o $@ $(LDFLAGS)
+	$(CC) $(GTKINC) $(OBJS) -o $@ $(LDFLAGS) $(GTKLIB)
 
 $(BUILD_DIR)/%.cpp.o: %.cpp
 	$(MKDIR_P) $(dir $@)

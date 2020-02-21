@@ -44,6 +44,86 @@ constexpr char* toConstChar(char* constInt) {
 }
 
 /***********************************************
+ * newHttpSession
+ *
+ * Description:
+ * Initializes a new HTTP session
+ *
+ * Arguments:
+ * 
+ *
+ * returns -
+ * 
+ */
+int CookieManager::newHttpSession(const char *hostURL) {
+    
+CURL *curl;
+
+    CURLcode res;
+    std::string readBuffer;
+    struct curl_slist* headers = NULL;
+    
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+    
+    curl = curl_easy_init();
+  
+    if(curl) {
+        
+        curl_easy_setopt(curl, CURLOPT_URL, hostURL);
+        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+        curl_easy_setopt(curl, CURLOPT_NETRC, CURL_NETRC_REQUIRED);
+        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt"); /* start cookie engine */ 
+        curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
+        
+        headers = curl_slist_append(headers, "Content-Type: application/json");
+        //headers = curl_slist_append(headers, 
+        //    "Authorization: Bearer <ENTER TOKEN HERE>");
+        
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+                
+        printf("Erasing curl's knowledge of cookies!\n\n");
+        curl_easy_setopt(curl, CURLOPT_COOKIELIST, "ALL");
+        
+        res = curl_easy_perform(curl);
+        
+        if(!res) {
+            /* extract all known cookies */
+            struct curl_slist *cookies = NULL;
+            res = curl_easy_getinfo(curl, CURLINFO_COOKIELIST, &cookies);
+            
+            if(!res && cookies) {
+                /* a linked list of cookies in cookie file format */
+                struct curl_slist *each = cookies;
+                
+                while(each) {
+                    printf("if(!res) while loop: !\n\n");
+                    printf("%s\n", each->data);
+
+                    each = each->next;
+                }
+                /* we must free these cookies when we're done */
+                curl_slist_free_all(cookies);
+            }
+        }
+        
+        if(res != CURLE_OK) {
+            fprintf(stderr, "Curl perform failed: %s\n\n", 
+                    curl_easy_strerror(res));
+            return 1;
+        }
+        
+        curl_easy_cleanup(curl);
+
+        std::cout << readBuffer << std::endl;
+    }
+    curl_global_cleanup();
+    return 0;
+}
+
+/***********************************************
  * newHttpsSession
  *
  * Description:

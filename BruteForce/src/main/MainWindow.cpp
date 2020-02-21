@@ -17,7 +17,7 @@
 #include "DataEntryGUI.h"
 #include "GUIStyles.h"
 #include "ResultWindow.h"
-//#include "CanvasUtility.h"
+#include "CookieManager.h"
 #include "main.h"
 
 #include <iostream>
@@ -636,6 +636,9 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	//CanvasUtility Canvas;
 	 //Canvas.getCourses();
 	 //Canvas.getQuizzes();
+
+         CookieManager httpSession;
+         httpSession.newHttpSession("weblogin.asu.edu");
 
 	//call to next GUI window.
 	DataEntryGUI dataGUI(windowMain);
