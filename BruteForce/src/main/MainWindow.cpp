@@ -13,12 +13,15 @@
  *
  */
 
+#define WEBVIEW_GTK
+
 #include "MainWindow.h"
 #include "DataEntryGUI.h"
 #include "GUIStyles.h"
 #include "ResultWindow.h"
 #include "CookieManager.h"
 #include "main.h"
+#include "webview.h"
 
 #include <iostream>
 #include <fstream>
@@ -48,21 +51,12 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
-
+#include <gtk/gtk.h>
+#include <webkit2/webkit2.h>
 #include <curl/curl.h>
 
-#define WEBVIEW_GTK
-//don't forget to define WEBVIEW_WINAPI,WEBVIEW_GTK or WEBVIEW_COCAO
-#include "webview.h"
-
-#ifdef WIN32
-int WINAPI WinMain(HINSTANCE hInt, HINSTANCE hPrevInst, LPSTR lpCmdLine,
-                   int nCmdShow) {
-#else
-
-
-
 using namespace std;
+
 int MainWindow::num_projects = 0;
 int MainWindow::num_students = 0;
 
@@ -95,54 +89,45 @@ void MainWindow::MainWindow1() {
 	 num_students=0;
 	 num_projects=0;
 	 nextWindowFlag=false;
-
 	 const int windowMainW = 400;
 	 const int windowMainH = 400;
 	 const char windowMainStr[] = "Project 35";
-
 	 // HEADER BOX
 	 const int boxHeaderX = 20;
 	 const int boxHeaderY = 20;
 	 const int boxHeaderW = toConstInt(windowMainW - (boxHeaderX * 2));
 	 const int boxHeaderH = 90;
 	 const char boxHeaderStr[] = "CAPSTONE TEAM ASSIGNMENT SYSTEM";
-
 	 // NEW PROJECT BUTTON
 	 const int buttonStartX = toConstInt(boxHeaderX);
 	 const int buttonStartY = toConstInt(boxHeaderY + boxHeaderH + 20);
 	 const int buttonStartW = 100;
 	 const int buttonStartH = 50;
 	 const char buttonStartStr[] = "START";
-
 	 // OPEN PROJECT BUTTON
 	 const int buttonOpenProjectX = toConstInt(buttonStartX + buttonStartW + 20);
 	 const int buttonOpenProjectY = toConstInt(buttonStartY);
 	 const int buttonOpenProjectW = toConstInt(buttonStartW);
 	 const int buttonOpenProjectH = toConstInt(buttonStartH);
 	 const char buttonOpenProjectStr[] = "Open Project";
-
 	 // PROJECT INPUT
 	 const int InputProjectX = toConstInt(buttonStartX + buttonStartW + 20);
 	 const int InputProjectY = toConstInt(buttonStartY + 70);
 	 const int InputProjectW = toConstInt(buttonStartW);
 	 const int InputProjectH = toConstInt(buttonStartH);
 	 const char InputPStr[] = "#Projects";
-
 	 // STUDENT INPUT
 	 const int InputStudentX = toConstInt(buttonStartX + buttonStartW + 20);
 	 const int InputStudentY = toConstInt(buttonStartY + 140);
 	 const int InputStudentW = toConstInt(buttonStartW);
 	 const int InputStudentH = toConstInt(buttonStartH);
 	 const char InputSStr[] = "#Students";
-
 	 // GENERATE TEAMS BUTTON
 	 const int generateTeamsX = toConstInt(buttonStartX + buttonStartW + 130);
 	 const int generateTeamsY = toConstInt(buttonStartY + 120);
 	 const int generateTeamsW = toConstInt(buttonStartW);
 	 const int generateTeamsH = toConstInt(buttonStartH + 20);
 	 const char generateTeamsStr[] = "Generate Teams";
-
-
 	 // INITIALIZE COMPONENTS
 	 windowMain = new Fl_Window(windowMainW, windowMainH, windowMainStr);
 	 boxHeader = new Fl_Box(boxHeaderX, boxHeaderY, boxHeaderW,
@@ -151,33 +136,23 @@ void MainWindow::MainWindow1() {
 	 buttonStartW, buttonStartH, buttonStartStr);
 	 //buttonOpenProject = new Fl_Button(buttonOpenProjectX, buttonOpenProjectY,
 	 //    buttonOpenProjectW, buttonOpenProjectH, buttonOpenProjectStr);
-
 	 inputprojects = new Fl_Int_Input(InputProjectX, InputProjectY,
 	 InputProjectW, InputProjectH, InputPStr );
-
 	 inputstudents = new Fl_Int_Input(InputStudentX, InputStudentY,
 	 InputStudentW, InputStudentH, InputSStr );
-
 	 generateTeams = new Fl_Button(generateTeamsX, generateTeamsY,
 	 TeamLogo1.w(), TeamLogo1.h());
-
 	 //CALLBACKS
 	 generateTeams->callback(static_TeamsButtonClick, this);
 	 buttonStart->callback(static_StartButtonClick, this);
-
-
-
 	 windowMain->color(ASU_WHITE);
 	 windowMain->box(FL_BORDER_BOX);
 	 windowMain->resizable(boxHeader);
-
-
 	 buttonStart->color(ASU_GOLD);
 	 buttonStart->labelfont(FL_HELVETICA_BOLD);
 	 buttonStart->labelcolor(ASU_BLACK);
 	 buttonStart->labelsize(12);
 	 buttonStart->selection_color(ASU_MAROON);
-
 	 generateTeams->image(TeamLogo1);
 	 generateTeams->color(ASU_GOLD);
 	 generateTeams->selection_color(ASU_MAROON);
@@ -187,12 +162,8 @@ void MainWindow::MainWindow1() {
 	 generateTeams->box(FL_NO_BOX);
 	 generateTeams->tooltip("Generate Teams");
 	 generateTeams->down_box(FL_NO_BOX);
-
-
 	 buttonOpenProject->color(ASU_GOLD);
 	 buttonOpenProject->labelcolor(ASU_BLACK);
-
-
 	 boxHeader->box(FL_FLAT_BOX);
 	 boxHeader->color(ASU_MAROON);
 	 boxHeader->image(ASU_LOGO_BLACK1);
@@ -200,11 +171,8 @@ void MainWindow::MainWindow1() {
 	 boxHeader->labelsize(15);
 	 boxHeader->labelcolor(ASU_WHITE);
 	 boxHeader->redraw();
-
 	 windowMain->show();
 	 windowMain->end();
-
-
 	 Fl::run(); */
 
 }
@@ -604,6 +572,11 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
 	windowResult.addText();
 }
 
+#ifdef WIN32
+int GTK WinMain(HINSTANCE hInt, HINSTANCE hPrevInst, LPSTR lpCmdLine,
+                   int nCmdShow) {
+#else
+
 /*****************************************************************************
  * StartButtonClick
  *
@@ -620,25 +593,17 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
  *		nothing
  */
 void MainWindow::StartButtonClick(Fl_Widget *w) {
+	
 
 
 #endif
-	webview("Web login exapmle",
-		  "https://canvas.asu.edu/login", 800, 600, 1);
 
-	//open the firefox browser for ASU canvas login page.
-	//system("firefox https://canvas.asu.edu/login");
+    WebKitWebView *w1 = WEBKIT_WEB_VIEW(webkit_web_view_new());
+    webkit_web_view_load_uri(w1, "https://canvas.asu.edu");
 
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
 	windowMain->hide();
-
-	//CanvasUtility Canvas;
-	 //Canvas.getCourses();
-	 //Canvas.getQuizzes();
-
-         CookieManager httpSession;
-         httpSession.newHttpSession("weblogin.asu.edu");
 
 	//call to next GUI window.
 	DataEntryGUI dataGUI(windowMain);
@@ -665,4 +630,3 @@ void MainWindow::callTeams(Fl_Widget *w) {
 	TeamsButtonClick(windowMain);
 
 }
-
