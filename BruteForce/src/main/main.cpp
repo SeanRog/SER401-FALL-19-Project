@@ -47,6 +47,7 @@
 #include "MainWindow.h"
 #include "GUIStyles.h"
 #include "main.h"
+#include "CookieManager.h"
 
 #include <iostream>
 #include <utility>
@@ -538,14 +539,6 @@ int tempProj, tempStud, textInput;
  }
  */
 
-/*
- Fl_Window *window;
- Fl_Box *box;
- Fl_Button *button;
- Fl_Input *input;
- Fl_Output *output;
- */
-
 /*************************************************************************************
  * main
  *
@@ -562,19 +555,8 @@ int tempProj, tempStud, textInput;
  *	int value 0.
  */
 
-<<<<<<< HEAD
-int main(){
-
-	Utility util;
-	vector<Project> projects = util.csvToProjectsVector("100Projects.csv");
-
-	for(int i = 0; i < projects.size(); i++) {
-		cout << projects.at(i).Type << endl;
-	}
-=======
 int main() {
->>>>>>> dev
-
+    
 	XInitThreads();
 	MainWindow mainWin;
 
@@ -600,9 +582,7 @@ int main() {
  *Returns:
  *	int value 0.
  */
-
 int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
-
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
 	srand(time(NULL));
