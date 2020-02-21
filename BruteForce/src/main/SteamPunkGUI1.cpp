@@ -330,7 +330,7 @@ void SteamPunkGUI1::MainWindow2() {
  */
 void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 
-	for (int i = 0; i < 22; i++) {
+	/*for (int i = 0; i < 22; i++) {
 
 		string filename = "./Images/Loading/" + to_string(i + 1) + ".png";
 		int length = filename.length();
@@ -338,7 +338,7 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 		strcpy(png_char, filename.c_str());
 		LoadingPngsSP[i] = new Fl_PNG_Image(png_char);
 
-	}
+	}*/
 
 	//read in pngs for Pre-Train
 	for (int i = 0; i < 8; i++) {
@@ -390,7 +390,7 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	doneButton = new Fl_Button(645, 560, 200, 50, "Done");
 	progressBar = new Fl_Progress(20, 625, 830, 40);
 
-	//progressBox = new Fl_Box(10, 330, 550, 40, "");
+
 
 	progressBar->minimum(0);               // set progress range to be 0.0 ~ 1.0
 	progressBar->maximum(1);
@@ -413,7 +413,7 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	imageBox->image(baseImage);
 	imageBox->redraw();
 
-	//progressBox = new Fl_Box(85, 500, 550, 40, "");
+	progressBox = new Fl_Box(85, 410, 550, 40, "");
 
 	doneButton->color(DARK_BRASS);
 	doneButton->selection_color(DARK_GREY);
@@ -476,7 +476,7 @@ void animateSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 		Fl::check();
 			b->image(PreTrainPngs[i]);
 			b->redraw();
-			usleep(80000);
+			usleep(50000);
 	}
 
 
@@ -496,7 +496,7 @@ void animateSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 		Fl::check();
 			b->image(EndTrainPngs[i]);
 			b->redraw();
-			usleep(80000);
+			usleep(50000);
 	}
 
 
@@ -532,9 +532,9 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	TeamsButton->deactivate();
 	progressBox->label("Team Assignment System Running...");
-	//progressBox->labelfont(FL_HELVETICA);
-	//progressBox->labelsize(20);
-	//progressBox->labelcolor(ASU_BLACK);
+	progressBox->labelfont(FL_HELVETICA);
+	progressBox->labelsize(20);
+	progressBox->labelcolor(ASU_BLACK);
 	imageBox->redraw();
 
 	XInitThreads();
@@ -560,9 +560,9 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 	imageBox->redraw();
 
 	doneButton->activate();
-	//progressBox->label("Team Assignment Complete! Click 'Done' to continue.");
-	//progressBox->labelsize(18);
-	//progressBox->labelfont(FL_HELVETICA);
+	progressBox->label("Team Assignment Complete! Click 'Done' to continue.");
+	progressBox->labelsize(18);
+	progressBox->labelfont(FL_HELVETICA);
 
 }
 
