@@ -49,11 +49,11 @@
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
 
+
+#include <gtk/gtk.h>
 #include <webkit2/webkit2.h>
 
 #include <curl/curl.h>
-
-
 
 
 using namespace std;
@@ -616,8 +616,13 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
 void MainWindow::StartButtonClick(Fl_Widget *w) {
 
 	 //set up a browser instance
-	WebKitWebView *webview = WEBKIT_WEB_VIEW(webkit_web_view_new());
-	webkit_web_view_load_uri(webview, "http://www.google.com");
+	//WebKitWebView *webview = WEBKIT_WEB_VIEW(webkit_web_view_new());
+	//webkit_web_view_load_uri(webview, "http://www.google.com");
+
+
+
+
+
 
 
 

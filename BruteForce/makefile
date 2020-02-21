@@ -7,9 +7,14 @@ TXT ?= ./*.txt
 CSV ?= ./*.csv
 
 CXX := -c++
+CC := gcc
+
+# Added webkit2gtk-4.0 for building with webkit2gtk
+GTKLIB :=`pkg-config --cflags --libs gtk+-3.0 webkit2gtk-4.0`
 
 
-LDFLAGS := -L/usr/lib -lstdc++ -lcurl -pthread -lm -lfltk -lfltk_images -lpng -lX11 -ldl -lXrender -lXcursor -lXfixes -lXinerama -lXext -lXft -lfontconfig -lpthread
+LD :=gcc
+LDFLAGS := -L/usr/lib -lstdc++ -lcurl -pthread -lm -lfltk -lfltk_images -lpng -lX11 -ldl -lXrender -lXcursor -lXfixes -lXinerama -lXext -lXft -lfontconfig -lpthread -export-dynamic
 
 
 SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
@@ -19,7 +24,11 @@ DEPS := $(OBJS:.o=.d)
 INC_DIRS ?= ./include
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-CPPFLAGS ?= $(INC_FLAGS) -MMD -MP
+
+
+CPPFLAGS ?= $(INC_FLAGS) $(GTKLIB) -MMD -MP
+
+
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
