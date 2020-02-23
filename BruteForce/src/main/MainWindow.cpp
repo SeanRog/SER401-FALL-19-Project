@@ -50,9 +50,6 @@
 #include <FL/Fl_Text_Buffer.H>
 
 
-
-
-
 #include <gtk/gtk.h>
 #include <webkit2/webkit2.h>
 

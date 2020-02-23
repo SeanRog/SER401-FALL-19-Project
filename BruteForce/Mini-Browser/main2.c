@@ -28,7 +28,7 @@
   27  */
    
   #include <gtk/gtk.h>
-   #include <webkit2/webkit2.h>
+  #include <webkit2/webkit2.h>
    
    
    static void destroyWindowCb(GtkWidget* widget, GtkWidget* window);
