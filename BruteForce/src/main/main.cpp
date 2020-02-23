@@ -559,7 +559,7 @@ int main() {
 	Utility util;
 	vector<Project> projects = util.csvToProjectsVector("100Projects.csv");
 	for (int i = 0; i < 15; i++) {
-		cout << projects.at(99).Skills[i] << " ";
+		cout << projects.at(94).Skills[i] << " ";
 	}
 	/*
 	XInitThreads();

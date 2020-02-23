@@ -1699,7 +1699,7 @@ vector<vector<string>> Utility::toCSVcse(string filename) {
  *  vector<Project> containing the project objects obtained from the projects in the CSV file.
  */
 vector<Project> Utility::csvToProjectsVector(string filename) {
-	string skills1[8] = {"ArtificialIntelligence", "WebApplicationProgramming", "IOSMobileApplicationProgramming", "AndroidMobileApplicationProgramming", "Sensing/Control/Embedded", "DesktopApplicationProgramming","DatabaseProgramming", "NetworkSecurity"};
+	string skills1[14] = {"ArtificialIntelligence", "WebApplicationProgramming", "IOSMobileApplicationProgramming", "AndroidMobileApplicationProgramming", "Sensing/Control/Embedded", "DesktopApplicationProgramming","DatabaseProgramming", "NetworkSecurity", "C", "C++", "C#", "Java", "JavaScript", "Python"};
 
 	string currentSkill = "";
 
@@ -1759,7 +1759,6 @@ vector<Project> Utility::csvToProjectsVector(string filename) {
 		currentSkill = "";
 		for(int j = 0; j < dataList.at(i).at(12).size(); j++) {
 			if(dataList.at(i).at(12).at(j) == ',') {
-				cout << currentSkill << " ";
 				currentSkill = "";
 			} else {
 				currentSkill.push_back(dataList.at(i).at(12).at(j));
@@ -1769,16 +1768,22 @@ vector<Project> Utility::csvToProjectsVector(string filename) {
 					}
 				}
 			}
-			/*if(j == dataList.at(i).at(12).size() - 1) {
-				cout << currentSkill << " ";
-				currentSkill = "";
-			}*/
 		}
-		projects.push_back(p);
-		cout << dataList.at(i).at(12) << " ";
-		cout << dataList.at(i).at(13) << " ";
+		currentSkill = "";
+		for(int j = 0; j < dataList.at(i).at(13).size(); j++) {
+			if(dataList.at(i).at(13).at(j) == ',') {
+				currentSkill = "";
+			} else {
+				currentSkill.push_back(dataList.at(i).at(13).at(j));
+				for(int k = 8; k < 14; k++) {
+					if(currentSkill.compare(skills1[k]) == 0) {
+						p.Skills[k] = 1;
+					}
+				}
+			}
+		}
 
-		cout << endl;
+		projects.push_back(p);
 	}
 	/*for(int i = 1; i < dataList.size(); i++) {
 		currentSkill = "";
