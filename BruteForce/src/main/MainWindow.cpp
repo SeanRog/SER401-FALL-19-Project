@@ -574,12 +574,34 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
 
 static void destroyWindowCb(GtkWidget* widget, GtkWidget* window)
 {
+	cout<<"quit!"<<endl;
     gtk_main_quit();
+
 }
 
 static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window)
 {
    gtk_widget_destroy(window);
+	cout<<"destroyed!"<<endl;
+    return TRUE;
+}
+
+static gboolean load_changedWebViewCb(WebKitWebView* webView, GtkWidget* window)
+{
+	cout<<"listening"<<endl;
+	cout<<webkit_web_view_get_uri(webView)<<endl;
+
+	if(strcmp (webkit_web_view_get_uri(webView),"https://canvas.asu.edu/?login_success=1") == 0){
+
+		cout<<"Canvas reached! authentication complete!"<<endl;
+
+		//todo- read in and store the cookies to cookies.txt
+
+		//close the mini-browser window because authentication is complete.
+	    gtk_main_quit();
+
+	}
+
     return TRUE;
 }
 
@@ -603,71 +625,100 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	int argc;
 	char** argv;
 
-	 // Initialize GTK+
-	    gtk_init(&argc, &argv);
+	   // Initialize GTK+
+	       gtk_init(&argc, &argv);
 
-	    // Create an 800x600 window that will contain the browser instance
-	   GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	    gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
-
-	    // Create a browser instance
-	    WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
-
-	    // Put the browser area into the main window
-	    gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
-
-
-	    // Set up callbacks so that if either the main window or the browser instance is
-	    // closed, the program will exit
-	    g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
-	    g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
+	       // Create an 800x600 window that will contain the browser instance
+	      GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	       gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
 
 
 
+		  	//create the data manager
+		    WebKitWebsiteDataManager *manager= webkit_website_data_manager_new(0);
+		  	//create the context
+		  	WebKitWebContext *context = webkit_web_context_new_with_website_data_manager(manager);
 
-	    WebKitSettings *settings = webkit_settings_new();
-	    WebKitWebsiteDataManager *manager= webkit_website_data_manager_new("Manager");
+			//create cookie manager
+		    WebKitCookieManager *cookiejar =  webkit_website_data_manager_get_cookie_manager(manager);
 
-	    WebKitCookieManager *cookiejar =  webkit_website_data_manager_get_cookie_manager(manager);
-
-	        webkit_cookie_manager_set_persistent_storage(cookiejar, "cookies.txt",
-	                WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
-
-	        g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache",
-	                TRUE, NULL);
-
-	        // Apply the result
-	        webkit_web_view_set_settings (webView, settings);
-
-		    // Load a web page into the browser instance
-		    webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
-
-	    // Make sure that when the browser area becomes visible, it will get mouse
-	    // and keyboard events
-	    gtk_widget_grab_focus(GTK_WIDGET(webView));
-
-	    // Make sure the main window and all its contents are visible
-	   gtk_widget_show_all(main_window);
-
-	   // Run the main GTK+ event loop
-	    gtk_main();
+		    // Create a browser instance
+		    WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new_with_context(context));
 
 
+/*
+ * 	   ///Code for cookies///
 
+		    WebKitSettings *settings = webkit_settings_new();
+
+
+		        webkit_cookie_manager_set_persistent_storage(cookiejar, "cookies.txt",
+		                WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
+
+		        g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache",
+		                TRUE, NULL);
+
+		        //set the cookie acceptance policy
+		        webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
+
+		        //get session
+		        //webkit_website_data_manager_fetch(manager, WEBKIT_WEBSITE_DATA_COOKIES, NULL, );
+
+		       // webkit_website_data_manager_fetch_finish ();
+
+
+		        //add the cookie
+		      //  webkit_cookie_manager_add_cookie(cookiejar, );
+
+
+		        // Apply the result
+		        webkit_web_view_set_settings (webView, settings);
+
+*/
+
+
+
+	       // Put the browser area into the main window
+	       gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
+
+	       // Set up callbacks so that if either the main window or the browser instance is
+	       // closed, the program will exit
+	       g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
+	       g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
+
+	       g_signal_connect(webView,"load-changed", G_CALLBACK(load_changedWebViewCb), main_window);
+
+	       // Load a web page into the browser instance
+	       webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
+
+	       // Make sure that when the browser area becomes visible, it will get mouse
+	       // and keyboard events
+	       gtk_widget_grab_focus(GTK_WIDGET(webView));
+
+	       // Make sure the main window and all its contents are visible
+	      gtk_widget_show_all(main_window);
+
+	      // Run the main GTK+ event loop
+	       gtk_main();
+
+
+	       cout<<"Website running"<<endl;
 
 
 	//CookieManager c;
 	//c.MiniBrowser(argc, argv);
 
-   // WebKitWebView *w1 = WEBKIT_WEB_VIEW(webkit_web_view_new());
-   // webkit_web_view_load_uri(w1, "https://canvas.asu.edu");
 
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
 	windowMain->hide();
 
+	//gtk_widget_destroy(main_window);
+
 	//call to next GUI window.
 	DataEntryGUI dataGUI(windowMain);
+
+
 
 }
 
