@@ -556,18 +556,13 @@ int tempProj, tempStud, textInput;
  */
 
 int main() {
-	Utility util;
-	vector<Project> projects = util.csvToProjectsVector("100Projects.csv");
-	for (int i = 0; i < 15; i++) {
-		cout << projects.at(94).Skills[i] << " ";
-	}
-	/*
+
 	XInitThreads();
 	MainWindow mainWin;
 
 	//mainWin.MainWindow1();
 
-	mainWin.MainWindow2();*/
+	mainWin.MainWindow2();
 	return 0;
 }
 

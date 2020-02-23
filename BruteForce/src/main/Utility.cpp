@@ -1785,26 +1785,6 @@ vector<Project> Utility::csvToProjectsVector(string filename) {
 
 		projects.push_back(p);
 	}
-	/*for(int i = 1; i < dataList.size(); i++) {
-		currentSkill = "";
-		for(int j = 0; j < dataList.at(i).at(12).size(); j++) {
-			if(dataList.at(i).at(12).at(j) == ',') {
-				cout << currentSkill << " ";
-				currentSkill = "";
-			} else {
-				currentSkill.push_back(dataList.at(i).at(12).at(j));
-				for(int k = 0; k < 8; k++) {
-					if(currentSkill.compare(skills1[k]) == 0) {
-
-					}
-				}
-			}
-			if(j == dataList.at(i).at(12).size() - 1) {
-				cout << currentSkill << " ";
-				currentSkill = "";
-			}
-		}
-	}*/
 	return projects;
 }
 
