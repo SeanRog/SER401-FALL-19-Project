@@ -26,6 +26,7 @@ class CookieManager {
         static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp);
         static void print_cookies(CURL *curl);
         int newHttpSession(const char *hostURL);
+        int MiniBrowser(int argc, char* []);
 };
 
 #endif /* SRC_MAIN_COOKIEMANAGER_H_ */

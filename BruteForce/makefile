@@ -15,8 +15,8 @@ SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
-GTKINC := `pkg-config --cflags gtk+-3.0 webkitgtk-3.0`
-GTKLIB := `pkg-config --libs gtk+-3.0 webkitgtk-3.0`
+GTKINC := `pkg-config --cflags gtk+-3.0 gtkmm-3.0 webkitgtk-3.0`
+GTKLIB := `pkg-config --libs gtk+-3.0 gtkmm-3.0 webkitgtk-3.0`
 
 WEBVIEW_CFLAGS := -DWEBVIEW_GTK=1 $(shell pkg-config --cflags gtk+-3.0 webkit2gtk-4.0)
 WEBVIEW_LDFLAGS := $(shell pkg-config --libs gtk+-3.0 webkit2gtk-4.0)

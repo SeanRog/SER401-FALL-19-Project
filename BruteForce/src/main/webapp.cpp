@@ -33,5 +33,4 @@ WebApp::~WebApp()
 void WebApp::load_uri (const gchar *strUri)
 {
     webkit_web_view_load_uri(*this, strUri);
-}
-*/
+}*/
