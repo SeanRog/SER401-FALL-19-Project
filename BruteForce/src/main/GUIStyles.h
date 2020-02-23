@@ -39,6 +39,8 @@ const Fl_Color DARK_GREY = fl_rgb_color(58, 58, 58);
 
 const Fl_Color DARK_TAUPE = fl_rgb_color(74, 58, 27);
 
+const Fl_Color CREAM = fl_rgb_color(230, 213, 185);
+
 
 
 class Styles {

@@ -148,7 +148,8 @@ void SteamPunkGUI1::MainWindow2() {
 
 
 				boxHeader = new Fl_Box(20, 50, 710, 250, windowMainStr);
-				buttonStart = new Fl_Button(20, 305, 710, 50, "Start");
+				Fl_PNG_Image *start = new Fl_PNG_Image("./Images/Steampunk/start1.png");
+				buttonStart = new Fl_Button(20, 305, 710, 50);
 
 
 				gearBox1 = new Fl_Box(540, 45, 210, 210);
@@ -169,8 +170,9 @@ void SteamPunkGUI1::MainWindow2() {
 				boxHeader->redraw();
 
 				buttonStart->color(DARK_BRASS);
-				buttonStart->labelfont(FL_TIMES_ITALIC);
-				buttonStart->labelsize(20);
+				//buttonStart->labelfont(FL_TIMES_ITALIC);
+				//buttonStart->labelsize(20);
+				buttonStart->image(start);
 				buttonStart->labelcolor(ASU_BLACK);
 				buttonStart->selection_color(DARK_GREY);
 				buttonStart->callback(static_StartButtonClick, this);
@@ -198,35 +200,35 @@ void SteamPunkGUI1::MainWindow2() {
 
 				aboutBox1 = new Fl_Box(20, 55, 345, 295);
 				aboutBox1->box(FL_FLAT_BOX);
-				//Fl_PNG_Image *silver = new Fl_PNG_Image("./Images/Steampunk/Silver.png");
-				//aboutBox1->image(silver);
-				aboutBox1->color(ASU_WHITE);
+				Fl_PNG_Image *aboutpng = new Fl_PNG_Image("./Images/Steampunk/about8.png");
+				aboutBox1->image(aboutpng);
+				//aboutBox1->color(ASU_WHITE);
 				aboutBox1->labelcolor(ASU_WHITE);
 				aboutBox1->labelsize(15);
-				aboutBox1->labelfont(FL_TIMES_ITALIC);
-				aboutBox1->image(AboutLogo);
+				aboutBox1->labelfont(FL_TIMES_BOLD_ITALIC);
+				//aboutBox1->image(AboutLogo);
 
 				const char AboutStr[] =
 						"\nThe Capstone Team Assignment System\n was developed "
 								"by five senior software \n engineering students during the \n Fall 2019 and Spring 2020 semesters.\n "
 								"\n SOFTWARE TEAM ";
 				const char TeamStr[] =
-						"\n Elizabeth Marquise\n Myles Colina          \n Sean Rogers          \n"
-								" Cristi Deleo           \n Matthew Cilibraise\n";
+						"\n Elizabeth Marquise\n Matthew Cilibraise\n Sean Rogers          \n"
+								" Cristi Deleo           \n Myles Colina          \n";
 
 				TextBox1 = new Fl_Box(20, 55, 345, 100, AboutStr);
 				TextBox1->labelcolor(ASU_BLACK);
 				TextBox1->labelsize(15);
-				TextBox1->labelfont(FL_TIMES_ITALIC);
+				TextBox1->labelfont(FL_TIMES_BOLD_ITALIC);
 
 				TextBox2 = new Fl_Box(20, 125, 345, 200, TeamStr);
-				TextBox2->labelcolor(ASU_MAROON);
-				TextBox2->labelsize(20);
+				TextBox2->labelcolor(ASU_BLACK);
+				TextBox2->labelsize(22);
 				TextBox2->labelfont(FL_TIMES_BOLD);
 
 				aboutBox2 = new Fl_Box(375, 55, 355, 30, "About The Software");
 				aboutBox2->box(FL_FLAT_BOX);
-				aboutBox2->color(ASU_MAROON);
+				aboutBox2->color(DARK_TAUPE);
 				aboutBox2->labelcolor(ASU_WHITE);
 				aboutBox2->labelsize(15);
 				aboutBox2->labelfont(FL_TIMES_BOLD_ITALIC);
@@ -241,6 +243,7 @@ void SteamPunkGUI1::MainWindow2() {
 				aboutTextDisplay->textcolor(ASU_BLACK);
 				aboutTextDisplay->textsize(15);
 				aboutTextDisplay->selection_color(ASU_GOLD);
+				aboutTextDisplay->color(CREAM);
 
 				aboutBuffer->text("\nThis software application creates \n"
 						"high-quality assignments of student teams\n"
@@ -374,7 +377,7 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	backBox->box(FL_BORDER_BOX);
 	backBox->color(DARK_TAUPE);
 
-	Fl_Box *backBox1 = new Fl_Box(0, 0, 75, 550);
+	Fl_Box *backBox1 = new Fl_Box(0, 0, 65, 550);
 	backBox1->box(FL_FLAT_BOX);
 	backBox1->color(DARK_TAUPE);
 
@@ -382,7 +385,7 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	backBox2->box(FL_FLAT_BOX);
 	backBox2->color(DARK_TAUPE);
 
-	Fl_Box *backBox3 = new Fl_Box(795, 0, 75, 550);
+	Fl_Box *backBox3 = new Fl_Box(805, 0, 65, 550);
 	backBox3->box(FL_FLAT_BOX);
 	backBox3->color(DARK_TAUPE);
 
@@ -407,13 +410,13 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	Fl_PNG_Image *baseImage = new Fl_PNG_Image("./Images/Steampunk/PreTrain/0.png");
 	//Fl_PNG_Image* baseImage = new Fl_PNG_Image("./Images/cookies/0.png");
 
-	imageBox = new Fl_Box(75, 20, 720, 390);
+	imageBox = new Fl_Box(75, 30, 720, 390);
 	imageBox->color(DARK_BRASS);
 	imageBox->box(FL_FLAT_BOX);
 	imageBox->image(baseImage);
 	imageBox->redraw();
 
-	progressBox = new Fl_Box(85, 410, 550, 40, "");
+	progressBox = new Fl_Box(125, 430, 550, 40, "");
 
 	doneButton->color(DARK_BRASS);
 	doneButton->selection_color(DARK_GREY);
@@ -472,23 +475,29 @@ void cookieLoadSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar) {
 void animateSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 		Fl_PNG_Image *loadingPngs[23]) {
 
-	for (int i = 0; i < 8; i++) {
+
+			b->image(PreTrainPngs[0]);
+				b->redraw();
+				usleep(50000);
+
+	for (int i = 1; i < 8; i++) {
 		Fl::check();
 			b->image(PreTrainPngs[i]);
 			b->redraw();
 			usleep(50000);
+
 	}
 
 
-	int i = 0;
+	int j = 0;
 	while (progressBar->value() != 100) {
 		Fl::check();
-		b->image(TrainPngs[i]);
+		b->image(TrainPngs[j]);
 		b->redraw();
 		usleep(50000);
-		i++;
-		if (i == 7) {
-			i = 0;
+		j++;
+		if (j == 7) {
+			j = 0;
 		}
 	}            //end while loop
 
