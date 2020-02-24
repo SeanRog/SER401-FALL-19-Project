@@ -373,10 +373,20 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	progressWindow = new Fl_Window(870, 700, "Team Assignment Progress");
 	progressWindow->begin();
 
-	Fl_Box *backBox = new Fl_Box(0, 550, 870, 150);
+	/*Fl_Box *backBox = new Fl_Box(0, 550, 870, 150);
 	backBox->box(FL_BORDER_BOX);
-	backBox->color(DARK_TAUPE);
+	backBox->color(DARK_TAUPE);*/
 
+	Fl_Box *backBox1 = new Fl_Box(5, 5, 865, 500);
+	backBox1->box(FL_FLAT_BOX);
+	backBox1->color(DARK_BRASS);
+
+	Fl_Box *backBox2= new Fl_Box(0, 0, 870, 510);
+	backBox2->box(FL_NO_BOX);
+	//backBox2->color(DARK_BRASS);
+	Fl_PNG_Image *frame = new Fl_PNG_Image("./Images/Steampunk/trainframe1.png");
+	backBox2->image(frame);
+	/*
 	Fl_Box *backBox1 = new Fl_Box(0, 0, 65, 550);
 	backBox1->box(FL_FLAT_BOX);
 	backBox1->color(DARK_TAUPE);
@@ -387,7 +397,7 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 
 	Fl_Box *backBox3 = new Fl_Box(805, 0, 65, 550);
 	backBox3->box(FL_FLAT_BOX);
-	backBox3->color(DARK_TAUPE);
+	backBox3->color(DARK_TAUPE);*/
 
 	TeamsButton = new Fl_Button(25, 560, 200, 50, "Generate Teams");
 	doneButton = new Fl_Button(645, 560, 200, 50, "Done");
@@ -397,8 +407,8 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 
 	progressBar->minimum(0);               // set progress range to be 0.0 ~ 1.0
 	progressBar->maximum(1);
-	progressBar->color(ASU_GOLD);               // background color
-	progressBar->selection_color(ASU_MAROON);     // progress bar color
+	progressBar->color(SP_GREEN2);               // background color
+	progressBar->selection_color(SP_GREEN1);     // progress bar color
 	progressBar->labelcolor(FL_WHITE);            // percent text color
 	progressBar->labelfont(FL_HELVETICA_BOLD);
 	progressBar->labelsize(15);
@@ -410,13 +420,13 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	Fl_PNG_Image *baseImage = new Fl_PNG_Image("./Images/Steampunk/PreTrain/0.png");
 	//Fl_PNG_Image* baseImage = new Fl_PNG_Image("./Images/cookies/0.png");
 
-	imageBox = new Fl_Box(75, 30, 720, 390);
+	imageBox = new Fl_Box(75, 75, 700, 380);
 	imageBox->color(DARK_BRASS);
 	imageBox->box(FL_FLAT_BOX);
 	imageBox->image(baseImage);
 	imageBox->redraw();
 
-	progressBox = new Fl_Box(125, 430, 550, 40, "");
+	progressBox = new Fl_Box(125, 510, 550, 40, "");
 
 	doneButton->color(DARK_BRASS);
 	doneButton->selection_color(DARK_GREY);
@@ -430,7 +440,7 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	TeamsButton->labelsize(15);
 	TeamsButton->labelcolor(ASU_BLACK);
 
-	progressWindow->color(ASU_WHITE);
+	progressWindow->color(DARK_TAUPE);
 	progressWindow->box(FL_BORDER_BOX);
 
 	doneButton->deactivate();
