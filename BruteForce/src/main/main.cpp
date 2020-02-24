@@ -529,7 +529,6 @@ int tempProj, tempStud, textInput;
  } else {
  validNumber = false;
  }
-
  if(validNumber) {
  output->value(input->value());
  cout << "valid number" << endl;

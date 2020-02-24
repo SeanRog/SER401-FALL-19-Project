@@ -796,8 +796,8 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 
 			}	             	                    	 //end j loop
 
-														 //recalculate team score, now that all the duplicate
-														 //students have been swapped out.
+			//recalculate team score, now that all the duplicate
+			//students have been swapped out.
 			for (int x = 0; x < TEAM_SIZE; x++) {
 
 				if (bestSet[i].team[x].StudentID != 99999) {
@@ -841,7 +841,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 
 		}             	           	//end i loop
 
-									//set all the students in the best set to assigned.
+		//set all the students in the best set to assigned.
 		for (int i = 0; i < numProjects; i++) {
 			for (int j = 0; j < TEAM_SIZE; j++) {
 				bestSet[i].team[j].Assigned = true;
@@ -1206,8 +1206,8 @@ int StudentsToProjects::getDuplicatesOfStudents(Team currentSet[], int size) {
 				}
 			}            	 //end k loop
 
-							 //if the current student is not a duplicate, add them to the array of
-							 //unique studetnIDs.
+			//if the current student is not a duplicate, add them to the array of
+			//unique studetnIDs.
 			if (isduplicate == false) {
 				for (int k = 0; k < numStudentIDs; k++) {
 
