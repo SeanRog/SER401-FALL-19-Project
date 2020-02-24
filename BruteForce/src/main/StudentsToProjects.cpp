@@ -63,6 +63,7 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Box.H>
+#include <FL/Fl_Text_Buffer.H>
 
 #include <iostream>
 #include <vector>
@@ -228,7 +229,7 @@ void StudentsToProjects::updateProgressBar(int num, Fl_Progress *pb) {
 string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		Project projectPool[], const int numStudents, const int numProjects,
 		const int numSkills, const int teamSize, const int numTopTeams,
-		Fl_Progress *progressBar, int progressIncrement) {
+		Fl_Progress *progressBar, int progressIncrement, Fl_Text_Buffer *terminal) {
 
 	string result = "";
 
@@ -418,6 +419,13 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		cout
 				<< "Project # " + to_string(projectPool[i].ProjectID)
 						+ "  team combinations complete. " << endl;
+
+		//output to the GUI
+		string output = "Project #"+ to_string(projectPool[i].ProjectID) + " top 5 team combinations found.\n";
+		int length = output.length();
+		char output_char[length + 1];
+		strcpy(output_char, output.c_str());
+		terminal->append(output_char);
 
 	} // end i loop (for each project)
 

@@ -51,6 +51,8 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
+
+
 #include <gtk/gtk.h>
 #include <webkit2/webkit2.h>
 #include <curl/curl.h>
@@ -369,14 +371,14 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 
 	//PROGRESS BAR WINDOW
 
-	progressWindow = new Fl_Window(570, 400, "Team Assignment Progress");
+	progressWindow = new Fl_Window(570, 500, "Team Assignment Progress");
 	progressWindow->begin();
 
-	Fl_Box *backBox = new Fl_Box(0, 250, 570, 150);
+	Fl_Box *backBox = new Fl_Box(0, 250, 570, 250);
 	backBox->box(FL_BORDER_BOX);
 	backBox->color(ASU_GREY);
 
-	Fl_Box *backBox1 = new Fl_Box(0, 0, 10, 400);
+	Fl_Box *backBox1 = new Fl_Box(0, 0, 10, 500);
 	backBox1->box(FL_FLAT_BOX);
 	backBox1->color(ASU_GREY);
 
@@ -384,13 +386,13 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	backBox2->box(FL_FLAT_BOX);
 	backBox2->color(ASU_GREY);
 
-	Fl_Box *backBox3 = new Fl_Box(560, 0, 10, 400);
+	Fl_Box *backBox3 = new Fl_Box(560, 0, 10, 500);
 	backBox3->box(FL_FLAT_BOX);
 	backBox3->color(ASU_GREY);
 
-	TeamsButton = new Fl_Button(25, 260, 200, 50, "Generate Teams");
-	doneButton = new Fl_Button(345, 260, 200, 50, "Done");
-	progressBar = new Fl_Progress(20, 325, 530, 40);
+	TeamsButton = new Fl_Button(25, 360, 200, 50, "Generate Teams");
+	doneButton = new Fl_Button(345, 360, 200, 50, "Done");
+	progressBar = new Fl_Progress(20, 425, 530, 40);
 
 	//progressBox = new Fl_Box(10, 330, 550, 40, "");
 
@@ -413,6 +415,18 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	imageBox->box(FL_FLAT_BOX);
 	imageBox->image(baseImage);
 	imageBox->redraw();
+
+	// Buffer
+	terminalBuffer = new Fl_Text_Buffer();
+
+	//Text Display
+	terminalTextDisplay = new Fl_Text_Display(10, 250, 550, 80);
+	terminalTextDisplay->buffer(terminalBuffer);
+	terminalTextDisplay->textfont(FL_HELVETICA);
+	terminalTextDisplay->textcolor(ASU_BLACK);
+	terminalTextDisplay->textsize(15);
+	terminalTextDisplay->selection_color(ASU_GOLD);
+
 
 	progressBox = new Fl_Box(10, 210, 550, 40, "");
 
@@ -489,8 +503,8 @@ void animate(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 void teamAssignment(int num_students, int num_projects,
 		Fl_Progress *progressBar) {
 
-	main m;
-	m.main_run(num_projects, num_students, progressBar);
+	//main m;
+	//m.main_run(num_projects, num_students, progressBar, terminalBuffer);
 }
 
 /*****************************************************************************
@@ -532,7 +546,7 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
-	m.main_run(num_projects, num_students, progressBar);
+	m.main_run(num_projects, num_students, progressBar, terminalBuffer);
 
 	//join threads
 	for (int i = 0; i < 1; i++) {

@@ -70,6 +70,7 @@ ResultWindow::ResultWindow() {
 	textDisplay->buffer(buffer);
 	textDisplay->textfont(FL_HELVETICA);
 	textDisplay->textsize(15);
+	textDisplay->selection_color(ASU_GOLD);
 
 	//Save BUTTON
 	buttonSave = new Fl_Button(50, 130, 175, 50, "Save .csv Report");

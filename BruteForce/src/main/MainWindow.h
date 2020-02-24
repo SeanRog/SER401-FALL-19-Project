@@ -64,6 +64,8 @@ public:
 	Fl_Button *TeamsButton;
 	Fl_Button *doneButton;
 	Fl_Box *imageBox;
+	Fl_Text_Display *terminalTextDisplay;
+	Fl_Text_Buffer *terminalBuffer;
 
 	//main window
 	Fl_Window *windowMain;

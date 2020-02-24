@@ -166,6 +166,9 @@ constexpr int toConstInt(int constInt) {
 //progress bar
 Fl_Progress *progressBar;
 
+//terminal buffer
+Fl_Text_Buffer *terminal;
+
 /*********************************************************
  * threadFunction
  *
@@ -492,51 +495,27 @@ void threadFunction(Student studentPool[], Project projectPool[],
 		//1st Call to function: Highest priority projects and highest skill average students
 		*(results + (classSection * 3 + 0)) = x.StudentsToProjectsAssignment(
 				STpriority2, PRpriority2, COUNT_2, PCOUNT_2, numSkills,
-				teamSize, numTopTeams, progressBar, progressIncrement);
+				teamSize, numTopTeams, progressBar, progressIncrement, terminal);
 	}
 
 	if (COUNT_1 != 0 && PCOUNT_1 != 0) {
 		//2nd Call to function: middle priority projects and middle skill average students
 		*(results + (classSection * 3 + 1)) = x.StudentsToProjectsAssignment(
 				STpriority1, PRpriority1, COUNT_1, PCOUNT_1, numSkills,
-				teamSize, numTopTeams, progressBar, progressIncrement);
+				teamSize, numTopTeams, progressBar, progressIncrement, terminal);
 	}
 
 	if (COUNT_0 != 0 && PCOUNT_0 != 0) {
 		//3rd Call to function: lowest priority projects and lowest skill average students
 		*(results + (classSection * 3 + 2)) = x.StudentsToProjectsAssignment(
 				STpriority0, PRpriority0, COUNT_0, PCOUNT_0, numSkills,
-				teamSize, numTopTeams, progressBar, progressIncrement);
+				teamSize, numTopTeams, progressBar, progressIncrement, terminal);
 	}
 
 }    //end threadFunction
 
 int tempProj, tempStud, textInput;
 
-/*
- void dobut(Fl_Widget *){
- bool validNumber = true;
- cout << input->value() << endl;
- string str = input->value();
- if(str.length() == 0) {
- validNumber = false;
- } else if(str.at(0) > 48 && str.at(0) <= 57) {
- for(int i = 1; i < str.length(); i++) {
- if(str.at(i) < 48 || str.at(i) > 57) {
- validNumber = false;
- }
- }
- } else {
- validNumber = false;
- }
- if(validNumber) {
- output->value(input->value());
- cout << "valid number" << endl;
- } else {
- cout << "Invalid number" << endl;
- }
- }
- */
 
 /*************************************************************************************
  * main
@@ -581,7 +560,7 @@ int main() {
  *Returns:
  *	int value 0.
  */
-int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
+int main::main_run(int projects_input, int students_input, Fl_Progress *pb, Fl_Text_Buffer *tb) {
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
 	srand(time(NULL));
@@ -596,9 +575,8 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
 	pb->label(percent);
 	Fl::check();
 
-	//Fl::run();
-
-	//MainWindow mainWin;
+	//set up the terminal buffer
+	terminal = tb;
 
 	tempProj = projects_input;
 	tempStud = students_input;
