@@ -598,30 +598,16 @@ static gboolean load_changedWebViewCb(WebKitWebView* webView, GtkWidget* window)
 		//todo- read in and store the cookies to cookies.txt
 
 		//close the mini-browser window because authentication is complete.
-	    gtk_main_quit();
+//	    gtk_main_quit();
 
 	}
 
     return TRUE;
 }
 
-/*****************************************************************************
- * StartButtonClick
- *
- * Author(s): Team#35
- *
- * Description:
- *		When the Start button is clicked, this callback function
- *	   Opens the next GUI window.
- *
- * Arguments:
- *		Fl_Widget* w
- *
- * Returns:
- *		nothing
- */
-void MainWindow::StartButtonClick(Fl_Widget *w) {
-	
+
+void mini_browser(){
+
 	int argc;
 	char** argv;
 
@@ -705,12 +691,32 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	       cout<<"Website running"<<endl;
 
 
-	//CookieManager c;
-	//c.MiniBrowser(argc, argv);
 
+}
+
+/*****************************************************************************
+ * StartButtonClick
+ *
+ * Author(s): Team#35
+ *
+ * Description:
+ *		When the Start button is clicked, this callback function
+ *	   Opens the next GUI window.
+ *
+ * Arguments:
+ *		Fl_Widget* w
+ *
+ * Returns:
+ *		nothing
+ */
+void MainWindow::StartButtonClick(Fl_Widget *w) {
 
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
+
+	cout<<"working"<<endl;
+	mini_browser();
+
 	windowMain->hide();
 
 	//gtk_widget_destroy(main_window);
