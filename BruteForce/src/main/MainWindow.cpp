@@ -662,8 +662,6 @@ void mini_browser(){
 
 */
 
-
-
 	       // Put the browser area into the main window
 	       gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
 
