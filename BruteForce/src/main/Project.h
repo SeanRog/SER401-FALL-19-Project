@@ -16,7 +16,6 @@
  *
  */
 
-
 #ifndef PROJECT_H_
 #define PROJECT_H_
 
@@ -28,8 +27,8 @@ public:
 	int ProjectID; // Unique integer identifying the project uniquely in the whole project population.
 	int ClassID; // Unique integer depicting the Class/Section the project is contained in.
 	int PoolID; // Common integer to keep track of project in data structures. Used in determining index number in StudetsToProjects.
-	bool NDA;//bool value depicting whether this project requires that the students sign an NDA
-	bool IPR;//bool value depicting whether this project requires that the students sign an IPR
+	bool NDA; //bool value depicting whether this project requires that the students sign an NDA
+	bool IPR; //bool value depicting whether this project requires that the students sign an IPR
 	bool sharedHardware; //bool value depicting if this project requires shared hardware-limit to ground students
 
 	/* char Type - 	Projects can be dedicated to local students of the university, online students, or a combination.
