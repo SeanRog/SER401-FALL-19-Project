@@ -427,7 +427,6 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	terminalTextDisplay->textsize(15);
 	terminalTextDisplay->selection_color(ASU_GOLD);
 
-
 	progressBox = new Fl_Box(10, 210, 550, 40, "");
 
 	doneButton->color(ASU_GOLD);

@@ -512,6 +512,20 @@ void threadFunction(Student studentPool[], Project projectPool[],
 				teamSize, numTopTeams, progressBar, progressIncrement, terminal);
 	}
 
+
+	//output to the GUI
+	string output = + "Class Section #" + to_string(classSection) + " Assignment Complete!\n" ;
+	int length = output.length();
+	char output_char[length + 1];
+	strcpy(output_char, output.c_str());
+	//terminal->append(output_char);
+	char* text = terminal->text();
+	terminal->text("");
+	terminal->append(output_char);
+	terminal->append(text);
+
+
+
 }    //end threadFunction
 
 int tempProj, tempStud, textInput;

@@ -421,11 +421,15 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 						+ "  team combinations complete. " << endl;
 
 		//output to the GUI
-		string output = "Project #"+ to_string(projectPool[i].ProjectID) + " top 5 team combinations found.\n";
+		string output = + "Top 5 team combinations found for Project #" + to_string(projectPool[i].ProjectID) + "\n" ;
 		int length = output.length();
 		char output_char[length + 1];
 		strcpy(output_char, output.c_str());
+		//terminal->append(output_char);
+		char* text = terminal->text();
+		terminal->text("");
 		terminal->append(output_char);
+		terminal->append(text);
 
 	} // end i loop (for each project)
 
@@ -915,6 +919,19 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		result.append("\n");
 		cout << endl;
 		cout << "Team Score: " << bestSet[i].TeamScore << endl;
+
+		//output to the GUI
+		string output = "Project #"+ to_string(projectPool[i].ProjectID) + " student team assigned! \n";
+		int length = output.length();
+		char output_char[length + 1];
+		strcpy(output_char, output.c_str());
+		char* text = terminal->text();
+		terminal->text("");
+		terminal->append(output_char);
+		terminal->append(text);
+
+
+
 	}
 	cout << "Best Project Set score: " << newProjectSetScore << endl;
 	cout << "Number of Duplicate Students: " << 0 << endl;
