@@ -555,7 +555,7 @@ int tempProj, tempStud, textInput;
  */
 
 int main() {
-    
+
 	XInitThreads();
 	MainWindow mainWin;
 
