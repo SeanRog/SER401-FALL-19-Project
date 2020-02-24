@@ -584,18 +584,21 @@ static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window) {
 	cout << "destroyed!" << endl;
 	return TRUE;
 }
+
+
 Fl_Window *nextWindow;
+bool Auth;
 
 static gboolean load_changedWebViewCb(WebKitWebView *webView,
 		GtkWidget *window) {
 	cout << "listening" << endl;
 	cout << webkit_web_view_get_uri(webView) << endl;
-
 	if (strcmp(webkit_web_view_get_uri(webView),
 			"https://canvas.asu.edu/?login_success=1") == 0) {
 
 		cout << "Canvas reached! authentication complete!" << endl;
 
+		Auth = true;
 		//todo- read in and store the cookies to cookies.txt
 
 		//close the mini-browser window because authentication is complete.
@@ -724,10 +727,10 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	cout << "working" << endl;
 
 	if (Authenticated != true) {
-
+		Auth = false;
 		mini_browser();
 	}
-	Authenticated = true;
+	Authenticated = Auth;
 
 	windowMain->hide();
 
