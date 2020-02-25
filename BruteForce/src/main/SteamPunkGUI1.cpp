@@ -14,7 +14,7 @@
  */
 
 #include "SteamPunkGUI1.h"
-#include "DataEntryGUI.h"
+#include "SPDataGUI.h"
 #include "GUIStyles.h"
 #include "ResultWindow.h"
 //#include "CanvasUtility.h"
@@ -407,12 +407,12 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 
 	progressBar->minimum(0);               // set progress range to be 0.0 ~ 1.0
 	progressBar->maximum(1);
-	progressBar->color(SP_GREEN2);               // background color
-	progressBar->selection_color(SP_GREEN1);     // progress bar color
+	progressBar->color(ASU_BLACK);               // background color
+	progressBar->selection_color(RUST);     // progress bar color
 	progressBar->labelcolor(FL_WHITE);            // percent text color
 	progressBar->labelfont(FL_HELVETICA_BOLD);
 	progressBar->labelsize(15);
-	progressBar->box(FL_RFLAT_BOX);
+	progressBar->box(FL_BORDER_BOX);
 
 	progressWindow->resizable(progressBar);
 
@@ -553,7 +553,7 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 	progressBox->label("Team Assignment System Running...");
 	progressBox->labelfont(FL_HELVETICA);
 	progressBox->labelsize(20);
-	progressBox->labelcolor(ASU_BLACK);
+	progressBox->labelcolor(ASU_WHITE);
 	imageBox->redraw();
 
 	XInitThreads();
@@ -638,7 +638,7 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 	 //Canvas.getQuizzes();
 
 	//call to next GUI window.
-	DataEntryGUI dataGUI(windowMain);
+	SPDataGUI dataGUI(windowMain);
 
 }
 
