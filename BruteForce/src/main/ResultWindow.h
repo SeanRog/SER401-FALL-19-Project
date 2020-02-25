@@ -47,7 +47,10 @@ public:
 	Fl_Box *badBox;
 	Fl_Box *spacer;
 	Fl_Box *borderBox;
+	Fl_Box *labelBox1;
+	Fl_Box *labelBox2;
 	Fl_Chart *pieChart;
+	Fl_Chart *barChart;
 
 	ResultWindow();
 	~ResultWindow();

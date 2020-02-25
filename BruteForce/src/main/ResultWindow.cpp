@@ -101,31 +101,47 @@ ResultWindow::ResultWindow() {
 	swapBox->labelsize(15);
 	swapBox->labelcolor(ASU_WHITE);
 
-	teamBox = new Fl_Box(320, 270, 5, 20, "");
+	teamBox = new Fl_Box(350, 275, 5, 20, "");
 	teamBox->box(FL_FLAT_BOX);
 	teamBox->color(ASU_GREY);
 	teamBox->align(FL_ALIGN_RIGHT);
-	teamBox->labelfont(FL_HELVETICA_BOLD);
+	teamBox->labelfont(FL_HELVETICA);
 	teamBox->labelsize(15);
 	teamBox->labelcolor(ASU_WHITE);
 
-	bestBox = new Fl_Box(610, 270, 5, 20, "");
+	bestBox = new Fl_Box(620, 275, 5, 20, "");
 	bestBox->box(FL_FLAT_BOX);
 	bestBox->color(ASU_GREY);
 	bestBox->align(FL_ALIGN_RIGHT);
-	bestBox->labelfont(FL_HELVETICA_BOLD);
+	bestBox->labelfont(FL_HELVETICA);
 	bestBox->labelsize(15);
 	bestBox->labelcolor(ASU_WHITE);
 
-	badBox = new Fl_Box(15, 270, 5, 20, "");
+	badBox = new Fl_Box(30, 275, 5, 20, "");
 	badBox->box(FL_FLAT_BOX);
 	badBox->color(ASU_GREY);
 	badBox->align(FL_ALIGN_RIGHT);
-	badBox->labelfont(FL_HELVETICA_BOLD);
+	badBox->labelfont(FL_HELVETICA);
 	badBox->labelsize(15);
 	badBox->labelcolor(ASU_WHITE);
 
-	spacer = new Fl_Box(20, 290, 900-40, 20, "______________________________________"
+	labelBox1 = new Fl_Box(50, 20, 5, 20, "Percentage of Teams within Score Range");
+	labelBox1->box(FL_FLAT_BOX);
+	labelBox1->color(ASU_GREY);
+	labelBox1->align(FL_ALIGN_RIGHT);
+	labelBox1->labelfont(FL_HELVETICA_BOLD);
+	labelBox1->labelsize(15);
+	labelBox1->labelcolor(ASU_WHITE);
+
+	labelBox2 = new Fl_Box(530, 20, 5, 20, "Team Scores by Project Priority");
+	labelBox2->box(FL_FLAT_BOX);
+	labelBox2->color(ASU_GREY);
+	labelBox2->align(FL_ALIGN_RIGHT);
+	labelBox2->labelfont(FL_HELVETICA_BOLD);
+	labelBox2->labelsize(15);
+	labelBox2->labelcolor(ASU_WHITE);
+
+	spacer = new Fl_Box(20, 295, 900-40, 15, "______________________________________"
 			"________________________________________________________________________");
 	spacer->box(FL_FLAT_BOX);
 	spacer->color(ASU_GREY);
@@ -134,11 +150,17 @@ ResultWindow::ResultWindow() {
 	spacer->labelsize(15);
 	spacer->labelcolor(ASU_BLACK);
 
-	pieChart = new Fl_Chart(20, 20, 400, 230);
-	pieChart->type(FL_BAR_CHART);
-	pieChart->textfont(FL_HELVETICA_BOLD);
+	pieChart = new Fl_Chart(30, 45, 400, 215);
+	pieChart->type(FL_PIE_CHART);
+	pieChart->textfont(FL_HELVETICA);
 	pieChart->textcolor(ASU_BLACK);
-	pieChart->textsize(12);
+	pieChart->textsize(14);
+	pieChart->labelfont(FL_HELVETICA_BOLD);
+	pieChart->labelsize(16);
+	pieChart->labelcolor(ASU_WHITE);
+
+	barChart = new Fl_Chart(470, 45, 400, 215);
+	barChart->type(FL_BAR_CHART);
 
 }
 
@@ -164,7 +186,7 @@ void ResultWindow::addText() {
 	permBox->label(permNum1);
 
 	char swapNum[50];
-	buff = sprintf(swapNum, "Number of students swapped:       %d", swaps);
+	buff = sprintf(swapNum, "Number of students swapped:        %d", swaps);
 	const char *swapNum1 = swapNum;
 	swapBox->label(swapNum1);
 
@@ -184,26 +206,26 @@ void ResultWindow::addText() {
 	badBox->label(badNum1);
 
 
-	//Fills charts with data results
+	//Fills pie charts with data results
 	char low1a[50];
 	buff = sprintf(low1a, " %d-%d (%d)", badScore, badScore+percent, low1);
 	const char *low1b = low1a;
-	pieChart->add(low1,low1b, ASU_GOLD);
+	pieChart->add(low1,low1b, ASU_GREEN);
 
 	char low2a[50];
 	buff = sprintf(low2a, " %d-%d (%d)", badScore+(percent)+1, badScore+(percent*2), low2);
 	const char *low2b = low2a;
-	pieChart->add(low2, low2b, ASU_MAROON);
+	pieChart->add(low2, low2b, ASU_BLUE);
 
 	char avg1a[50];
 	buff = sprintf(avg1a, " %d-%d (%d)", badScore+(percent*2)+1, badScore+(percent*3), avg1);
 	const char *avg1b = avg1a;
-	pieChart->add(avg1, avg1b, ASU_GOLD);
+	pieChart->add(avg1, avg1b, ASU_WHITE);
 
 	char avg2a[50];
 	buff = sprintf(avg2a, " %d-%d (%d)", badScore+(percent*3)+1, badScore+(percent*4), avg2);
 	const char *avg2b = avg2a;
-	pieChart->add(avg2, avg2b, ASU_MAROON);
+	pieChart->add(avg2, avg2b, ASU_ORANGE);
 
 	char high1a[50];
 	buff = sprintf(high1a, " %d-%d (%d)", badScore+(percent*4)+1, badScore+(percent*5), high1);
