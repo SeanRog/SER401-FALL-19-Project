@@ -784,6 +784,11 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
 	}
 	resultFile.close();
 
+	for(int i = 0; i < NUM_PROJECTS; i ++) {
+		ResultWindow::project_pool[0][i] = PROJECT_POOL[i].ProjectID;
+		ResultWindow::project_pool[1][i] = PROJECT_POOL[i].Priority;
+	}
+
 	//END THREADS FOR EACH CLASS SECTION...Sean Rogers
 
 //END -STUDENTS TO PROJECTS ASSIGNMENT

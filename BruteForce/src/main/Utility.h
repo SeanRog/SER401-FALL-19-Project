@@ -30,6 +30,7 @@ using namespace std;
 
 class Utility {
 public:
+
 	Utility();
 
 	void initProjectPool(string filename, Project projectPool[],

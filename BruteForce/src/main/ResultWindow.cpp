@@ -15,6 +15,7 @@
 #include "ResultWindow.h"
 #include "main.h"
 #include "GUIStyles.h"
+#include "Project.h"
 
 #include <iostream>
 #include <string>
@@ -36,8 +37,7 @@
 #include <FL/Fl_Chart.H>
 
 using namespace std;
-
-
+int ResultWindow:: project_pool[2][200] = {};
 
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
@@ -255,7 +255,6 @@ void ResultWindow::calculateStats() {
 	low1 =0, low2 =0, avg1 =0, avg2 =0, high1 =0, high2 =0;
 	string line;
 	int next1 = 0, next2 = 0, count = 0;
-	int projTeamScore [2][200];
 
 	//open results and store into a 2D array [project#][TeamScore]
 	ifstream resultFile;
@@ -273,7 +272,7 @@ void ResultWindow::calculateStats() {
 				score[0] = line[0];
 				score[1] = line[1];
 				value = atoi(score);
-				projTeamScore[1][count] = value;
+				projects[1][count] = value;
 				next1=0;
 				count++;
 
@@ -283,12 +282,12 @@ void ResultWindow::calculateStats() {
 					proj[0] = '0';
 					proj[1] = line[8];
 					value = atoi(proj);
-					projTeamScore[0][count] = value;
+					projects[0][count] = value;
 				} else {
 					proj[0] = line[8];
 					proj[1] = line[9];
 					value = atoi(proj);
-					projTeamScore[0][count] = value;
+					projects[0][count] = value;
 				}
 				next2 =0;
 
@@ -304,47 +303,55 @@ void ResultWindow::calculateStats() {
 		}
 	}
 
+	//Adds Priority to projects 3d array
+	for(int i = 0; i < count; i ++) {
+		for(int j = 0; j < count; j ++) {
+			if(projects[0][i] == project_pool[0][j]) {
+				projects[2][i] = project_pool[1][j];
+			}
+		}
+	}
+
 
 	//calculating average team score
-	for(int i =  0; i < count; i ++) { teamScoreAvg += projTeamScore[1][i];	}
+	for(int i =  0; i < count; i ++) { teamScoreAvg += projects[1][i];	}
 	teamScoreAvg = teamScoreAvg/count;
 
 	//calculating best team score
 	for(int i =  0; i < count; i ++) {
-		if(projTeamScore[1][i] > bestScore) {
-				bestScore = projTeamScore[1][i];
-				bestTeam = projTeamScore[0][i];
+		if(projects[1][i] > bestScore) {
+				bestScore = projects[1][i];
+				bestTeam = projects[0][i];
 		}
 	}
 
 
 	//calculating worst team score
 	for(int i =  0; i < count; i ++) {
-		if(projTeamScore[1][i] < badScore) {
-				badScore = projTeamScore[1][i];
-				worstTeam = projTeamScore[0][i];
+		if(projects[1][i] < badScore) {
+				badScore = projects[1][i];
+				worstTeam = projects[0][i];
 		}
 	}
 
 	percent = (bestScore-badScore)/6;
 
-	//Teams within 6 data groups
+	//filling teams within 6 data groups for pie chart
 	for(int i =  0; i < count; i ++) {
-		if(projTeamScore[1][i] <= (badScore+percent)) { low1++;	}
-		if((projTeamScore[1][i] <= badScore+(percent*2)) &&
-				(projTeamScore[1][i]) > (badScore+percent)) { low2++;	}
-		if((projTeamScore[1][i] <= badScore+(percent*3)) &&
-				(projTeamScore[1][i]) > (badScore+percent*2)) { avg1++;	}
-		if((projTeamScore[1][i] <= badScore+(percent*4)) &&
-				(projTeamScore[1][i]) > (badScore+percent*3)) { avg2++;	}
-		if((projTeamScore[1][i] <= badScore+(percent*5)) &&
-				(projTeamScore[1][i]) > (badScore+percent*4)) { high1++;}
-		if((projTeamScore[1][i] <= bestScore) &&
-				(projTeamScore[1][i]) > (badScore+percent*5)) { high2++;}
+		if(projects[1][i] <= (badScore+percent)) { low1++;	}
+		if((projects[1][i] <= badScore+(percent*2)) &&
+				(projects[1][i]) > (badScore+percent)) { low2++;	}
+		if((projects[1][i] <= badScore+(percent*3)) &&
+				(projects[1][i]) > (badScore+percent*2)) { avg1++;	}
+		if((projects[1][i] <= badScore+(percent*4)) &&
+				(projects[1][i]) > (badScore+percent*3)) { avg2++;	}
+		if((projects[1][i] <= badScore+(percent*5)) &&
+				(projects[1][i]) > (badScore+percent*4)) { high1++;}
+		if((projects[1][i] <= bestScore) &&
+				(projects[1][i]) > (badScore+percent*5)) { high2++;}
 	}
 
 }
-
 
 // DESTRUCTOR
 ResultWindow::~ResultWindow() {

@@ -17,6 +17,7 @@
 #include <FL/Fl_Input_.H>
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Chart.H>
+#include "Project.h"
 
 using namespace std;
 
@@ -35,6 +36,8 @@ class ResultWindow {
 public:
 	static int permutations;
 	static int swaps;
+	int projects [3][200];
+	static int project_pool [2][200];
 
 	Fl_Window *windowResult;
 	Fl_Text_Display *textDisplay;
