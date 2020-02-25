@@ -76,7 +76,6 @@ Fl_PNG_Image *Gears2Pngs[10];
 
 void GearsAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2) {
 
-
 	int i = 0;
 		while (w->shown()==true) {
 			Fl::check();
@@ -89,9 +88,6 @@ void GearsAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2) {
 				i = 0;
 			}
 		}            //end while loop
-
-
-
 }
 
 void SteamPunkGUI1::MainWindow2() {

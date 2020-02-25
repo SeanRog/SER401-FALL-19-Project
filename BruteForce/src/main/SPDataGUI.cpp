@@ -12,9 +12,16 @@
 #include "SteamPunkGUI1.h"
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <cstdlib>
+#include <thread>
 #include <stdio.h>
+#include <FL/names.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/time.h>
+#include <sys/wait.h>
 
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
@@ -34,6 +41,41 @@ Fl_PNG_Image Wall1("./Images/Steampunk/Wall1.png");
 Fl_PNG_Image Wall2("./Images/Steampunk/Wall3.png");
 Fl_PNG_Image Wall3("./Images/Steampunk/Wall14.png");
 
+Fl_PNG_Image *SteamPngs[13];
+Fl_PNG_Image *Steam2Pngs[13];
+
+
+void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2) {
+
+	int i = 0;
+	int x =0;
+		while (w->shown()==true) {
+
+			if(x == 1){
+			b->image(SteamPngs[i]);
+			//b2->image(Steam2Pngs[i]);
+			w->redraw();
+			Fl::check();
+			usleep(100000);}
+			else if (x == 0){
+				//b->image(SteamPngs[i]);
+				b2->image(Steam2Pngs[i]);
+				w->redraw();
+				Fl::check();
+				usleep(100000);}
+			i++;
+			if (i == 13) {
+				usleep(100000);
+				i = 0;
+				if(x==1){
+					x=0;
+				}else if(x==0){
+					x=1;
+				}
+			}
+		}            //end while loop
+}
+
 
 /*************************************************************************************
  * ClassSelectorGUI
@@ -51,6 +93,24 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 
 	//reference to the homepage window
 	prevWindow = win;
+
+	//read in the steam pngs
+	for (int i = 0; i < 13; i++) {
+		string filename = "./Images/Steampunk/Steam1/" + to_string(i) + ".png";
+		int length = filename.length();
+		char png_char[length + 1];
+		strcpy(png_char, filename.c_str());
+		SteamPngs[i] = new Fl_PNG_Image(png_char);
+	}
+
+	//read in the steam pngs
+	for (int i = 0; i < 13; i++) {
+		string filename = "./Images/Steampunk/Steam2/" + to_string(i) + ".png";
+		int length = filename.length();
+		char png_char[length + 1];
+		strcpy(png_char, filename.c_str());
+		Steam2Pngs[i] = new Fl_PNG_Image(png_char);
+	}
 
 	masterWindow = new Fl_Window(750, 790, "Capstone Team Assignment System");
 
@@ -221,10 +281,28 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 	findCourses->selection_color(DARK);
 	findCourses->callback(static_FindCoursesClick, this);
 
+	steamBox1 = new Fl_Box(575, 100, 150, 150);
+	steamBox1->box(FL_NO_BOX);
+	steamBox1->image(SteamPngs[12]);
+
+	steamBox2 = new Fl_Box(220, 650, 150, 150);
+	steamBox2->box(FL_NO_BOX);
+	steamBox2->image(SteamPngs[12]);
+
+
 	masterWindow->color(DARK_TAUPE);
 	masterWindow->box(FL_BORDER_BOX);
 	masterWindow->show();
 	masterWindow->end();
+
+	XInitThreads();
+	thread threads[1];
+
+	threads[0] = thread(SteamAnimate, masterWindow, steamBox1, steamBox2);
+
+	//join threads
+	for (int i = 0; i < 1; i++) {
+		threads[i].join();}
 
 
 	Fl::run();
@@ -270,7 +348,6 @@ void SPDataGUI::FindCoursesClick(Fl_Widget *w) {
 
 	cout << year << endl;
 	cout << semester << endl;
-
 
 	for (auto &course : courses) {
 
@@ -423,7 +500,6 @@ void SPDataGUI::ConfirmClick(Fl_Widget *w) {
 	char prompt3[length + 1];
 	strcpy(prompt3, classes.c_str());
 
-
 	confirmWindow->begin();
 
 	Fl_Box promptBox1(0, 10, 850, 30, "Does all the information look correct?");
@@ -457,7 +533,6 @@ void SPDataGUI::ConfirmClick(Fl_Widget *w) {
 	promptBox4R.align(FL_ALIGN_RIGHT);
 	promptBox4R.labelsize(15);
 	promptBox4R.labelfont(FL_HELVETICA);
-
 
 	GenerateTeamsButton = new Fl_Button(635, 150, 175, 50, "Generate Teams");
 	GenerateTeamsButton->color(ASU_WHITE);
@@ -511,5 +586,4 @@ void SPDataGUI::chooseProjectFile_cb(Fl_Widget*) {
 		break;
 	}
 }
-
 

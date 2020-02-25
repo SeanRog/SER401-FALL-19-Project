@@ -86,6 +86,8 @@ public:
 
 	Fl_Window *masterWindow;
 	Fl_Window *prevWindow;
+	Fl_Box *steamBox1;
+	Fl_Box *steamBox2;
 
 	//Class Section Selector Components
 	Fl_Box *boxHeader;
