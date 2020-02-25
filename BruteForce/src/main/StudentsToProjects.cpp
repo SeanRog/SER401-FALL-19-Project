@@ -902,23 +902,31 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	cout << "All duplicates Swapped out " << endl;
 	cout << "===============================================" << endl;
 	result.append(
-			"RESULT FOR SECTION " + to_string(studentPool[0].ClassID) + ":\n");
+			"RESULT FOR SECTION " + to_string(studentPool[0].ClassID) + ":\n" + "\n");
 	cout << "RESULT FOR SECTION " + to_string(studentPool[0].ClassID) << endl;
 
 	for (int i = 0; i < numProjects; i++) {
 		cout << "Team for project#" + to_string(bestSet[i].projectID) + " ";
 
-		result.append("Project#" + to_string(bestSet[i].projectID) + ": ");
+		result.append("PROJECT#" + to_string(bestSet[i].projectID) + ": ");
+		result.append("    Score: " + to_string(bestSet[i].TeamScore));
+		if (bestSet[i].project.Priority == 2){
+			result.append("    !High Priority!");
+		}
+		result.append("\n TEAM: ");
+
 		for (int k = 0; k < teamSize; k++) {
 			cout << to_string(bestSet[i].team[k].StudentID) + " ";
 			result.append(" " + (bestSet[i].team[k].name) + ", ");
 			bestSet[i].team[k].ProjectID = bestSet[i].projectID;
 		}
-		result.append("\n Score: " + to_string(bestSet[i].TeamScore) + "\n");
 
+		result.append("\n");
+		result.append("\n");
 		result.append("\n");
 		cout << endl;
 		cout << "Team Score: " << bestSet[i].TeamScore << endl;
+
 
 		//output to the GUI
 		string output = "Project #"+ to_string(projectPool[i].ProjectID) + " student team assigned! \n";
@@ -930,9 +938,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		terminal->append(output_char);
 		terminal->append(text);
 
-
-
 	}
+	result.append("\n");
+
 	cout << "Best Project Set score: " << newProjectSetScore << endl;
 	cout << "Number of Duplicate Students: " << 0 << endl;
 
