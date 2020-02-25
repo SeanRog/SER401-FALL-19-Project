@@ -201,6 +201,20 @@ void MainWindow::MainWindow1() {
 
 // DESTRUCTOR
 MainWindow::~MainWindow() {
+	delete progressWindow;
+	delete progressBar;
+	delete progressBox;
+	delete TeamsButton;
+	delete doneButton;
+	delete imageBox;
+	delete windowMain;
+	delete nextWindow;
+	delete boxHeader;
+	delete buttonStart;
+	delete buttonOpenProject;
+	delete generateTeams;
+	delete inputprojects;
+	delete inputstudents;
 
 }
 
