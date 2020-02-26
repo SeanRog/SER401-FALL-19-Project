@@ -13,12 +13,15 @@
  *
  */
 
+#define WEBVIEW_GTK
+
 #include "MainWindow.h"
 #include "DataEntryGUI.h"
 #include "GUIStyles.h"
 #include "ResultWindow.h"
-//#include "CanvasUtility.h"
+#include "CookieManager.h"
 #include "main.h"
+#include "webview.h"
 
 #include <iostream>
 #include <fstream>
@@ -48,11 +51,12 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
-
+#include <gtk/gtk.h>
+#include <webkit2/webkit2.h>
 #include <curl/curl.h>
 
-
 using namespace std;
+
 int MainWindow::num_projects = 0;
 int MainWindow::num_students = 0;
 
@@ -63,6 +67,8 @@ constexpr int toConstInt(int constInt) {
 
 // CONSTRUCTOR
 MainWindow::MainWindow() {
+
+	Authenticated = false;
 
 }
 //ASU logos
@@ -85,54 +91,45 @@ void MainWindow::MainWindow1() {
 	 num_students=0;
 	 num_projects=0;
 	 nextWindowFlag=false;
-
 	 const int windowMainW = 400;
 	 const int windowMainH = 400;
 	 const char windowMainStr[] = "Project 35";
-
 	 // HEADER BOX
 	 const int boxHeaderX = 20;
 	 const int boxHeaderY = 20;
 	 const int boxHeaderW = toConstInt(windowMainW - (boxHeaderX * 2));
 	 const int boxHeaderH = 90;
 	 const char boxHeaderStr[] = "CAPSTONE TEAM ASSIGNMENT SYSTEM";
-
 	 // NEW PROJECT BUTTON
 	 const int buttonStartX = toConstInt(boxHeaderX);
 	 const int buttonStartY = toConstInt(boxHeaderY + boxHeaderH + 20);
 	 const int buttonStartW = 100;
 	 const int buttonStartH = 50;
 	 const char buttonStartStr[] = "START";
-
 	 // OPEN PROJECT BUTTON
 	 const int buttonOpenProjectX = toConstInt(buttonStartX + buttonStartW + 20);
 	 const int buttonOpenProjectY = toConstInt(buttonStartY);
 	 const int buttonOpenProjectW = toConstInt(buttonStartW);
 	 const int buttonOpenProjectH = toConstInt(buttonStartH);
 	 const char buttonOpenProjectStr[] = "Open Project";
-
 	 // PROJECT INPUT
 	 const int InputProjectX = toConstInt(buttonStartX + buttonStartW + 20);
 	 const int InputProjectY = toConstInt(buttonStartY + 70);
 	 const int InputProjectW = toConstInt(buttonStartW);
 	 const int InputProjectH = toConstInt(buttonStartH);
 	 const char InputPStr[] = "#Projects";
-
 	 // STUDENT INPUT
 	 const int InputStudentX = toConstInt(buttonStartX + buttonStartW + 20);
 	 const int InputStudentY = toConstInt(buttonStartY + 140);
 	 const int InputStudentW = toConstInt(buttonStartW);
 	 const int InputStudentH = toConstInt(buttonStartH);
 	 const char InputSStr[] = "#Students";
-
 	 // GENERATE TEAMS BUTTON
 	 const int generateTeamsX = toConstInt(buttonStartX + buttonStartW + 130);
 	 const int generateTeamsY = toConstInt(buttonStartY + 120);
 	 const int generateTeamsW = toConstInt(buttonStartW);
 	 const int generateTeamsH = toConstInt(buttonStartH + 20);
 	 const char generateTeamsStr[] = "Generate Teams";
-
-
 	 // INITIALIZE COMPONENTS
 	 windowMain = new Fl_Window(windowMainW, windowMainH, windowMainStr);
 	 boxHeader = new Fl_Box(boxHeaderX, boxHeaderY, boxHeaderW,
@@ -141,33 +138,23 @@ void MainWindow::MainWindow1() {
 	 buttonStartW, buttonStartH, buttonStartStr);
 	 //buttonOpenProject = new Fl_Button(buttonOpenProjectX, buttonOpenProjectY,
 	 //    buttonOpenProjectW, buttonOpenProjectH, buttonOpenProjectStr);
-
 	 inputprojects = new Fl_Int_Input(InputProjectX, InputProjectY,
 	 InputProjectW, InputProjectH, InputPStr );
-
 	 inputstudents = new Fl_Int_Input(InputStudentX, InputStudentY,
 	 InputStudentW, InputStudentH, InputSStr );
-
 	 generateTeams = new Fl_Button(generateTeamsX, generateTeamsY,
 	 TeamLogo1.w(), TeamLogo1.h());
-
 	 //CALLBACKS
 	 generateTeams->callback(static_TeamsButtonClick, this);
 	 buttonStart->callback(static_StartButtonClick, this);
-
-
-
 	 windowMain->color(ASU_WHITE);
 	 windowMain->box(FL_BORDER_BOX);
 	 windowMain->resizable(boxHeader);
-
-
 	 buttonStart->color(ASU_GOLD);
 	 buttonStart->labelfont(FL_HELVETICA_BOLD);
 	 buttonStart->labelcolor(ASU_BLACK);
 	 buttonStart->labelsize(12);
 	 buttonStart->selection_color(ASU_MAROON);
-
 	 generateTeams->image(TeamLogo1);
 	 generateTeams->color(ASU_GOLD);
 	 generateTeams->selection_color(ASU_MAROON);
@@ -177,12 +164,8 @@ void MainWindow::MainWindow1() {
 	 generateTeams->box(FL_NO_BOX);
 	 generateTeams->tooltip("Generate Teams");
 	 generateTeams->down_box(FL_NO_BOX);
-
-
 	 buttonOpenProject->color(ASU_GOLD);
 	 buttonOpenProject->labelcolor(ASU_BLACK);
-
-
 	 boxHeader->box(FL_FLAT_BOX);
 	 boxHeader->color(ASU_MAROON);
 	 boxHeader->image(ASU_LOGO_BLACK1);
@@ -190,11 +173,8 @@ void MainWindow::MainWindow1() {
 	 boxHeader->labelsize(15);
 	 boxHeader->labelcolor(ASU_WHITE);
 	 boxHeader->redraw();
-
 	 windowMain->show();
 	 windowMain->end();
-
-
 	 Fl::run(); */
 
 }
@@ -463,7 +443,6 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	doneButton->callback(static_DoneButtonClick, this);
 	progressWindow->redraw();
 
-
 	Fl::run();
 }
 
@@ -594,6 +573,135 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
 	windowResult.addText();
 }
 
+static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
+	cout << "quit!" << endl;
+	gtk_main_quit();
+
+}
+
+static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window) {
+	gtk_widget_destroy(window);
+	cout << "destroyed!" << endl;
+	return TRUE;
+}
+
+
+Fl_Window *nextWindow;
+bool Auth;
+
+static gboolean load_changedWebViewCb(WebKitWebView *webView,
+		GtkWidget *window) {
+	cout << "listening" << endl;
+	cout << webkit_web_view_get_uri(webView) << endl;
+	if (strcmp(webkit_web_view_get_uri(webView),
+			"https://canvas.asu.edu/?login_success=1") == 0) {
+
+		cout << "Canvas reached! authentication complete!" << endl;
+
+		Auth = true;
+		//todo- read in and store the cookies to cookies.txt
+
+		//close the mini-browser window because authentication is complete.
+
+		//gtk_main_quit();
+
+		//hide the main window
+		//nextWindow->hide();
+
+		//gtk_widget_hide(window);
+		//gtk_main_quit();
+
+		//call to next GUI window.
+		//DataEntryGUI dataGUI(nextWindow);
+
+	}
+
+	return TRUE;
+}
+
+void mini_browser() {
+
+	int argc;
+	char **argv;
+
+	//Initialize GTK+
+	gtk_init(&argc, &argv);
+
+	// Create an 800x600 window that will contain the browser instance
+	GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
+
+	//create the data manager
+	WebKitWebsiteDataManager *manager = webkit_website_data_manager_new(0);
+	//create the context
+	WebKitWebContext *context =
+			webkit_web_context_new_with_website_data_manager(manager);
+
+	//create cookie manager
+	WebKitCookieManager *cookiejar =
+			webkit_website_data_manager_get_cookie_manager(manager);
+
+	// Create a browser instance
+	WebKitWebView *webView = WEBKIT_WEB_VIEW(
+			webkit_web_view_new_with_context(context));
+
+	/*
+	 * 	   ///Code for cookies///
+
+	 WebKitSettings *settings = webkit_settings_new();
+
+
+	 webkit_cookie_manager_set_persistent_storage(cookiejar, "cookies.txt",
+	 WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
+
+	 g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache",
+	 TRUE, NULL);
+
+	 //set the cookie acceptance policy
+	 webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
+
+	 //get session
+	 //webkit_website_data_manager_fetch(manager, WEBKIT_WEBSITE_DATA_COOKIES, NULL, );
+
+	 // webkit_website_data_manager_fetch_finish ();
+
+
+	 //add the cookie
+	 //  webkit_cookie_manager_add_cookie(cookiejar, );
+
+
+	 // Apply the result
+	 webkit_web_view_set_settings (webView, settings);
+	 */
+
+	// Put the browser area into the main window
+	gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
+
+	// Set up callbacks so that if either the main window or the browser instance is
+	// closed, the program will exit
+	g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
+	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
+
+	g_signal_connect(webView, "load-changed", G_CALLBACK(load_changedWebViewCb),
+			main_window);
+
+	// Load a web page into the browser instance
+	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
+
+	// Make sure that when the browser area becomes visible, it will get mouse
+	// and keyboard events
+	gtk_widget_grab_focus(GTK_WIDGET(webView));
+
+	// Make sure the main window and all its contents are visible
+	gtk_widget_show_all(main_window);
+
+	// Run the main GTK+ event loop
+	gtk_main();
+
+	cout << "Website running" << endl;
+
+}
+
 /*****************************************************************************
  * StartButtonClick
  *
@@ -611,17 +719,22 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
  */
 void MainWindow::StartButtonClick(Fl_Widget *w) {
 
-
-	//open the firefox browser for ASU canvas login page.
-	//system("firefox https://canvas.asu.edu/login");
-
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
+
+	//nextWindow = windowMain;
+
+	cout << "working" << endl;
+
+	if (Authenticated != true) {
+		Auth = false;
+		mini_browser();
+	}
+	Authenticated = Auth;
+
 	windowMain->hide();
 
-	//CanvasUtility Canvas;
-	 //Canvas.getCourses();
-	 //Canvas.getQuizzes();
+	//gtk_widget_destroy(main_window);
 
 	//call to next GUI window.
 	DataEntryGUI dataGUI(windowMain);
@@ -648,4 +761,3 @@ void MainWindow::callTeams(Fl_Widget *w) {
 	TeamsButtonClick(windowMain);
 
 }
-

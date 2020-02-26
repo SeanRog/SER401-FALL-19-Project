@@ -53,6 +53,7 @@ public:
 	static int num_projects;
 	static int num_students;
 	bool nextWindowFlag;
+	bool Authenticated;
 
 	//progress bar window
 	int barCount;
