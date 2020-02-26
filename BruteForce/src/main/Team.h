@@ -36,7 +36,7 @@ struct Team {
 	Student team[5]; 	// Array of Student objects to store and manipulate.
 	int TeamScore; // TeamScore is an aggregate value of each Student's weighed skill scores.
 	int ResultScore; //Score comprised of the student to student skills, and their availability scores.
-	int projectID;// represents the project that the student team is possibly assigned to.
+	int projectID; // represents the project that the student team is possibly assigned to.
 	int ClassID;       //class section this team belongs to.
 	Project project;   //the project object that this team is assigned to.
 	Team() {
