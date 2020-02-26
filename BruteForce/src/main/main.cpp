@@ -637,7 +637,7 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb, Fl_T
 
 	// INITIALIZE POOLS
 	//util.initProjectPool(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
-	util.csvToProjectsVector(csvProjectFileName, PROJECT_POOL, NUM_PROJECTS);
+	util.csvToProjectsVector(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
 	util.initStudentPool(STUDENT_FILE, STUDENT_POOL, NUM_STUDENTS);
 	util.initClassSectionPool(CLASS_SECTION_FILE, CLASS_SECTION_POOL,
 			STUDENT_POOL, NUM_CLASS_SECTIONS, NUM_STUDENTS);
