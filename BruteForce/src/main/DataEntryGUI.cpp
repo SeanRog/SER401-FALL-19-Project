@@ -215,7 +215,29 @@ DataEntryGUI::DataEntryGUI(Fl_Window* win) {
 
 
 DataEntryGUI::~DataEntryGUI() {
-	// TODO Auto-generated destructor stub
+	delete masterWindow;
+	delete prevWindow;
+	delete boxHeader;
+	delete boxHeader2;
+	delete classBrowser;
+	delete findCourses;
+	delete Confirm;
+	delete goBack;
+	delete inputYear;
+	delete inputSemester;
+	delete classSectionInstructionsBox;
+	delete backWindow;
+	delete yesButton;
+	delete cancelButton1;
+	delete confirmWindow;
+	delete GenerateTeamsButton;
+	delete cancelButton2;
+	delete projectFileInstructionsBox;
+	delete projectFileChooserButton;
+	delete fileInput_Project;
+	delete quizFileInstructionsBox;
+	delete fileInput_StudentQuizName;
+	delete goBackorConfirmInstructionsBox;
 }
 
 //TODO
