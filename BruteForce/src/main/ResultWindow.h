@@ -16,6 +16,7 @@
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Input_.H>
 #include <FL/Fl_Text_Buffer.H>
+#include <FL/Fl_Chart.H>
 
 using namespace std;
 
@@ -27,6 +28,10 @@ class ResultWindow {
 
 	void saveClicked(Fl_Widget *w);
 
+	int teamScoreAvg, bestScore, badScore;
+	int bestTeam, worstTeam, percent;
+	int low1, low2, avg1, avg2, high1, high2;
+
 public:
 	static int permutations;
 	static int swaps;
@@ -37,11 +42,17 @@ public:
 	Fl_Button *buttonSave;
 	Fl_Box *permBox;
 	Fl_Box *swapBox;
+	Fl_Box *teamBox;
+	Fl_Box *bestBox;
+	Fl_Box *badBox;
+	Fl_Box *spacer;
 	Fl_Box *borderBox;
+	Fl_Chart *pieChart;
 
 	ResultWindow();
 	~ResultWindow();
 	void addText();
+	void calculateStats();
 
 };
 

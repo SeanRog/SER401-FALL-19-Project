@@ -478,8 +478,12 @@ void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*) {
 	// Create the file chooser, and show it
 	Fl_File_Chooser chooser(".",                        // directory
 			"*",                        // filter
-			Fl_File_Chooser::MULTI,     // chooser type
-			"Title Of Chooser");        // title
+			Fl_File_Chooser::SINGLE,     // chooser type
+			"Select Project CSV file");        // title
+
+	chooser.color(ASU_WHITE);
+	chooser.textfont(FL_HELVETICA);
+
 	chooser.show();
 
 	// Block until user picks something.
