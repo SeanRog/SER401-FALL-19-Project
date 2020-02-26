@@ -78,6 +78,7 @@ public:
 	// Confirm or Go Back
 	Fl_Box *goBackorConfirmInstructionsBox;
 
+
 	DataEntryGUI(Fl_Window *win);
 	virtual ~DataEntryGUI();
 

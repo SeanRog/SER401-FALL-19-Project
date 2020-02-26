@@ -96,7 +96,6 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::MainWindow2() {
-
 	const int windowMainW = 750;
 	const int windowMainH = 450;
 	const char windowMainStr[] =
@@ -458,6 +457,7 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
+
 	m.main_run(num_projects, num_students, progressBar, terminalBuffer);
 
 	//join threads

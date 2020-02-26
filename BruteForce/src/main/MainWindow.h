@@ -5,6 +5,7 @@
 #include <string>
 #include <cstdlib>
 #include <stdio.h>
+#include "main.h"
 
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
@@ -52,6 +53,7 @@ class MainWindow {
 public:
 	static int num_projects;
 	static int num_students;
+	string csvProjectFileName;
 	bool nextWindowFlag;
 	bool Authenticated;
 
@@ -84,6 +86,7 @@ public:
 	MainWindow();
 	~MainWindow();
 	void callTeams(Fl_Widget *w);
+
 
 };
 

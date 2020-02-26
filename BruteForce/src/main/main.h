@@ -15,7 +15,7 @@ using namespace std;
 class main {
 
 public:
-
+	string csvProjectFileName;
 	int main_run(int projects_input, int students_input, Fl_Progress *pb, Fl_Text_Buffer *terminal);
 
 };
