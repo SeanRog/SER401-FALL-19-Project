@@ -133,4 +133,5 @@ ResultWindow::~ResultWindow() {
 	delete permBox;
 	delete swapBox;
 	delete borderBox;
+
 }
