@@ -166,6 +166,9 @@ constexpr int toConstInt(int constInt) {
 //progress bar
 Fl_Progress *progressBar;
 
+//terminal buffer
+Fl_Text_Buffer *terminal;
+
 /*********************************************************
  * threadFunction
  *
@@ -492,52 +495,42 @@ void threadFunction(Student studentPool[], Project projectPool[],
 		//1st Call to function: Highest priority projects and highest skill average students
 		*(results + (classSection * 3 + 0)) = x.StudentsToProjectsAssignment(
 				STpriority2, PRpriority2, COUNT_2, PCOUNT_2, numSkills,
-				teamSize, numTopTeams, progressBar, progressIncrement);
+				teamSize, numTopTeams, progressBar, progressIncrement, terminal);
 	}
 
 	if (COUNT_1 != 0 && PCOUNT_1 != 0) {
 		//2nd Call to function: middle priority projects and middle skill average students
 		*(results + (classSection * 3 + 1)) = x.StudentsToProjectsAssignment(
 				STpriority1, PRpriority1, COUNT_1, PCOUNT_1, numSkills,
-				teamSize, numTopTeams, progressBar, progressIncrement);
+				teamSize, numTopTeams, progressBar, progressIncrement, terminal);
 	}
 
 	if (COUNT_0 != 0 && PCOUNT_0 != 0) {
 		//3rd Call to function: lowest priority projects and lowest skill average students
 		*(results + (classSection * 3 + 2)) = x.StudentsToProjectsAssignment(
 				STpriority0, PRpriority0, COUNT_0, PCOUNT_0, numSkills,
-				teamSize, numTopTeams, progressBar, progressIncrement);
+				teamSize, numTopTeams, progressBar, progressIncrement, terminal);
 	}
+
+
+	//output to the GUI
+	string output = + "Class Section #" + to_string(classSection) + " Assignment Complete!\n" ;
+	int length = output.length();
+	char output_char[length + 1];
+	strcpy(output_char, output.c_str());
+	//terminal->append(output_char);
+	char* text = terminal->text();
+	terminal->text("");
+	terminal->append(output_char);
+	terminal->append(text);
+
+
 
 }    //end threadFunction
 
 int tempProj, tempStud, textInput;
+string *csvProjectFileName;
 
-/*
- void dobut(Fl_Widget *){
- bool validNumber = true;
- cout << input->value() << endl;
- string str = input->value();
- if(str.length() == 0) {
- validNumber = false;
- } else if(str.at(0) > 48 && str.at(0) <= 57) {
- for(int i = 1; i < str.length(); i++) {
- if(str.at(i) < 48 || str.at(i) > 57) {
- validNumber = false;
- }
- }
- } else {
- validNumber = false;
- }
-
- if(validNumber) {
- output->value(input->value());
- cout << "valid number" << endl;
- } else {
- cout << "Invalid number" << endl;
- }
- }
- */
 
 /*************************************************************************************
  * main
@@ -582,7 +575,7 @@ int main() {
  *Returns:
  *	int value 0.
  */
-int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
+int main::main_run(int projects_input, int students_input, Fl_Progress *pb, Fl_Text_Buffer *tb) {
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
 	srand(time(NULL));
@@ -597,9 +590,8 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
 	pb->label(percent);
 	Fl::check();
 
-	//Fl::run();
-
-	//MainWindow mainWin;
+	//set up the terminal buffer
+	terminal = tb;
 
 	tempProj = projects_input;
 	tempStud = students_input;
@@ -617,7 +609,8 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
 	util.makeProjectJSON(NUM_PROJECTS, NUM_SKILLS);
 	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS);
 
-	const string PROJECT_FILE = "./newProjects.json";
+	//const string PROJECT_FILE = "./newProjects.json";
+	const string PROJECT_FILE = "./100Projects.csv";
 	const string STUDENT_FILE = "./newStudents.json";
 	const string CLASS_SECTION_FILE = "./SampleJsonFiles/4ClassSections.json";
 
@@ -643,7 +636,8 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
 	Test t;
 
 	// INITIALIZE POOLS
-	util.initProjectPool(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
+	//util.initProjectPool(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
+	util.csvToProjectsVector(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
 	util.initStudentPool(STUDENT_FILE, STUDENT_POOL, NUM_STUDENTS);
 	util.initClassSectionPool(CLASS_SECTION_FILE, CLASS_SECTION_POOL,
 			STUDENT_POOL, NUM_CLASS_SECTIONS, NUM_STUDENTS);

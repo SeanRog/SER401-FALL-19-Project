@@ -13,12 +13,15 @@
  *
  */
 
+#define WEBVIEW_GTK
+
 #include "MainWindow.h"
 #include "DataEntryGUI.h"
 #include "GUIStyles.h"
 #include "ResultWindow.h"
-//#include "CanvasUtility.h"
+#include "CookieManager.h"
 #include "main.h"
+#include "webview.h"
 
 #include <iostream>
 #include <fstream>
@@ -49,10 +52,13 @@
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
 
+
+#include <gtk/gtk.h>
+#include <webkit2/webkit2.h>
 #include <curl/curl.h>
 
-
 using namespace std;
+
 int MainWindow::num_projects = 0;
 int MainWindow::num_students = 0;
 
@@ -63,6 +69,8 @@ constexpr int toConstInt(int constInt) {
 
 // CONSTRUCTOR
 MainWindow::MainWindow() {
+
+	Authenticated = false;
 
 }
 //ASU logos
@@ -79,123 +87,6 @@ Fl_PNG_Image AboutLogo("./Images/About3.png");
 Fl_PNG_Image *LoadingPngs[22];
 
 void MainWindow::MainWindow1() {
-
-	/*
-	 // MAIN WINDOW
-	 num_students=0;
-	 num_projects=0;
-	 nextWindowFlag=false;
-
-	 const int windowMainW = 400;
-	 const int windowMainH = 400;
-	 const char windowMainStr[] = "Project 35";
-
-	 // HEADER BOX
-	 const int boxHeaderX = 20;
-	 const int boxHeaderY = 20;
-	 const int boxHeaderW = toConstInt(windowMainW - (boxHeaderX * 2));
-	 const int boxHeaderH = 90;
-	 const char boxHeaderStr[] = "CAPSTONE TEAM ASSIGNMENT SYSTEM";
-
-	 // NEW PROJECT BUTTON
-	 const int buttonStartX = toConstInt(boxHeaderX);
-	 const int buttonStartY = toConstInt(boxHeaderY + boxHeaderH + 20);
-	 const int buttonStartW = 100;
-	 const int buttonStartH = 50;
-	 const char buttonStartStr[] = "START";
-
-	 // OPEN PROJECT BUTTON
-	 const int buttonOpenProjectX = toConstInt(buttonStartX + buttonStartW + 20);
-	 const int buttonOpenProjectY = toConstInt(buttonStartY);
-	 const int buttonOpenProjectW = toConstInt(buttonStartW);
-	 const int buttonOpenProjectH = toConstInt(buttonStartH);
-	 const char buttonOpenProjectStr[] = "Open Project";
-
-	 // PROJECT INPUT
-	 const int InputProjectX = toConstInt(buttonStartX + buttonStartW + 20);
-	 const int InputProjectY = toConstInt(buttonStartY + 70);
-	 const int InputProjectW = toConstInt(buttonStartW);
-	 const int InputProjectH = toConstInt(buttonStartH);
-	 const char InputPStr[] = "#Projects";
-
-	 // STUDENT INPUT
-	 const int InputStudentX = toConstInt(buttonStartX + buttonStartW + 20);
-	 const int InputStudentY = toConstInt(buttonStartY + 140);
-	 const int InputStudentW = toConstInt(buttonStartW);
-	 const int InputStudentH = toConstInt(buttonStartH);
-	 const char InputSStr[] = "#Students";
-
-	 // GENERATE TEAMS BUTTON
-	 const int generateTeamsX = toConstInt(buttonStartX + buttonStartW + 130);
-	 const int generateTeamsY = toConstInt(buttonStartY + 120);
-	 const int generateTeamsW = toConstInt(buttonStartW);
-	 const int generateTeamsH = toConstInt(buttonStartH + 20);
-	 const char generateTeamsStr[] = "Generate Teams";
-
-
-	 // INITIALIZE COMPONENTS
-	 windowMain = new Fl_Window(windowMainW, windowMainH, windowMainStr);
-	 boxHeader = new Fl_Box(boxHeaderX, boxHeaderY, boxHeaderW,
-	 boxHeaderH, boxHeaderStr);
-	 buttonStart = new Fl_Button(buttonStartX, buttonStartY,
-	 buttonStartW, buttonStartH, buttonStartStr);
-	 //buttonOpenProject = new Fl_Button(buttonOpenProjectX, buttonOpenProjectY,
-	 //    buttonOpenProjectW, buttonOpenProjectH, buttonOpenProjectStr);
-
-	 inputprojects = new Fl_Int_Input(InputProjectX, InputProjectY,
-	 InputProjectW, InputProjectH, InputPStr );
-
-	 inputstudents = new Fl_Int_Input(InputStudentX, InputStudentY,
-	 InputStudentW, InputStudentH, InputSStr );
-
-	 generateTeams = new Fl_Button(generateTeamsX, generateTeamsY,
-	 TeamLogo1.w(), TeamLogo1.h());
-
-	 //CALLBACKS
-	 generateTeams->callback(static_TeamsButtonClick, this);
-	 buttonStart->callback(static_StartButtonClick, this);
-
-
-
-	 windowMain->color(ASU_WHITE);
-	 windowMain->box(FL_BORDER_BOX);
-	 windowMain->resizable(boxHeader);
-
-
-	 buttonStart->color(ASU_GOLD);
-	 buttonStart->labelfont(FL_HELVETICA_BOLD);
-	 buttonStart->labelcolor(ASU_BLACK);
-	 buttonStart->labelsize(12);
-	 buttonStart->selection_color(ASU_MAROON);
-
-	 generateTeams->image(TeamLogo1);
-	 generateTeams->color(ASU_GOLD);
-	 generateTeams->selection_color(ASU_MAROON);
-	 generateTeams->labelcolor(ASU_BLACK);
-	 generateTeams->labelfont(FL_HELVETICA_ITALIC);
-	 generateTeams->labelsize(12);
-	 generateTeams->box(FL_NO_BOX);
-	 generateTeams->tooltip("Generate Teams");
-	 generateTeams->down_box(FL_NO_BOX);
-
-
-	 buttonOpenProject->color(ASU_GOLD);
-	 buttonOpenProject->labelcolor(ASU_BLACK);
-
-
-	 boxHeader->box(FL_FLAT_BOX);
-	 boxHeader->color(ASU_MAROON);
-	 boxHeader->image(ASU_LOGO_BLACK1);
-	 boxHeader->labelfont(FL_HELVETICA_ITALIC);
-	 boxHeader->labelsize(15);
-	 boxHeader->labelcolor(ASU_WHITE);
-	 boxHeader->redraw();
-
-	 windowMain->show();
-	 windowMain->end();
-
-
-	 Fl::run(); */
 
 }
 
@@ -219,7 +110,6 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::MainWindow2() {
-
 	const int windowMainW = 750;
 	const int windowMainH = 450;
 	const char windowMainStr[] =
@@ -403,14 +293,14 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 
 	//PROGRESS BAR WINDOW
 
-	progressWindow = new Fl_Window(570, 400, "Team Assignment Progress");
+	progressWindow = new Fl_Window(570, 500, "Team Assignment Progress");
 	progressWindow->begin();
 
-	Fl_Box *backBox = new Fl_Box(0, 250, 570, 150);
+	Fl_Box *backBox = new Fl_Box(0, 250, 570, 250);
 	backBox->box(FL_BORDER_BOX);
 	backBox->color(ASU_GREY);
 
-	Fl_Box *backBox1 = new Fl_Box(0, 0, 10, 400);
+	Fl_Box *backBox1 = new Fl_Box(0, 0, 10, 500);
 	backBox1->box(FL_FLAT_BOX);
 	backBox1->color(ASU_GREY);
 
@@ -418,13 +308,13 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	backBox2->box(FL_FLAT_BOX);
 	backBox2->color(ASU_GREY);
 
-	Fl_Box *backBox3 = new Fl_Box(560, 0, 10, 400);
+	Fl_Box *backBox3 = new Fl_Box(560, 0, 10, 500);
 	backBox3->box(FL_FLAT_BOX);
 	backBox3->color(ASU_GREY);
 
-	TeamsButton = new Fl_Button(25, 260, 200, 50, "Generate Teams");
-	doneButton = new Fl_Button(345, 260, 200, 50, "Done");
-	progressBar = new Fl_Progress(20, 325, 530, 40);
+	TeamsButton = new Fl_Button(25, 360, 200, 50, "Generate Teams");
+	doneButton = new Fl_Button(345, 360, 200, 50, "Done");
+	progressBar = new Fl_Progress(20, 425, 530, 40);
 
 	//progressBox = new Fl_Box(10, 330, 550, 40, "");
 
@@ -442,13 +332,28 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	Fl_PNG_Image *baseImage = new Fl_PNG_Image("./Images/Loading/1.png");
 	//Fl_PNG_Image* baseImage = new Fl_PNG_Image("./Images/cookies/0.png");
 
+
+
 	imageBox = new Fl_Box(10, 20, 550, 200);
 	imageBox->color(ASU_WHITE);
 	imageBox->box(FL_FLAT_BOX);
 	imageBox->image(baseImage);
 	imageBox->redraw();
 
-	progressBox = new Fl_Box(10, 210, 550, 40, "");
+	// Buffer
+	terminalBuffer = new Fl_Text_Buffer();
+
+	//Text Display
+	terminalTextDisplay = new Fl_Text_Display(10, 260, 550, 80);
+	terminalTextDisplay->buffer(terminalBuffer);
+	terminalTextDisplay->textfont(FL_HELVETICA);
+	terminalTextDisplay->textcolor(ASU_BLACK);
+	terminalTextDisplay->textsize(15);
+	terminalTextDisplay->selection_color(ASU_GOLD);
+
+	progressBox = new Fl_Box(10, 230, 550, 25, "");
+	progressBox->box(FL_FLAT_BOX);
+	progressBox->color(ASU_WHITE);
 
 	doneButton->color(ASU_GOLD);
 	doneButton->selection_color(ASU_MAROON);
@@ -476,7 +381,6 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	TeamsButton->callback(static_ProgressTeamsButtonClick, this);
 	doneButton->callback(static_DoneButtonClick, this);
 	progressWindow->redraw();
-
 
 	Fl::run();
 }
@@ -524,8 +428,8 @@ void animate(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 void teamAssignment(int num_students, int num_projects,
 		Fl_Progress *progressBar) {
 
-	main m;
-	m.main_run(num_projects, num_students, progressBar);
+	//main m;
+	//m.main_run(num_projects, num_students, progressBar, terminalBuffer);
 }
 
 /*****************************************************************************
@@ -551,9 +455,9 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	TeamsButton->deactivate();
 	progressBox->label("Team Assignment System Running...");
-	progressBox->labelfont(FL_HELVETICA);
-	progressBox->labelsize(20);
-	progressBox->labelcolor(ASU_BLACK);
+	progressBox->labelfont(FL_HELVETICA_BOLD);
+	progressBox->labelsize(18);
+	progressBox->labelcolor(ASU_GREY);
 	imageBox->redraw();
 
 	XInitThreads();
@@ -567,7 +471,8 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
-	m.main_run(num_projects, num_students, progressBar);
+
+	m.main_run(num_projects, num_students, progressBar, terminalBuffer);
 
 	//join threads
 	for (int i = 0; i < 1; i++) {
@@ -580,8 +485,9 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	doneButton->activate();
 	progressBox->label("Team Assignment Complete! Click 'Done' to continue.");
-	progressBox->labelsize(18);
-	progressBox->labelfont(FL_HELVETICA);
+	progressBox->labelsize(16);
+	progressBox->labelfont(FL_HELVETICA_BOLD);
+	progressBox->labelcolor(ASU_GREEN);
 
 }
 
@@ -608,6 +514,136 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
 	windowResult.addText();
 }
 
+static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
+	cout << "quit!" << endl;
+	gtk_main_quit();
+
+}
+
+static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window) {
+	gtk_widget_destroy(window);
+	cout << "destroyed!" << endl;
+	return TRUE;
+}
+
+
+Fl_Window *nextWindow;
+bool Auth;
+
+static gboolean load_changedWebViewCb(WebKitWebView *webView,
+		GtkWidget *window) {
+	cout << "listening" << endl;
+	cout << webkit_web_view_get_uri(webView) << endl;
+	if (strcmp(webkit_web_view_get_uri(webView),
+			"https://canvas.asu.edu/?login_success=1") == 0) {
+
+		cout << "Canvas reached! authentication complete!" << endl;
+
+		Auth = true;
+		//todo- read in and store the cookies to cookies.txt
+
+		//close the mini-browser window because authentication is complete.
+
+		//gtk_main_quit();
+
+		//hide the main window
+		//nextWindow->hide();
+
+		//gtk_widget_hide(window);
+		//gtk_main_quit();
+
+		//call to next GUI window.
+		//DataEntryGUI dataGUI(nextWindow);
+
+	}
+
+	return TRUE;
+}
+
+void mini_browser() {
+
+	int argc;
+	char **argv;
+
+	//Initialize GTK+
+	gtk_init(&argc, &argv);
+
+	// Create an 800x600 window that will contain the browser instance
+	GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
+	gtk_window_set_title(GTK_WINDOW(main_window), "ASU Canvas Authentication");
+	//create the data manager
+	WebKitWebsiteDataManager *manager = webkit_website_data_manager_new(0);
+	//create the context
+	WebKitWebContext *context =
+			webkit_web_context_new_with_website_data_manager(manager);
+
+	//create cookie manager
+	WebKitCookieManager *cookiejar =
+			webkit_website_data_manager_get_cookie_manager(manager);
+
+	// Create a browser instance
+	WebKitWebView *webView = WEBKIT_WEB_VIEW(
+			webkit_web_view_new_with_context(context));
+
+	/*
+	 * 	   ///Code for cookies///
+
+	 WebKitSettings *settings = webkit_settings_new();
+
+
+	 webkit_cookie_manager_set_persistent_storage(cookiejar, "cookies.txt",
+	 WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
+
+	 g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache",
+	 TRUE, NULL);
+
+	 //set the cookie acceptance policy
+	 webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
+
+	 //get session
+	 //webkit_website_data_manager_fetch(manager, WEBKIT_WEBSITE_DATA_COOKIES, NULL, );
+
+	 // webkit_website_data_manager_fetch_finish ();
+
+
+	 //add the cookie
+	 //  webkit_cookie_manager_add_cookie(cookiejar, );
+
+
+	 // Apply the result
+	 webkit_web_view_set_settings (webView, settings);
+	 */
+
+	// Put the browser area into the main window
+	gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
+
+
+	// Set up callbacks so that if either the main window or the browser instance is
+	// closed, the program will exit
+	g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
+	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
+
+	g_signal_connect(webView, "load-changed", G_CALLBACK(load_changedWebViewCb),
+			main_window);
+
+	// Load a web page into the browser instance
+	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
+
+	// Make sure that when the browser area becomes visible, it will get mouse
+	// and keyboard events
+	gtk_widget_grab_focus(GTK_WIDGET(webView));
+
+	// Make sure the main window and all its contents are visible
+	gtk_widget_show_all(main_window);
+
+	// Run the main GTK+ event loop
+	gtk_main();
+
+	cout << "Website running" << endl;
+
+}
+
 /*****************************************************************************
  * StartButtonClick
  *
@@ -625,17 +661,22 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
  */
 void MainWindow::StartButtonClick(Fl_Widget *w) {
 
-
-	//open the firefox browser for ASU canvas login page.
-	//system("firefox https://canvas.asu.edu/login");
-
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
+
+	//nextWindow = windowMain;
+
+	cout << "working" << endl;
+
+	if (Authenticated != true) {
+		Auth = false;
+		mini_browser();
+	}
+	Authenticated = Auth;
+
 	windowMain->hide();
 
-	//CanvasUtility Canvas;
-	 //Canvas.getCourses();
-	 //Canvas.getQuizzes();
+	//gtk_widget_destroy(main_window);
 
 	//call to next GUI window.
 	DataEntryGUI dataGUI(windowMain);
@@ -662,4 +703,3 @@ void MainWindow::callTeams(Fl_Widget *w) {
 	TeamsButtonClick(windowMain);
 
 }
-

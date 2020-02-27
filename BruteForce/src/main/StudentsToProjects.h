@@ -19,6 +19,7 @@
 #include "ClassSection.h"
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Window.H>
+#include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Box.H>
 
 using namespace std;
@@ -36,7 +37,7 @@ public:
 	string StudentsToProjectsAssignment(Student studentPool[],
 			Project projectPool[], const int numStudents, const int numProjects,
 			const int numSkills, const int teamSize, const int numTopTeams,
-			Fl_Progress *progressBar, int progressIncrement);
+			Fl_Progress *progressBar, int progressIncrement, Fl_Text_Buffer *terminal);
 
 	void updateProgressBar(int value, Fl_Progress *pW); //function to update the progress bar.
 

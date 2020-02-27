@@ -63,6 +63,7 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Box.H>
+#include <FL/Fl_Text_Buffer.H>
 
 #include <iostream>
 #include <vector>
@@ -228,7 +229,7 @@ void StudentsToProjects::updateProgressBar(int num, Fl_Progress *pb) {
 string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		Project projectPool[], const int numStudents, const int numProjects,
 		const int numSkills, const int teamSize, const int numTopTeams,
-		Fl_Progress *progressBar, int progressIncrement) {
+		Fl_Progress *progressBar, int progressIncrement, Fl_Text_Buffer *terminal) {
 
 	string result = "";
 
@@ -418,6 +419,17 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		cout
 				<< "Project # " + to_string(projectPool[i].ProjectID)
 						+ "  team combinations complete. " << endl;
+
+		//output to the GUI
+		string output = + "Top 5 team combinations found for Project #" + to_string(projectPool[i].ProjectID) + "\n" ;
+		int length = output.length();
+		char output_char[length + 1];
+		strcpy(output_char, output.c_str());
+		//terminal->append(output_char);
+		char* text = terminal->text();
+		terminal->text("");
+		terminal->append(output_char);
+		terminal->append(text);
 
 	} // end i loop (for each project)
 
@@ -796,8 +808,8 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 
 			}	             	                    	 //end j loop
 
-														 //recalculate team score, now that all the duplicate
-														 //students have been swapped out.
+			//recalculate team score, now that all the duplicate
+			//students have been swapped out.
 			for (int x = 0; x < TEAM_SIZE; x++) {
 
 				if (bestSet[i].team[x].StudentID != 99999) {
@@ -841,7 +853,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 
 		}             	           	//end i loop
 
-									//set all the students in the best set to assigned.
+		//set all the students in the best set to assigned.
 		for (int i = 0; i < numProjects; i++) {
 			for (int j = 0; j < TEAM_SIZE; j++) {
 				bestSet[i].team[j].Assigned = true;
@@ -890,24 +902,45 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	cout << "All duplicates Swapped out " << endl;
 	cout << "===============================================" << endl;
 	result.append(
-			"RESULT FOR SECTION " + to_string(studentPool[0].ClassID) + ":\n");
+			"RESULT FOR SECTION " + to_string(studentPool[0].ClassID) + ":\n" + "\n");
 	cout << "RESULT FOR SECTION " + to_string(studentPool[0].ClassID) << endl;
 
 	for (int i = 0; i < numProjects; i++) {
 		cout << "Team for project#" + to_string(bestSet[i].projectID) + " ";
 
-		result.append("Project#" + to_string(bestSet[i].projectID) + ": ");
+		result.append("PROJECT#" + to_string(bestSet[i].projectID) + ": ");
+		result.append("    Score: " + to_string(bestSet[i].TeamScore));
+		if (bestSet[i].project.Priority == 2){
+			result.append("    !High Priority!");
+		}
+		result.append("\n TEAM: ");
+
 		for (int k = 0; k < teamSize; k++) {
 			cout << to_string(bestSet[i].team[k].StudentID) + " ";
 			result.append(" " + (bestSet[i].team[k].name) + ", ");
 			bestSet[i].team[k].ProjectID = bestSet[i].projectID;
 		}
-		result.append("\n Score: " + to_string(bestSet[i].TeamScore) + "\n");
 
+		result.append("\n");
+		result.append("\n");
 		result.append("\n");
 		cout << endl;
 		cout << "Team Score: " << bestSet[i].TeamScore << endl;
+
+
+		//output to the GUI
+		string output = "Project #"+ to_string(projectPool[i].ProjectID) + " student team assigned! \n";
+		int length = output.length();
+		char output_char[length + 1];
+		strcpy(output_char, output.c_str());
+		char* text = terminal->text();
+		terminal->text("");
+		terminal->append(output_char);
+		terminal->append(text);
+
 	}
+	result.append("\n");
+
 	cout << "Best Project Set score: " << newProjectSetScore << endl;
 	cout << "Number of Duplicate Students: " << 0 << endl;
 
@@ -1206,8 +1239,8 @@ int StudentsToProjects::getDuplicatesOfStudents(Team currentSet[], int size) {
 				}
 			}            	 //end k loop
 
-							 //if the current student is not a duplicate, add them to the array of
-							 //unique studetnIDs.
+			//if the current student is not a duplicate, add them to the array of
+			//unique studetnIDs.
 			if (isduplicate == false) {
 				for (int k = 0; k < numStudentIDs; k++) {
 
