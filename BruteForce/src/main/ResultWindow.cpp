@@ -38,6 +38,7 @@
 
 using namespace std;
 int ResultWindow:: project_pool[2][200] = {};
+int ResultWindow:: projects[3][200] = {};
 
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
@@ -125,7 +126,7 @@ ResultWindow::ResultWindow() {
 	badBox->labelsize(15);
 	badBox->labelcolor(ASU_WHITE);
 
-	labelBox1 = new Fl_Box(50, 20, 5, 20, "Percentage of Teams within Score Range");
+	labelBox1 = new Fl_Box(40, 15, 5, 20, "Number of Teams within Score Range");
 	labelBox1->box(FL_FLAT_BOX);
 	labelBox1->color(ASU_GREY);
 	labelBox1->align(FL_ALIGN_RIGHT);
@@ -133,13 +134,37 @@ ResultWindow::ResultWindow() {
 	labelBox1->labelsize(15);
 	labelBox1->labelcolor(ASU_WHITE);
 
-	labelBox2 = new Fl_Box(530, 20, 5, 20, "Team Scores by Project Priority");
+	labelBox2 = new Fl_Box(510, 15, 5, 20, "Team Scores by Project Priority");
 	labelBox2->box(FL_FLAT_BOX);
 	labelBox2->color(ASU_GREY);
 	labelBox2->align(FL_ALIGN_RIGHT);
 	labelBox2->labelfont(FL_HELVETICA_BOLD);
 	labelBox2->labelsize(15);
 	labelBox2->labelcolor(ASU_WHITE);
+
+	labelBox3 = new Fl_Box(450, 40, 5, 15, "Low");
+	labelBox3->box(FL_FLAT_BOX);
+	labelBox3->color(ASU_GREY);
+	labelBox3->align(FL_ALIGN_RIGHT);
+	labelBox3->labelfont(FL_HELVETICA_BOLD);
+	labelBox3->labelsize(12);
+	labelBox3->labelcolor(ASU_BLUE);
+
+	labelBox4 = new Fl_Box(620, 40, 5, 15, "Medium");
+	labelBox4->box(FL_FLAT_BOX);
+	labelBox4->color(ASU_GREY);
+	labelBox4->align(FL_ALIGN_RIGHT);
+	labelBox4->labelfont(FL_HELVETICA_BOLD);
+	labelBox4->labelsize(12);
+	labelBox4->labelcolor(ASU_ORANGE);
+
+	labelBox5 = new Fl_Box(790, 40, 5, 15, "High");
+	labelBox5->box(FL_FLAT_BOX);
+	labelBox5->color(ASU_GREY);
+	labelBox5->align(FL_ALIGN_RIGHT);
+	labelBox5->labelfont(FL_HELVETICA_BOLD);
+	labelBox5->labelsize(12);
+	labelBox5->labelcolor(ASU_GOLD);
 
 	spacer = new Fl_Box(20, 295, 900-40, 15, "______________________________________"
 			"________________________________________________________________________");
@@ -150,7 +175,7 @@ ResultWindow::ResultWindow() {
 	spacer->labelsize(15);
 	spacer->labelcolor(ASU_BLACK);
 
-	pieChart = new Fl_Chart(30, 45, 400, 215);
+	pieChart = new Fl_Chart(30, 50, 350, 210);
 	pieChart->type(FL_PIE_CHART);
 	pieChart->textfont(FL_HELVETICA);
 	pieChart->textcolor(ASU_BLACK);
@@ -159,8 +184,8 @@ ResultWindow::ResultWindow() {
 	pieChart->labelsize(16);
 	pieChart->labelcolor(ASU_WHITE);
 
-	barChart = new Fl_Chart(470, 45, 400, 215);
-	barChart->type(FL_BAR_CHART);
+	barChart = new Fl_Chart(420, 60, 450, 200);
+	barChart->type(FL_SPIKE_CHART);
 
 }
 
@@ -237,6 +262,33 @@ void ResultWindow::addText() {
 	const char *high2b = high2a;
 	pieChart->add(high2, high2b, ASU_MAROON);
 
+	for(int i = 0; i < count; i ++) {
+		if(projects[2][i] == 0) {
+			char priob[2];
+			buff = sprintf(priob, "%d", projects[1][i]);
+			const char *prioa = priob;
+			barChart->add(projects[1][i], prioa, ASU_BLUE);
+		}
+	}
+
+	for(int i = 0; i < count; i ++) {
+		if(projects[2][i] == 1) {
+			char priob[2];
+			buff = sprintf(priob, "%d", projects[1][i]);
+			const char *prioa = priob;
+			barChart->add(projects[1][i], prioa, ASU_ORANGE);
+		}
+	}
+
+	for(int i = 0; i < count; i ++) {
+		if(projects[2][i] == 2) {
+			char priob[2];
+			buff = sprintf(priob, "%d", projects[1][i]);
+			const char *prioa = priob;
+			barChart->add(projects[1][i], prioa, ASU_GOLD);
+		}
+	}
+
 
 	//Show window
 	windowResult->resizable(textDisplay);
@@ -253,8 +305,9 @@ void ResultWindow::calculateStats() {
 	//initialize variables
 	teamScoreAvg = 0, bestScore = 0, badScore = 100;
 	low1 =0, low2 =0, avg1 =0, avg2 =0, high1 =0, high2 =0;
+	count = 0;
 	string line;
-	int next1 = 0, next2 = 0, count = 0;
+	int next1 = 0, next2 = 0;
 
 	//open results and store into a 2D array [project#][TeamScore]
 	ifstream resultFile;

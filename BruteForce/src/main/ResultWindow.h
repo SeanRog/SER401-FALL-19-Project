@@ -32,28 +32,24 @@ class ResultWindow {
 	int teamScoreAvg, bestScore, badScore;
 	int bestTeam, worstTeam, percent;
 	int low1, low2, avg1, avg2, high1, high2;
+	int count;
 
 public:
 	static int permutations;
 	static int swaps;
-	int projects [3][200];
+	static int projects [3][200];
 	static int project_pool [2][200];
 
 	Fl_Window *windowResult;
 	Fl_Text_Display *textDisplay;
 	Fl_Text_Buffer *buffer;
 	Fl_Button *buttonSave;
-	Fl_Box *permBox;
-	Fl_Box *swapBox;
-	Fl_Box *teamBox;
-	Fl_Box *bestBox;
-	Fl_Box *badBox;
-	Fl_Box *spacer;
-	Fl_Box *borderBox;
-	Fl_Box *labelBox1;
-	Fl_Box *labelBox2;
-	Fl_Chart *pieChart;
-	Fl_Chart *barChart;
+	Fl_Box *permBox, *swapBox;
+	Fl_Box *teamBox, *bestBox, *badBox;
+	Fl_Box *spacer, *borderBox;
+	Fl_Box *labelBox3, *labelBox4, *labelBox5;
+	Fl_Box *labelBox1, *labelBox2;
+	Fl_Chart *pieChart, *barChart;
 
 	ResultWindow();
 	~ResultWindow();
