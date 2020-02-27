@@ -529,6 +529,7 @@ void threadFunction(Student studentPool[], Project projectPool[],
 }    //end threadFunction
 
 int tempProj, tempStud, textInput;
+string *csvProjectFileName;
 
 
 /*************************************************************************************
@@ -608,7 +609,8 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb, Fl_T
 	util.makeProjectJSON(NUM_PROJECTS, NUM_SKILLS);
 	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS);
 
-	const string PROJECT_FILE = "./newProjects.json";
+	//const string PROJECT_FILE = "./newProjects.json";
+	const string PROJECT_FILE = "./100Projects.csv";
 	const string STUDENT_FILE = "./newStudents.json";
 	const string CLASS_SECTION_FILE = "./SampleJsonFiles/4ClassSections.json";
 
@@ -634,7 +636,8 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb, Fl_T
 	Test t;
 
 	// INITIALIZE POOLS
-	util.initProjectPool(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
+	//util.initProjectPool(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
+	util.csvToProjectsVector(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
 	util.initStudentPool(STUDENT_FILE, STUDENT_POOL, NUM_STUDENTS);
 	util.initClassSectionPool(CLASS_SECTION_FILE, CLASS_SECTION_POOL,
 			STUDENT_POOL, NUM_CLASS_SECTIONS, NUM_STUDENTS);

@@ -460,6 +460,7 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 }
 
 void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*) {
+	string filename;
 	/*Fl_Native_File_Chooser fileChooser;
 	 fileChooser.title("Choose File");
 	 fileChooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
@@ -489,15 +490,19 @@ void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*) {
 	// Block until user picks something.
 	//     (The other way to do this is to use a callback())
 	//
+	cout << chooser.value();
 	while (chooser.shown()) {
 		Fl::wait();
 
 		if (chooser.value() != NULL) {
 			fileInput_Project->value(chooser.value());
+			filename = chooser.value();
+
 		} else {
 			fileInput_Project->value("NULL");
 		}
 	}
+	cout << filename << endl;
 
 }
 
