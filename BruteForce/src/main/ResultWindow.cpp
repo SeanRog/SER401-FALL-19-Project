@@ -126,5 +126,11 @@ void ResultWindow::addText() {
 
 // DESTRUCTOR
 ResultWindow::~ResultWindow() {
-	// TODO
+	delete windowResult;
+	delete textDisplay;
+	delete buffer;
+	delete buttonSave;
+	delete permBox;
+	delete swapBox;
+	delete borderBox;
 }
