@@ -44,43 +44,80 @@ Fl_PNG_Image Wall3("./Images/Steampunk/Wall14.png");
 Fl_PNG_Image *SteamPngs[13];
 Fl_PNG_Image *Steam2Pngs[13];
 
-
-void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2) {
+void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2, int end) {
 
 	int i = 0;
-	int x =0;
-		while (w->shown()==true) {
+	int x = 0;
+	int y = 0;
+	while (y != end) {
 
-			if(x == 1){
+		if (x == 1) {
 			b->image(SteamPngs[i]);
 			//b2->image(Steam2Pngs[i]);
 			w->redraw();
 			Fl::check();
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 			//usleep(100000);
-			}
-			else if (x == 0){
-				//b->image(SteamPngs[i]);
-				b2->image(Steam2Pngs[i]);
-				w->redraw();
-				Fl::check();
-				std::this_thread::sleep_for(std::chrono::milliseconds(100));
-				//usleep(100000);
-			}
-			i++;
-			if (i == 13) {
-				std::this_thread::sleep_for(std::chrono::milliseconds(800));
-				//usleep(100000);
-				i = 0;
-				if(x==1){
-					x=0;
-				}else if(x==0){
-					x=1;
-				}
-			}
-		}            //end while loop
-}
+		} else if (x == 0) {
+			//b->image(SteamPngs[i]);
+			b2->image(Steam2Pngs[i]);
+			w->redraw();
+			Fl::check();
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			//usleep(100000);
+		}
+		i++;
 
+		if (i == 13) {
+			Fl::check();
+			std::this_thread::sleep_for(std::chrono::milliseconds(200));
+			Fl::check();
+			//usleep(100000);
+			i = 0;
+			y++;
+			if (x == 1) {
+				x = 0;
+			} else if (x == 0) {
+				x = 1;
+			}
+		}
+	}            //end while loop
+
+	/*	int i = 0;
+	 int x =0;
+	 while (w->shown()==true) {
+
+	 if(x == 1){
+	 b->image(SteamPngs[i]);
+	 //b2->image(Steam2Pngs[i]);
+	 w->redraw();
+	 Fl::check();
+	 std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	 //usleep(100000);
+	 }
+	 else if (x == 0){
+	 //b->image(SteamPngs[i]);
+	 b2->image(Steam2Pngs[i]);
+	 w->redraw();
+	 Fl::check();
+	 std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	 //usleep(100000);
+	 }
+	 i++;
+	 if (i == 13) {
+	 Fl::check();
+	 std::this_thread::sleep_for(std::chrono::milliseconds(200));
+	 Fl::check();
+	 //usleep(100000);
+	 i = 0;
+	 if(x==1){
+	 x=0;
+	 }else if(x==0){
+	 x=1;
+	 }
+	 }
+	 }            //end while loop*/
+}
 
 /*************************************************************************************
  * ClassSelectorGUI
@@ -183,6 +220,7 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 	projectFileChooserButton = new Fl_Button(20, 210, 50, 50);
 	projectFileChooserButton->callback(static_chooseProjectFile_cb, this);
 	fileInput_Project = new Fl_Input(80, 220, 650, 30);
+	fileInput_Project->color(LIGHT_CREAM);
 	fileInput_Project->value(".");
 	fileInput_Project->textfont(FL_TIMES_ITALIC);
 
@@ -195,23 +233,25 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 	//background box 3 - background quiz questionnaire
 	Fl_Box boxBack4(10, 310, 730, 50);
 	boxBack4.box(FL_FLAT_BOX);
-	boxBack4.color(ASU_MAROON);
+	boxBack4.color(ASU_BLACK);
 	boxBack4.image(Wall3);
 	fileInput_StudentQuizName = new Fl_Input(20, 320, 710, 30);
 	fileInput_StudentQuizName->textfont(FL_TIMES_ITALIC);
+	fileInput_StudentQuizName->color(LIGHT_CREAM);
 
 	//INITIALIZE CLASS SECTION SELECTOR COMPONENTS
 	// input year
 	inputYear = new Fl_Input(220, 460, 100, 40, "Enter Year (YYYY):  ");
+	inputYear->color(ASU_WHITE);
 	inputYear->labelfont(FL_TIMES_BOLD_ITALIC);
-	inputYear->labelcolor(ASU_WHITE);
+	inputYear->labelcolor(LIGHT_CREAM);
 	inputYear->textfont(FL_TIMES_ITALIC);
 	inputYear->labelsize(15);
 
 	// Class Browser / selector
 	classBrowser = new Fl_Check_Browser(360, 410, 370, 190);
 	classBrowser->scrollbar;
-	classBrowser->color(ASU_WHITE);
+	classBrowser->color(LIGHT_CREAM);
 	classBrowser->labelfont(FL_TIMES_ITALIC);
 	classBrowser->textsize(18);
 	classBrowser->textfont(FL_TIMES_BOLD_ITALIC);
@@ -225,8 +265,11 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 	inputSemester->add("Fall");
 	inputSemester->value("Fall");
 	inputSemester->textsize(15);
+	inputSemester->color2(LIGHT_CREAM);
+	inputSemester->color(LIGHT_CREAM);
+	inputSemester->selection_color(DARK);
 	inputSemester->labelfont(FL_TIMES_BOLD_ITALIC);
-	inputSemester->labelcolor(ASU_WHITE);
+	inputSemester->labelcolor(LIGHT_CREAM);
 	inputSemester->textfont(FL_TIMES_ITALIC);
 	inputSemester->labelsize(15);
 	inputSemester->menubutton()->color(DARK_BRASS);
@@ -241,7 +284,7 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 
 	projectFileInstructionsBox->color(DARK);
 	projectFileInstructionsBox->labelfont(FL_TIMES_BOLD_ITALIC);
-	projectFileInstructionsBox->labelcolor(ASU_WHITE);
+	projectFileInstructionsBox->labelcolor(LIGHT_CREAM);
 
 	projectFileInstructionsBox->labelsize(18);
 	projectFileInstructionsBox->label(
@@ -254,7 +297,7 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 
 	quizFileInstructionsBox->color(DARK);
 	quizFileInstructionsBox->labelfont(FL_TIMES_BOLD_ITALIC);
-	quizFileInstructionsBox->labelcolor(ASU_WHITE);
+	quizFileInstructionsBox->labelcolor(LIGHT_CREAM);
 
 	quizFileInstructionsBox->labelsize(18);
 	quizFileInstructionsBox->label(
@@ -267,7 +310,7 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 
 	classSectionInstructionsBox->color(DARK);
 	classSectionInstructionsBox->labelfont(FL_TIMES_BOLD_ITALIC);
-	classSectionInstructionsBox->labelcolor(ASU_WHITE);
+	classSectionInstructionsBox->labelcolor(LIGHT_CREAM);
 
 	classSectionInstructionsBox->labelsize(18);
 	classSectionInstructionsBox->label("Step 3: Select Class Sections below.");
@@ -279,7 +322,7 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 
 	goBackorConfirmInstructionsBox->color(DARK);
 	goBackorConfirmInstructionsBox->labelfont(FL_TIMES_BOLD_ITALIC);
-	goBackorConfirmInstructionsBox->labelcolor(ASU_WHITE);
+	goBackorConfirmInstructionsBox->labelcolor(LIGHT_CREAM);
 
 	goBackorConfirmInstructionsBox->labelsize(18);
 	goBackorConfirmInstructionsBox->label("Step 4: Go Back or Confirm");
@@ -302,7 +345,6 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 	steamBox2->box(FL_NO_BOX);
 	steamBox2->image(SteamPngs[12]);
 
-
 	masterWindow->color(DARK_TAUPE);
 	masterWindow->box(FL_BORDER_BOX);
 	masterWindow->show();
@@ -311,12 +353,12 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 	XInitThreads();
 	thread threads[1];
 
-	threads[0] = thread(SteamAnimate, masterWindow, steamBox1, steamBox2);
+	threads[0] = thread(SteamAnimate, masterWindow, steamBox1, steamBox2, 3);
 
 	//join threads
 	for (int i = 0; i < 1; i++) {
-		threads[i].join();}
-
+		threads[i].join();
+	}
 
 	Fl::run();
 
@@ -374,6 +416,16 @@ void SPDataGUI::FindCoursesClick(Fl_Widget *w) {
 			cout << course << endl;
 			classBrowser->add(course_char);
 		}
+	}
+
+	XInitThreads();
+	thread threads[1];
+
+	threads[0] = thread(SteamAnimate, masterWindow, steamBox1, steamBox2, 2);
+
+	//join threads
+	for (int i = 0; i < 1; i++) {
+		threads[i].join();
 	}
 
 }
@@ -486,8 +538,6 @@ void SPDataGUI::CancelClick2(Fl_Widget *w) {
  *	nothing
  */
 void SPDataGUI::ConfirmClick(Fl_Widget *w) {
-
-
 
 	confirmWindow = new Fl_Window(850, 220, "Confirmation Window");
 
@@ -638,6 +688,15 @@ void SPDataGUI::chooseProjectFile_cb(Fl_Widget*) {
 		}
 	}
 
-}
+	XInitThreads();
+	thread threads[1];
 
+	threads[0] = thread(SteamAnimate, masterWindow, steamBox1, steamBox2, 2);
+
+	//join threads
+	for (int i = 0; i < 1; i++) {
+		threads[i].join();
+	}
+
+}
 

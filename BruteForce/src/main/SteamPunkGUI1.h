@@ -89,7 +89,6 @@ public:
 	Fl_Box *gearBox3;
 	Fl_Box *gearBox4;
 
-
 	void MainWindow2();
 	SteamPunkGUI1();
 	~SteamPunkGUI1();

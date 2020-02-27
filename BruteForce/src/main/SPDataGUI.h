@@ -32,7 +32,6 @@
 
 using namespace std;
 
-
 class SPDataGUI {
 
 	//'static' callback functions which call the real callbacks
@@ -137,6 +136,5 @@ public:
 			"2020Summer-X-SER323-55536", };
 
 };
-
 
 #endif /* SRC_MAIN_SPDATAGUI_H_ */

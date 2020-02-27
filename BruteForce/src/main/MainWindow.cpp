@@ -536,7 +536,8 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 		//nextWindow->hide();
 
 		//gtk_widget_hide(window);
-		//gtk_main_quit();
+		//gtk_widget_destroy(window);
+		gtk_main_quit();
 
 		//call to next GUI window.
 		//DataEntryGUI dataGUI(nextWindow);
@@ -628,6 +629,7 @@ void mini_browser() {
 
 	cout << "Website running" << endl;
 
+
 }
 
 /*****************************************************************************
@@ -653,18 +655,21 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	//nextWindow = windowMain;
 	cout << "working" << endl;
 
+
 	if (Authenticated != true) {
 		Auth = false;
 		mini_browser();
+
 	}
 	Authenticated = Auth;
 
 	windowMain->hide();
 
-	//gtk_widget_destroy(main_window);
+	//if(Authenticated == true){
 
-	//call to next GUI window.
 	DataEntryGUI dataGUI(windowMain);
+	//}
+
 }
 
 int MainWindow::handle(int event) {
