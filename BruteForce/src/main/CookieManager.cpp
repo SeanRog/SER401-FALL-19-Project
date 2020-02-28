@@ -75,6 +75,8 @@ int CookieManager::newHttpSession(const char *hostURL) {
 		curl_easy_setopt(curl, CURLOPT_URL, hostURL);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 		curl_easy_setopt(curl, CURLOPT_NETRC, CURL_NETRC_REQUIRED);
+
+
 		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt"); /* start cookie engine */
 		curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
 
@@ -174,21 +176,22 @@ int CookieManager::newHttpsSession(const char *hostURL) {
 
 		curl_easy_setopt(curl, CURLOPT_URL, hostURL);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-		curl_easy_setopt(curl, CURLOPT_LOGIN_OPTIONS, "AUTH=*");
+		//curl_easy_setopt(curl, CURLOPT_LOGIN_OPTIONS, "AUTH=*");
+		//curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1L);
 		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt"); /* start cookie engine */
 		curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
 
-		headers = curl_slist_append(headers, "Content-Type: application/json");
+		//headers = curl_slist_append(headers, "Content-Type: application/json");
 		//headers = curl_slist_append(headers, 
 		//    "Authorization: Bearer <ENTER TOKEN HERE>");
 
-		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+		//curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 
 		printf("Erasing curl's knowledge of cookies!\n\n");
-		curl_easy_setopt(curl, CURLOPT_COOKIELIST, "ALL");
+		//curl_easy_setopt(curl, CURLOPT_COOKIELIST, "RELAOD");
 
 		res = curl_easy_perform(curl);
 
@@ -266,7 +269,7 @@ void CookieManager::print_cookies(CURL *curl) {
 }
 
 //function to get all courses
-void CookieManager::getCourses() {
+void CookieManager::getCourses(const char * url) {
 
 	CURL *curl;
 	CURLcode res;
@@ -277,14 +280,16 @@ void CookieManager::getCourses() {
 	curl = curl_easy_init();
 
 	if (curl) {
+		//curl_easy_setopt(curl, CURLOPT_URL,
+		//		"https://canvas.asu.edu/api/v1/courses?page=1&per_page=100");
 		curl_easy_setopt(curl, CURLOPT_URL,
 				"https://canvas.asu.edu/api/v1/courses?page=1&per_page=100");
 		curl_easy_setopt(curl, CURLOPT_NETRC, CURL_NETRC_REQUIRED);
 
 		//curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1L);
 		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt");
-		curl_easy_setopt(curl, CURLOPT_COOKIELIST, "RELOAD");
-		//curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
+		//curl_easy_setopt(curl, CURLOPT_COOKIELIST, "RELOAD");
+		curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
 
 
 

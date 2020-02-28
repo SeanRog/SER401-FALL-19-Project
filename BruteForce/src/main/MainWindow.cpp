@@ -545,10 +545,21 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 		GtkWidget *window) {
 	cout << "listening" << endl;
 	cout << webkit_web_view_get_uri(webView) << endl;
+
+	//CookieManager cookieMonster;
+
+		//cookieMonster.newHttpsSession(webkit_web_view_get_uri(webView));
+
 	if (strcmp(webkit_web_view_get_uri(webView),
 			"https://canvas.asu.edu/?login_success=1") == 0) {
 
 		cout << "Canvas reached! authentication complete!" << endl;
+
+
+		CookieManager cookieMonster;
+
+		cookieMonster.newHttpsSession(webkit_web_view_get_uri(webView));
+
 
 		//Auth = true;
 		//todo- read in and store the cookies to cookies.txt
@@ -592,12 +603,17 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 		// webkit_website_data_manager_fetch_finish ();
 
 
+
+		// webkit_website_data_manager_fetch(manager, WEBKIT_WEBSITE_DATA_COOKIES, 0, g_async_result_get_user_data(),g_async_result_get_user_data());
+
+		// webkit_website_data_manager_fetch_finish ();
+
 		 //add the cookie
 		 //  webkit_cookie_manager_add_cookie(cookiejar, );
 
 		//close the mini-browser window because authentication is complete.
 
-		//gtk_main_quit();
+		gtk_main_quit();
 
 		//hide the main window
 		//nextWindow->hide();
@@ -652,23 +668,28 @@ void mini_browser() {
 	 webkit_cookie_manager_set_persistent_storage(cookiejar, "./cookies.txt",
 		 WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
 
+
+	//WebKitNetworkProxySettings *webkitProxySettings = webkit_network_proxy_settings_new(0, "ignore_hosts");
+	//webkit_web_context_set_network_proxy_settings(context, WEBKIT_NETWORK_PROXY_MODE_CUSTOM, webkitProxySettings);
+	//webkit_network_proxy_settings_free(webkitProxySettings);
+
 	  	   ///Code for cookies///
 
-	 //WebKitSettings *settings = webkit_settings_new();
+	 WebKitSettings *settings = webkit_settings_new();
 
 	// webkit_cookie_manager_set_persistent_storage(cookiejar, "./cookies.txt",
 	// WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
 
-	// g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache",
-	// TRUE, NULL);
+	 g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache",
+	 TRUE, NULL);
 
 	 //set the cookie acceptance policy
 	// webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
 
 	 //get session
-	 //webkit_website_data_manager_fetch(manager, WEBKIT_WEBSITE_DATA_COOKIES, NULL, );
+	// webkit_website_data_manager_fetch(manager, WEBKIT_WEBSITE_DATA_COOKIES, NULL, );
 
-	 //webkit_website_data_manager_fetch_finish ();
+	// webkit_website_data_manager_fetch_finish ();
 
 
 	 //add the cookie
@@ -676,7 +697,7 @@ void mini_browser() {
 
 
 	 // Apply the result
-	// webkit_web_view_set_settings (webView, settings);
+	 webkit_web_view_set_settings (webView, settings);
 
 
 	// Put the browser area into the main window
@@ -750,7 +771,7 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 
 	CookieManager cookieMonster;
 
-	cookieMonster.getCourses();
+	cookieMonster.getCourses("HI");
 
 	DataEntryGUI dataGUI(windowMain);
 	//}
