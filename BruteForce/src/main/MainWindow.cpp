@@ -528,6 +528,26 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 		Auth = true;
 		//todo- read in and store the cookies to cookies.txt
 
+		//get the cookiemanger
+
+		//WebKitCookieManager *cookiejar = webkit_web_context_get_cookie_manager((webkit_web_view_get_context(webView)));
+
+	    // webkit_cookie_manager_set_accept_policy(webkit_web_context_get_cookie_manager((webkit_web_view_get_context(webView))), WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
+
+      //webkit_cookie_manager_set_persistent_storage(webkit_web_context_get_cookie_manager((webkit_web_view_get_context(webView))), "cookies.txt",
+	//	 WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
+
+
+
+		//get session
+		//webkit_website_data_manager_fetch(webView, WEBKIT_WEBSITE_DATA_COOKIES, NULL, );
+
+		// webkit_website_data_manager_fetch_finish ();
+
+
+		 //add the cookie
+		 //  webkit_cookie_manager_add_cookie(cookiejar, );
+
 		//close the mini-browser window because authentication is complete.
 
 		//gtk_main_quit();
@@ -569,29 +589,33 @@ void mini_browser() {
 	WebKitCookieManager *cookiejar =
 			webkit_website_data_manager_get_cookie_manager(manager);
 
+	 webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
+
+	 webkit_cookie_manager_set_persistent_storage(cookiejar, "./cookies.txt",
+		 WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
+
 	// Create a browser instance
 	WebKitWebView *webView = WEBKIT_WEB_VIEW(
 			webkit_web_view_new_with_context(context));
 
-	/*
-	 * 	   ///Code for cookies///
 
-	 WebKitSettings *settings = webkit_settings_new();
+	  	   ///Code for cookies///
 
+	 //WebKitSettings *settings = webkit_settings_new();
 
-	 webkit_cookie_manager_set_persistent_storage(cookiejar, "cookies.txt",
-	 WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
+	// webkit_cookie_manager_set_persistent_storage(cookiejar, "./cookies.txt",
+	// WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
 
-	 g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache",
-	 TRUE, NULL);
+	// g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache",
+	// TRUE, NULL);
 
 	 //set the cookie acceptance policy
-	 webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
+	// webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
 
 	 //get session
 	 //webkit_website_data_manager_fetch(manager, WEBKIT_WEBSITE_DATA_COOKIES, NULL, );
 
-	 // webkit_website_data_manager_fetch_finish ();
+	 //webkit_website_data_manager_fetch_finish ();
 
 
 	 //add the cookie
@@ -599,8 +623,8 @@ void mini_browser() {
 
 
 	 // Apply the result
-	 webkit_web_view_set_settings (webView, settings);
-	 */
+	// webkit_web_view_set_settings (webView, settings);
+
 
 	// Put the browser area into the main window
 	gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
@@ -661,11 +685,16 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 		mini_browser();
 
 	}
+
 	Authenticated = Auth;
 
 	windowMain->hide();
 
 	//if(Authenticated == true){
+
+	CookieManager cookieMonster;
+
+	cookieMonster.getCourses();
 
 	DataEntryGUI dataGUI(windowMain);
 	//}
