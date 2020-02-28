@@ -34,6 +34,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <sys/wait.h>
+#include <libsoup/soup.h>
 
 #include <FL/Fl.H>
 #include <FL/Fl_Tabs.H>
@@ -500,6 +501,22 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
 	windowResult.addText();
 }
 
+
+//create the data manager
+WebKitWebsiteDataManager *manager = webkit_website_data_manager_new(0);
+//create the context
+WebKitWebContext *context =
+		webkit_web_context_new_with_website_data_manager(manager);
+
+//create cookie manager
+WebKitCookieManager *cookiejar =
+		webkit_website_data_manager_get_cookie_manager(manager);
+
+// Create a browser instance
+WebKitWebView *webView = WEBKIT_WEB_VIEW(
+		webkit_web_view_new_with_context(context));
+
+
 static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
 	cout << "quit!" << endl;
 	gtk_main_quit();
@@ -509,6 +526,14 @@ static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
 static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window) {
 	gtk_widget_destroy(window);
 	cout << "destroyed!" << endl;
+	return TRUE;
+}
+
+
+static gboolean authenticateCB(WebKitWebView *webView, GtkWidget *window) {
+
+	cout << "AUTHETICATE callback reached!" << endl;
+
 	return TRUE;
 }
 
@@ -525,19 +550,41 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 
 		cout << "Canvas reached! authentication complete!" << endl;
 
-		Auth = true;
+		//Auth = true;
 		//todo- read in and store the cookies to cookies.txt
 
 		//get the cookiemanger
 
 		//WebKitCookieManager *cookiejar = webkit_web_context_get_cookie_manager((webkit_web_view_get_context(webView)));
 
-	    // webkit_cookie_manager_set_accept_policy(webkit_web_context_get_cookie_manager((webkit_web_view_get_context(webView))), WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
-
-      //webkit_cookie_manager_set_persistent_storage(webkit_web_context_get_cookie_manager((webkit_web_view_get_context(webView))), "cookies.txt",
-	//	 WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
+	  // webkit_cookie_manager_set_accept_policy(webkit_website_data_manager_get_cookie_manager(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView)))), WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
 
 
+		//webkit_cookie_manager_get_cookies(cookiejar, webkit_web_view_get_uri(webView),0,g_async_result_get_user_data(),);
+
+	//	webkit_cookie_manager_get_cookies_finish(cookiejar, webkit_web_view_get_uri(webView),0, );
+
+      //  webkit_cookie_manager_set_persistent_storage(webkit_website_data_manager_get_cookie_manager(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView)))), "cookies.txt",
+		// WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
+
+		/*SoupCookieJar *jar = soup_cookie_jar_new();
+		SoupURI *url = soup_uri_new(webkit_web_view_get_uri(webView));
+		soup_cookie_jar_is_persistent(jar);
+
+
+		soup_cookie_jar_set_accept_policy (jar,
+				SOUP_COOKIE_JAR_ACCEPT_ALWAYS);
+
+		soup_cookie_jar_is_persistent(jar);
+
+		cout<<soup_cookie_jar_get_cookies (jar,
+				url, 1)<<endl;*/
+
+
+		// webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
+
+	//	webkit_cookie_manager_set_persistent_storage(cookiejar, "./cookies.txt",
+	//		 WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
 
 		//get session
 		//webkit_website_data_manager_fetch(webView, WEBKIT_WEBSITE_DATA_COOKIES, NULL, );
@@ -557,7 +604,7 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 
 		//gtk_widget_hide(window);
 		//gtk_widget_destroy(window);
-		gtk_main_quit();
+		//gtk_main_quit();
 
 		//call to next GUI window.
 		//DataEntryGUI dataGUI(nextWindow);
@@ -579,7 +626,7 @@ void mini_browser() {
 	GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
 	gtk_window_set_title(GTK_WINDOW(main_window), "ASU Canvas Authentication");
-	//create the data manager
+/*	//create the data manager
 	WebKitWebsiteDataManager *manager = webkit_website_data_manager_new(0);
 	//create the context
 	WebKitWebContext *context =
@@ -596,8 +643,14 @@ void mini_browser() {
 
 	// Create a browser instance
 	WebKitWebView *webView = WEBKIT_WEB_VIEW(
-			webkit_web_view_new_with_context(context));
+			webkit_web_view_new_with_context(context));*/
 
+	webkit_web_context_set_automation_allowed(context,1);
+
+	 webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
+
+	 webkit_cookie_manager_set_persistent_storage(cookiejar, "./cookies.txt",
+		 WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
 
 	  	   ///Code for cookies///
 
@@ -636,6 +689,9 @@ void mini_browser() {
 	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
 
 	g_signal_connect(webView, "load-changed", G_CALLBACK(load_changedWebViewCb),
+			main_window);
+
+	g_signal_connect(webView, "authenticate", G_CALLBACK(authenticateCB),
 			main_window);
 
 	// Load a web page into the browser instance
