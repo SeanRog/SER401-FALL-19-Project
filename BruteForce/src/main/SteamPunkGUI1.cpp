@@ -708,18 +708,18 @@ void mini_browserSP() {
 	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
 	gtk_window_set_title(GTK_WINDOW(main_window), "ASU Canvas Authentication");
 	//create the data manager
-	WebKitWebsiteDataManager *manager = webkit_website_data_manager_new(0);
+	WebKitWebsiteDataManager *manager1 = webkit_website_data_manager_new(0);
 	//create the context
-	WebKitWebContext *context =
-			webkit_web_context_new_with_website_data_manager(manager);
+	WebKitWebContext *context1 =
+			webkit_web_context_new_with_website_data_manager(manager1);
 
 	//create cookie manager
-	WebKitCookieManager *cookiejar =
-			webkit_website_data_manager_get_cookie_manager(manager);
+	WebKitCookieManager *cookiejar1 =
+			webkit_website_data_manager_get_cookie_manager(manager1);
 
 	// Create a browser instance
-	WebKitWebView *webView = WEBKIT_WEB_VIEW(
-			webkit_web_view_new_with_context(context));
+	WebKitWebView *webView1 = WEBKIT_WEB_VIEW(
+			webkit_web_view_new_with_context(context1));
 
 	/*
 	 * 	   ///Code for cookies///
@@ -751,24 +751,24 @@ void mini_browserSP() {
 	 */
 
 	// Put the browser area into the main window
-	gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
+	gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView1));
 
 	// Set up callbacks so that if either the main window or the browser instance is
 	// closed, the program will exit
 	g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb1),
 			NULL);
-	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb1),
+	g_signal_connect(webView1, "close", G_CALLBACK(closeWebViewCb1),
 			main_window);
 
-	g_signal_connect(webView, "load-changed",
+	g_signal_connect(webView1, "load-changed",
 			G_CALLBACK(load_changedWebViewCb1), main_window);
 
 	// Load a web page into the browser instance
-	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
+	webkit_web_view_load_uri(webView1, "https://canvas.asu.edu/login");
 
 	// Make sure that when the browser area becomes visible, it will get mouse
 	// and keyboard events
-	gtk_widget_grab_focus(GTK_WIDGET(webView));
+	gtk_widget_grab_focus(GTK_WIDGET(webView1));
 
 	// Make sure the main window and all its contents are visible
 	gtk_widget_show_all(main_window);

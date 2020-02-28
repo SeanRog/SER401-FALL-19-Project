@@ -93,11 +93,24 @@ void MainWindow::MainWindow1() {
 
 // DESTRUCTOR
 MainWindow::~MainWindow() {
+	delete progressWindow;
+	delete progressBar;
+	delete progressBox;
+	delete TeamsButton;
+	delete doneButton;
+	delete imageBox;
+	delete windowMain;
+	delete nextWindow;
+	delete boxHeader;
+	delete buttonStart;
+	delete buttonOpenProject;
+	delete generateTeams;
+	delete inputprojects;
+	delete inputstudents;
 
 }
 
 void MainWindow::MainWindow2() {
-
 	const int windowMainW = 750;
 	const int windowMainH = 450;
 	const char windowMainStr[] =
@@ -459,6 +472,7 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
+
 	m.main_run(num_projects, num_students, progressBar, terminalBuffer);
 
 	//join threads
@@ -502,19 +516,7 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
 }
 
 
-//create the data manager
-WebKitWebsiteDataManager *manager = webkit_website_data_manager_new(0);
-//create the context
-WebKitWebContext *context =
-		webkit_web_context_new_with_website_data_manager(manager);
 
-//create cookie manager
-WebKitCookieManager *cookiejar =
-		webkit_website_data_manager_get_cookie_manager(manager);
-
-// Create a browser instance
-WebKitWebView *webView = WEBKIT_WEB_VIEW(
-		webkit_web_view_new_with_context(context));
 
 
 static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
@@ -642,7 +644,7 @@ void mini_browser() {
 	GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
 	gtk_window_set_title(GTK_WINDOW(main_window), "ASU Canvas Authentication");
-/*	//create the data manager
+	//create the data manager
 	WebKitWebsiteDataManager *manager = webkit_website_data_manager_new(0);
 	//create the context
 	WebKitWebContext *context =
@@ -652,14 +654,9 @@ void mini_browser() {
 	WebKitCookieManager *cookiejar =
 			webkit_website_data_manager_get_cookie_manager(manager);
 
-	 webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
-
-	 webkit_cookie_manager_set_persistent_storage(cookiejar, "./cookies.txt",
-		 WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
-
 	// Create a browser instance
 	WebKitWebView *webView = WEBKIT_WEB_VIEW(
-			webkit_web_view_new_with_context(context));*/
+			webkit_web_view_new_with_context(context));
 
 	webkit_web_context_set_automation_allowed(context,1);
 
