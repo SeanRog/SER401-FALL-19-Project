@@ -204,28 +204,28 @@ void ResultWindow::addText() {
 	calculateStats();
 
 	// Fill test box labels with data results
-	char permNum[50];
+	char permNum[70];
 	int buff = sprintf(permNum, "Number of possible permutations: %d",
 			permutations);
 	const char *permNum1 = permNum;
 	permBox->label(permNum1);
 
-	char swapNum[50];
+	char swapNum[70];
 	buff = sprintf(swapNum, "Number of students swapped:        %d", swaps);
 	const char *swapNum1 = swapNum;
 	swapBox->label(swapNum1);
 
-	char teamNum[50];
+	char teamNum[70];
 	buff = sprintf(teamNum, "Average Team Score: %d", teamScoreAvg);
 	const char *teamNum1 = teamNum;
 	teamBox->label(teamNum1);
 
-	char bestNum[50];
+	char bestNum[70];
 	buff = sprintf(bestNum, "Best Team Score: %d (Team %d)", bestScore, bestTeam);
 	const char *bestNum1 = bestNum;
 	bestBox->label(bestNum1);
 
-	char badNum[50];
+	char badNum[70];
 	buff = sprintf(badNum, "Worst Team Score: %d (Team %d)", badScore, worstTeam);
 	const char *badNum1 = badNum;
 	badBox->label(badNum1);
@@ -238,27 +238,27 @@ void ResultWindow::addText() {
 	pieChart->add(low1,low1b, ASU_GREEN);
 
 	char low2a[50];
-	buff = sprintf(low2a, " %d-%d (%d)", badScore+(percent)+1, badScore+(percent*2), low2);
+	buff = sprintf(low2a, " %d-%d (%d)", badScore+(percent)+1, badScore+(percent*2)+1, low2);
 	const char *low2b = low2a;
 	pieChart->add(low2, low2b, ASU_BLUE);
 
 	char avg1a[50];
-	buff = sprintf(avg1a, " %d-%d (%d)", badScore+(percent*2)+1, badScore+(percent*3), avg1);
+	buff = sprintf(avg1a, " %d-%d (%d)", badScore+(percent*2)+2, badScore+(percent*3)+1, avg1);
 	const char *avg1b = avg1a;
 	pieChart->add(avg1, avg1b, ASU_WHITE);
 
 	char avg2a[50];
-	buff = sprintf(avg2a, " %d-%d (%d)", badScore+(percent*3)+1, badScore+(percent*4), avg2);
+	buff = sprintf(avg2a, " %d-%d (%d)", badScore+(percent*3)+2, badScore+(percent*4)+1, avg2);
 	const char *avg2b = avg2a;
 	pieChart->add(avg2, avg2b, ASU_ORANGE);
 
 	char high1a[50];
-	buff = sprintf(high1a, " %d-%d (%d)", badScore+(percent*4)+1, badScore+(percent*5), high1);
+	buff = sprintf(high1a, " %d-%d (%d)", badScore+(percent*4)+2, badScore+(percent*5)+1, high1);
 	const char *high1b = high1a;
 	pieChart->add(high1, high1b, ASU_GOLD);
 
 	char high2a[50];
-	buff = sprintf(high2a, " %d-%d (%d)", badScore+(percent*5)+1, bestScore, high2);
+	buff = sprintf(high2a, " %d-%d (%d)", badScore+(percent*5)+2, bestScore, high2);
 	const char *high2b = high2a;
 	pieChart->add(high2, high2b, ASU_MAROON);
 
