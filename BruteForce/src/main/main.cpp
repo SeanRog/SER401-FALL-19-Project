@@ -48,6 +48,7 @@
 #include "GUIStyles.h"
 #include "main.h"
 #include "CookieManager.h"
+#include "SteamPunkGUI1.h"
 
 #include <iostream>
 #include <utility>
@@ -529,7 +530,32 @@ void threadFunction(Student studentPool[], Project projectPool[],
 }    //end threadFunction
 
 int tempProj, tempStud, textInput;
+<<<<<<< HEAD
+=======
 
+Fl_Window *optionWindow;
+
+string *csvProjectFileName;
+>>>>>>> dev
+
+
+//Callback for the Steampunk option button.
+//Opens the Steampunk version of the GUI
+void Steampunk_Option(Fl_Widget *w) {
+
+	optionWindow->hide();
+	SteamPunkGUI1 mainWin;
+	mainWin.MainWindow2();
+}
+
+//Callback for the ASU option button.
+//Opens the ASU colors version of the GUI
+void ASU_Option(Fl_Widget *w) {
+
+	optionWindow->hide();
+	MainWindow mainWin;
+	mainWin.MainWindow2();
+}
 
 /*************************************************************************************
  * main
@@ -550,11 +576,57 @@ int tempProj, tempStud, textInput;
 int main() {
 
 	XInitThreads();
-	MainWindow mainWin;
 
-	//mainWin.MainWindow1();
+	    optionWindow = new Fl_Window(650, 320, "Capstone Team Assignment System");
+	    optionWindow->begin();
+	    optionWindow->color(ASU_WHITE);
 
-	mainWin.MainWindow2();
+	    Fl_Box backBox1(10, 10, 630, 300);
+	    backBox1.box(FL_FLAT_BOX);
+	    backBox1.color(ASU_GOLD);
+
+
+		Fl_Box promptBox1(10, 20, 630, 50, "Application Style");
+		promptBox1.align(FL_ALIGN_CENTER);
+		promptBox1.box(FL_FLAT_BOX);
+		promptBox1.color(ASU_GREY);
+		promptBox1.labelfont(FL_HELVETICA_BOLD);
+		promptBox1.labelcolor(ASU_WHITE);
+		promptBox1.labelsize(40);
+
+		Fl_Box promptBox2(50, 80, 550, 20,
+				"Please select the style option for the look of the application.");
+		promptBox2.align(FL_ALIGN_CENTER);
+		promptBox2.labelsize(20);
+		promptBox2.labelfont(FL_HELVETICA);
+
+		Fl_Button OptButton1(60, 150, 185, 105);
+		OptButton1.color(DARK_TAUPE);
+		OptButton1.labelfont(FL_TIMES_BOLD_ITALIC);
+		OptButton1.labelcolor(ASU_GREY);
+		OptButton1.labelsize(15);
+		OptButton1.selection_color(LIGHT_CREAM);
+		Fl_PNG_Image SP_Button("./Images/Steampunk_Button.png");
+		OptButton1.image(SP_Button);
+		OptButton1.callback(Steampunk_Option);
+
+		Fl_Button OptButton2(405, 150, 185, 105);
+		OptButton2.color(ASU_WHITE);
+		OptButton2.labelfont(FL_HELVETICA_BOLD);
+		OptButton2.labelcolor(ASU_BLACK);
+		OptButton2.labelsize(15);
+		OptButton2.selection_color(ASU_BLACK);
+		Fl_PNG_Image ASU_Button("./Images/ASU_Button.png");
+		OptButton2.image(ASU_Button);
+		OptButton2.callback(ASU_Option);
+
+		 optionWindow->box(FL_BORDER_BOX);
+		 optionWindow->resizable(promptBox1);
+		 optionWindow->end();
+		 optionWindow->show();
+
+		Fl::run();
+
 	return 0;
 }
 
