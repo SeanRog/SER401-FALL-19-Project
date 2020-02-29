@@ -530,13 +530,9 @@ void threadFunction(Student studentPool[], Project projectPool[],
 }    //end threadFunction
 
 int tempProj, tempStud, textInput;
-<<<<<<< HEAD
-=======
 
 Fl_Window *optionWindow;
 
-string *csvProjectFileName;
->>>>>>> dev
 
 
 //Callback for the Steampunk option button.

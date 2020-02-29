@@ -608,7 +608,7 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
-	m.main_run(num_projects, num_students, progressBar, terminalBuffer);
+	m.main_run(num_projects, num_students, "", progressBar, terminalBuffer);
 
 	//join threads
 	for (int i = 0; i < 1; i++) {

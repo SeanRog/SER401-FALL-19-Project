@@ -28,12 +28,12 @@ class MainWindow {
 
 	//generate teams 'static' callback function
 	//this function calls the real TeamsButtonClick callback function.
-	static void static_TeamsButtonClick(Fl_Widget *w, void *data) {
-		((MainWindow*) data)->TeamsButtonClick(w);
+	static void static_TeamsButtonClick(Fl_Widget *w, void *data, string projectFilename) {
+		((MainWindow*) data)->TeamsButtonClick(w, projectFilename);
 	}
 
-	static void static_ProgressTeamsButtonClick(Fl_Widget *w, void *data) {
-		((MainWindow*) data)->ProgressTeamsButtonClick(w);
+	static void static_ProgressTeamsButtonClick(Fl_Widget *w, void *data, string projectFilename) {
+		((MainWindow*) data)->ProgressTeamsButtonClick(w, projectFilename);
 	}
 	static void static_DoneButtonClick(Fl_Widget *w, void *data) {
 		((MainWindow*) data)->DoneButtonClick(w);
@@ -44,11 +44,11 @@ class MainWindow {
 	}
 
 	// callback functions
-	void ProgressTeamsButtonClick(Fl_Widget *w);
+	void ProgressTeamsButtonClick(Fl_Widget *w, string projectFilename);
 	void DoneButtonClick(Fl_Widget *w);
 	void StartButtonClick(Fl_Widget *w);
 	int handle(int);
-	void TeamsButtonClick(Fl_Widget *w);
+	void TeamsButtonClick(Fl_Widget *w, string projectFilename);
 
 public:
 	static int num_projects;
@@ -85,7 +85,7 @@ public:
 	void MainWindow2();
 	MainWindow();
 	~MainWindow();
-	void callTeams(Fl_Widget *w);
+	void callTeams(Fl_Widget *w, string projectFilename);
 
 
 };

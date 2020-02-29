@@ -454,7 +454,7 @@ void DataEntryGUI::ConfirmClick(Fl_Widget *w) {
 	GenerateTeamsButton->labelcolor(ASU_BLACK);
 	GenerateTeamsButton->labelsize(15);
 	GenerateTeamsButton->selection_color(ASU_MAROON);
-	GenerateTeamsButton->callback(static_GenerateTeamsClick, this);
+	GenerateTeamsButton->callback(static_GenerateTeamsClick, this, proj);
 
 	cancelButton2 = new Fl_Button(40, 150, 175, 50, "Cancel");
 	cancelButton2->color(ASU_WHITE);
@@ -476,11 +476,11 @@ void DataEntryGUI::ConfirmClick(Fl_Widget *w) {
 
 }
 
-void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
+void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w, string projectFile) {
 	masterWindow->hide();
 	confirmWindow->hide();
 	MainWindow mainWin;
-	mainWin.callTeams(w);
+	mainWin.callTeams(w, projectFile);
 }
 
 void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*) {
