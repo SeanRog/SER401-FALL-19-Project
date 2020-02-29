@@ -529,7 +529,6 @@ void threadFunction(Student studentPool[], Project projectPool[],
 }    //end threadFunction
 
 int tempProj, tempStud, textInput;
-string *csvProjectFileName;
 
 
 /*************************************************************************************
@@ -575,7 +574,7 @@ int main() {
  *Returns:
  *	int value 0.
  */
-int main::main_run(int projects_input, int students_input, Fl_Progress *pb, Fl_Text_Buffer *tb) {
+int main::main_run(int projects_input, int students_input, string filename, Fl_Progress *pb, Fl_Text_Buffer *tb) {
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
 	srand(time(NULL));
@@ -610,6 +609,9 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb, Fl_T
 	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS);
 
 	//const string PROJECT_FILE = "./newProjects.json";
+	cout << endl;
+	cout << filename << endl;
+
 	const string PROJECT_FILE = "./100Projects.csv";
 	const string STUDENT_FILE = "./newStudents.json";
 	const string CLASS_SECTION_FILE = "./SampleJsonFiles/4ClassSections.json";
