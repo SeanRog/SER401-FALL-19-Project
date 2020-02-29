@@ -90,7 +90,7 @@ public:
 	void YesClick(Fl_Widget *w);
 	void CancelClick1(Fl_Widget *w);
 	void CancelClick2(Fl_Widget *w);
-	void GenerateTeamsClick(Fl_Widget *w, string projectFile);
+	void GenerateTeamsClick(Fl_Widget *w);
 	void chooseProjectFile_cb(Fl_Widget *w);
 
 	//'static' callback functions which call the real callbacks
@@ -106,8 +106,8 @@ public:
 	static void static_ConfirmClick(Fl_Widget *w, void *data) {
 		((DataEntryGUI*) data)->ConfirmClick(w);
 	}
-	static void static_GenerateTeamsClick(Fl_Widget *w, void *data, string projectFile) {
-		((DataEntryGUI*) data)->GenerateTeamsClick(w, projectFile);
+	static void static_GenerateTeamsClick(Fl_Widget *w, void *data) {
+		((DataEntryGUI*) data)->GenerateTeamsClick(w);
 	}
 	static void static_CancelClick1(Fl_Widget *w, void *data) {
 		((DataEntryGUI*) data)->CancelClick1(w);

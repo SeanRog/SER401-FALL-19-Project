@@ -280,7 +280,7 @@ void MainWindow::MainWindow2() {
  * Returns:
  *		nothing
  */
-void MainWindow::TeamsButtonClick(Fl_Widget *w, string projectFilename) {
+void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 
 	for (int i = 0; i < 22; i++) {
 
@@ -378,8 +378,7 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w, string projectFilename) {
 
 	progressBar->value(0);
 	progressBar->label(0);
-
-	TeamsButton->callback(static_ProgressTeamsButtonClick, this, projectFilename);
+	TeamsButton->callback(static_ProgressTeamsButtonClick, this);
 	doneButton->callback(static_DoneButtonClick, this);
 	progressWindow->redraw();
 
@@ -452,7 +451,7 @@ void teamAssignment(int num_students, int num_projects,
  * Returns:
  *		nothing
  */
-void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w, string projectFilename) {
+void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	TeamsButton->deactivate();
 	progressBox->label("Team Assignment System Running...");
@@ -790,9 +789,9 @@ int MainWindow::handle(int event) {
 	return 0;
 }
 
-void MainWindow::callTeams(Fl_Widget *w, string projectFile) {
+void MainWindow::callTeams(Fl_Widget *w) {
 
 
-	TeamsButtonClick(windowMain, projectFile);
+	TeamsButtonClick(windowMain);
 
 }
