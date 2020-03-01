@@ -62,6 +62,7 @@ using namespace std;
 
 int MainWindow::num_projects = 0;
 int MainWindow::num_students = 0;
+string mwProjfile;
 
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
@@ -472,7 +473,7 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
 
-	m.main_run(num_projects, num_students, "", progressBar, terminalBuffer);
+	m.main_run(num_projects, num_students, mwProjfile, progressBar, terminalBuffer);
 
 	//join threads
 	for (int i = 0; i < 1; i++) {

@@ -56,6 +56,7 @@ public:
 	string csvProjectFileName;
 	bool nextWindowFlag;
 	bool Authenticated;
+	string mwProjfile;
 
 	//progress bar window
 	int barCount;

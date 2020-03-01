@@ -1,285 +1,215 @@
 RESULT FOR SECTION 0:
 
-PROJECT#57:     Score: 87    !High Priority!
- TEAM:  Amelia Marshall,  Belinda Louis,  Tracey Young,  Lucas Newman,  Grace Turner, 
+PROJECT#39:     Score: 94    !High Priority!
+ TEAM:  Xavier Flynn,  Trevor Watson,  Vladimir Petrov,  Stewart Forsyth,  Jeff Hughes, 
 
 
-PROJECT#49:     Score: 82    !High Priority!
- TEAM:  Kylie Manning,  Ian Walker,  Allen Langdon,  Anthony Davies,  Grace Brown, 
+PROJECT#34:     Score: 74    !High Priority!
+ TEAM:  Caleb Johnston,  Anthony North,  Christian Mackay,  Tracey Young,  Evan Carr, 
 
 
-PROJECT#39:     Score: 75    !High Priority!
- TEAM:  Jasmine Short,  Yvonne Simpson,  Nathan Lambert,  Xavier Flynn,  Mateo Forsyth, 
+PROJECT#22:     Score: 80    !High Priority!
+ TEAM:  Sofia Kozlov,  Ian Walker,  Nolan Sanchez,  Julia Russell,  Mateo Forsyth, 
 
 
+PROJECT#27:     Score: 85    !High Priority!
+ TEAM:  Alan Hamilton,  Yvonne Simpson,  Matthew Cilibraise,  Gabrielle Walker,  Kylie Manning, 
 
 
-RESULT FOR SECTION 0:
-
-PROJECT#8:     Score: 92
- TEAM:  Nolan Sanchez,  Jeff Hughes,  Rick Buckland,  Stewart Forsyth,  Morty Baxter, 
+PROJECT#30:     Score: 79    !High Priority!
+ TEAM:  Carl Davidson,  Donna Paige,  Tyler Smith,  Steven Black,  Nicholas Rees, 
 
 
-PROJECT#37:     Score: 76
- TEAM:  Steven Moore,  Wally Payne,  Adam Abraham,  Caleb Johnston,  Emma Langdon, 
+PROJECT#36:     Score: 49
+ TEAM:  Carl Allan,  Cooper Smith,  Penelope Oliver,  Fiona Churchill,  Andrew Bower, 
 
 
-PROJECT#58:     Score: 84
- TEAM:  Steven Black,  Trevor Watson,  Rebecca Coleman,  Simon Sutherland,  Jacob Fraser, 
-
-
-PROJECT#44:     Score: 96
- TEAM:  Andrew Bower,  Elizabeth Marquise,  Christian Mackay,  Lisa Thompson,  Donna Paige, 
-
-
-PROJECT#19:     Score: 74
- TEAM:  Dylan Chapman,  Tyler Smith,  Jane Bailey,  Nicholas Avery,  Justin Brown, 
-
-
-PROJECT#55:     Score: 67
- TEAM:  Josiah Edmunds,  Simon Burgess,  Dominic Ince,  Julia Russell,  Sean Rogers, 
-
-
-PROJECT#52:     Score: 49
- TEAM:  Tim Peters,  Edward Jones,  Gabrielle Walker,  Vladimir Petrov,  Carl Allan, 
-
-
-PROJECT#54:     Score: 70
- TEAM:  Anthony Hughes,  Winston Berry,  Fiona Churchill,  Matthew Cilibraise,  Nicholas Rees, 
+PROJECT#37:     Score: 64
+ TEAM:  Piers Chapman,  Wally Payne,  Josiah Edmunds,  Nathan Lambert,  Simon Burgess, 
 
 
 
 
 RESULT FOR SECTION 0:
 
-PROJECT#51:     Score: 86
- TEAM:  Heather Henderson,  Cooper Smith,  Wanda Young,  Leah Hudson,  Carl Davidson, 
+PROJECT#18:     Score: 80
+ TEAM:  Adam Abraham,  Steven Moore,  Rick Buckland,  Jane Bailey,  , 
 
 
-PROJECT#24:     Score: 63
- TEAM:  Daniel Hernandez,  Piers Chapman,  Evan Carr,  Penelope Oliver,  Felicity King, 
+PROJECT#8:     Score: 54
+ TEAM:  Alexander Stewart,  ,  Elizabeth Marquise,  Ramone Garcia,  Jasmine Short, 
 
 
-PROJECT#29:     Score: 62
- TEAM:  Anthony Simpson,  Ramone Garcia,  Zack Wilcox,  Sofia Kozlov,  Alexander Stewart, 
+PROJECT#42:     Score: 46
+ TEAM:  Belinda Louis,  ,  Emma Langdon,  Allen Langdon,  Amelia Marshall, 
 
 
-PROJECT#33:     Score: 48
- TEAM:  William Parr,  Anthony North,  Cristi Deleo,  Alan Hamilton,  Colin Coleman, 
-
-
-
-
-RESULT FOR SECTION 1:
-
-PROJECT#2:     Score: 96    !High Priority!
- TEAM:  Jonah Terry,  Will Rose,  Christopher Lee,  Chloe Springer,  Caroline Harris, 
-
-
-PROJECT#46:     Score: 76    !High Priority!
- TEAM:  Karen Simpson,  Colin Butler,  Peter Parr,  Tracey Gill,  Jake Springer, 
-
-
-PROJECT#45:     Score: 70    !High Priority!
- TEAM:  Nick Glover,  Joan Blake,  Benjamin Jones,  Roberto Clark,  Zoe Jones, 
-
-
-PROJECT#10:     Score: 81    !High Priority!
- TEAM:  Henry Clarkson,  Wanda Gill,  Trevor Ogden,  Trevor Robertson,  Jane Tucker, 
-
-
-PROJECT#12:     Score: 95    !High Priority!
- TEAM:  Jessica Clark,  James Quincy,  Chris Coleman,  Andrea Grant,  Ian Hill, 
-
-
-PROJECT#14:     Score: 85    !High Priority!
- TEAM:  Lucian Bower,  Chase Langdon,  James Forrester,  Mary Martin,  Robert Walsh, 
-
-
-PROJECT#16:     Score: 71    !High Priority!
- TEAM:  Lily Murray,  Oliver Chapman,  Tommy Brown,  Edward Lawrence,  Neil North, 
-
-
-PROJECT#41:     Score: 52    !High Priority!
- TEAM:  Eric Fisher,  Faith North,  Trevor Harris,  Jennifer Lewis,  Conner Churchill, 
-
-
-
-
-RESULT FOR SECTION 1:
-
-PROJECT#4:     Score: 93
- TEAM:  Christopher Baker,  Oliver Scott,  Donna Nash,  Claire Clark,  Nicola Davies, 
-
-
-PROJECT#21:     Score: 90
- TEAM:  Peter Miller,  Steven Knox,  Una Watson,  Lydia Stone,  Eric Underwood, 
-
-
-PROJECT#36:     Score: 77
- TEAM:  Ruth Nash,  Bella Hudson,  Dorothy Skinner,  Beverly Dunn,  Jason Sharp, 
-
-
-
-
-RESULT FOR SECTION 1:
-
-PROJECT#25:     Score: 88
- TEAM:  Harrison Martin,  Sean Robertson,  Ruth King,  Stacy Johnson,  Ruby Roberts, 
-
-
-PROJECT#6:     Score: 80
- TEAM:  Sophie Cornish,  Michael Bailey,  Helen Welch,  Oliver Smith,  Sarah Scott, 
-
-
-PROJECT#31:     Score: 62
- TEAM:  Juan Rodriguez,  Emily May,  Asher Grey,  Maggie Wallace,  Caroline Powell, 
-
-
-PROJECT#26:     Score: 44
- TEAM:  Jonathan Young,  Blake Robertson,  Audrey Jackson,  Samantha King,  Leonard Hamilton, 
-
-
-
-
-RESULT FOR SECTION 2:
-
-PROJECT#27:     Score: 96    !High Priority!
- TEAM:  Joe Clarkson,  Sean Parsons,  Rebecca Jones,  Justin Jones,  Alexandra Bell, 
-
-
-PROJECT#5:     Score: 72    !High Priority!
- TEAM:  Ava Pullman,  Scott Avery,  Max Russell,  Una McDonald,  Sally Arnold, 
-
-
-PROJECT#7:     Score: 70    !High Priority!
- TEAM:  Harry Newman,  Carolina Oliver,  Jeremy Evans,  Connor Russellv,  Yvonne Sanderson, 
-
-
-PROJECT#22:     Score: 57    !High Priority!
- TEAM:  Lily Pullman,  James Piper,  Jacob Alsop,  Myles Colina,  Matt James, 
-
-
-PROJECT#11:     Score: 85    !High Priority!
- TEAM:  Jonah Greene,  John Howard,  Anne Langdon,  Wendy Brown,  Gabrielle Brown, 
-
-
-PROJECT#13:     Score: 92    !High Priority!
- TEAM:  John Patersonv,  Frank Mitchell,  Deirdre Walker,  Steven Arnold,  Irene Greene, 
-
-
-
-
-RESULT FOR SECTION 2:
-
-PROJECT#35:     Score: 97
- TEAM:  Paxton Morgan,  Ruth Paige,  Howard Mill,  Opal Graystone,  Colin Mackenzie, 
-
-
-PROJECT#15:     Score: 75
- TEAM:  Ryan Tucker,  Alexander Kelly,  Paul Wright,  Katherine Rutherford,  Rose Rockwell, 
-
-
-PROJECT#9:     Score: 82
- TEAM:  Sandra Mitchell,  Andrea Chapman,  Cho Quain,  Lillian Russell,  Joshua Chapman, 
-
-
-
-
-RESULT FOR SECTION 2:
-
-PROJECT#32:     Score: 95
- TEAM:  Adrian Ross,  Sam Cameron,  Cameron Smith,  Alison Metcalfe,  Benjamin Kerr, 
-
-
-PROJECT#40:     Score: 86
- TEAM:  Lucas Avery,  Luke Coleman,  Ezra Carr,  Abigail Hardacre,  Oliver Paterson, 
-
-
-PROJECT#42:     Score: 70
- TEAM:  Preston Vance,  Felicity Ince,  Melanie Simpson,  Joseph Glover,  Justin Walker, 
-
-
-PROJECT#47:     Score: 73
- TEAM:  Karen Clarkson,  Andrew Wilson,  Jasmine Mackenzie,  Andrew Scott,  Sarah Pullman, 
-
-
-PROJECT#3:     Score: 54
- TEAM:  Vanessa Ball,  Alex Kerr,  David Hamilton,  Leo Alsop,  Robert Reid, 
-
-
-PROJECT#20:     Score: 53
- TEAM:  Maria Black,  Sophie Walker,  Lucas Morgan,  Jasmine North,  Joe Reid, 
-
-
-
-
-RESULT FOR SECTION 3:
-
-PROJECT#1:     Score: 95    !High Priority!
- TEAM:  Carol Roberts,  Virginia Lee,  Sean McDonald,  Tracey Nash,  Christopher Hill, 
-
-
-PROJECT#59:     Score: 93    !High Priority!
- TEAM:  Alison Bell,  Isaac Cornish,  Diane Randall,  Eric Slater,  Victor Paterson, 
-
-
-PROJECT#48:     Score: 94    !High Priority!
- TEAM:  Caroline Arnold,  Jacob Anderson,  Justin Wilkins,  Tracey Robertson,  Cliff North, 
-
-
-PROJECT#28:     Score: 79    !High Priority!
- TEAM:  Chloe Butler,  Donna Ellison,  Nicole Hart,  Kevin Marcy,  Kimberly Hardacre, 
-
-
-PROJECT#30:     Score: 73    !High Priority!
- TEAM:  Penny Turner,  Blake Underwood,  Christopher Arnold,  Stephanie Pullman,  Megan Chapman, 
-
-
-PROJECT#34:     Score: 80    !High Priority!
- TEAM:  Stewart Buckland,  Simon Rampling,  Nathan Johnston,  Penny Parsons,  Carol Wilkins, 
-
-
-PROJECT#38:     Score: 66    !High Priority!
- TEAM:  Neil MacDonald,  Dan Walsh,  Oliver Welch,  Jessica Wallace,  Hernando Lambert, 
-
-
-PROJECT#43:     Score: 55
- TEAM:  Diane Hudson,  Brandon Terry,  Eric Jackson,  Anna Arnold,  Jennifer Welch, 
-
-
-
-
-RESULT FOR SECTION 3:
-
-PROJECT#50:     Score: 93
- TEAM:  Boris Morgan,  Warren Bailey,  Liam Parr,  Lucas Butler,  Katherine Thomson, 
-
-
-PROJECT#53:     Score: 70
- TEAM:  Dorothy Piper,  Alison Ince,  Emma Churchill,  Emily Arnold,  Chase Russell, 
-
-
-PROJECT#56:     Score: 67
- TEAM:  Katherine Nash,  Stephen Roberts,  Matt Turner,  Megan Roberts,  Yvonne Parr, 
-
-
-PROJECT#23:     Score: 62
- TEAM:  Andrew Avery,  Ruth Manning,  Carol Short,  SueEllen Springer,  Simon Wallace, 
-
-
-PROJECT#18:     Score: 49
- TEAM:  Deirdre Reid,  Julia Anderson,  Barry Quinn,  Jonathan McDonald,  Tyler Morrison, 
-
-
-PROJECT#17:     Score: 72
- TEAM:  Michael Russell,  Steven Reid,  Grace Rees,  Christian Langdon,  Christian Wright, 
-
-
-PROJECT#17:     Score: 44
- TEAM:  Jennifer Metcalfe,  Ian Terry,  Leah McLean,  Owen Manning,  Evan Abraham, 
+PROJECT#40:     Score: 27
+ TEAM:  Grace Brown,  ,  Grace Turner,  Daniel Hernandez,  Jacob Fraser, 
 
 
 
 
  
+RESULT FOR SECTION 1:
+
+PROJECT#2:     Score: 89    !High Priority!
+ TEAM:  Anthony Simpson,  Peter Miller,  Chris Coleman,  Andrea Grant,  Jonathan Young, 
+
+
+PROJECT#16:     Score: 96    !High Priority!
+ TEAM:  Blake Robertson,  Maggie Wallace,  Heather Henderson,  Dominic Ince,  Oliver Smith, 
+
+
+PROJECT#14:     Score: 79    !High Priority!
+ TEAM:  Sean Robertson,  Caroline Powell,  Tim Peters,  Trevor Robertson,  Jessica Clark, 
+
+
+PROJECT#10:     Score: 58    !High Priority!
+ TEAM:  Donna Nash,  Winston Berry,  Chloe Springer,  Wanda Young,  Sophie Cornish, 
+
+
+PROJECT#12:     Score: 81    !High Priority!
+ TEAM:  Felicity King,  Colin Coleman,  Dylan Chapman,  Simon Sutherland,  Michael Bailey, 
+
+
+PROJECT#4:     Score: 62
+ TEAM:  Nicholas Avery,  Zack Wilcox,  Sean Rogers,  Lucas Newman,  Leah Hudson, 
+
+
+PROJECT#21:     Score: 38
+ TEAM:  Audrey Jackson,  Claire Clark,  Lydia Stone,  Lisa Thompson,  Lily Murray, 
+
+
+
+
+ 
+RESULT FOR SECTION 1:
+
+PROJECT#26:     Score: 83
+ TEAM:  Tommy Brown,  William Parr,  Anthony Hughes,  Justin Brown,  , 
+
+
+PROJECT#31:     Score: 54
+ TEAM:  Jonah Terry,  Leonard Hamilton,  ,  Morty Baxter,  Cristi Deleo, 
+
+
+PROJECT#25:     Score: 67
+ TEAM:  Jane Tucker,  James Quincy,  Anthony Davies,  Una Watson,  , 
+
+
+PROJECT#6:     Score: 39
+ TEAM:  ,  Edward Jones,  Rebecca Coleman,  Tracey Gill,  Cristi Deleo, 
+
+
+
+
+RESULT FOR SECTION 2:
+
+PROJECT#28:     Score: 94    !High Priority!
+ TEAM:  Eric Fisher,  Ruth Nash,  Jeremy Evans,  Chase Langdon,  Colin Butler, 
+
+
+PROJECT#5:     Score: 90    !High Priority!
+ TEAM:  Nicola Davies,  Samantha King,  Zoe Jones,  James Forrester,  Robert Walsh, 
+
+
+PROJECT#7:     Score: 86    !High Priority!
+ TEAM:  Beverly Dunn,  Edward Lawrence,  Conner Churchill,  Ian Hill,  Karen Simpson, 
+
+
+PROJECT#13:     Score: 64    !High Priority!
+ TEAM:  Nick Glover,  Roberto Clark,  Jason Sharp,  Helen Welch,  Juan Rodriguez, 
+
+
+PROJECT#11:     Score: 87    !High Priority!
+ TEAM:  Neil North,  Faith North,  Benjamin Jones,  Emily May,  Jennifer Lewis, 
+
+
+PROJECT#15:     Score: 69
+ TEAM:  Ruby Roberts,  Wanda Gill,  Leo Alsop,  Steven Knox,  Trevor Harris, 
+
+
+PROJECT#19:     Score: 58
+ TEAM:  Sarah Scott,  Lucian Bower,  Caroline Harris,  Dorothy Skinner,  Christopher Lee, 
+
+
+
+
+RESULT FOR SECTION 2:
+
+PROJECT#23:     Score: 79
+ TEAM:  Eric Underwood,  Will Rose,  Harrison Martin,  Asher Grey,  , 
+
+
+PROJECT#9:     Score: 62
+ TEAM:  Peter Parr,  Alexandra Bell,  ,  Henry Clarkson,  Christopher Baker, 
+
+
+PROJECT#3:     Score: 48
+ TEAM:  ,  Stacy Johnson,  Oliver Scott,  Mary Martin,  Oliver Chapman, 
+
+
+PROJECT#32:     Score: 44
+ TEAM:  Bella Hudson,  ,  Trevor Ogden,  Jake Springer,  Joan Blake, 
+
+
+
+
+ 
+RESULT FOR SECTION 3:
+
+PROJECT#1:     Score: 94    !High Priority!
+ TEAM:  Vanessa Ball,  Carolina Oliver,  Andrew Wilson,  Sally Arnold,  Lucas Morgan, 
+
+
+PROJECT#41:     Score: 64    !High Priority!
+ TEAM:  Lucas Avery,  Sandra Mitchell,  Ruth Paige,  Joshua Chapman,  Sean Parsons, 
+
+
+PROJECT#38:     Score: 83    !High Priority!
+ TEAM:  Wendy Brown,  Una McDonald,  John Howard,  Ava Pullman,  Rebecca Jones, 
+
+
+
+
+RESULT FOR SECTION 3:
+
+PROJECT#17:     Score: 83
+ TEAM:  Howard Mill,  Sam Cameron,  Jacob Alsop,  Frank Mitchell,  Lily Pullman, 
+
+
+PROJECT#35:     Score: 73
+ TEAM:  Ryan Tucker,  Alex Kerr,  Harry Newman,  Benjamin Kerr,  David Hamilton, 
+
+
+PROJECT#43:     Score: 63
+ TEAM:  Robert Reid,  Abigail Hardacre,  Adrian Ross,  Lillian Russell,  Max Russell, 
+
+
+
+
+RESULT FOR SECTION 3:
+
+PROJECT#24:     Score: 87
+ TEAM:  Melanie Simpson,  Sophie Walker,  Paxton Morgan,  Joe Clarkson,  Preston Vance, 
+
+
+PROJECT#0:     Score: 69
+ TEAM:  Andrew Scott,  Myles Colina,  Joe Reid,  Cho Quain,  , 
+
+
+PROJECT#29:     Score: 42
+ TEAM:  Cameron Smith,  ,  Paul Wright,  Alison Metcalfe,  Karen Clarkson, 
+
+
+PROJECT#20:     Score: 46
+ TEAM:  ,  Jonah Greene,  Rose Rockwell,  Scott Avery,  Steven Arnold, 
+
+
+PROJECT#33:     Score: 45
+ TEAM:  Luke Coleman,  Yvonne Sanderson,  Alexander Kelly,  Matt James,  Oliver Paterson, 
+
+
+
+

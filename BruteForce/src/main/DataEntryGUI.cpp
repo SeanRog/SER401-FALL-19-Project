@@ -29,6 +29,7 @@
 
 // ASU LOGO
 Fl_PNG_Image LOGO_BLACK1("./Images/asu_sunburst_rgb_maroongold_150ppi.png");
+string dEProjfile;
 
 /*************************************************************************************
  * ClassSelectorGUI
@@ -387,6 +388,7 @@ void DataEntryGUI::ConfirmClick(Fl_Widget *w) {
 
 	//project file values
 	string proj = fileInput_Project->value();
+	dEProjfile = fileInput_Project->value();
 	int length = proj.length();
 	char prompt1[length + 1];
 	strcpy(prompt1, proj.c_str());
@@ -480,6 +482,7 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 	masterWindow->hide();
 	confirmWindow->hide();
 	MainWindow mainWin;
+	mainWin.mwProjfile = dEProjfile;
 	mainWin.callTeams(w);
 }
 
