@@ -541,28 +541,31 @@ static gboolean authenticateCB(WebKitWebView *webView, GtkWidget *window) {
 
 typedef void* user_data;
 
-static void gotWebsiteDataCallback(WebKitWebsiteDataManager *manager, GAsyncResult *asyncResult, user_data)
+static void gotWebsiteDataCallback(WebKitCookieManager *manager, GAsyncResult *asyncResult, user_data)
 {
-    GList *dataList = webkit_website_data_manager_fetch_finish(manager, asyncResult, NULL);
+    //GList *dataList = webkit_website_data_manager_fetch_finish(manager, asyncResult, NULL);
 
-    GString *result = g_string_new(
-        "<html><head>"
-        "<script>"
-        "  function removeData(domain) {"
-        "    window.webkit.messageHandlers.aboutData.postMessage(domain);"
-        "  }"
-        "  function clearData(dataType) {"
-        "    window.webkit.messageHandlers.aboutData.postMessage(dataType);"
-        "  }"
-        "</script></head><body>\n");
+	GList *dataList = webkit_cookie_manager_get_cookies_finish(manager, asyncResult, NULL);
+
+    SoupCookie *cookies;
+    int i = 1;
 
     cout<<"data list from fetch"<<endl;
     if(dataList->next !=0){
     GList *current = dataList->next;
+
+
     cout<<dataList->data<<endl;
     while(current->next != 0){
     	current = dataList->next;
-    cout<<current->data<<endl;}}
+    	cout<<current->data<<endl;
+    }}
+
+
+
+
+
+
 
 }
 
@@ -577,6 +580,7 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 	cout << webkit_web_view_get_uri(webView) << endl;
 	 void* data;
 	//CookieManager cookieMonster;
+	//webkit_cookie_manager_get_cookies(webkit_web_context_get_cookie_manager((webkit_web_view_get_context(webView))), webkit_web_view_get_uri(webView), 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
 	//webkit_website_data_manager_fetch(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView))), WEBKIT_WEBSITE_DATA_COOKIES, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
 	//webkit_website_data_manager_fetch(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView))), WEBKIT_WEBSITE_DATA_SESSION_STORAGE, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
 		//cookieMonster.newHttpsSession(webkit_web_view_get_uri(webView));
@@ -584,7 +588,17 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 	if (strcmp(webkit_web_view_get_uri(webView),
 			"https://canvas.asu.edu/?login_success=1") == 0) {
 
+		if(webkit_web_view_is_loading(webView) == false){
+
+
+
 		cout << "Canvas reached! authentication complete!" << endl;
+		//webkit_cookie_manager_get_cookies(webkit_web_context_get_cookie_manager((webkit_web_view_get_context(webView))), webkit_web_view_get_uri(webView), 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
+
+
+		//WebKitWebViewSessionState *session = webkit_web_view_get_session_state(webView);
+
+
 
 
 		//webkit_website_data_manager_fetch(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView))), WEBKIT_WEBSITE_DATA_COOKIES, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
@@ -660,7 +674,7 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 		//call to next GUI window.
 		//DataEntryGUI dataGUI(nextWindow);
 
-	}
+	}}
 
 	return TRUE;
 }

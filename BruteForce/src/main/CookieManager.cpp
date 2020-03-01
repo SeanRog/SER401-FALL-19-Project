@@ -174,16 +174,20 @@ int CookieManager::newHttpsSession(const char *hostURL) {
 
 	if (curl) {
 
+		//curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/4.0");
+		curl_easy_setopt(curl, CURLOPT_AUTOREFERER, 1 );
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1 );
+
 		curl_easy_setopt(curl, CURLOPT_URL, hostURL);
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+
 		//curl_easy_setopt(curl, CURLOPT_LOGIN_OPTIONS, "AUTH=*");
 		//curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1L);
 		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt"); /* start cookie engine */
 		curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
 
-		//headers = curl_slist_append(headers, "Content-Type: application/json");
-		//headers = curl_slist_append(headers, 
-		//    "Authorization: Bearer <ENTER TOKEN HERE>");
+		headers = curl_slist_append(headers, "Content-Type: application/json");
+		headers = curl_slist_append(headers,
+		    "Authorization: Bearer <ENTER TOKEN HERE>");
 
 		//curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
@@ -194,6 +198,9 @@ int CookieManager::newHttpsSession(const char *hostURL) {
 		//curl_easy_setopt(curl, CURLOPT_COOKIELIST, "RELAOD");
 
 		res = curl_easy_perform(curl);
+
+
+
 
 		if (!res) {
 			/* extract all known cookies */
