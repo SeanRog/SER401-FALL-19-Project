@@ -51,6 +51,7 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
+#include <libsoup/soup.h>
 
 
 #include <gtk/gtk.h>
@@ -61,6 +62,23 @@ using namespace std;
 
 int MainWindow::num_projects = 0;
 int MainWindow::num_students = 0;
+
+GtkWidget *main_window;
+
+
+//create the data manager
+WebKitWebsiteDataManager *manager;
+//create the context
+WebKitWebContext *context;
+
+//create cookie manager
+WebKitCookieManager *cookiejar;
+
+// Create a browser instance
+WebKitWebView *webView;
+
+SoupSession *session;
+
 
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
@@ -541,6 +559,15 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 
 		Auth = true;
 		//todo- read in and store the cookies to cookies.txt
+		//WebKitWebContext *context = webkit_web_view_get_context (webView);
+		//WebKitWebsiteDataManager *datamanager = webkit_web_context_get_website_data_manager(context);
+		//WebKitCookieManager *cookiemanager = webkit_website_data_manager_get_cookie_manager(datamanager);
+		//WebKitCookieManager *cookies = webkit_web_context_get_cookie_manager (context);
+		// create new session after authenticated.
+		session = soup_session_new();
+		SoupLogger *logger = soup_logger_new(SOUP_LOGGER_LOG_MINIMAL, -1);
+		soup_session_add_feature(session, SOUP_SESSION_FEATURE(logger));
+		g_object_unref (logger);
 
 		//close the mini-browser window because authentication is complete.
 
@@ -561,42 +588,45 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 }
 
 void mini_browser() {
-
-	int argc;
-	char **argv;
-
+	int argc = 0;
+	char **argv = NULL;
 	//Initialize GTK+
 	gtk_init(&argc, &argv);
 
 	// Create an 800x600 window that will contain the browser instance
-	GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
 	gtk_window_set_title(GTK_WINDOW(main_window), "ASU Canvas Authentication");
+
 	//create the data manager
-	WebKitWebsiteDataManager *manager = webkit_website_data_manager_new(0);
+	manager = webkit_website_data_manager_new(0);
 	//create the context
-	WebKitWebContext *context =
-			webkit_web_context_new_with_website_data_manager(manager);
+	context = webkit_web_context_new_with_website_data_manager(manager);
 
 	//create cookie manager
-	WebKitCookieManager *cookiejar =
-			webkit_website_data_manager_get_cookie_manager(manager);
+	cookiejar = webkit_website_data_manager_get_cookie_manager(manager);
 
 	// Create a browser instance
-	WebKitWebView *webView = WEBKIT_WEB_VIEW(
-			webkit_web_view_new_with_context(context));
+	webView = WEBKIT_WEB_VIEW(webkit_web_view_new_with_context(context));
 
-	/*
-	 * 	   ///Code for cookies///
+	///Code for cookies///
 
 	 WebKitSettings *settings = webkit_settings_new();
-
 
 	 webkit_cookie_manager_set_persistent_storage(cookiejar, "cookies.txt",
 	 WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
 
-	 g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache",
-	 TRUE, NULL);
+	 // set persistent storage may only store non session cookies.
+	 /*
+	  * Set the filename where non-session cookies are stored persistently using storage as the format to read/write the cookies.
+	  * Cookies are initially read from filename to create an initial set of cookies.
+	  * Then, non-session cookies will be written to filename when the WebKitCookieManager::changed signal is emitted.
+	  * By default, cookie_manager doesn't store the cookies persistently, so you need to call this method to keep cookies
+	  * saved across sessions.
+	  *	This method should never be called on a WebKitCookieManager associated to an ephemeral WebKitWebsiteDataManager.
+	  */
+
+	 g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache",TRUE, NULL);
 
 	 //set the cookie acceptance policy
 	 webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
@@ -613,19 +643,15 @@ void mini_browser() {
 
 	 // Apply the result
 	 webkit_web_view_set_settings (webView, settings);
-	 */
 
 	// Put the browser area into the main window
 	gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
-
 
 	// Set up callbacks so that if either the main window or the browser instance is
 	// closed, the program will exit
 	g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
 	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
-
-	g_signal_connect(webView, "load-changed", G_CALLBACK(load_changedWebViewCb),
-			main_window);
+	g_signal_connect(webView, "load-changed", G_CALLBACK(load_changedWebViewCb),main_window);
 
 	// Load a web page into the browser instance
 	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
