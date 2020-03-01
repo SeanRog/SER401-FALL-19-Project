@@ -9,6 +9,8 @@
 #define SRC_MAIN_DATAENTRYGUI_H_
 #include "MainWindow.h"
 #include "GUIStyles.h"
+#include "ClassSectionJson.h"
+#include "ClassSection.h"
 #include "main.h"
 #include <iostream>
 #include <string>
@@ -41,6 +43,15 @@ public:
 			"2019Fall-X-SER455-10286", "2019Fall-X-SER423-45336",
 			"2018Summer-X-SER530-14186", "2019Summer-X-SER219-10986",
 			"2020Summer-X-SER323-55536", };
+
+	string *AllCourseNames;
+	string *SelectedCourseNames;
+
+	ClassSection *AllCourses;
+	ClassSection *SelectedCourses;
+
+	int num_of_all_courses;
+	int num_of_selected_courses;
 
 	Fl_Window *masterWindow;
 	Fl_Window *prevWindow;

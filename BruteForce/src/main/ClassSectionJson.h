@@ -29,7 +29,8 @@ public:
 	ClassSectionJson();
 	void ClassSectionWriter(string filename);
 	ClassSection getClassSectionJsonObject(string filename, int i);
-	ClassSection* getAllClassSectionJsonObjects(string filename);
+	const int getNumClasses(string filename);
+	void getAllClassSectionJsonObjects(string filename, ClassSection courses[]);
 	~ClassSectionJson();
 };
 

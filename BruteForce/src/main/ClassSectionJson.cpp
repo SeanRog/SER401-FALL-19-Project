@@ -95,7 +95,20 @@ ClassSection ClassSectionJson::getClassSectionJsonObject(string filename,
 	return classSection;
 }
 
-ClassSection* ClassSectionJson::getAllClassSectionJsonObjects(string filename)
+const int ClassSectionJson::getNumClasses(string filename){
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	const int numberOfCourses = obj["courses"].size();
+
+	return numberOfCourses;
+
+}
+
+void ClassSectionJson::getAllClassSectionJsonObjects(string filename, ClassSection courses[])
 {
 
 
@@ -108,9 +121,7 @@ ClassSection* ClassSectionJson::getAllClassSectionJsonObjects(string filename)
 
 	ClassSection classSection[numberOfCourses];
 
-	for (int i = 0; i < numberOfCourses; i++) {
-
-
+	for (int i = 1; i < numberOfCourses; i++) {
 
 	classSection[i].OfficialClassID =
 			obj["courses"].get((int) i, "")["id"].asInt();
@@ -142,9 +153,11 @@ ClassSection* ClassSectionJson::getAllClassSectionJsonObjects(string filename)
 	 (char)obj["class sections"].get((int)i, "")["ClassID"].asInt();*/
 
 	cout<<classSection[i].Course_Name<<endl;
+
+	*(courses + i-1) = classSection[i];
 	}
 
 
-	return classSection;
+	//return classSection;
 }
 

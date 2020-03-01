@@ -767,14 +767,14 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	//if(Authenticated == true){
 
 	string auth = "Authorization: Bearer ";
-	string token = "7236~nOgb873N8ZriwOb6ytAGtpiPQGmIY94M95UMrnJnfWKyhODrnGDhbddD62xL06kI";
+	string token = "YOUR TOKEN HERE!!";
 	string Auth_token1 = auth + token;
 
 	int length = Auth_token1.length();
 	char token_char[length + 1];
 	strcpy(token_char, Auth_token1.c_str());
 
-	//const char* Auth_token = "Authorization: Bearer 7236~nOgb873N8ZriwOb6ytAGtpiPQGmIY94M95UMrnJnfWKyhODrnGDhbddD62xL06kI";
+
 
 	CookieManager cookieMonster;
 	cookieMonster.getCourses(token_char);
