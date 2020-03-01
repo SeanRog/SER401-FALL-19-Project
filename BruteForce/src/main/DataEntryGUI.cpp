@@ -218,7 +218,29 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win) {
 }	//end constructor
 
 DataEntryGUI::~DataEntryGUI() {
-	// TODO Auto-generated destructor stub
+	delete masterWindow;
+	delete prevWindow;
+	delete boxHeader;
+	delete boxHeader2;
+	delete classBrowser;
+	delete findCourses;
+	delete Confirm;
+	delete goBack;
+	delete inputYear;
+	delete inputSemester;
+	delete classSectionInstructionsBox;
+	delete backWindow;
+	delete yesButton;
+	delete cancelButton1;
+	delete confirmWindow;
+	delete GenerateTeamsButton;
+	delete cancelButton2;
+	delete projectFileInstructionsBox;
+	delete projectFileChooserButton;
+	delete fileInput_Project;
+	delete quizFileInstructionsBox;
+	delete fileInput_StudentQuizName;
+	delete goBackorConfirmInstructionsBox;
 }
 
 //TODO
@@ -450,6 +472,8 @@ void DataEntryGUI::ConfirmClick(Fl_Widget *w) {
 
 	Fl::run();
 
+
+
 }
 
 void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
@@ -460,6 +484,7 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 }
 
 void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*) {
+	string filename;
 	/*Fl_Native_File_Chooser fileChooser;
 	 fileChooser.title("Choose File");
 	 fileChooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
@@ -478,22 +503,30 @@ void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*) {
 	// Create the file chooser, and show it
 	Fl_File_Chooser chooser(".",                        // directory
 			"*",                        // filter
-			Fl_File_Chooser::MULTI,     // chooser type
-			"Title Of Chooser");        // title
+			Fl_File_Chooser::SINGLE,     // chooser type
+			"Select Project CSV file");        // title
+
+	chooser.color(ASU_WHITE);
+	chooser.textfont(FL_HELVETICA);
+
 	chooser.show();
 
 	// Block until user picks something.
 	//     (The other way to do this is to use a callback())
 	//
+	cout << chooser.value();
 	while (chooser.shown()) {
 		Fl::wait();
 
 		if (chooser.value() != NULL) {
 			fileInput_Project->value(chooser.value());
+			filename = chooser.value();
+
 		} else {
 			fileInput_Project->value("NULL");
 		}
 	}
+	cout << filename << endl;
 
 }
 
