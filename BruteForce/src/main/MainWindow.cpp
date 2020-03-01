@@ -746,7 +746,7 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 
 	if (Authenticated != true) {
 		Auth = false;
-		mini_browser();
+		//mini_browser();
 
 	}
 
