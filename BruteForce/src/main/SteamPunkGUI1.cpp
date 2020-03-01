@@ -705,6 +705,7 @@ void mini_browserSP() {
 	char **argv;
 
 	//Initialize GTK+
+
 	gtk_init(&argc, &argv);
 
 	// Create an 800x600 window that will contain the browser instance

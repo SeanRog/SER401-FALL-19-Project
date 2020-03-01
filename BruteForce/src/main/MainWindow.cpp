@@ -112,6 +112,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::MainWindow2() {
+	cout << "MAIN WINDOW2 WORKED" << endl;
 	const int windowMainW = 750;
 	const int windowMainH = 450;
 	const char windowMainStr[] =
@@ -633,13 +634,10 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 }
 
 void mini_browser() {
-
 	int argc;
 	char **argv;
-
 	//Initialize GTK+
-	gtk_init(&argc, &argv);
-
+	gtk_init_check(&argc, &argv);
 	// Create an 800x600 window that will contain the browser instance
 	GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
@@ -649,7 +647,6 @@ void mini_browser() {
 	//create the context
 	WebKitWebContext *context =
 			webkit_web_context_new_with_website_data_manager(manager);
-
 	//create cookie manager
 	WebKitCookieManager *cookiejar =
 			webkit_website_data_manager_get_cookie_manager(manager);
@@ -657,14 +654,12 @@ void mini_browser() {
 	// Create a browser instance
 	WebKitWebView *webView = WEBKIT_WEB_VIEW(
 			webkit_web_view_new_with_context(context));
-
 	webkit_web_context_set_automation_allowed(context,1);
 
 	 webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
 
 	 webkit_cookie_manager_set_persistent_storage(cookiejar, "./cookies.txt",
 		 WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
-
 
 	//WebKitNetworkProxySettings *webkitProxySettings = webkit_network_proxy_settings_new(0, "ignore_hosts");
 	//webkit_web_context_set_network_proxy_settings(context, WEBKIT_NETWORK_PROXY_MODE_CUSTOM, webkitProxySettings);
@@ -673,13 +668,11 @@ void mini_browser() {
 	  	   ///Code for cookies///
 
 	 WebKitSettings *settings = webkit_settings_new();
-
 	// webkit_cookie_manager_set_persistent_storage(cookiejar, "./cookies.txt",
 	// WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
 
 	 g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache",
 	 TRUE, NULL);
-
 	 //set the cookie acceptance policy
 	// webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
 
@@ -695,7 +688,6 @@ void mini_browser() {
 
 	 // Apply the result
 	 webkit_web_view_set_settings (webView, settings);
-
 
 	// Put the browser area into the main window
 	gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
@@ -714,14 +706,12 @@ void mini_browser() {
 
 	// Load a web page into the browser instance
 	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
-
 	// Make sure that when the browser area becomes visible, it will get mouse
 	// and keyboard events
 	gtk_widget_grab_focus(GTK_WIDGET(webView));
 
 	// Make sure the main window and all its contents are visible
 	gtk_widget_show_all(main_window);
-
 	// Run the main GTK+ event loop
 	gtk_main();
 
