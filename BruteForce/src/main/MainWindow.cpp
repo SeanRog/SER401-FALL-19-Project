@@ -539,6 +539,34 @@ static gboolean authenticateCB(WebKitWebView *webView, GtkWidget *window) {
 	return TRUE;
 }
 
+typedef void* user_data;
+
+static void gotWebsiteDataCallback(WebKitWebsiteDataManager *manager, GAsyncResult *asyncResult, user_data)
+{
+    GList *dataList = webkit_website_data_manager_fetch_finish(manager, asyncResult, NULL);
+
+    GString *result = g_string_new(
+        "<html><head>"
+        "<script>"
+        "  function removeData(domain) {"
+        "    window.webkit.messageHandlers.aboutData.postMessage(domain);"
+        "  }"
+        "  function clearData(dataType) {"
+        "    window.webkit.messageHandlers.aboutData.postMessage(dataType);"
+        "  }"
+        "</script></head><body>\n");
+
+    cout<<"data list from fetch"<<endl;
+    if(dataList->next !=0){
+    GList *current = dataList->next;
+    cout<<dataList->data<<endl;
+    while(current->next != 0){
+    	current = dataList->next;
+    cout<<current->data<<endl;}}
+
+}
+
+
 
 Fl_Window *nextWindow;
 bool Auth;
@@ -547,9 +575,10 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 		GtkWidget *window) {
 	cout << "listening" << endl;
 	cout << webkit_web_view_get_uri(webView) << endl;
-
+	 void* data;
 	//CookieManager cookieMonster;
-
+	//webkit_website_data_manager_fetch(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView))), WEBKIT_WEBSITE_DATA_COOKIES, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
+	//webkit_website_data_manager_fetch(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView))), WEBKIT_WEBSITE_DATA_SESSION_STORAGE, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
 		//cookieMonster.newHttpsSession(webkit_web_view_get_uri(webView));
 
 	if (strcmp(webkit_web_view_get_uri(webView),
@@ -557,6 +586,9 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 
 		cout << "Canvas reached! authentication complete!" << endl;
 
+
+		//webkit_website_data_manager_fetch(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView))), WEBKIT_WEBSITE_DATA_COOKIES, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
+		//webkit_website_data_manager_fetch(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView))), WEBKIT_WEBSITE_DATA_SESSION_STORAGE, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
 
 		CookieManager cookieMonster;
 
@@ -606,7 +638,8 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 
 
 
-		// webkit_website_data_manager_fetch(manager, WEBKIT_WEBSITE_DATA_COOKIES, 0, g_async_result_get_user_data(),g_async_result_get_user_data());
+
+		 //webkit_website_data_manager_fetch(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView))), WEBKIT_WEBSITE_DATA_COOKIES, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
 
 		// webkit_website_data_manager_fetch_finish ();
 
@@ -651,8 +684,11 @@ void mini_browser() {
 			webkit_web_context_new_with_website_data_manager(manager);
 
 	//create cookie manager
+	//WebKitCookieManager *cookiejar =
+		//	webkit_website_data_manager_get_cookie_manager(manager);
+
 	WebKitCookieManager *cookiejar =
-			webkit_website_data_manager_get_cookie_manager(manager);
+				webkit_web_context_get_cookie_manager(context);
 
 	// Create a browser instance
 	WebKitWebView *webView = WEBKIT_WEB_VIEW(
@@ -679,6 +715,8 @@ void mini_browser() {
 
 	 g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache",
 	 TRUE, NULL);
+
+
 
 	 //set the cookie acceptance policy
 	// webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
@@ -721,6 +759,12 @@ void mini_browser() {
 
 	// Make sure the main window and all its contents are visible
 	gtk_widget_show_all(main_window);
+
+
+	 void* data;
+		//CookieManager cookieMonster;
+		//webkit_website_data_manager_fetch(manager, WEBKIT_WEBSITE_DATA_COOKIES, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
+		//webkit_website_data_manager_fetch(manager, WEBKIT_WEBSITE_DATA_SESSION_STORAGE, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
 
 	// Run the main GTK+ event loop
 	gtk_main();
