@@ -8,6 +8,8 @@
 #include "DataEntryGUI.h"
 #include "MainWindow.h"
 #include "GUIStyles.h"
+#include "ClassSectionJson.h"
+#include "ClassSection.h"
 #include "main.h"
 
 #include <iostream>
@@ -47,6 +49,24 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win) {
 	//reference to the homepage window
 	prevWindow = win;
 	masterWindow = new Fl_Window(750, 760, "Capstone Team Assignment System");
+
+
+
+	//read in all the courses from canvas.
+	const string CLASS_SECTION_FILE = "./allCourses.json";
+	const int NUM_CLASS_SECTIONS = 4;
+
+	ClassSectionJson CSJson;
+	ClassSection *AllCourses;
+
+
+	AllCourses = CSJson.getAllClassSectionJsonObjects(CLASS_SECTION_FILE);
+
+	//end
+
+	cout<<AllCourses[0].Course_Name<<endl;
+
+
 
 	// Initialize components in scope, but not on main data entry gui
 	GenerateTeamsButton = NULL;

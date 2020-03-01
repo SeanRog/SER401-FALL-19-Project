@@ -269,7 +269,7 @@ void CookieManager::print_cookies(CURL *curl) {
 }
 
 //function to get all courses
-void CookieManager::getCourses(const char * url) {
+void CookieManager::getCourses(const char * token) {
 
 	CURL *curl;
 	CURLcode res;
@@ -295,7 +295,7 @@ void CookieManager::getCourses(const char * url) {
 
 		//get cookie and store in a string buffer.
 
-		//cookieBuffer.append("set-cookie: ");
+		/*//cookieBuffer.append("set-cookie: ");
 		string line;
 
 		ifstream in("./cookies.txt");
@@ -311,16 +311,16 @@ void CookieManager::getCourses(const char * url) {
 		//convert string to char*
 		int length = cookieBuffer.length();
 		char cookie_char[length + 1];
-		strcpy(cookie_char, cookieBuffer.c_str());
+		strcpy(cookie_char, cookieBuffer.c_str());*/
 
-        //headers = curl_slist_append(headers, "Content-Type: application/json");
+        headers = curl_slist_append(headers, "Content-Type: application/json");
 
 		//headers = curl_slist_append(headers, cookie_char);
 
-		//headers = curl_slist_append(headers,
-				//    "Authorization: Bearer <ENTER TOKEN HERE>");
+		headers = curl_slist_append(headers,
+				    token);
 
-		//curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
@@ -341,8 +341,12 @@ void CookieManager::getCourses(const char * url) {
 		std::cout << readBuffer << std::endl;
 
 		//write all the courses to a json file.
+
 		ofstream courses;
 		courses.open("allCourses.json");
+		courses<<"{\"courses\": ";
+		courses<<readBuffer;
+		courses<<"}";
 		courses.close();
 
 		/* Check for errors */

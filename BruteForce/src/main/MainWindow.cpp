@@ -752,7 +752,7 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 
 	//nextWindow = windowMain;
 	cout << "working" << endl;
-
+/*
 
 	if (Authenticated != true) {
 		Auth = false;
@@ -760,15 +760,24 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 
 	}
 
-	Authenticated = Auth;
+	Authenticated = Auth;*/
 
 	windowMain->hide();
 
 	//if(Authenticated == true){
 
-	CookieManager cookieMonster;
+	string auth = "Authorization: Bearer ";
+	string token = "7236~nOgb873N8ZriwOb6ytAGtpiPQGmIY94M95UMrnJnfWKyhODrnGDhbddD62xL06kI";
+	string Auth_token1 = auth + token;
 
-	cookieMonster.getCourses("HI");
+	int length = Auth_token1.length();
+	char token_char[length + 1];
+	strcpy(token_char, Auth_token1.c_str());
+
+	//const char* Auth_token = "Authorization: Bearer 7236~nOgb873N8ZriwOb6ytAGtpiPQGmIY94M95UMrnJnfWKyhODrnGDhbddD62xL06kI";
+
+	CookieManager cookieMonster;
+	cookieMonster.getCourses(token_char);
 
 	DataEntryGUI dataGUI(windowMain);
 	//}

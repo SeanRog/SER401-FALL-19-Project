@@ -29,6 +29,7 @@ public:
 	ClassSectionJson();
 	void ClassSectionWriter(string filename);
 	ClassSection getClassSectionJsonObject(string filename, int i);
+	ClassSection* getAllClassSectionJsonObjects(string filename);
 	~ClassSectionJson();
 };
 

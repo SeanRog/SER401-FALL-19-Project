@@ -21,7 +21,7 @@ public:
 	CookieManager();
 	~CookieManager();
 	int newHttpsSession(const char *hostURL);
-	void getCourses(const char * url);
+	void getCourses(const char * token);
 	void getQuizzes();
 	static size_t WriteCallback(void *contents, size_t size, size_t nmemb,
 			void *userp);
