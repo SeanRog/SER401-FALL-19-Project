@@ -1,6 +1,6 @@
-![Capstone Teams Logo](./Images/CapstoneTeams3.png) #ASU Capstone Team Assignment System
+# ASU Capstone Team Assignment System
 
-
+![Capstone Teams Logo](./Images/CapstoneTeams3.png)
 
 ## Development Team
 
