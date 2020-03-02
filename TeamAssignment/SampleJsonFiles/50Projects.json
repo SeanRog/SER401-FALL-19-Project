@@ -1,0 +1,254 @@
+{ 
+"projects":[
+  {"ProjectID": 001,
+   "Priority": 1,
+   "Skills": [1,0,1,2,1,1,0],
+   "Type": "O" }, 
+
+  {"ProjectID": 002,
+   "Priority": 0,
+   "Skills": [1,2,1,2,1,2,1],
+   "Type": "O" }, 
+
+  {"ProjectID": 003,
+   "Priority": 0,
+   "Skills": [0,1,1,2,2,0,0],
+   "Type": "O" }, 
+
+  {"ProjectID": 004,
+   "Priority": 2,
+   "Skills": [2,2,1,1,1,2,0],
+   "Type": "O" }, 
+
+  {"ProjectID": 005,
+   "Priority": 0,
+   "Skills": [0,2,0,1,1,1,1],
+   "Type": "O" }, 
+
+  {"ProjectID": 006,
+   "Priority": 0,
+   "Skills": [0,0,2,2,1,2,2],
+   "Type": "G" }, 
+
+  {"ProjectID": 007,
+   "Priority": 2,
+   "Skills": [0,2,1,1,2,2,0],
+   "Type": "G" }, 
+
+  {"ProjectID": 008,
+   "Priority": 2,
+   "Skills": [2,1,1,0,0,2,0],
+   "Type": "G" }, 
+
+  {"ProjectID": 009,
+   "Priority": 2,
+   "Skills": [2,1,0,1,2,0,0],
+   "Type": "G" }, 
+
+  {"ProjectID": 010,
+   "Priority": 0,
+   "Skills": [0,2,0,2,2,0,2],
+   "Type": "G" }, 
+
+  {"ProjectID": 011,
+   "Priority": 1,
+   "Skills": [0,0,2,2,0,0,2],
+   "Type": "H" },
+
+  {"ProjectID": 012,
+   "Priority": 2,
+   "Skills": [1,0,0,2,0,1,1],
+   "Type": "H" },
+
+  {"ProjectID": 013,
+   "Priority": 1,
+   "Skills": [0,0,2,0,1,2,1],
+   "Type": "H" },
+
+  {"ProjectID": 014,
+   "Priority": 2,
+   "Skills": [0,2,2,0,0,1,2],
+   "Type": "H" },
+
+  {"ProjectID": 015,
+   "Priority": 1,
+   "Skills": [2,2,1,0,2,1,2],
+   "Type": "H" },
+
+  {"ProjectID": 016,
+   "Priority": 1,
+   "Skills": [0,0,1,0,2,0,2],
+   "Type": "H" },
+
+  {"ProjectID": 017,
+   "Priority": 0,
+   "Skills": [1,0,1,2,0,0,2],
+   "Type": "H" },
+
+  {"ProjectID": 018,
+   "Priority": 1,
+   "Skills": [2,2,2,1,0,2,2],
+   "Type": "H" },
+
+  {"ProjectID": 019,
+   "Priority": 0,
+   "Skills": [2,0,0,1,2,1,0],
+   "Type": "H" },
+
+  {"ProjectID": 020,
+   "Priority": 0,
+   "Skills": [2,2,1,2,0,1,2],
+   "Type": "H" },
+
+  {"ProjectID": 021,
+   "Priority": 2,
+   "Skills": [1,2,2,1,2,1,1],
+   "Type": "H" },
+
+  {"ProjectID": 022,
+   "Priority": 2,
+   "Skills": [1,0,1,2,2,0,0],
+   "Type": "H" },
+
+  {"ProjectID": 023,
+   "Priority": 2,
+   "Skills": [1,0,1,1,2,2,1],
+   "Type": "H" },
+
+  {"ProjectID": 024,
+   "Priority": 2,
+   "Skills": [2,0,1,2,1,2,1],
+   "Type": "H" },
+
+  {"ProjectID": 025,
+   "Priority": 0,
+   "Skills": [1,2,2,0,0,0,0],
+   "Type": "H" },
+
+  {"ProjectID": 026,
+   "Priority": 2,
+   "Skills": [1,1,1,2,2,2,1],
+   "Type": "H" },
+
+  {"ProjectID": 027,
+   "Priority": 1,
+   "Skills": [1,0,0,0,0,2,0],
+   "Type": "H" },
+
+  {"ProjectID": 028,
+   "Priority": 2,
+   "Skills": [0,0,2,2,2,1,2],
+   "Type": "H" },
+
+  {"ProjectID": 029,
+   "Priority": 1,
+   "Skills": [0,2,2,2,1,0,2],
+   "Type": "H" },
+
+  {"ProjectID": 030,
+   "Priority": 0,
+   "Skills": [2,1,0,0,1,2,2],
+   "Type": "H" },
+
+  {"ProjectID": 031,
+   "Priority": 2,
+   "Skills": [0,2,0,1,2,1,1],
+   "Type": "H" },
+
+  {"ProjectID": 032,
+   "Priority": 2,
+   "Skills": [1,0,1,1,0,1,2],
+   "Type": "H" },
+
+  {"ProjectID": 033,
+   "Priority": 0,
+   "Skills": [2,1,0,0,2,2,1],
+   "Type": "H" },
+
+  {"ProjectID": 034,
+   "Priority": 0,
+   "Skills": [2,2,0,0,2,0,0],
+   "Type": "H" },
+
+  {"ProjectID": 035,
+   "Priority": 2,
+   "Skills": [2,0,1,2,2,0,2],
+   "Type": "H" },
+
+  {"ProjectID": 036,
+   "Priority": 0,
+   "Skills": [1,1,2,1,0,1,2],
+   "Type": "H" },
+
+  {"ProjectID": 037,
+   "Priority": 2,
+   "Skills": [1,0,0,1,0,2,1],
+   "Type": "H" },
+
+  {"ProjectID": 038,
+   "Priority": 2,
+   "Skills": [2,2,0,1,2,0,0],
+   "Type": "H" },
+
+  {"ProjectID": 039,
+   "Priority": 0,
+   "Skills": [1,0,0,1,0,2,2],
+   "Type": "H" },
+
+  {"ProjectID": 040,
+   "Priority": 1,
+   "Skills": [1,0,0,2,2,0,2],
+   "Type": "H" },
+
+  {"ProjectID": 041,
+   "Priority": 0,
+   "Skills": [0,1,0,1,1,2,1],
+   "Type": "H" },
+
+  {"ProjectID": 042,
+   "Priority": 0,
+   "Skills": [2,1,1,2,2,2,0],
+   "Type": "H" },
+
+  {"ProjectID": 043,
+   "Priority": 2,
+   "Skills": [2,0,1,0,1,1,2],
+   "Type": "H" },
+
+  {"ProjectID": 044,
+   "Priority": 2,
+   "Skills": [1,0,2,1,0,2,2],
+   "Type": "H" },
+
+  {"ProjectID": 045,
+   "Priority": 1,
+   "Skills": [0,2,1,1,2,2,2],
+   "Type": "H" },
+
+  {"ProjectID": 046,
+   "Priority": 2,
+   "Skills": [2,0,2,2,0,0,1],
+   "Type": "H" },
+
+  {"ProjectID": 047,
+   "Priority": 0,
+   "Skills": [1,2,1,2,2,0,2],
+   "Type": "H" },
+
+  {"ProjectID": 048,
+   "Priority": 0,
+   "Skills": [1,1,1,2,1,1,1],
+   "Type": "H" },
+
+  {"ProjectID": 049,
+   "Priority": 2,
+   "Skills": [1,2,1,1,2,0,0],
+   "Type": "H" },
+
+  {"ProjectID": 050,
+   "Priority": 1,
+   "Skills": [1,1,2,2,1,0,0],
+   "Type": "H" }
+
+  ]
+}

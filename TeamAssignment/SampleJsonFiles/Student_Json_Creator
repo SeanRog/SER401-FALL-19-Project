@@ -1,0 +1,97 @@
+/*
+ * This function creates JSON schmea for students
+ *   - it randomizes student skills and availability
+ *   - it counts up from a given studentID number, 1
+ *   - Divides into class ID based on studentID
+ *   - Sets student Affinity to null, this needs to be done by hand
+ */
+ 
+// included files/libraries
+#include <iostream>
+#include <stdlib.h>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+    //Sets first student ID to 1, will count up from here
+    int studentID = 0000001;
+    
+    //Loops through studentIDs to print
+    for(int j = 1; j < 401; j++) {
+        
+        
+        /*Prints out schema: {"StudentID": (studentID#),
+         * the student ID number is set to have width of 7
+         * if the number (1) is less than 7, it will fill
+         * with 0's. e.g. 0000001
+         */
+        cout << "{\"StudentID\": " << setw(7) << setfill('0') << studentID << ",\n";
+        studentID++;  //Counts up to next studentID
+        
+        
+        /*Prints out schema: "ClassID": (classID),
+         * classID is divided into 4 sections
+         */
+        if(j <= 100) {cout << " \"ClassID\": 0,\n";}
+        if(j >= 101 && j<= 200) {cout << " \"ClassID\": 1,\n";}
+        if(j >= 201 && j<= 300) {cout << " \"ClassID\": 2,\n";}
+        if(j >= 301 && j<= 400) {cout << " \"ClassID\": 3,\n";}
+        
+        
+        /*Prints out schema: "Skills": [(skills)],
+         * ramdomly generates 7 skills with
+         * values 0-4
+         */
+        cout << " \"Skills\": [";
+        for(int i = 0; i < 7; i++){
+            if(i < 6) { cout << rand() % (4 +1) << ",";}
+            else { cout << rand() % (4 +1);}
+        }
+        cout << "],\n";
+        
+        
+        /*Prints out schema: "StudentAffinity": null,
+         */
+        cout << " \"StudentAffinity\": ";
+        if(j %3 == 0) {
+            cout << "[ ";
+            if(j <= 100) {cout << setw(7) << setfill('0') << rand() % (100 + 1) << ", false],\n";}
+            if(j >= 101 && j<= 200) {cout << setw(7) << setfill('0') << rand() % (200-100 + 1) +100 << ", false],\n";}
+            if(j >= 201 && j<= 300) {cout << setw(7) << setfill('0') << rand() % (300-200 + 1) +200 << ", false],\n";}
+            if(j >= 301 && j<= 400) {cout << setw(7) << setfill('0') << rand() % (400-300 + 1) +300 << ", false],\n";}
+        }
+        else if ( j %4 == 0) {
+            cout << "[ ";
+            if(j <= 100) {cout << setw(7) << setfill('0') << rand() % (100 + 1) << ", true],\n";}
+            if(j >= 101 && j<= 200) {cout << setw(7) << setfill('0') << rand() % (200-100 + 1) +100 << ", true],\n";}
+            if(j >= 201 && j<= 300) {cout << setw(7) << setfill('0') << rand() % (300-200 + 1) +200 << ", true],\n";}
+            if(j >= 301 && j<= 400) {cout << setw(7) << setfill('0') << rand() % (400-300 + 1) +300 << ", true],\n";}
+        }
+        else if ( j %5 == 0) {
+            cout << "[ ";
+            if(j <= 100) {cout << setw(7) << setfill('0') << rand() % (100 + 1) << ", true],\n";}
+            if(j >= 101 && j<= 200) {cout << setw(7) << setfill('0') << rand() % (200-100 + 1) +100 << ", true],\n";}
+            if(j >= 201 && j<= 300) {cout << setw(7) << setfill('0') << rand() % (300-200 + 1) +200 << ", true],\n";}
+            if(j >= 301 && j<= 400) {cout << setw(7) << setfill('0') << rand() % (400-300 + 1) +300 << ", true],\n";}
+        }
+        else { cout << "null,\n"; }
+        
+        
+        /*Prints out schema: "Availability": [(Availability)] }
+         * ramdomly generates 4 times with values 0-5
+         */ 
+        cout << " \"Availability\": [";
+        for(int i = 0; i < 4; i++){
+            if(i < 3) { cout << rand() % (5 +1) << ",";}
+            else { cout << rand() % (5 +1);}
+        }
+        if(j < 400 ) {
+        	cout << "] },\n\n";
+        }
+        else if( j == 400) {
+          	cout << "] }\n\n";
+        }      
+    }
+    return 0;
+}

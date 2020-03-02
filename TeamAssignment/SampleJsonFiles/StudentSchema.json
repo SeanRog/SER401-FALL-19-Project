@@ -1,0 +1,11 @@
+
+{ "students":
+  [{
+    "StudentID": { "type": "int" },
+    "ClassID" : { "type": "int" },
+    "Skills": { "type": "array" }, 
+    "StudentAffinity": { "type": "array" },
+    "Availability": { "type": "array" },
+   
+  }]
+}

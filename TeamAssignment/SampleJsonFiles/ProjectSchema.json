@@ -1,0 +1,11 @@
+
+
+
+{ "projects":
+  [{
+    "ProjectID": { "type": "int" },
+    "Priority" : { "type": "int" },
+    "Skills": { "type": "array" }, 
+    "Type":{ "type": "string" } 
+  }]
+}
