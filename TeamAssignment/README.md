@@ -35,7 +35,7 @@ $ cd ./SER401-FALL-19-Project35/BruteForce
 $ chmod u+x install.sh
 $ chmod u+x install.sh
 ```
-Fltk needs to be intalled and configured.
+Fltk needs to be installed and configured.
 (enter the following commands into the same terminal window).
 
 ```
