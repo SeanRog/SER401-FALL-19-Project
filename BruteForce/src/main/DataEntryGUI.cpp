@@ -70,15 +70,15 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win) {
 
 	//end
 	cout<<"Read in all courses!"<<endl;
-	cout<<Courses[0].Course_Name<<endl;
-	cout<<Courses[1].Course_Name<<endl;
+	cout<<Courses[0].Course_Code<<endl;
+	cout<<Courses[1].Course_Code<<endl;
 
 	string courses[NUM_CLASS_SECTIONS];
 	AllCourseNames = courses;
 	AllCourses = Courses;
 
 	for (int i = 0; i < NUM_CLASS_SECTIONS; i++) {
-		AllCourseNames[i] = AllCourses[i].Course_Name;
+		AllCourseNames[i] = AllCourses[i].Course_Code;
 		cout<<AllCourseNames[i]<<endl;
 	}
 
@@ -553,7 +553,7 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 		for (int j = 0; j < num_of_selected_courses; j++) {
 
 
-		if((AllCourses[i].Course_Name).compare(SelectedCourseNames[j]) == 0){
+		if((AllCourses[i].Course_Code).compare(SelectedCourseNames[j]) == 0){
 			classes[j] = AllCourses[i];
 
 		}

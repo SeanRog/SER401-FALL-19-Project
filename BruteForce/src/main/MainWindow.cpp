@@ -757,7 +757,6 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	if (Authenticated != true) {
 		Auth = false;
 		mini_browser();
-
 	}
 
 	Authenticated = Auth;*/
@@ -767,14 +766,12 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	//if(Authenticated == true){
 
 	string auth = "Authorization: Bearer ";
-	string token = "YOUR TOKEN HERE!!";
+	string token = "PUT YOUR TOKEN HERE!";
 	string Auth_token1 = auth + token;
 
 	int length = Auth_token1.length();
 	char token_char[length + 1];
 	strcpy(token_char, Auth_token1.c_str());
-
-
 
 	CookieManager cookieMonster;
 	cookieMonster.getCourses(token_char);
