@@ -33,12 +33,11 @@ class ResultWindow {
 	int bestTeam, worstTeam, percent;
 	int low1, low2, avg1, avg2, high1, high2;
 	int count;
+	int projects[3][200];
 
 public:
 	static int permutations;
 	static int swaps;
-	static int projects [3][200];
-	static int project_pool [2][200];
 
 	Fl_Window *windowResult;
 	Fl_Text_Display *textDisplay;
