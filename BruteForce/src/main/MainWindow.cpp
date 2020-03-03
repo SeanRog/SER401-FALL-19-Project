@@ -597,7 +597,7 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 	 void* data;
 	//CookieManager cookieMonster;
 	//webkit_cookie_manager_get_cookies(webkit_web_context_get_cookie_manager((webkit_web_view_get_context(webView))), webkit_web_view_get_uri(webView), 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
-	webkit_website_data_manager_fetch(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView))), WEBKIT_WEBSITE_DATA_COOKIES, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
+	//webkit_website_data_manager_fetch(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView))), WEBKIT_WEBSITE_DATA_COOKIES, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
 	//webkit_website_data_manager_fetch(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView))), WEBKIT_WEBSITE_DATA_SESSION_STORAGE, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
 		//cookieMonster.newHttpsSession(webkit_web_view_get_uri(webView));
 
@@ -620,9 +620,8 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 		//webkit_website_data_manager_fetch(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView))), WEBKIT_WEBSITE_DATA_COOKIES, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
 		//webkit_website_data_manager_fetch(webkit_web_context_get_website_data_manager((webkit_web_view_get_context(webView))), WEBKIT_WEBSITE_DATA_SESSION_STORAGE, 0, (GAsyncReadyCallback)gotWebsiteDataCallback, data);
 
-		CookieManager cookieMonster;
-
-		cookieMonster.newHttpsSession(webkit_web_view_get_uri(webView));
+		//CookieManager cookieMonster;
+		//cookieMonster.newHttpsSession(webkit_web_view_get_uri(webView));
 
 
 		//Auth = true;
@@ -840,9 +839,9 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 
 	//if(Authenticated == true){
 
-	CookieManager cookieMonster;
+	//CookieManager cookieMonster;
 
-	cookieMonster.getCourses("HI");
+	//cookieMonster.getCourses("HI");
 
 	DataEntryGUI dataGUI(windowMain);
 	//}

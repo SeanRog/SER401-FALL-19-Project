@@ -574,7 +574,7 @@ int main() {
 
 	XInitThreads();
 
-	    optionWindow = new Fl_Window(650, 320, "Capstone Team Assignment System");
+/*	    optionWindow = new Fl_Window(650, 320, "Capstone Team Assignment System");
 	    optionWindow->begin();
 	    optionWindow->color(ASU_WHITE);
 
@@ -622,7 +622,10 @@ int main() {
 		 optionWindow->end();
 		 optionWindow->show();
 
-		Fl::run();
+		Fl::run();*/
+
+	MainWindow mainWin;
+	mainWin.MainWindow2();
 
 	return 0;
 }
