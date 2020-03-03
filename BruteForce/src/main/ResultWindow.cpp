@@ -350,7 +350,7 @@ void ResultWindow::calculateStats() {
 					}
 				}
 
-				count ++;
+				count = count+1;
 			}
 		}
 	}
@@ -358,8 +358,8 @@ void ResultWindow::calculateStats() {
 
 	//calculating average team score
 	for(int i =  0; i < count; i ++) { teamScoreAvg += projects[1][i];	}
-	teamScoreAvg = teamScoreAvg/count;
-
+	//teamScoreAvg = teamScoreAvg/count;
+/*
 	//calculating best team score
 	for(int i =  0; i < count; i ++) {
 		if(projects[1][i] > bestScore) {
@@ -367,7 +367,6 @@ void ResultWindow::calculateStats() {
 			bestTeam = projects[0][i];
 		}
 	}
-
 
 	//calculating worst team score
 	for(int i =  0; i < count; i ++) {
@@ -392,7 +391,7 @@ void ResultWindow::calculateStats() {
 			(projects[1][i]) > (badScore+percent*4)) { high1++;}
 		if((projects[1][i] <= bestScore) &&
 			(projects[1][i]) > (badScore+percent*5)) { high2++;}
-	}
+	}*/
 }
 
 // DESTRUCTOR
