@@ -33,7 +33,7 @@ Clone it locally using git and use make commands to run the software once instal
 $ git clone https://github.com/SeanRog/SER401-FALL-19-Project35
 $ cd ./SER401-FALL-19-Project35/BruteForce
 $ chmod u+x install.sh
-$ sudo ./ install.sh
+$ sudo ./install.sh
 ```
 Fltk needs to be installed and configured.
 (enter the following commands into the same terminal window).
