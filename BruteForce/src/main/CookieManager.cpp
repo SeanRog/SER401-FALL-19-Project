@@ -287,21 +287,36 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 
 	//read in the cookie data from the vector and store it in a string
 	std::string cookies;
+	std::string temp_cookies;
 
 	cookies = cookiedata[0].name;
 	cookies += "=";
 	cookies += cookiedata[0].value;
 	cookies += "; ";
 
+	temp_cookies = cookiedata[0].name;
+	temp_cookies += "=";
+	temp_cookies += cookiedata[0].value;
+	temp_cookies += "; \n";
+
 	for(int i = 1; i < cookiedata.size(); i++){
 		cookies += cookiedata[i].name;
 		cookies += "=";
 		cookies += cookiedata[i].value;
 		cookies += "; ";
+
+		temp_cookies += cookiedata[i].name;
+		temp_cookies += "=";
+		temp_cookies += cookiedata[i].value;
+		temp_cookies += "; \n";
 	}
 
+	//print temp_cookie string to console for debugging
+	cout<<"\n\nTHE CANVAS ASU AUTHENTICATION COOKIES:"<<endl;
+	cout<<temp_cookies<<endl;
+
+
 	//convert the cookie string to a char*
-	cout<<cookies<<endl;
 	int length = cookies.length();
 	char cookie_char[length + 1];
 	strcpy(cookie_char, cookies.c_str());
