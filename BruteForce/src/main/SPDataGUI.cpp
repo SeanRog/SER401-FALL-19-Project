@@ -8,9 +8,12 @@
 #include "SPDataGUI.h"
 #include "SteamPunkGUI1.h"
 #include "GUIStyles.h"
-#include "main.h"
 #include "SteamPunkGUI1.h"
+#include "ClassSectionJson.h"
+#include "ClassSection.h"
+#include "main.h"
 
+#include <bits/stdc++.h>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -136,6 +139,35 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 
 	//reference to the homepage window
 	prevWindow = win;
+
+	ClassSectionJson CSJson;
+
+		//read in all the courses from canvas.
+		const string CLASS_SECTION_FILE = "./allCourses.json";
+		const int NUM_CLASS_SECTIONS = CSJson.getNumClasses(CLASS_SECTION_FILE);
+		num_of_all_courses = NUM_CLASS_SECTIONS;
+		num_of_selected_courses = 0;
+
+		ClassSection Courses[NUM_CLASS_SECTIONS];
+
+
+		CSJson.getAllClassSectionJsonObjects(CLASS_SECTION_FILE, Courses);
+
+		//end
+		cout<<"Read in all courses!"<<endl;
+		cout<<Courses[0].Course_Code<<endl;
+		cout<<Courses[1].Course_Code<<endl;
+
+		string courses[NUM_CLASS_SECTIONS];
+		AllCourseNames = courses;
+		AllCourses = Courses;
+
+		for (int i = 0; i < NUM_CLASS_SECTIONS; i++) {
+			AllCourseNames[i] = AllCourses[i].Course_Code;
+			cout<<AllCourseNames[i]<<endl;
+		}
+
+		remove("allCourses.json");
 
 	// Initialize components in scope, but not on main data entry gui
 	GenerateTeamsButton = NULL;
@@ -405,19 +437,18 @@ void SPDataGUI::FindCoursesClick(Fl_Widget *w) {
 	cout << year << endl;
 	cout << semester << endl;
 
-	for (auto &course : courses) {
-
+	for (int i = 1; i < num_of_all_courses; i++)
+	{  string course = AllCourseNames[i];
 		if ((course.find(year) != string::npos)
 				&& (course.find(semester) != string::npos)) {
-
 			int length = course.length();
 			char course_char[length + 1];
 			strcpy(course_char, course.c_str());
-
 			cout << course << endl;
 			classBrowser->add(course_char);
 		}
 	}
+
 
 	XInitThreads();
 	thread threads[1];
@@ -541,6 +572,9 @@ void SPDataGUI::CancelClick2(Fl_Widget *w) {
 void SPDataGUI::ConfirmClick(Fl_Widget *w) {
 
 	confirmWindow = new Fl_Window(850, 220, "Confirmation Window");
+	//course selection values
+	vector <string> selections;
+	int course_count = 0;
 
 	//project file values
 	string proj = fileInput_Project->value();
@@ -562,15 +596,39 @@ void SPDataGUI::ConfirmClick(Fl_Widget *w) {
 		if (classBrowser->checked(i)) {
 			if (first == 0) {
 				classes = classes + classBrowser->text(i);
+			   //int char_size = sizeof(classBrowser->text(i)) / sizeof(char);
+				//string text1 = convertToString(classBrowser->text(i), char_size);
+				//selections[i] = text1;
+				selections.push_back(classBrowser->text(i));
+
+				course_count++;
 				first = 1;
 			} else {
 				classes = classes + ", " + classBrowser->text(i);
+				selections.push_back(classBrowser->text(i));
+				//selections[i] = classBrowser->text(i);
+				//selections[i] = classBrowser->text(i);
+				course_count++;
 			}
 		}
 	}
 	length = classes.length();
 	char prompt3[length + 1];
 	strcpy(prompt3, classes.c_str());
+
+	string s[course_count];
+	if(course_count>0){
+
+	//once courses are selected read and store them in a string array
+
+	for (int i = 0; i < course_count; i++) {
+		s[i] = selections[i];
+
+		cout<<selections[i]<<endl;
+	}
+	num_of_selected_courses = course_count;
+	SelectedCourseNames = s;
+	}
 
 	confirmWindow->begin();
 
@@ -640,6 +698,29 @@ void SPDataGUI::ConfirmClick(Fl_Widget *w) {
 }
 
 void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
+
+	//store the selected class sections into a new Class section Array.
+		//for use in the assignment system.
+		ClassSection classes[num_of_selected_courses];
+
+		for (int i = 0; i < num_of_all_courses; i++) {
+			for (int j = 0; j < num_of_selected_courses; j++) {
+
+
+			if((AllCourses[i].Course_Code).compare(SelectedCourseNames[j]) == 0){
+				classes[j] = AllCourses[i];
+
+			}
+
+			}
+
+		}
+		SelectedCourses=classes;
+
+		for (int j = 0; j < num_of_selected_courses; j++) {
+
+			cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
+		}
 
 	masterWindow->hide();
 	confirmWindow->hide();

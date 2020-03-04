@@ -278,6 +278,7 @@ void CookieManager::print_cookies(CURL *curl) {
 //function to get all courses
 void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 
+
 	CURL *curl;
 	CURLcode res;
 	std::string readBuffer;
@@ -319,8 +320,6 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 
 		curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
 
-
-
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
 
@@ -329,11 +328,17 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 
 		res = curl_easy_perform(curl);
 
+		readBuffer.erase(0,9);
 		std::cout << readBuffer << std::endl;
 
+
 		//write all the courses to a json file.
+
 		ofstream courses;
 		courses.open("allCourses.json");
+		courses<<"{\"courses\": ";
+		courses<<readBuffer;
+		courses<<"}";
 		courses.close();
 
 		/* Check for errors */

@@ -22,6 +22,9 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <iostream>
+#include <cstdlib>
+#include <stdio.h>
 
 ClassSectionJson::ClassSectionJson() {
 	// TODO Auto-generated constructor stub
@@ -91,3 +94,70 @@ ClassSection ClassSectionJson::getClassSectionJsonObject(string filename,
 
 	return classSection;
 }
+
+const int ClassSectionJson::getNumClasses(string filename){
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	const int numberOfCourses = obj["courses"].size();
+
+	return numberOfCourses;
+
+}
+
+void ClassSectionJson::getAllClassSectionJsonObjects(string filename, ClassSection courses[])
+{
+
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	const int numberOfCourses = obj["courses"].size();
+
+	ClassSection classSection[numberOfCourses];
+
+	for (int i = 1; i < numberOfCourses; i++) {
+
+	classSection[i].OfficialClassID =
+			obj["courses"].get((int) i, "")["id"].asInt();
+	classSection[i].Course_Name =
+			obj["courses"].get((int) i, "")["name"].asString();
+	classSection[i].Course_Code =
+			obj["courses"].get((int) i, "")["course_code"].asString();
+
+	//The actual course_format may not work, because the information is not 100% accurate
+	//from Canvas. some online courses come out as "on_campus".
+	string course_format =
+			obj["courses"].get((int) i, "")["course_format"].asString();
+	if (course_format.compare("online") == 0) {
+		classSection[i].Type = 'O';
+
+	} else if (course_format.compare("on_campus") == 0) {
+		classSection[i].Type = 'G';
+	}
+
+	classSection[i].ClassID =
+			(char) obj["courses"].get((int) i, "")["ClassID"].asInt();
+
+	/*
+	 string tempType;
+	 tempType = obj["class sections"].get((int)i, "")["Type"].asString();
+
+	 classSection.Type = tempType[0];
+	 classSection.ClassID =
+	 (char)obj["class sections"].get((int)i, "")["ClassID"].asInt();*/
+
+	cout<<classSection[i].Course_Name<<endl;
+
+	*(courses + i-1) = classSection[i];
+	}
+
+
+	//return classSection;
+}
+

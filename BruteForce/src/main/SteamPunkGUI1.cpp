@@ -728,6 +728,7 @@ static gboolean load_changedWebViewCb1(WebKitWebView *webView,
 			Auth1 = true;
 			//quit the mini-browser
 			gtk_main_quit();
+
 			//TO-DO Find a way to close the browser window correctly,
 			//as it eats up memory while open.
 

@@ -712,6 +712,7 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 
 	DataEntryGUI dataGUI(windowMain);
 
+
 }
 
 int MainWindow::handle(int event) {
