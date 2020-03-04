@@ -30,14 +30,14 @@ class ResultWindow {
 	void saveClicked(Fl_Widget *w);
 
 	int teamScoreAvg, bestScore, badScore;
-	int bestTeam, worstTeam, percent;
+	int bestTeam, worstTeam, percent, notAssign;
 	int low1, low2, avg1, avg2, high1, high2;
-	int count;
-	int projects[3][200];
 
 public:
 	static int permutations;
 	static int swaps;
+	static int count;
+	static int project_pool[3][200];
 
 	Fl_Window *windowResult;
 	Fl_Text_Display *textDisplay;

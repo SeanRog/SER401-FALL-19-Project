@@ -82,6 +82,8 @@ using namespace std;
 using namespace std::chrono;
 int ResultWindow::permutations = 0;
 int ResultWindow::swaps = 0;
+int ResultWindow::project_pool[3][200]= {};
+
 //Constructor
 StudentsToProjects::StudentsToProjects() {
 }
@@ -906,6 +908,12 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	cout << "RESULT FOR SECTION " + to_string(studentPool[0].ClassID) << endl;
 
 	for (int i = 0; i < numProjects; i++) {
+
+		for(int j = 0; j < ResultWindow::count; j++) {
+			if(bestSet[i].projectID == ResultWindow::project_pool[0][j]) {
+				ResultWindow::project_pool[2][j] = bestSet[i].TeamScore;
+		}	}
+
 		cout << "Team for project#" + to_string(bestSet[i].projectID) + " ";
 
 		result.append("PROJECT#" + to_string(bestSet[i].projectID) + ": ");

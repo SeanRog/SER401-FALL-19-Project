@@ -44,7 +44,6 @@ constexpr int toConstInt(int constInt) {
 }
 
 
-
 /* constructor, preps the results window and buffer */
 ResultWindow::ResultWindow() {
 
@@ -263,20 +262,29 @@ void ResultWindow::addText() {
 
 
 	for(int i = 0; i < count; i ++) {
-		if(projects[2][i] == 0) {
+		if(project_pool[1][i] == 0 && project_pool[2][i] != 0) {
 			char priob[2];
-			buff = sprintf(priob, "%d", projects[1][i]);
+			buff = sprintf(priob, "%d", project_pool[2][i]);
 			const char *prioa = priob;
-			barChart->add(projects[1][i], prioa, ASU_WHITE);
+			barChart->add(project_pool[2][i], prioa, ASU_BLUE);
 		}
 	}
 
 	for(int i = 0; i < count; i ++) {
-		if(projects[2][i] == 1) {
+		if(project_pool[1][i] == 1 && project_pool[2][i] != 0) {
 			char priob[2];
-			buff = sprintf(priob, "%d", projects[1][i]);
+			buff = sprintf(priob, "%d", project_pool[2][i]);
 			const char *prioa = priob;
-			barChart->add(projects[1][i], prioa, ASU_GOLD);
+			barChart->add(project_pool[2][i], prioa, ASU_ORANGE);
+		}
+	}
+
+	for(int i = 0; i < count; i ++) {
+		if(project_pool[1][i] == 2 && project_pool[2][i] != 0) {
+			char priob[2];
+			buff = sprintf(priob, "%d", project_pool[2][i]);
+			const char *prioa = priob;
+			barChart->add(project_pool[2][i], prioa, ASU_GOLD);
 		}
 	}
 
@@ -294,85 +302,41 @@ void ResultWindow::addText() {
 void ResultWindow::calculateStats() {
 
 	//initialize variables
-	teamScoreAvg = 0, bestScore = 0, badScore = 100, count = 0;
+	teamScoreAvg = 0, bestScore = 0, badScore = 100, notAssign=0;
+	int next1=0, next2=0;
 	low1 =0, low2 =0, avg1 =0, avg2 =0, high1 =0, high2 =0;
 	string line;
 
-	//open results and store into a 2D array [project#][TeamScore]
-	ifstream resultFile;
-	resultFile.open("./results.txt");
-	if (resultFile.is_open()) {
-		while (!resultFile.eof()) {
-
-
-			char score[2];
-			char proj[2];
-			int value;
-			resultFile >> line;
-
-			string temp2 = line.substr(0,4);
-			string temp3 = "Proj";
-			if(temp3.compare(temp2) == 0) {
-
-
-				if(line[9] == ':') {
-					proj[0] = '0';
-					proj[1] = line[8];
-					value = atoi(proj);
-					projects[0][count] = value;
-
-					score[0] = line[22];
-					score[1] = line[23];
-					value = atoi(score);
-					projects[1][count] = value;
-
-					if(line[28] == '!') {
-						projects[2][count] = 1;
-					} else {
-						projects[2][count] = 0;
-					}
-
-				} else {
-					proj[0] = line[8];
-					proj[1] = line[9];
-					value = atoi(proj);
-					projects[0][count] = value;
-
-					score[0] = line[23];
-					score[1] = line[24];
-					value = atoi(score);
-					projects[1][count] = value;
-
-					if(line[29] == '!') {
-						projects[2][count] = 1;
-					} else {
-						projects[2][count] = 0;
-					}
-				}
-
-				count = count+1;
-			}
-		}
+	for(int i = 0; i < count; i++) {
+		cout << project_pool[0][i] << " " << project_pool[1][i] << " " <<
+				project_pool[2][i] << "\n";
 	}
 
 
 	//calculating average team score
-	for(int i =  0; i < count; i ++) { teamScoreAvg += projects[1][i];	}
-	//teamScoreAvg = teamScoreAvg/count;
-/*
+	for(int i =  0; i < count; i ++) {
+		if(project_pool[2][i] != 0) {
+			teamScoreAvg += project_pool[2][i];
+		} else {
+			notAssign++;
+		}
+	}
+
+	teamScoreAvg = teamScoreAvg/(count-notAssign);
+
 	//calculating best team score
 	for(int i =  0; i < count; i ++) {
-		if(projects[1][i] > bestScore) {
-			bestScore = projects[1][i];
-			bestTeam = projects[0][i];
+		if(project_pool[2][i] > bestScore) {
+			bestScore = project_pool[2][i];
+			bestTeam = i;
 		}
 	}
 
 	//calculating worst team score
 	for(int i =  0; i < count; i ++) {
-		if(projects[1][i] < badScore) {
-			badScore = projects[1][i];
-			worstTeam = projects[0][i];
+		if((project_pool[2][i] < badScore) && (project_pool[2][i] != 0)) {
+			badScore = project_pool[2][i];
+			worstTeam = i;
 		}
 	}
 
@@ -380,19 +344,20 @@ void ResultWindow::calculateStats() {
 
 	//filling teams within 6 data groups for pie chart
 	for(int i =  0; i < count; i ++) {
-		if(projects[1][i] <= (badScore+percent)) { low1++;	}
-		if((projects[1][i] <= badScore+(percent*2)) &&
-			(projects[1][i]) > (badScore+percent)) { low2++;	}
-		if((projects[1][i] <= badScore+(percent*3)) &&
-			(projects[1][i]) > (badScore+percent*2)) { avg1++;	}
-		if((projects[1][i] <= badScore+(percent*4)) &&
-			(projects[1][i]) > (badScore+percent*3)) { avg2++;	}
-		if((projects[1][i] <= badScore+(percent*5)) &&
-			(projects[1][i]) > (badScore+percent*4)) { high1++;}
-		if((projects[1][i] <= bestScore) &&
-			(projects[1][i]) > (badScore+percent*5)) { high2++;}
-	}*/
+		if(project_pool[2][i] <= (badScore+percent)) { low1++;	}
+		if((project_pool[2][i] <= badScore+(percent*2)) &&
+			(project_pool[2][i]) > (badScore+percent)) { low2++;	}
+		if((project_pool[2][i] <= badScore+(percent*3)) &&
+			(project_pool[2][i]) > (badScore+percent*2)) { avg1++;	}
+		if((project_pool[2][i] <= badScore+(percent*4)) &&
+			(project_pool[2][i]) > (badScore+percent*3)) { avg2++;	}
+		if((project_pool[2][i] <= badScore+(percent*5)) &&
+			(project_pool[2][i]) > (badScore+percent*4)) { high1++;}
+		if((project_pool[2][i] <= bestScore) &&
+			(project_pool[2][i]) > (badScore+percent*5)) { high2++;}
+	}
 }
+
 
 // DESTRUCTOR
 ResultWindow::~ResultWindow() {
