@@ -56,6 +56,7 @@
 using namespace std;
 int SteamPunkGUI1::num_projects = 0;
 int SteamPunkGUI1::num_students = 0;
+string SPGprojfile;
 
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
@@ -77,6 +78,8 @@ Fl_PNG_Image *EndTrainPngs[9];
 Fl_PNG_Image *Gears1Pngs[10];
 Fl_PNG_Image *Gears3Pngs[10];
 Fl_PNG_Image *Gears2Pngs[10];
+
+
 
 void GearsAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2) {
 
@@ -608,7 +611,8 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
-	m.main_run(num_projects, num_students, progressBar, terminalBuffer);
+	cout << SPGprojfile << " SPGgui" <<endl;
+	m.main_run(num_projects, num_students, SPGprojfile, progressBar, terminalBuffer);
 
 	//join threads
 	for (int i = 0; i < 1; i++) {
@@ -701,6 +705,7 @@ void mini_browserSP() {
 	char **argv;
 
 	//Initialize GTK+
+
 	gtk_init(&argc, &argv);
 
 	// Create an 800x600 window that will contain the browser instance

@@ -36,17 +36,21 @@ class SteamPunkGUI1 {
 	//this function calls the real TeamsButtonClick callback function.
 	static void static_TeamsButtonClick(Fl_Widget *w, void *data) {
 		((SteamPunkGUI1*) data)->TeamsButtonClick(w);
+
 	}
 
 	static void static_ProgressTeamsButtonClick(Fl_Widget *w, void *data) {
 		((SteamPunkGUI1*) data)->ProgressTeamsButtonClick(w);
+
 	}
 	static void static_DoneButtonClick(Fl_Widget *w, void *data) {
 		((SteamPunkGUI1*) data)->DoneButtonClick(w);
+
 	}
 
 	static void static_StartButtonClick(Fl_Widget *w, void *data) {
 		((SteamPunkGUI1*) data)->StartButtonClick(w);
+
 	}
 
 	// callback functions
@@ -59,6 +63,7 @@ class SteamPunkGUI1 {
 public:
 	static int num_projects;
 	static int num_students;
+	string SPGprojfile;
 	bool nextWindowFlag;
 	bool Authenticated;
 
