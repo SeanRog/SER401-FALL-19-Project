@@ -21,7 +21,7 @@
 
 #include <gtk/gtk.h>
 #include <webkit2/webkit2.h>
-
+#include <libsoup/soup.h>
 #include <curl/curl.h>
 #include <iostream>
 #include <algorithm>
@@ -276,7 +276,7 @@ void CookieManager::print_cookies(CURL *curl) {
 }
 
 //function to get all courses
-void CookieManager::getCourses(const char * url) {
+void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 
 	CURL *curl;
 	CURLcode res;
@@ -284,6 +284,31 @@ void CookieManager::getCourses(const char * url) {
 	std::string cookieBuffer;
 	struct curl_slist *headers = NULL;
 
+	//read in the cookie data from the vector and store it in a string
+	std::string cookies;
+
+	cookies = cookiedata[0].name;
+	cookies += "=";
+	cookies += cookiedata[0].value;
+	cookies += "; ";
+
+	for(int i = 1; i < cookiedata.size(); i++){
+		cookies += cookiedata[i].name;
+		cookies += "=";
+		cookies += cookiedata[i].value;
+		cookies += "; ";
+	}
+
+	//convert the cookie string to a char*
+	cout<<cookies<<endl;
+	int length = cookies.length();
+	char cookie_char[length + 1];
+	strcpy(cookie_char, cookies.c_str());
+
+	char *cookiesAll = cookie_char;
+	cout<<cookiesAll<<endl;
+
+	//start libcurl
 	curl = curl_easy_init();
 
 	if (curl) {
@@ -291,57 +316,16 @@ void CookieManager::getCourses(const char * url) {
 		//		"https://canvas.asu.edu/api/v1/courses?page=1&per_page=100");
 		curl_easy_setopt(curl, CURLOPT_URL,
 				"https://canvas.asu.edu/api/v1/courses?page=1&per_page=100");
-		curl_easy_setopt(curl, CURLOPT_NETRC, CURL_NETRC_REQUIRED);
 
-		//curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1L);
-		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt");
-		//curl_easy_setopt(curl, CURLOPT_COOKIELIST, "RELOAD");
-		curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
+		curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
 
 
-
-		//get cookie and store in a string buffer.
-
-		//cookieBuffer.append("set-cookie: ");
-		string line;
-
-		ifstream in("./cookies.txt");
-		if (in.is_open()) {
-			while (getline (in,line)){
-				cookieBuffer.append("Set-Cookie: ");
-				cookieBuffer.append(line);
-				cookieBuffer.append(";\n");
-			}
-			in.close();
-
-		}
-		//convert string to char*
-		int length = cookieBuffer.length();
-		char cookie_char[length + 1];
-		strcpy(cookie_char, cookieBuffer.c_str());
-
-        //headers = curl_slist_append(headers, "Content-Type: application/json");
-
-		//headers = curl_slist_append(headers, cookie_char);
-
-		//headers = curl_slist_append(headers,
-				//    "Authorization: Bearer <ENTER TOKEN HERE>");
-
-		//curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
 
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-
-		curl_easy_setopt(curl, CURLOPT_UNRESTRICTED_AUTH, 1L);
-		curl_easy_setopt(curl, CURLOPT_HTTPAUTH, 1L);
-		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, FALSE);
-		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-
-		curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_ALL);
-
 
 		res = curl_easy_perform(curl);
 
@@ -359,7 +343,6 @@ void CookieManager::getCourses(const char * url) {
 		}
 	}
 
-	print_cookies(curl);
 	/* always cleanup */
 	curl_easy_cleanup(curl);
 }
