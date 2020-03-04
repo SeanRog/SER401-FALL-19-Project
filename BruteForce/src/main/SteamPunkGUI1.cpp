@@ -765,12 +765,6 @@ void mini_browserSP() {
 
 	webkit_web_context_set_automation_allowed(context, 1);
 
-	webkit_cookie_manager_set_accept_policy(cookiejar,
-			WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
-
-	webkit_cookie_manager_set_persistent_storage(cookiejar, "./cookies.txt",
-			WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
-
 	WebKitSettings *settings = webkit_settings_new();
 
 	g_object_set(G_OBJECT(settings), "enable-offline-web-application-cache",
