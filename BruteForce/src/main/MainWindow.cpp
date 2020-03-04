@@ -702,7 +702,6 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	cookieMonster.getCourses(cookiedata);
 
 	DataEntryGUI dataGUI(windowMain);
-
 }
 
 int MainWindow::handle(int event) {
