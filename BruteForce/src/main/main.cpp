@@ -533,8 +533,6 @@ int tempProj, tempStud, textInput;
 
 Fl_Window *optionWindow;
 
-string *csvProjectFileName;
-
 
 //Callback for the Steampunk option button.
 //Opens the Steampunk version of the GUI
@@ -574,7 +572,7 @@ int main() {
 
 	XInitThreads();
 
-/*	    optionWindow = new Fl_Window(650, 320, "Capstone Team Assignment System");
+	    optionWindow = new Fl_Window(650, 320, "Capstone Team Assignment System");
 	    optionWindow->begin();
 	    optionWindow->color(ASU_WHITE);
 
@@ -622,10 +620,9 @@ int main() {
 		 optionWindow->end();
 		 optionWindow->show();
 
-		Fl::run();*/
+		Fl::run();
 
-	MainWindow mainWin;
-	mainWin.MainWindow2();
+
 
 	return 0;
 }
@@ -646,12 +643,29 @@ int main() {
  *Returns:
  *	int value 0.
  */
-int main::main_run(int projects_input, int students_input, Fl_Progress *pb, Fl_Text_Buffer *tb) {
+int main::main_run(int projects_input, int students_input, string filename, Fl_Progress *pb, Fl_Text_Buffer *tb) {
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
 	srand(time(NULL));
-
+	string file = "";
+	string file2 = "";
 	cout << "Hi Team 35" << endl;
+	cout << "main " << filename << endl;
+	for (int i = filename.length() - 1; i >= 0; i--) {
+		file.push_back(filename.at(i));
+		if(filename.at(i) == 47) {
+			file.push_back('.');
+			break;
+		}
+	}
+
+	for(int i = file.length() - 1; i >=0; i--) {
+		file2.push_back(file.at(i));
+	}
+	for(int i = 0; i < file.length(); i++) {
+			cout << file2.at(i) << ',';
+		}
+	cout << endl;
 
 	//set up the progress bar with 5 percent
 	progressBar = pb;
@@ -681,7 +695,11 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb, Fl_T
 	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS);
 
 	//const string PROJECT_FILE = "./newProjects.json";
-	const string PROJECT_FILE = "./100Projects.csv";
+	cout << endl;
+	cout << filename << endl;
+
+	//const string PROJECT_FILE = "./100Projects.csv";
+	const string PROJECT_FILE = file2;
 	const string STUDENT_FILE = "./newStudents.json";
 	const string CLASS_SECTION_FILE = "./SampleJsonFiles/4ClassSections.json";
 
@@ -884,4 +902,6 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb, Fl_T
 	//t.PrintProjectPool(PROJECT_POOL, NUM_PROJECTS, NUM_SKILLS);
 	//t.PrintStudentPool(STUDENT_POOL, NUM_STUDENTS, NUM_SKILLS);
 	//t.PrintProjectStudentSkills(PROJECT_STUDENT_SKILLS, NUM_PROJECTS, NUM_STUDENTS);
+
+	return 1;
 }

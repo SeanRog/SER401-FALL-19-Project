@@ -53,9 +53,10 @@ class MainWindow {
 public:
 	static int num_projects;
 	static int num_students;
-	string csvProjectFileName;
+	//string csvProjectFileName;
 	bool nextWindowFlag;
 	bool Authenticated;
+	string mwProjfile;
 
 	//progress bar window
 	int barCount;

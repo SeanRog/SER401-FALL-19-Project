@@ -62,6 +62,7 @@ using namespace std;
 
 int MainWindow::num_projects = 0;
 int MainWindow::num_students = 0;
+//string mwProjfile;
 
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
@@ -110,7 +111,15 @@ MainWindow::~MainWindow() {
 
 }
 
+void running(Fl_Window *w){
+
+	while (w->shown() == true) {
+
+	}
+}
+
 void MainWindow::MainWindow2() {
+
 	const int windowMainW = 750;
 	const int windowMainH = 450;
 	const char windowMainStr[] =
@@ -246,8 +255,8 @@ void MainWindow::MainWindow2() {
 		}
 
 		tabs->end();
-
 	}
+
 
 	/* for running / testing inputs */
 	inputprojects = new Fl_Int_Input(150, 400, 200, 30, "#Projects:");
@@ -257,8 +266,10 @@ void MainWindow::MainWindow2() {
 	windowMain->show();
 	windowMain->end();
 
+
 	//tabs->show();
 	Fl::run();
+
 
 }
 
@@ -376,7 +387,6 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 
 	progressBar->value(0);
 	progressBar->label(0);
-
 	TeamsButton->callback(static_ProgressTeamsButtonClick, this);
 	doneButton->callback(static_DoneButtonClick, this);
 	progressWindow->redraw();
@@ -471,7 +481,7 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
 
-	m.main_run(num_projects, num_students, progressBar, terminalBuffer);
+	m.main_run(num_projects, num_students, mwProjfile, progressBar, terminalBuffer);
 
 	//join threads
 	for (int i = 0; i < 1; i++) {
@@ -528,7 +538,6 @@ static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window) {
 
 typedef void *user_data;
 vector<SoupCookie> cookiedata;
-Fl_Window *nextWindow;
 bool Auth;
 
 //callback function for the cookie fetch method. stores the cookies in a vector.
@@ -582,7 +591,7 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 		if (webkit_web_view_is_loading(webView) == false) {
 
 			cout << "Canvas reached! authentication complete!" << endl;
-
+			Auth = true;
 			//quit the mini-browser
 			gtk_main_quit();
 			//TO-DO Find a way to close the browser window correctly,
@@ -599,7 +608,7 @@ void mini_browser() {
 
 	int argc;
 	char **argv;
-
+	cout<< "Working2"<<endl;
 	//Initialize GTK+
 	gtk_init(&argc, &argv);
 
@@ -702,6 +711,7 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	cookieMonster.getCourses(cookiedata);
 
 	DataEntryGUI dataGUI(windowMain);
+
 }
 
 int MainWindow::handle(int event) {
@@ -720,6 +730,7 @@ int MainWindow::handle(int event) {
 }
 
 void MainWindow::callTeams(Fl_Widget *w) {
+
 
 	TeamsButtonClick(windowMain);
 

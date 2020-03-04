@@ -17,7 +17,7 @@
 #include "SPDataGUI.h"
 #include "GUIStyles.h"
 #include "ResultWindow.h"
-//#include "CanvasUtility.h"
+#include "CookieManager.h"
 #include "main.h"
 
 #include <iostream>
@@ -25,6 +25,7 @@
 #include <string>
 #include <cstdlib>
 #include <thread>
+#include <vector>
 #include <stdio.h>
 #include <FL/names.h>
 #include <sys/types.h>
@@ -51,11 +52,13 @@
 
 #include <gtk/gtk.h>
 #include <webkit2/webkit2.h>
+#include <libsoup/soup.h>
 #include <curl/curl.h>
 
 using namespace std;
 int SteamPunkGUI1::num_projects = 0;
 int SteamPunkGUI1::num_students = 0;
+//string SPGprojfile;
 
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
@@ -77,6 +80,8 @@ Fl_PNG_Image *EndTrainPngs[9];
 Fl_PNG_Image *Gears1Pngs[10];
 Fl_PNG_Image *Gears3Pngs[10];
 Fl_PNG_Image *Gears2Pngs[10];
+
+
 
 void GearsAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2) {
 
@@ -608,7 +613,8 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
-	m.main_run(num_projects, num_students, progressBar, terminalBuffer);
+	cout << SPGprojfile << " SPGgui" <<endl;
+	m.main_run(num_projects, num_students, SPGprojfile, progressBar, terminalBuffer);
 
 	//join threads
 	for (int i = 0; i < 1; i++) {
@@ -662,39 +668,76 @@ static gboolean closeWebViewCb1(WebKitWebView *webView, GtkWidget *window) {
 	return TRUE;
 }
 
-Fl_Window *nextWindow1;
+typedef void *user_data;
+vector<SoupCookie> cookiedata1;
+
 bool Auth1;
 
+//callback function for the cookie fetch method. stores the cookies in a vector.
+static void getCookiesCB1(WebKitCookieManager *manager, GAsyncResult *asyncResult) {
+	//GList *dataList = webkit_website_data_manager_fetch_finish(manager, asyncResult, NULL);
+
+	GList *dataList = webkit_cookie_manager_get_cookies_finish(manager,
+			asyncResult, NULL);
+
+	//clear cookie data from the vector
+	cookiedata1.clear();
+
+	SoupCookie *cookies;
+
+	int i = 0;
+	for (GList *l = dataList; l && l->data; l = g_list_next(l)) {
+
+		cookies = (SoupCookie*) l->data;
+		cout << cookies->name << endl;
+		cout << cookies->value << endl;
+		cout << cookies->domain << endl;
+		cout << cookies->path << endl;
+		cout << cookies->expires << endl;
+
+		//add the current cookie to the cookiedata vector
+		cookiedata1.push_back(*cookies);
+		i++;
+	}
+}
+
+
+//callback that listens for a change in the url in the mini-browser
 static gboolean load_changedWebViewCb1(WebKitWebView *webView,
 		GtkWidget *window) {
 	cout << "listening" << endl;
 	cout << webkit_web_view_get_uri(webView) << endl;
+	void *data;
+
+	//Get request for the current cookies in the mini-browser session.
+	webkit_cookie_manager_get_cookies(
+			webkit_web_context_get_cookie_manager(
+					(webkit_web_view_get_context(webView))),
+			webkit_web_view_get_uri(webView), 0,
+			(GAsyncReadyCallback) getCookiesCB1, data);
+
+	//check to see if the login success page has been reached.
 	if (strcmp(webkit_web_view_get_uri(webView),
 			"https://canvas.asu.edu/?login_success=1") == 0) {
 
-		cout << "Canvas reached! authentication complete!" << endl;
+		//check to see if the login success page is done loading.
+		if (webkit_web_view_is_loading(webView) == false) {
 
-		Auth1 = true;
-		//todo- read in and store the cookies to cookies.txt
+			cout << "Canvas reached! authentication complete!" << endl;
 
-		//close the mini-browser window because authentication is complete.
+			Auth1 = true;
+			//quit the mini-browser
+			gtk_main_quit();
+			//TO-DO Find a way to close the browser window correctly,
+			//as it eats up memory while open.
 
-		//gtk_main_quit();
-
-		//hide the main window
-		//nextWindow->hide();
-
-		//gtk_widget_hide(window);
-		gtk_main_quit();
-
-		//call to next GUI window.
-		//DataEntryGUI dataGUI(nextWindow);
-
+		}
 	}
 
 	return TRUE;
 }
 
+//function create and open the mini-browser session
 void mini_browserSP() {
 
 	int argc;
@@ -708,67 +751,51 @@ void mini_browserSP() {
 	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
 	gtk_window_set_title(GTK_WINDOW(main_window), "ASU Canvas Authentication");
 	//create the data manager
-	WebKitWebsiteDataManager *manager1 = webkit_website_data_manager_new(0);
+	WebKitWebsiteDataManager *manager = webkit_website_data_manager_new(0);
 	//create the context
-	WebKitWebContext *context1 =
-			webkit_web_context_new_with_website_data_manager(manager1);
-
+	WebKitWebContext *context =
+			webkit_web_context_new_with_website_data_manager(manager);
 	//create cookie manager
-	WebKitCookieManager *cookiejar1 =
-			webkit_website_data_manager_get_cookie_manager(manager1);
-
+	WebKitCookieManager *cookiejar = webkit_web_context_get_cookie_manager(
+			context);
 	// Create a browser instance
-	WebKitWebView *webView1 = WEBKIT_WEB_VIEW(
-			webkit_web_view_new_with_context(context1));
+	WebKitWebView *webView = WEBKIT_WEB_VIEW(
+			webkit_web_view_new_with_context(context));
 
-	/*
-	 * 	   ///Code for cookies///
+	webkit_web_context_set_automation_allowed(context, 1);
 
-	 WebKitSettings *settings = webkit_settings_new();
+	webkit_cookie_manager_set_accept_policy(cookiejar,
+			WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
 
+	webkit_cookie_manager_set_persistent_storage(cookiejar, "./cookies.txt",
+			WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
 
-	 webkit_cookie_manager_set_persistent_storage(cookiejar, "cookies.txt",
-	 WEBKIT_COOKIE_PERSISTENT_STORAGE_TEXT);
+	WebKitSettings *settings = webkit_settings_new();
 
-	 g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache",
-	 TRUE, NULL);
+	g_object_set(G_OBJECT(settings), "enable-offline-web-application-cache",
+	TRUE, NULL);
 
-	 //set the cookie acceptance policy
-	 webkit_cookie_manager_set_accept_policy(cookiejar, WEBKIT_COOKIE_POLICY_ACCEPT_ALWAYS);
-
-	 //get session
-	 //webkit_website_data_manager_fetch(manager, WEBKIT_WEBSITE_DATA_COOKIES, NULL, );
-
-	 // webkit_website_data_manager_fetch_finish ();
-
-
-	 //add the cookie
-	 //  webkit_cookie_manager_add_cookie(cookiejar, );
-
-
-	 // Apply the result
-	 webkit_web_view_set_settings (webView, settings);
-	 */
+	// Apply the result
+	webkit_web_view_set_settings(webView, settings);
 
 	// Put the browser area into the main window
-	gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView1));
+	gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
 
 	// Set up callbacks so that if either the main window or the browser instance is
 	// closed, the program will exit
-	g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb1),
-			NULL);
-	g_signal_connect(webView1, "close", G_CALLBACK(closeWebViewCb1),
+	g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb1), NULL);
+	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb1), main_window);
+
+	g_signal_connect(webView, "load-changed", G_CALLBACK(load_changedWebViewCb1),
 			main_window);
 
-	g_signal_connect(webView1, "load-changed",
-			G_CALLBACK(load_changedWebViewCb1), main_window);
 
 	// Load a web page into the browser instance
-	webkit_web_view_load_uri(webView1, "https://canvas.asu.edu/login");
+	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
 
 	// Make sure that when the browser area becomes visible, it will get mouse
 	// and keyboard events
-	gtk_widget_grab_focus(GTK_WIDGET(webView1));
+	gtk_widget_grab_focus(GTK_WIDGET(webView));
 
 	// Make sure the main window and all its contents are visible
 	gtk_widget_show_all(main_window);
@@ -801,8 +828,10 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 	num_students = atol(inputstudents->value());
 
 	//nextWindow = windowMain;
-
 	cout << "working" << endl;
+
+	//if the user is not authenticated yet,
+	//open the mini-browser for canvas authentication
 	if (Authenticated != true) {
 		Auth1 = false;
 		mini_browserSP();
@@ -811,12 +840,14 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 
 	windowMain->hide();
 
-	//gtk_widget_destroy(main_window);
+	//call to get the course information
+	CookieManager cookieMonster;
+	cookieMonster.getCourses(cookiedata1);
 
-	//call to next GUI window.
 	SPDataGUI dataGUI(windowMain);
 
 }
+
 
 int SteamPunkGUI1::handle(int event) {
 

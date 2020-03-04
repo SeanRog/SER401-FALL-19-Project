@@ -43,6 +43,7 @@ Fl_PNG_Image Wall3("./Images/Steampunk/Wall14.png");
 
 Fl_PNG_Image *SteamPngs[13];
 Fl_PNG_Image *Steam2Pngs[13];
+string projfile;
 
 void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2, int end) {
 
@@ -543,6 +544,7 @@ void SPDataGUI::ConfirmClick(Fl_Widget *w) {
 
 	//project file values
 	string proj = fileInput_Project->value();
+	projfile = fileInput_Project->value();
 	int length = proj.length();
 	char prompt1[length + 1];
 	strcpy(prompt1, proj.c_str());
@@ -643,7 +645,9 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 	confirmWindow->hide();
 
 	//MainWindow mainWin;
+	cout << projfile;
 	SteamPunkGUI1 mainWin;
+	mainWin.SPGprojfile = projfile;
 	mainWin.callTeams(w);
 
 }
