@@ -17,6 +17,7 @@
 #include <FL/Fl_Input_.H>
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Chart.H>
+#include "Project.h"
 
 using namespace std;
 
@@ -29,25 +30,25 @@ class ResultWindow {
 	void saveClicked(Fl_Widget *w);
 
 	int teamScoreAvg, bestScore, badScore;
-	int bestTeam, worstTeam, percent;
+	int bestTeam, worstTeam, percent, notAssign;
 	int low1, low2, avg1, avg2, high1, high2;
 
 public:
 	static int permutations;
 	static int swaps;
+	static int count;
+	static int project_pool[3][200];
 
 	Fl_Window *windowResult;
 	Fl_Text_Display *textDisplay;
 	Fl_Text_Buffer *buffer;
 	Fl_Button *buttonSave;
-	Fl_Box *permBox;
-	Fl_Box *swapBox;
-	Fl_Box *teamBox;
-	Fl_Box *bestBox;
-	Fl_Box *badBox;
-	Fl_Box *spacer;
-	Fl_Box *borderBox;
-	Fl_Chart *pieChart;
+	Fl_Box *permBox, *swapBox;
+	Fl_Box *teamBox, *bestBox, *badBox;
+	Fl_Box *spacer, *borderBox;
+	Fl_Box *labelBox3, *labelBox4, *labelBox5;
+	Fl_Box *labelBox1, *labelBox2;
+	Fl_Chart *pieChart, *barChart;
 
 	ResultWindow();
 	~ResultWindow();

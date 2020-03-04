@@ -15,6 +15,7 @@
 #include "ResultWindow.h"
 #include "main.h"
 #include "GUIStyles.h"
+#include "Project.h"
 
 #include <iostream>
 #include <string>
@@ -37,13 +38,10 @@
 
 using namespace std;
 
-
-
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
 	return constInt;
 }
-
 
 
 /* constructor, preps the results window and buffer */
@@ -102,31 +100,71 @@ ResultWindow::ResultWindow() {
 	swapBox->labelsize(15);
 	swapBox->labelcolor(ASU_WHITE);
 
-	teamBox = new Fl_Box(320, 270, 5, 20, "");
+	teamBox = new Fl_Box(350, 275, 5, 20, "");
 	teamBox->box(FL_FLAT_BOX);
 	teamBox->color(ASU_GREY);
 	teamBox->align(FL_ALIGN_RIGHT);
-	teamBox->labelfont(FL_HELVETICA_BOLD);
+	teamBox->labelfont(FL_HELVETICA);
 	teamBox->labelsize(15);
 	teamBox->labelcolor(ASU_WHITE);
 
-	bestBox = new Fl_Box(610, 270, 5, 20, "");
+	bestBox = new Fl_Box(620, 275, 5, 20, "");
 	bestBox->box(FL_FLAT_BOX);
 	bestBox->color(ASU_GREY);
 	bestBox->align(FL_ALIGN_RIGHT);
-	bestBox->labelfont(FL_HELVETICA_BOLD);
+	bestBox->labelfont(FL_HELVETICA);
 	bestBox->labelsize(15);
 	bestBox->labelcolor(ASU_WHITE);
 
-	badBox = new Fl_Box(15, 270, 5, 20, "");
+	badBox = new Fl_Box(30, 275, 5, 20, "");
 	badBox->box(FL_FLAT_BOX);
 	badBox->color(ASU_GREY);
 	badBox->align(FL_ALIGN_RIGHT);
-	badBox->labelfont(FL_HELVETICA_BOLD);
+	badBox->labelfont(FL_HELVETICA);
 	badBox->labelsize(15);
 	badBox->labelcolor(ASU_WHITE);
 
-	spacer = new Fl_Box(20, 290, 900-40, 20, "______________________________________"
+	labelBox1 = new Fl_Box(40, 15, 5, 20, "Number of Teams within Score Range");
+	labelBox1->box(FL_FLAT_BOX);
+	labelBox1->color(ASU_GREY);
+	labelBox1->align(FL_ALIGN_RIGHT);
+	labelBox1->labelfont(FL_HELVETICA_BOLD);
+	labelBox1->labelsize(15);
+	labelBox1->labelcolor(ASU_WHITE);
+
+	labelBox2 = new Fl_Box(510, 15, 5, 20, "Team Scores by Project Priority");
+	labelBox2->box(FL_FLAT_BOX);
+	labelBox2->color(ASU_GREY);
+	labelBox2->align(FL_ALIGN_RIGHT);
+	labelBox2->labelfont(FL_HELVETICA_BOLD);
+	labelBox2->labelsize(15);
+	labelBox2->labelcolor(ASU_WHITE);
+
+	labelBox3 = new Fl_Box(450, 40, 5, 15, "Low");
+	labelBox3->box(FL_FLAT_BOX);
+	labelBox3->color(ASU_GREY);
+	labelBox3->align(FL_ALIGN_RIGHT);
+	labelBox3->labelfont(FL_HELVETICA_BOLD);
+	labelBox3->labelsize(12);
+	labelBox3->labelcolor(ASU_BLUE);
+
+	labelBox4 = new Fl_Box(620, 40, 5, 15, "Medium");
+	labelBox4->box(FL_FLAT_BOX);
+	labelBox4->color(ASU_GREY);
+	labelBox4->align(FL_ALIGN_RIGHT);
+	labelBox4->labelfont(FL_HELVETICA_BOLD);
+	labelBox4->labelsize(12);
+	labelBox4->labelcolor(ASU_ORANGE);
+
+	labelBox5 = new Fl_Box(790, 40, 5, 15, "High");
+	labelBox5->box(FL_FLAT_BOX);
+	labelBox5->color(ASU_GREY);
+	labelBox5->align(FL_ALIGN_RIGHT);
+	labelBox5->labelfont(FL_HELVETICA_BOLD);
+	labelBox5->labelsize(12);
+	labelBox5->labelcolor(ASU_GOLD);
+
+	spacer = new Fl_Box(20, 295, 900-40, 15, "______________________________________"
 			"________________________________________________________________________");
 	spacer->box(FL_FLAT_BOX);
 	spacer->color(ASU_GREY);
@@ -135,11 +173,17 @@ ResultWindow::ResultWindow() {
 	spacer->labelsize(15);
 	spacer->labelcolor(ASU_BLACK);
 
-	pieChart = new Fl_Chart(20, 20, 400, 230);
-	pieChart->type(FL_BAR_CHART);
-	pieChart->textfont(FL_HELVETICA_BOLD);
+	pieChart = new Fl_Chart(30, 50, 350, 210);
+	pieChart->type(FL_PIE_CHART);
+	pieChart->textfont(FL_HELVETICA);
 	pieChart->textcolor(ASU_BLACK);
-	pieChart->textsize(12);
+	pieChart->textsize(14);
+	pieChart->labelfont(FL_HELVETICA_BOLD);
+	pieChart->labelsize(16);
+	pieChart->labelcolor(ASU_WHITE);
+
+	barChart = new Fl_Chart(420, 60, 450, 200);
+	barChart->type(FL_SPIKE_CHART);
 
 }
 
@@ -158,63 +202,91 @@ void ResultWindow::addText() {
 	calculateStats();
 
 	// Fill test box labels with data results
-	char permNum[50];
+	char permNum[70];
 	int buff = sprintf(permNum, "Number of possible permutations: %d",
 			permutations);
 	const char *permNum1 = permNum;
 	permBox->label(permNum1);
 
-	char swapNum[50];
-	buff = sprintf(swapNum, "Number of students swapped:       %d", swaps);
+	char swapNum[70];
+	buff = sprintf(swapNum, "Number of students swapped:        %d", swaps);
 	const char *swapNum1 = swapNum;
 	swapBox->label(swapNum1);
 
-	char teamNum[50];
+	char teamNum[70];
 	buff = sprintf(teamNum, "Average Team Score: %d", teamScoreAvg);
 	const char *teamNum1 = teamNum;
 	teamBox->label(teamNum1);
 
-	char bestNum[50];
+	char bestNum[70];
 	buff = sprintf(bestNum, "Best Team Score: %d (Team %d)", bestScore, bestTeam);
 	const char *bestNum1 = bestNum;
 	bestBox->label(bestNum1);
 
-	char badNum[50];
+	char badNum[70];
 	buff = sprintf(badNum, "Worst Team Score: %d (Team %d)", badScore, worstTeam);
 	const char *badNum1 = badNum;
 	badBox->label(badNum1);
 
 
-	//Fills charts with data results
+	//Fills pie charts with data results
 	char low1a[50];
 	buff = sprintf(low1a, " %d-%d (%d)", badScore, badScore+percent, low1);
 	const char *low1b = low1a;
-	pieChart->add(low1,low1b, ASU_GOLD);
+	pieChart->add(low1,low1b, ASU_GREEN);
 
 	char low2a[50];
-	buff = sprintf(low2a, " %d-%d (%d)", badScore+(percent)+1, badScore+(percent*2), low2);
+	buff = sprintf(low2a, " %d-%d (%d)", badScore+(percent)+1, badScore+(percent*2)+1, low2);
 	const char *low2b = low2a;
-	pieChart->add(low2, low2b, ASU_MAROON);
+	pieChart->add(low2, low2b, ASU_BLUE);
 
 	char avg1a[50];
-	buff = sprintf(avg1a, " %d-%d (%d)", badScore+(percent*2)+1, badScore+(percent*3), avg1);
+	buff = sprintf(avg1a, " %d-%d (%d)", badScore+(percent*2)+2, badScore+(percent*3)+1, avg1);
 	const char *avg1b = avg1a;
-	pieChart->add(avg1, avg1b, ASU_GOLD);
+	pieChart->add(avg1, avg1b, ASU_WHITE);
 
 	char avg2a[50];
-	buff = sprintf(avg2a, " %d-%d (%d)", badScore+(percent*3)+1, badScore+(percent*4), avg2);
+	buff = sprintf(avg2a, " %d-%d (%d)", badScore+(percent*3)+2, badScore+(percent*4)+1, avg2);
 	const char *avg2b = avg2a;
-	pieChart->add(avg2, avg2b, ASU_MAROON);
+	pieChart->add(avg2, avg2b, ASU_ORANGE);
 
 	char high1a[50];
-	buff = sprintf(high1a, " %d-%d (%d)", badScore+(percent*4)+1, badScore+(percent*5), high1);
+	buff = sprintf(high1a, " %d-%d (%d)", badScore+(percent*4)+2, badScore+(percent*5)+1, high1);
 	const char *high1b = high1a;
 	pieChart->add(high1, high1b, ASU_GOLD);
 
 	char high2a[50];
-	buff = sprintf(high2a, " %d-%d (%d)", badScore+(percent*5)+1, bestScore, high2);
+	buff = sprintf(high2a, " %d-%d (%d)", badScore+(percent*5)+2, bestScore, high2);
 	const char *high2b = high2a;
 	pieChart->add(high2, high2b, ASU_MAROON);
+
+
+	for(int i = 0; i < count; i ++) {
+		if(project_pool[1][i] == 0 && project_pool[2][i] != 0) {
+			char priob[2];
+			buff = sprintf(priob, "%d", project_pool[2][i]);
+			const char *prioa = priob;
+			barChart->add(project_pool[2][i], prioa, ASU_BLUE);
+		}
+	}
+
+	for(int i = 0; i < count; i ++) {
+		if(project_pool[1][i] == 1 && project_pool[2][i] != 0) {
+			char priob[2];
+			buff = sprintf(priob, "%d", project_pool[2][i]);
+			const char *prioa = priob;
+			barChart->add(project_pool[2][i], prioa, ASU_ORANGE);
+		}
+	}
+
+	for(int i = 0; i < count; i ++) {
+		if(project_pool[1][i] == 2 && project_pool[2][i] != 0) {
+			char priob[2];
+			buff = sprintf(priob, "%d", project_pool[2][i]);
+			const char *prioa = priob;
+			barChart->add(project_pool[2][i], prioa, ASU_GOLD);
+		}
+	}
 
 
 	//Show window
@@ -230,98 +302,60 @@ void ResultWindow::addText() {
 void ResultWindow::calculateStats() {
 
 	//initialize variables
-	teamScoreAvg = 0, bestScore = 0, badScore = 100;
+	teamScoreAvg = 0, bestScore = 0, badScore = 100, notAssign=0;
+	int next1=0, next2=0;
 	low1 =0, low2 =0, avg1 =0, avg2 =0, high1 =0, high2 =0;
 	string line;
-	int next1 = 0, next2 = 0, count = 0;
-	int projTeamScore [2][200];
 
-	//open results and store into a 2D array [project#][TeamScore]
-	ifstream resultFile;
-	resultFile.open("./results.txt");
-	if (resultFile.is_open()) {
-		while (!resultFile.eof()) {
-
-			char score[2];
-			char proj[2];
-			int value;
-			resultFile >> line;
-
-			if(next1 == 1) {
-
-				score[0] = line[0];
-				score[1] = line[1];
-				value = atoi(score);
-				projTeamScore[1][count] = value;
-				next1=0;
-				count++;
-
-			} else if(next2 == 1) {
-
-				if(line[9] == ':') {
-					proj[0] = '0';
-					proj[1] = line[8];
-					value = atoi(proj);
-					projTeamScore[0][count] = value;
-				} else {
-					proj[0] = line[8];
-					proj[1] = line[9];
-					value = atoi(proj);
-					projTeamScore[0][count] = value;
-				}
-				next2 =0;
-
-			} else {
-
-				string temp1 = "Scor";
-				string temp2 = line.substr(0,4);
-				string temp3 = "Proj";
-				if(temp1.compare(temp2) == 0) { next1 = 1;}
-				else if(temp3.compare(temp2) == 0) { next2 = 1;}
-
-			}
-		}
+	for(int i = 0; i < count; i++) {
+		cout << project_pool[0][i] << " " << project_pool[1][i] << " " <<
+				project_pool[2][i] << "\n";
 	}
 
 
 	//calculating average team score
-	for(int i =  0; i < count; i ++) { teamScoreAvg += projTeamScore[1][i];	}
-	teamScoreAvg = teamScoreAvg/count;
-
-	//calculating best team score
 	for(int i =  0; i < count; i ++) {
-		if(projTeamScore[1][i] > bestScore) {
-				bestScore = projTeamScore[1][i];
-				bestTeam = projTeamScore[0][i];
+		if(project_pool[2][i] != 0) {
+			teamScoreAvg += project_pool[2][i];
+		} else {
+			notAssign++;
 		}
 	}
 
+	teamScoreAvg = teamScoreAvg/(count-notAssign);
+
+	//calculating best team score
+	for(int i =  0; i < count; i ++) {
+		if(project_pool[2][i] > bestScore) {
+			bestScore = project_pool[2][i];
+			bestTeam = i;
+		}
+	}
 
 	//calculating worst team score
 	for(int i =  0; i < count; i ++) {
-		if(projTeamScore[1][i] < badScore) {
-				badScore = projTeamScore[1][i];
-				worstTeam = projTeamScore[0][i];
+		if((project_pool[2][i] < badScore) && (project_pool[2][i] != 0)) {
+			badScore = project_pool[2][i];
+			worstTeam = i;
 		}
 	}
 
 	percent = (bestScore-badScore)/6;
 
-	//Teams within 6 data groups
+	//filling teams within 6 data groups for pie chart
 	for(int i =  0; i < count; i ++) {
-		if(projTeamScore[1][i] <= (badScore+percent)) { low1++;	}
-		if((projTeamScore[1][i] <= badScore+(percent*2)) &&
-				(projTeamScore[1][i]) > (badScore+percent)) { low2++;	}
-		if((projTeamScore[1][i] <= badScore+(percent*3)) &&
-				(projTeamScore[1][i]) > (badScore+percent*2)) { avg1++;	}
-		if((projTeamScore[1][i] <= badScore+(percent*4)) &&
-				(projTeamScore[1][i]) > (badScore+percent*3)) { avg2++;	}
-		if((projTeamScore[1][i] <= badScore+(percent*5)) &&
-				(projTeamScore[1][i]) > (badScore+percent*4)) { high1++;}
-		if((projTeamScore[1][i] <= bestScore) &&
-				(projTeamScore[1][i]) > (badScore+percent*5)) { high2++;}
+		if(project_pool[2][i] <= (badScore+percent)) { low1++;	}
+		if((project_pool[2][i] <= badScore+(percent*2)) &&
+			(project_pool[2][i]) > (badScore+percent)) { low2++;	}
+		if((project_pool[2][i] <= badScore+(percent*3)) &&
+			(project_pool[2][i]) > (badScore+percent*2)) { avg1++;	}
+		if((project_pool[2][i] <= badScore+(percent*4)) &&
+			(project_pool[2][i]) > (badScore+percent*3)) { avg2++;	}
+		if((project_pool[2][i] <= badScore+(percent*5)) &&
+			(project_pool[2][i]) > (badScore+percent*4)) { high1++;}
+		if((project_pool[2][i] <= bestScore) &&
+			(project_pool[2][i]) > (badScore+percent*5)) { high2++;}
 	}
-
 }
 
 
