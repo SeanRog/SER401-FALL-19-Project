@@ -568,7 +568,6 @@ static void getCookiesCB(WebKitCookieManager *manager, GAsyncResult *asyncResult
 	}
 }
 
-
 //callback that listens for a change in the url in the mini-browser
 static gboolean load_changedWebViewCb(WebKitWebView *webView,
 		GtkWidget *window) {
@@ -593,6 +592,9 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 			cout << "Canvas reached! authentication complete!" << endl;
 			Auth = true;
 			//quit the mini-browser
+
+
+			//gtk_widget_destroy(window);
 			gtk_main_quit();
 			//TO-DO Find a way to close the browser window correctly,
 			//as it eats up memory while open.
@@ -664,9 +666,12 @@ void mini_browser() {
 	// Run the main GTK+ event loop
 	gtk_main();
 
-	cout << "Website running" << endl;
+	//terminate the window
+	gtk_widget_destroy(main_window);
+
 
 }
+
 
 /*****************************************************************************
  * StartButtonClick

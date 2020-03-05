@@ -798,6 +798,9 @@ void mini_browserSP() {
 	// Run the main GTK+ event loop
 	gtk_main();
 
+	//terminate the window
+	gtk_widget_destroy(main_window);
+
 	cout << "Website running" << endl;
 
 }
