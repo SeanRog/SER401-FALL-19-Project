@@ -522,23 +522,27 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
 	windowResult.addText();
 }
 
+bool Auth;
+
 
 static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
-	cout << "quit!" << endl;
+	cout << "Exiting mini-browser" << endl;
 	gtk_main_quit();
+	if(Auth !=true){
+	cout << "Quit login session! EXITING PROGRAM" << endl;
+	exit(1);}
 
 }
 
 static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window) {
 	gtk_widget_destroy(window);
-	cout << "destroyed!" << endl;
 	return TRUE;
 }
 
 
 typedef void *user_data;
 vector<SoupCookie> cookiedata;
-bool Auth;
+
 
 //callback function for the cookie fetch method. stores the cookies in a vector.
 static void getCookiesCB(WebKitCookieManager *manager, GAsyncResult *asyncResult) {
@@ -630,7 +634,7 @@ void mini_browser() {
 	WebKitWebView *webView = WEBKIT_WEB_VIEW(
 			webkit_web_view_new_with_context(context));
 
-	webkit_web_context_set_automation_allowed(context, 1);
+	//webkit_web_context_set_automation_allowed(context, 1);
 
 
 	WebKitSettings *settings = webkit_settings_new();

@@ -656,22 +656,26 @@ void SteamPunkGUI1::DoneButtonClick(Fl_Widget *w) {
 	windowResult.addText();
 }
 
-static void destroyWindowCb1(GtkWidget *widget, GtkWidget *window) {
-	cout << "quit!" << endl;
-	gtk_main_quit();
+bool Auth1;
 
+static void destroyWindowCb1(GtkWidget *widget, GtkWidget *window) {
+	cout << "Exiting mini-browser" << endl;
+	gtk_main_quit();
+	if(Auth1 !=true){
+	cout << "Quit login session! EXITING PROGRAM" << endl;
+	exit(1);}
 }
 
 static gboolean closeWebViewCb1(WebKitWebView *webView, GtkWidget *window) {
 	gtk_widget_destroy(window);
-	cout << "destroyed!" << endl;
+
 	return TRUE;
 }
 
 typedef void *user_data;
 vector<SoupCookie> cookiedata1;
 
-bool Auth1;
+
 
 //callback function for the cookie fetch method. stores the cookies in a vector.
 static void getCookiesCB1(WebKitCookieManager *manager, GAsyncResult *asyncResult) {
