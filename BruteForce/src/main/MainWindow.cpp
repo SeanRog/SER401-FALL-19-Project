@@ -570,6 +570,10 @@ static void getCookiesCB(WebKitCookieManager *manager, GAsyncResult *asyncResult
 		cookiedata.push_back(*cookies);
 		i++;
 	}
+
+	//free the data from memory
+	//g_list_free_full(dataList, (GDestroyNotify)soup_cookie_free);
+
 }
 
 //callback that listens for a change in the url in the mini-browser
@@ -670,9 +674,9 @@ void mini_browser() {
 	// Run the main GTK+ event loop
 	gtk_main();
 
-	//terminate the window
-	gtk_widget_destroy(main_window);
 
+	//terminate the window
+	//gtk_widget_destroy(main_window);
 
 }
 
