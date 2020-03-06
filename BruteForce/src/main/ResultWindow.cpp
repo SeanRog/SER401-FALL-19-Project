@@ -309,7 +309,7 @@ void ResultWindow::calculateStats() {
 
 	for(int i = 0; i < count; i++) {
 		cout << project_pool[0][i] << " " << project_pool[1][i] << " " <<
-				project_pool[2][i] << "\n";
+				project_pool[2][i] <<" " << project_pool[3][i] << "\n";
 	}
 
 
