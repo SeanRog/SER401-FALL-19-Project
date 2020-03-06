@@ -81,8 +81,6 @@ Fl_PNG_Image *Gears1Pngs[10];
 Fl_PNG_Image *Gears3Pngs[10];
 Fl_PNG_Image *Gears2Pngs[10];
 
-
-
 void GearsAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2) {
 
 	int i = 0;
@@ -613,8 +611,9 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
-	cout << SPGprojfile << " SPGgui" <<endl;
-	m.main_run(num_projects, num_students, SPGprojfile, progressBar, terminalBuffer);
+	cout << SPGprojfile << " SPGgui" << endl;
+	m.main_run(num_projects, num_students, SPGprojfile, progressBar,
+			terminalBuffer);
 
 	//join threads
 	for (int i = 0; i < 1; i++) {
@@ -656,29 +655,50 @@ void SteamPunkGUI1::DoneButtonClick(Fl_Widget *w) {
 	windowResult.addText();
 }
 
+//variables for the mini-browser session static functions
 bool Auth1;
+typedef void *user_data;
+vector<SoupCookie> cookiedata1;
 
+//callback when the window is closed via the close button
 static void destroyWindowCb1(GtkWidget *widget, GtkWidget *window) {
 	cout << "Exiting mini-browser" << endl;
 	gtk_main_quit();
-	if(Auth1 !=true){
-	cout << "Quit login session! EXITING PROGRAM" << endl;
-	exit(1);}
+	if (Auth1 != true) {
+		cout << "Quit login session! EXITING PROGRAM" << endl;
+		exit(1);
+	}
 }
 
+//callback when the window is closed via the close button
 static gboolean closeWebViewCb1(WebKitWebView *webView, GtkWidget *window) {
 	gtk_widget_destroy(window);
 
 	return TRUE;
 }
 
-typedef void *user_data;
-vector<SoupCookie> cookiedata1;
 
-
-
-//callback function for the cookie fetch method. stores the cookies in a vector.
-static void getCookiesCB1(WebKitCookieManager *manager, GAsyncResult *asyncResult) {
+/*****************************************************************************
+ * getCookiesCB1
+ *
+ * Author(s): Myles,
+ *
+ * Description:
+ *		Callback function for the cookie fetch function.
+ *		Finishes getting the cookies from the mini-browser session.
+ *		Takes in the data in a Glist, and loops over the contents type casting
+ *		the data to a soupcookie, and storing it in a vector to pass to the libcurl
+ *		HTTP request functions.
+ *
+ * Arguments:
+ *		WebKitCookieManager *manager,
+ *	    GAsyncResult *asyncResult
+ *
+ * Returns:
+ *		nothing
+ */
+static void getCookiesCB1(WebKitCookieManager *manager,
+		GAsyncResult *asyncResult) {
 	//GList *dataList = webkit_website_data_manager_fetch_finish(manager, asyncResult, NULL);
 
 	GList *dataList = webkit_cookie_manager_get_cookies_finish(manager,
@@ -705,8 +725,24 @@ static void getCookiesCB1(WebKitCookieManager *manager, GAsyncResult *asyncResul
 	}
 }
 
-
-//callback that listens for a change in the url in the mini-browser
+/*****************************************************************************
+ * load_changedWebViewCb1
+ *
+ * Author(s): Myles,
+ *
+ * Description:
+ *		Callback function that listens for a change in the url in the mini-browser.
+ *		Once the mini-browser reaches the login success page, the mini-browser is exited.
+ *		This function also calls the cookie manager get cookies function to get the incoming cookies
+ *		for every url change.
+ *
+ * Arguments:
+ *		WebKitWebView *webView,
+		GtkWidget *window
+ *
+ * Returns:
+ *		gboolean
+ */
 static gboolean load_changedWebViewCb1(WebKitWebView *webView,
 		GtkWidget *window) {
 	cout << "listening" << endl;
@@ -742,7 +778,24 @@ static gboolean load_changedWebViewCb1(WebKitWebView *webView,
 	return TRUE;
 }
 
-//function create and open the mini-browser session
+
+/*****************************************************************************
+ * mini_browserSP
+ *
+ * Author(s): Myles, Matthew, Cristi
+ *
+ * Description:
+ *		This function creates a mini-browser session so the user can login
+ *		and create an authenticated session. The cookies from this session will
+ *		be stored for future HTTP requests. This function uses gtk, and webkitgtk
+ *		to create the mini-browser.
+ *
+ * Arguments:
+ *		nothing
+ *
+ * Returns:
+ *		nothing
+ */
 void mini_browserSP() {
 
 	int argc;
@@ -782,12 +835,13 @@ void mini_browserSP() {
 
 	// Set up callbacks so that if either the main window or the browser instance is
 	// closed, the program will exit
-	g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb1), NULL);
-	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb1), main_window);
-
-	g_signal_connect(webView, "load-changed", G_CALLBACK(load_changedWebViewCb1),
+	g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb1),
+			NULL);
+	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb1),
 			main_window);
 
+	g_signal_connect(webView, "load-changed",
+			G_CALLBACK(load_changedWebViewCb1), main_window);
 
 	// Load a web page into the browser instance
 	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
@@ -849,7 +903,6 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 	SPDataGUI dataGUI(windowMain);
 
 }
-
 
 int SteamPunkGUI1::handle(int event) {
 

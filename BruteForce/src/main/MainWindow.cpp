@@ -111,7 +111,7 @@ MainWindow::~MainWindow() {
 
 }
 
-void running(Fl_Window *w){
+void running(Fl_Window *w) {
 
 	while (w->shown() == true) {
 
@@ -257,7 +257,6 @@ void MainWindow::MainWindow2() {
 		tabs->end();
 	}
 
-
 	/* for running / testing inputs */
 	inputprojects = new Fl_Int_Input(150, 400, 200, 30, "#Projects:");
 	inputstudents = new Fl_Int_Input(500, 400, 200, 30, "#Students:");
@@ -266,10 +265,8 @@ void MainWindow::MainWindow2() {
 	windowMain->show();
 	windowMain->end();
 
-
 	//tabs->show();
 	Fl::run();
-
 
 }
 
@@ -481,7 +478,8 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
 
-	m.main_run(num_projects, num_students, mwProjfile, progressBar, terminalBuffer);
+	m.main_run(num_projects, num_students, mwProjfile, progressBar,
+			terminalBuffer);
 
 	//join threads
 	for (int i = 0; i < 1; i++) {
@@ -522,30 +520,49 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
 	windowResult.addText();
 }
 
+//variables for the mini-browser session static functions
 bool Auth;
+typedef void *user_data;
+vector<SoupCookie> cookiedata;
 
-
+//callback when the window is closed via the close button
 static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
 	cout << "Exiting mini-browser" << endl;
 	gtk_main_quit();
-	if(Auth !=true){
-	cout << "Quit login session! EXITING PROGRAM" << endl;
-	exit(1);}
+	if (Auth != true) {
+		cout << "Quit login session! EXITING PROGRAM" << endl;
+		exit(1);
+	}
 
 }
 
+//callback when the window is closed via the close button
 static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window) {
 	gtk_widget_destroy(window);
 	return TRUE;
 }
 
-
-typedef void *user_data;
-vector<SoupCookie> cookiedata;
-
-
-//callback function for the cookie fetch method. stores the cookies in a vector.
-static void getCookiesCB(WebKitCookieManager *manager, GAsyncResult *asyncResult) {
+/*****************************************************************************
+ * getCookiesCB
+ *
+ * Author(s): Myles,
+ *
+ * Description:
+ *		Callback function for the cookie fetch function.
+ *		Finishes getting the cookies from the mini-browser session.
+ *		Takes in the data in a Glist, and loops over the contents type casting
+ *		the data to a soupcookie, and storing it in a vector to pass to the libcurl
+ *		HTTP request functions.
+ *
+ * Arguments:
+ *		WebKitCookieManager *manager,
+ *	    GAsyncResult *asyncResult
+ *
+ * Returns:
+ *		nothing
+ */
+static void getCookiesCB(WebKitCookieManager *manager,
+		GAsyncResult *asyncResult) {
 	//GList *dataList = webkit_website_data_manager_fetch_finish(manager, asyncResult, NULL);
 
 	GList *dataList = webkit_cookie_manager_get_cookies_finish(manager,
@@ -576,7 +593,24 @@ static void getCookiesCB(WebKitCookieManager *manager, GAsyncResult *asyncResult
 
 }
 
-//callback that listens for a change in the url in the mini-browser
+/*****************************************************************************
+ * load_changedWebViewCb
+ *
+ * Author(s): Myles,
+ *
+ * Description:
+ *		Callback function that listens for a change in the url in the mini-browser.
+ *		Once the mini-browser reaches the login success page, the mini-browser is exited.
+ *		This function also calls the cookie manager get cookies function to get the incoming cookies
+ *		for every url change.
+ *
+ * Arguments:
+ *		WebKitWebView *webView,
+		GtkWidget *window
+ *
+ * Returns:
+ *		gboolean
+ */
 static gboolean load_changedWebViewCb(WebKitWebView *webView,
 		GtkWidget *window) {
 	cout << "listening" << endl;
@@ -601,7 +635,6 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 			Auth = true;
 			//quit the mini-browser
 
-
 			//gtk_widget_destroy(window);
 			gtk_main_quit();
 			//TO-DO Find a way to close the browser window correctly,
@@ -613,12 +646,28 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 	return TRUE;
 }
 
-//function create and open the mini-browser session
+/*****************************************************************************
+ * mini_browserSP
+ *
+ * Author(s): Myles, Matthew, Cristi
+ *
+ * Description:
+ *		This function creates a mini-browser session so the user can login
+ *		and create an authenticated session. The cookies from this session will
+ *		be stored for future HTTP requests. This function uses gtk, and webkitgtk
+ *		to create the mini-browser.
+ *
+ * Arguments:
+ *		nothing
+ *
+ * Returns:
+ *		nothing
+ */
 void mini_browser() {
 
 	int argc;
 	char **argv;
-	cout<< "Working2"<<endl;
+	cout << "Working2" << endl;
 	//Initialize GTK+
 	gtk_init(&argc, &argv);
 
@@ -640,7 +689,6 @@ void mini_browser() {
 
 	//webkit_web_context_set_automation_allowed(context, 1);
 
-
 	WebKitSettings *settings = webkit_settings_new();
 
 	g_object_set(G_OBJECT(settings), "enable-offline-web-application-cache",
@@ -660,7 +708,6 @@ void mini_browser() {
 	g_signal_connect(webView, "load-changed", G_CALLBACK(load_changedWebViewCb),
 			main_window);
 
-
 	// Load a web page into the browser instance
 	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
 
@@ -674,12 +721,10 @@ void mini_browser() {
 	// Run the main GTK+ event loop
 	gtk_main();
 
-
 	//terminate the window
 	//gtk_widget_destroy(main_window);
 
 }
-
 
 /*****************************************************************************
  * StartButtonClick
@@ -720,7 +765,6 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 
 	DataEntryGUI dataGUI(windowMain);
 
-
 }
 
 int MainWindow::handle(int event) {
@@ -739,7 +783,6 @@ int MainWindow::handle(int event) {
 }
 
 void MainWindow::callTeams(Fl_Widget *w) {
-
 
 	TeamsButtonClick(windowMain);
 
