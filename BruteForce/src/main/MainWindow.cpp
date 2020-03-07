@@ -487,7 +487,6 @@ void animate(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 
 void teamAssignment(int num_students, int num_projects,
 		Fl_Progress *progressBar) {
-
 	main m;
 	m.main_run(num_projects, num_students, progressBar);
 }
