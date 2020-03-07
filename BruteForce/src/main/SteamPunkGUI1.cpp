@@ -806,13 +806,13 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 	num_students = atol(inputstudents->value());
 
 	//nextWindow = windowMain;
-
+/*
 	cout << "working" << endl;
 	if (Authenticated != true) {
 		Auth1 = false;
 		mini_browserSP();
 	}
-	Authenticated = Auth1;
+	Authenticated = Auth1;*/
 
 	windowMain->hide();
 
