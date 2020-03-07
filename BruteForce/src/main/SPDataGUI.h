@@ -11,7 +11,8 @@
 #include "SteamPunkGUI1.h"
 #include "GUIStyles.h"
 #include "main.h"
-
+#include "ClassSectionJson.h"
+#include "ClassSection.h"
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -82,6 +83,15 @@ class SPDataGUI {
 	void chooseProjectFile_cb(Fl_Widget *w);
 
 public:
+
+	string *AllCourseNames;
+	string *SelectedCourseNames;
+
+	ClassSection *AllCourses;
+	ClassSection *SelectedCourses;
+
+	int num_of_all_courses;
+	int num_of_selected_courses;
 
 	Fl_Window *masterWindow;
 	Fl_Window *prevWindow;

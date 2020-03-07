@@ -535,7 +535,6 @@ int tempProj, tempStud, textInput;
 Fl_Window *optionWindow;
 
 
-
 //Callback for the Steampunk option button.
 //Opens the Steampunk version of the GUI
 void Steampunk_Option(Fl_Widget *w) {
@@ -623,6 +622,8 @@ int main() {
 		 optionWindow->show();
 
 		Fl::run();
+
+
 
 	return 0;
 }
