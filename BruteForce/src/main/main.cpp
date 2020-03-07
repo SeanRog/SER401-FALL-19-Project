@@ -79,6 +79,7 @@
 
 using namespace std;
 using namespace std::chrono;
+int ResultWindow::count = 0;
 
 /*********************************************************
  * parseLine
@@ -685,6 +686,7 @@ int main::main_run(int projects_input, int students_input, string filename, Fl_P
 	const int NUM_STUDENTS = toConstInt(tempStud);
 	const int NUM_SKILLS = 15;
 	const int NUM_CLASS_SECTIONS = 4;
+	ResultWindow::count = NUM_PROJECTS;
 
 	Utility util;
 
@@ -731,6 +733,11 @@ int main::main_run(int projects_input, int students_input, string filename, Fl_P
 			STUDENT_POOL, NUM_CLASS_SECTIONS, NUM_STUDENTS);
 	util.initProjectStudentSkills(PROJECT_POOL, STUDENT_POOL,
 			PROJECT_STUDENT_SKILLS, NUM_PROJECTS, NUM_STUDENTS, NUM_SKILLS);
+
+	for (int j = 0; j < NUM_PROJECTS; j++) {
+		ResultWindow::project_pool[0][j] = PROJECT_POOL[j].ProjectID;
+		ResultWindow::project_pool[1][j] = PROJECT_POOL[j].Priority;
+	}
 
 	string results[NUM_CLASS_SECTIONS * 3];	//Stores the results the assignment of students to projects each class section
 	int studentsInSections[NUM_CLASS_SECTIONS]; //stores the number of students in each class section
@@ -781,6 +788,7 @@ int main::main_run(int projects_input, int students_input, string filename, Fl_P
 
 	//set the number of projects in each class section to the indexes of projectsInSections[]
 	for (int i = 0; i < NUM_PROJECTS; i++) {
+		ResultWindow::project_pool[3][i] = PROJECT_POOL[i].ClassID;
 		for (int j = 0; j < NUM_CLASS_SECTIONS; j++) {
 			if (PROJECT_POOL[i].ClassID == j) {
 				projectsInSections[j]++;
