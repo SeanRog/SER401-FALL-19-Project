@@ -884,6 +884,7 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 	num_students = atol(inputstudents->value());
 
 	//nextWindow = windowMain;
+
 	cout << "working" << endl;
 
 	//if the user is not authenticated yet,
