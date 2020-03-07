@@ -497,6 +497,7 @@ void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*) {
 	 default:
 	 if ( fileChooser.filename() ) {
 	 fileInput_Project->value(fileChooser.filename());
+	 filename = fileChooser.filename()
 	 } else {
 	 fileInput_Project->value("NULL");
 	 }
