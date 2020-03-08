@@ -58,7 +58,6 @@
 using namespace std;
 int SteamPunkGUI1::num_projects = 0;
 int SteamPunkGUI1::num_students = 0;
-//string SPGprojfile;
 
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
@@ -611,7 +610,6 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
-	cout << SPGprojfile << " SPGgui" << endl;
 	m.main_run(num_projects, num_students, SPGprojfile, progressBar,
 			terminalBuffer);
 

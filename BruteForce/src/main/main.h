@@ -16,7 +16,7 @@ class main {
 
 public:
 	string csvProjectFileName;
-	int main_run(int projects_input, int students_input, string filename, Fl_Progress *pb, Fl_Text_Buffer *terminal);
+	int main_run(int projects_input, int students_input, string filepath, Fl_Progress *pb, Fl_Text_Buffer *terminal);
 
 };
 
