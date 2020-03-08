@@ -62,7 +62,6 @@ using namespace std;
 
 int MainWindow::num_projects = 0;
 int MainWindow::num_students = 0;
-//string mwProjfile;
 
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
@@ -667,7 +666,7 @@ void mini_browser() {
 
 	int argc;
 	char **argv;
-	cout << "Working2" << endl;
+
 	//Initialize GTK+
 	gtk_init(&argc, &argv);
 
@@ -747,7 +746,6 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	num_students = atol(inputstudents->value());
 
 	//nextWindow = windowMain;
-	cout << "working" << endl;
 
 	//if the user is not authenticated yet,
 	//open the mini-browser for canvas authentication

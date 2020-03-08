@@ -32,7 +32,7 @@
 
 // ASU LOGO
 Fl_PNG_Image LOGO_BLACK1("./Images/asu_sunburst_rgb_maroongold_150ppi.png");
-string dEProjfile;
+string dataEntryGUIFilename;
 
 
 
@@ -427,11 +427,11 @@ void DataEntryGUI::ConfirmClick(Fl_Widget *w) {
 	int course_count = 0;
 
 	//project file values
-	string proj = fileInput_Project->value();
-	dEProjfile = fileInput_Project->value();
-	int length = proj.length();
+	string projectFilePath = fileInput_Project->value();
+	dataEntryGUIFilename = fileInput_Project->value();
+	int length = projectFilePath.length();
 	char prompt1[length + 1];
-	strcpy(prompt1, proj.c_str());
+	strcpy(prompt1, projectFilePath.c_str());
 
 	// questionnaire name value
 	string quest = fileInput_StudentQuizName->value();
@@ -571,7 +571,7 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 	masterWindow->hide();
 	confirmWindow->hide();
 	MainWindow mainWin;
-	mainWin.mwProjfile = dEProjfile;
+	mainWin.mwProjfile = dataEntryGUIFilename;
 	mainWin.callTeams(w);
 }
 
@@ -607,7 +607,6 @@ void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*) {
 	// Block until user picks something.
 	//     (The other way to do this is to use a callback())
 	//
-	cout << chooser.value();
 	while (chooser.shown()) {
 		Fl::wait();
 
@@ -619,7 +618,6 @@ void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*) {
 			fileInput_Project->value("NULL");
 		}
 	}
-	cout << filename << endl;
 
 }
 

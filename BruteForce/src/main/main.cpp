@@ -644,17 +644,17 @@ int main() {
  *Returns:
  *	int value 0.
  */
-int main::main_run(int projects_input, int students_input, string filename, Fl_Progress *pb, Fl_Text_Buffer *tb) {
+int main::main_run(int projects_input, int students_input, string filepath, Fl_Progress *pb, Fl_Text_Buffer *tb) {
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
 	srand(time(NULL));
 	string file = "";
 	string file2 = "";
 	cout << "Hi Team 35" << endl;
-	cout << "main " << filename << endl;
-	for (int i = filename.length() - 1; i >= 0; i--) {
-		file.push_back(filename.at(i));
-		if(filename.at(i) == 47) {
+	cout << "main " << filepath << endl;
+	for (int i = filepath.length() - 1; i >= 0; i--) {
+		file.push_back(filepath.at(i));
+		if(filepath.at(i) == 47) {
 			file.push_back('.');
 			break;
 		}
@@ -698,7 +698,7 @@ int main::main_run(int projects_input, int students_input, string filename, Fl_P
 
 	//const string PROJECT_FILE = "./newProjects.json";
 	cout << endl;
-	cout << filename << endl;
+	cout << filepath << endl;
 
 	//const string PROJECT_FILE = "./100Projects.csv";
 	const string PROJECT_FILE = file2;
