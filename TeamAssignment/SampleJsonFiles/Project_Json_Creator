@@ -1,0 +1,63 @@
+/*
+ * This function creates JSON schmea for projects
+ *   - it randomizes skills
+ *   - it counts up from a given projectID number, 1
+ *   - Priority is randomized
+ *   - Type is 20% online/ground and 80% hybrid
+ */
+ 
+// included files/libraries
+#include <iostream>
+#include <stdlib.h>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+    //Sets first projectID to 1, will count up from here
+    int projectID = 1;
+    cout << "{ \n\"projects\":[\n";
+    
+    //Loops through projectID to print
+    for(int j = 1; j < 101; j++) {
+        
+        
+        /*Prints out schema: {"ProjectID": (projectID#),
+         * the projectID number is set to have width of 3
+         * if the number (1) is less than 7, it will fill
+         * with 0's. e.g. 001
+         */
+        cout << "{\"ProjectID\": " << setw(3) << setfill('0') << projectID << ",\n";
+        projectID++;  //Counts up to next studentID
+        
+        
+        /*Prints out schema: "Priority": (Priority),
+         * priority can be 0,1, or 2.
+         */
+        cout << " \"Priority\": " << rand() % (2 +1) << ",\n";
+        
+        
+        /*Prints out schema: "Skills": [(skills)],
+         * ramdomly generates 7 skills with
+         * values 0-4
+         */
+        cout << " \"Skills\": [";
+        for(int i = 0; i < 7; i++){
+            if(i < 6) { cout << rand() % (2 +1) << ",";}
+            else { cout << rand() % (2 +1);}
+        }
+        cout << "],\n";
+        
+        
+        /*Prints out schema: "Type": O/G/H,
+         */
+        cout << " \"Type\": ";
+        if(j < 11) { cout << "\"O\" }, \n\n"; }
+        else if ( j >10 && j <21) { cout << "\"G\" }, \n\n"; }
+        else if ( j == 100) { cout << "\"H\" }\n\n"; }
+        else { cout << "\"H\" },\n\n"; }
+        
+    }
+    cout << "]\n}";
+    return 0;
+}

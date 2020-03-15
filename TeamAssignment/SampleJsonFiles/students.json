@@ -1,0 +1,28 @@
+{
+"students":[ 
+   {"StudentID": 123456,
+    "ClassID": 1,
+    "Skills": [ 3, 3, 3, 0, 1, 4, 2],
+    "StudentAffinity": [ 223456, true, 323456, true ],
+    "Availability": [ 1, 2, 3, 4] },
+
+   {"StudentID": 223456,
+    "ClassID": 2,
+    "Skills": [ 2, 1, 1, 3, 3, 1, 3],
+    "StudentAffinity": [ 123456, true, 323456, false ],
+    "Availability": [ 2, 5, 1, 4] },
+
+   {"StudentID": 323456,
+    "ClassID": 3,
+    "Skills": [ 0, 2, 4, 2, 2, 0, 0],
+    "StudentAffinity": [ 223456, false],
+    "Availability": [ 0, 1, 0, 1] },
+    
+    {"StudentID": 423456,
+    "ClassID": 4,
+    "Skills": [ 0, 0, 0, 0, 0, 0, 0],
+    "StudentAffinity": [ 223456, false],
+    "Availability": [ 0, 1, 0, 1] }
+    
+   ]
+}

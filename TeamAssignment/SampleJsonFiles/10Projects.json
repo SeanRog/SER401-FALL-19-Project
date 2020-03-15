@@ -1,0 +1,55 @@
+
+{ 
+"projects":[
+   {"ProjectID": 001,
+   "Priority": 1,
+   "Skills": [1,0,1,2,1,1,0],
+   "Type": "O" }, 
+
+  {"ProjectID": 002,
+   "Priority": 0,
+   "Skills": [1,2,1,2,1,2,1],
+   "Type": "O" }, 
+
+  {"ProjectID": 003,
+   "Priority": 0,
+   "Skills": [0,1,1,2,2,0,0],
+   "Type": "G" }, 
+
+  {"ProjectID": 004,
+   "Priority": 2,
+   "Skills": [2,2,1,1,1,2,0],
+   "Type": "G" }, 
+
+  {"ProjectID": 005,
+   "Priority": 0,
+   "Skills": [0,2,0,1,1,1,1],
+   "Type": "H" },
+
+  {"ProjectID": 006,
+   "Priority": 0,
+   "Skills": [0,0,2,2,1,2,2],
+   "Type": "H" },
+
+  {"ProjectID": 007,
+   "Priority": 2,
+   "Skills": [0,2,1,1,2,2,0],
+   "Type": "H" },
+
+  {"ProjectID": 008,
+   "Priority": 2,
+   "Skills": [2,1,1,0,0,2,0],
+   "Type": "H" },
+
+  {"ProjectID": 009,
+   "Priority": 2,
+   "Skills": [2,1,0,1,2,0,0],
+   "Type": "H" },
+
+  {"ProjectID": 10,
+   "Priority": 0,
+   "Skills": [2,2,1,2,0,1,2],
+   "Type": "H" }
+
+  ]
+}

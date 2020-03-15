@@ -1,0 +1,42 @@
+/*
+ * This function creates JSON schmea for class sections
+ *   - it randomizes skills
+ *   - it counts up from a given projectID number, 1
+ *   - Priority is randomized
+ *   - Type is 20% online/ground and 80% hybrid
+ */
+ 
+// included files/libraries
+#include <iostream>
+#include <stdlib.h>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+    //Sets first classID to 1, will count up from here
+    int classID = 1;
+    cout << "{ \n\"class sections\":[\n";
+    
+    //Loops through projectID to print
+    for(int j = 1; j < 101; j++) {
+        
+        
+        /*Prints out schema: {"ClassID": (classID#),
+         * the classID number is set to have width of 3
+         * if the number (1) is less than 7, it will fill
+         * with 0's. e.g. 001
+         */
+        cout << "{\"ClassID\": " << setw(4) << setfill('0') << classID << ",\n";
+        classID++;  //Counts up to next classID
+        
+        /*Prints out schema: "Type": O/G */
+        cout << " \"Type\": ";
+        if(j < 11) { cout << "\"O\" }, \n\n"; }
+        else if ( j >21) { cout << "\"G\" }, \n\n"; }
+        else { cout << "\"G\" },\n\n"; }
+        
+    }
+    cout << "]\n}";
+    return 0;
+}

@@ -1,0 +1,9 @@
+
+
+
+{ "class_sections":
+  [{
+    "ClassID": { "type": "int" },
+    "Type":{ "type": "string" } 
+  }]
+}
