@@ -40,7 +40,7 @@ clean:
 	$(RM) -r $(BUILD_DIR)
 	$(RM) -r $(JSONS)
 	$(RM) -r $(TXT)
-	$(RM) -r $(CSV)
+	
 
 run:
 	./build/main.exe $(ARGS)
