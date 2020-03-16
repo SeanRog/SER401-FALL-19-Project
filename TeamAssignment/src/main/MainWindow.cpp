@@ -639,7 +639,6 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
  *		nothing
  */
 void mini_browser() {
-
 	int argc;
 	char **argv;
 

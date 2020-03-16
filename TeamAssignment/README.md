@@ -36,6 +36,17 @@ $ chmod u+x install.sh
 $ sudo ./install.sh
 ```
 
+Fltk needs to be installed and configured.
+(enter the following commands into the same terminal window).
+
+```
+cd ./include/fltk-1.3.5
+./configure
+sudo make
+sudo make install
+cd -
+```
+
 Finally make and run the program.
 
 ```
