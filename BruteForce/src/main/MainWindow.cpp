@@ -680,7 +680,10 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 			//quit the mini-browser
 
 			//gtk_widget_destroy(window);
+			//gtk_window_close(GTK_WINDOW(window));
+			//gtk_window_iconify(GTK_WINDOW(window));
 			gtk_main_quit();
+
 			//TO-DO Find a way to close the browser window correctly,
 			//as it eats up memory while open.
 
@@ -764,6 +767,8 @@ void mini_browser() {
 
 	// Run the main GTK+ event loop
 	gtk_main();
+	cout<<"closed?"<<endl;
+
 
 	//terminate the window
 	//gtk_widget_destroy(main_window);
@@ -817,7 +822,7 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 
 	if (needed_projects1 > num_projects1 || needed_projects2 > num_projects2
 			|| needed_projects3 > num_projects3
-			|| needed_projects4 > num_projects4) {
+			|| needed_projects4 > num_projects4 || num_projects == 0 || num_students == 0) {
 		errorMessage();
 		error = true;
 	}
@@ -833,7 +838,9 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 		}
 		Authenticated = Auth;
 
+
 		windowMain->hide();
+
 
 		//call to get the course information
 		CookieManager cookieMonster;

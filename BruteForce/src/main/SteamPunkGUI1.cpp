@@ -956,7 +956,7 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 
 		if (needed_projects1 > num_projects1 || needed_projects2 > num_projects2
 				|| needed_projects3 > num_projects3
-				|| needed_projects4 > num_projects4) {
+				|| needed_projects4 > num_projects4 || num_projects == 0 || num_students == 0) {
 			errorMessageSP();
 			error = true;
 		}
