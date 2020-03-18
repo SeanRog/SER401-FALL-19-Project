@@ -16,6 +16,7 @@
  *  (see header file Utility.h)
  *
  */
+
 #include "Utility.h"
 #include "json/json.h"
 #include "ProjectJson.h"
@@ -1267,7 +1268,6 @@ void Utility::makeProjectJSON(int numProj, int numSkill) {
 
 		//file << " \"Type\": ";
 		//      file << "\"H\" },\n\n";
-
 		file << " \"Type\": ";
 		percent = (int) numProjects * (0.10);
 		if (projectID < (percent + 1)) {
@@ -1698,8 +1698,14 @@ vector<vector<string>> Utility::toCSVcse(string filename) {
  *Returns:
  *  vector<Project> containing the project objects obtained from the projects in the CSV file.
  */
-vector<Project> Utility::csvToProjectsVector(string filename) {
-	string skills1[14] = {"ArtificialIntelligence", "WebApplicationProgramming", "IOSMobileApplicationProgramming", "AndroidMobileApplicationProgramming", "Sensing/Control/Embedded", "DesktopApplicationProgramming","DatabaseProgramming", "NetworkSecurity", "C", "C++", "C#", "Java", "JavaScript", "Python"};
+vector<Project> Utility::csvToProjectsVector(string filename, Project projectPool[], int numProjects) {
+	string skills1[14] =
+			{ "ArtificialIntelligence", "WebApplicationProgramming",
+					"IOSMobileApplicationProgramming",
+					"AndroidMobileApplicationProgramming",
+					"Sensing/Control/Embedded", "DesktopApplicationProgramming",
+					"DatabaseProgramming", "NetworkSecurity", "C", "C++", "C#",
+					"Java", "JavaScript", "Python" };
 
 	string currentSkill = "";
 
@@ -1725,7 +1731,7 @@ vector<Project> Utility::csvToProjectsVector(string filename) {
 				vec.push_back(element);
 				element = "";
 			} else {
-				if(line.at(i) != '[' && line.at(i) != ']') {
+				if (line.at(i) != '[' && line.at(i) != ']') {
 					element.push_back(line.at(i));
 				}
 			}
@@ -1737,10 +1743,13 @@ vector<Project> Utility::csvToProjectsVector(string filename) {
 		dataList.push_back(vec);
 	}
 	file.close();
-
+	if(numProjects > dataList.size()) {
+		cout << "numProjects can't be bigger than " << dataList.size() << endl;
+		throw numProjects;
+	}
 	//put csv data into a project object, add that project object to vector<Project> projects,
 	//repeat for all project data in CSV, return projects
-	for (int i = 1; i < dataList.size(); i++) {
+	for (int i = 1; i < numProjects; i++) {
 		Project p = Project();
 		for (int j = 0; j < 15; j++) {
 			p.Skills[j] = 0;
@@ -1757,26 +1766,26 @@ vector<Project> Utility::csvToProjectsVector(string filename) {
 				(dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
 
 		currentSkill = "";
-		for(int j = 0; j < dataList.at(i).at(12).size(); j++) {
-			if(dataList.at(i).at(12).at(j) == ',') {
+		for (int j = 0; j < dataList.at(i).at(12).size(); j++) {
+			if (dataList.at(i).at(12).at(j) == ',') {
 				currentSkill = "";
 			} else {
 				currentSkill.push_back(dataList.at(i).at(12).at(j));
-				for(int k = 0; k < 8; k++) {
-					if(currentSkill.compare(skills1[k]) == 0) {
+				for (int k = 0; k < 8; k++) {
+					if (currentSkill.compare(skills1[k]) == 0) {
 						p.Skills[k] = 1;
 					}
 				}
 			}
 		}
 		currentSkill = "";
-		for(int j = 0; j < dataList.at(i).at(13).size(); j++) {
-			if(dataList.at(i).at(13).at(j) == ',') {
+		for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
+			if (dataList.at(i).at(13).at(j) == ',') {
 				currentSkill = "";
 			} else {
 				currentSkill.push_back(dataList.at(i).at(13).at(j));
-				for(int k = 8; k < 14; k++) {
-					if(currentSkill.compare(skills1[k]) == 0) {
+				for (int k = 8; k < 14; k++) {
+					if (currentSkill.compare(skills1[k]) == 0) {
 						p.Skills[k] = 1;
 					}
 				}
@@ -1784,6 +1793,7 @@ vector<Project> Utility::csvToProjectsVector(string filename) {
 		}
 
 		projects.push_back(p);
+		projectPool[i] = p;
 	}
 	return projects;
 }

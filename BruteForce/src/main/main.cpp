@@ -48,6 +48,7 @@
 #include "GUIStyles.h"
 #include "main.h"
 #include "CookieManager.h"
+#include "SteamPunkGUI1.h"
 
 #include <iostream>
 #include <utility>
@@ -78,6 +79,7 @@
 
 using namespace std;
 using namespace std::chrono;
+int ResultWindow::count = 0;
 
 /*********************************************************
  * parseLine
@@ -165,6 +167,9 @@ constexpr int toConstInt(int constInt) {
 
 //progress bar
 Fl_Progress *progressBar;
+
+//terminal buffer
+Fl_Text_Buffer *terminal;
 
 /*********************************************************
  * threadFunction
@@ -492,52 +497,61 @@ void threadFunction(Student studentPool[], Project projectPool[],
 		//1st Call to function: Highest priority projects and highest skill average students
 		*(results + (classSection * 3 + 0)) = x.StudentsToProjectsAssignment(
 				STpriority2, PRpriority2, COUNT_2, PCOUNT_2, numSkills,
-				teamSize, numTopTeams, progressBar, progressIncrement);
+				teamSize, numTopTeams, progressBar, progressIncrement, terminal);
 	}
 
 	if (COUNT_1 != 0 && PCOUNT_1 != 0) {
 		//2nd Call to function: middle priority projects and middle skill average students
 		*(results + (classSection * 3 + 1)) = x.StudentsToProjectsAssignment(
 				STpriority1, PRpriority1, COUNT_1, PCOUNT_1, numSkills,
-				teamSize, numTopTeams, progressBar, progressIncrement);
+				teamSize, numTopTeams, progressBar, progressIncrement, terminal);
 	}
 
 	if (COUNT_0 != 0 && PCOUNT_0 != 0) {
 		//3rd Call to function: lowest priority projects and lowest skill average students
 		*(results + (classSection * 3 + 2)) = x.StudentsToProjectsAssignment(
 				STpriority0, PRpriority0, COUNT_0, PCOUNT_0, numSkills,
-				teamSize, numTopTeams, progressBar, progressIncrement);
+				teamSize, numTopTeams, progressBar, progressIncrement, terminal);
 	}
+
+
+	//output to the GUI
+	string output = + "Class Section #" + to_string(classSection) + " Assignment Complete!\n" ;
+	int length = output.length();
+	char output_char[length + 1];
+	strcpy(output_char, output.c_str());
+	//terminal->append(output_char);
+	char* text = terminal->text();
+	terminal->text("");
+	terminal->append(output_char);
+	terminal->append(text);
+
+
 
 }    //end threadFunction
 
 int tempProj, tempStud, textInput;
 
-/*
- void dobut(Fl_Widget *){
- bool validNumber = true;
- cout << input->value() << endl;
- string str = input->value();
- if(str.length() == 0) {
- validNumber = false;
- } else if(str.at(0) > 48 && str.at(0) <= 57) {
- for(int i = 1; i < str.length(); i++) {
- if(str.at(i) < 48 || str.at(i) > 57) {
- validNumber = false;
- }
- }
- } else {
- validNumber = false;
- }
+Fl_Window *optionWindow;
 
- if(validNumber) {
- output->value(input->value());
- cout << "valid number" << endl;
- } else {
- cout << "Invalid number" << endl;
- }
- }
- */
+
+//Callback for the Steampunk option button.
+//Opens the Steampunk version of the GUI
+void Steampunk_Option(Fl_Widget *w) {
+
+	optionWindow->hide();
+	SteamPunkGUI1 mainWin;
+	mainWin.MainWindow2();
+}
+
+//Callback for the ASU option button.
+//Opens the ASU colors version of the GUI
+void ASU_Option(Fl_Widget *w) {
+
+	optionWindow->hide();
+	MainWindow mainWin;
+	mainWin.MainWindow2();
+}
 
 /*************************************************************************************
  * main
@@ -558,11 +572,59 @@ int tempProj, tempStud, textInput;
 int main() {
 
 	XInitThreads();
-	MainWindow mainWin;
 
-	//mainWin.MainWindow1();
+	    optionWindow = new Fl_Window(650, 320, "Capstone Team Assignment System");
+	    optionWindow->begin();
+	    optionWindow->color(ASU_WHITE);
 
-	mainWin.MainWindow2();
+	    Fl_Box backBox1(10, 10, 630, 300);
+	    backBox1.box(FL_FLAT_BOX);
+	    backBox1.color(ASU_GOLD);
+
+
+		Fl_Box promptBox1(10, 20, 630, 50, "Application Style");
+		promptBox1.align(FL_ALIGN_CENTER);
+		promptBox1.box(FL_FLAT_BOX);
+		promptBox1.color(ASU_GREY);
+		promptBox1.labelfont(FL_HELVETICA_BOLD);
+		promptBox1.labelcolor(ASU_WHITE);
+		promptBox1.labelsize(40);
+
+		Fl_Box promptBox2(50, 80, 550, 20,
+				"Please select the style option for the look of the application.");
+		promptBox2.align(FL_ALIGN_CENTER);
+		promptBox2.labelsize(20);
+		promptBox2.labelfont(FL_HELVETICA);
+
+		Fl_Button OptButton1(60, 150, 185, 105);
+		OptButton1.color(DARK_TAUPE);
+		OptButton1.labelfont(FL_TIMES_BOLD_ITALIC);
+		OptButton1.labelcolor(ASU_GREY);
+		OptButton1.labelsize(15);
+		OptButton1.selection_color(LIGHT_CREAM);
+		Fl_PNG_Image SP_Button("./Images/Steampunk_Button.png");
+		OptButton1.image(SP_Button);
+		OptButton1.callback(Steampunk_Option);
+
+		Fl_Button OptButton2(405, 150, 185, 105);
+		OptButton2.color(ASU_WHITE);
+		OptButton2.labelfont(FL_HELVETICA_BOLD);
+		OptButton2.labelcolor(ASU_BLACK);
+		OptButton2.labelsize(15);
+		OptButton2.selection_color(ASU_BLACK);
+		Fl_PNG_Image ASU_Button("./Images/ASU_Button.png");
+		OptButton2.image(ASU_Button);
+		OptButton2.callback(ASU_Option);
+
+		 optionWindow->box(FL_BORDER_BOX);
+		 optionWindow->resizable(promptBox1);
+		 optionWindow->end();
+		 optionWindow->show();
+
+		Fl::run();
+
+
+
 	return 0;
 }
 
@@ -582,12 +644,29 @@ int main() {
  *Returns:
  *	int value 0.
  */
-int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
+int main::main_run(int projects_input, int students_input, string filepath, Fl_Progress *pb, Fl_Text_Buffer *tb) {
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
 	srand(time(NULL));
-
+	string file = "";
+	string file2 = "";
 	cout << "Hi Team 35" << endl;
+	cout << "main " << filepath << endl;
+	for (int i = filepath.length() - 1; i >= 0; i--) {
+		file.push_back(filepath.at(i));
+		if(filepath.at(i) == 47) {
+			file.push_back('.');
+			break;
+		}
+	}
+
+	for(int i = file.length() - 1; i >=0; i--) {
+		file2.push_back(file.at(i));
+	}
+	for(int i = 0; i < file.length(); i++) {
+			cout << file2.at(i) << ',';
+		}
+	cout << endl;
 
 	//set up the progress bar with 5 percent
 	progressBar = pb;
@@ -597,9 +676,8 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
 	pb->label(percent);
 	Fl::check();
 
-	//Fl::run();
-
-	//MainWindow mainWin;
+	//set up the terminal buffer
+	terminal = tb;
 
 	tempProj = projects_input;
 	tempStud = students_input;
@@ -609,6 +687,7 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
 	const int NUM_STUDENTS = toConstInt(tempStud);
 	const int NUM_SKILLS = 15;
 	const int NUM_CLASS_SECTIONS = 4;
+	ResultWindow::count = NUM_PROJECTS;
 
 	Utility util;
 
@@ -617,7 +696,12 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
 	util.makeProjectJSON(NUM_PROJECTS, NUM_SKILLS);
 	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS);
 
-	const string PROJECT_FILE = "./newProjects.json";
+	//const string PROJECT_FILE = "./newProjects.json";
+	cout << endl;
+	cout << filepath << endl;
+
+	//const string PROJECT_FILE = "./100Projects.csv";
+	const string PROJECT_FILE = file2;
 	const string STUDENT_FILE = "./newStudents.json";
 	const string CLASS_SECTION_FILE = "./SampleJsonFiles/4ClassSections.json";
 
@@ -643,12 +727,18 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
 	Test t;
 
 	// INITIALIZE POOLS
-	util.initProjectPool(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
+	//util.initProjectPool(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
+	util.csvToProjectsVector(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
 	util.initStudentPool(STUDENT_FILE, STUDENT_POOL, NUM_STUDENTS);
 	util.initClassSectionPool(CLASS_SECTION_FILE, CLASS_SECTION_POOL,
 			STUDENT_POOL, NUM_CLASS_SECTIONS, NUM_STUDENTS);
 	util.initProjectStudentSkills(PROJECT_POOL, STUDENT_POOL,
 			PROJECT_STUDENT_SKILLS, NUM_PROJECTS, NUM_STUDENTS, NUM_SKILLS);
+
+	for (int j = 0; j < NUM_PROJECTS; j++) {
+		ResultWindow::project_pool[0][j] = PROJECT_POOL[j].ProjectID;
+		ResultWindow::project_pool[1][j] = PROJECT_POOL[j].Priority;
+	}
 
 	string results[NUM_CLASS_SECTIONS * 3];	//Stores the results the assignment of students to projects each class section
 	int studentsInSections[NUM_CLASS_SECTIONS]; //stores the number of students in each class section
@@ -699,6 +789,7 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
 
 	//set the number of projects in each class section to the indexes of projectsInSections[]
 	for (int i = 0; i < NUM_PROJECTS; i++) {
+		ResultWindow::project_pool[3][i] = PROJECT_POOL[i].ClassID;
 		for (int j = 0; j < NUM_CLASS_SECTIONS; j++) {
 			if (PROJECT_POOL[i].ClassID == j) {
 				projectsInSections[j]++;
@@ -819,4 +910,6 @@ int main::main_run(int projects_input, int students_input, Fl_Progress *pb) {
 	//t.PrintProjectPool(PROJECT_POOL, NUM_PROJECTS, NUM_SKILLS);
 	//t.PrintStudentPool(STUDENT_POOL, NUM_STUDENTS, NUM_SKILLS);
 	//t.PrintProjectStudentSkills(PROJECT_STUDENT_SKILLS, NUM_PROJECTS, NUM_STUDENTS);
+
+	return 1;
 }

@@ -30,6 +30,7 @@ using namespace std;
 
 class Utility {
 public:
+
 	Utility();
 
 	void initProjectPool(string filename, Project projectPool[],
@@ -72,7 +73,7 @@ public:
 	int NumOfTeamsOf4(int numStudents, int teamSize);
 	vector<vector<string>> toCSVsse(string filename);
 	vector<vector<string>> toCSVcse(string filename);
-	vector<Project> csvToProjectsVector(string filename);
+	vector<Project> csvToProjectsVector(string filename, Project projectPool[], int numProjects);
 	~Utility();
 };
 

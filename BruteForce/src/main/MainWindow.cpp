@@ -13,12 +13,15 @@
  *
  */
 
+#define WEBVIEW_GTK
+
 #include "MainWindow.h"
 #include "DataEntryGUI.h"
 #include "GUIStyles.h"
 #include "ResultWindow.h"
-//#include "CanvasUtility.h"
+#include "CookieManager.h"
 #include "main.h"
+#include "webview.h"
 
 #include <iostream>
 #include <fstream>
@@ -26,6 +29,7 @@
 #include <cstdlib>
 #include <thread>
 #include <stdio.h>
+#include <vector>
 #include <FL/names.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -49,10 +53,13 @@
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
 
+#include <gtk/gtk.h>
+#include <webkit2/webkit2.h>
+#include <libsoup/soup.h>
 #include <curl/curl.h>
 
-
 using namespace std;
+
 int MainWindow::num_projects = 0;
 int MainWindow::num_students = 0;
 
@@ -63,6 +70,8 @@ constexpr int toConstInt(int constInt) {
 
 // CONSTRUCTOR
 MainWindow::MainWindow() {
+
+	Authenticated = false;
 
 }
 //ASU logos
@@ -80,128 +89,32 @@ Fl_PNG_Image *LoadingPngs[22];
 
 void MainWindow::MainWindow1() {
 
-	/*
-	 // MAIN WINDOW
-	 num_students=0;
-	 num_projects=0;
-	 nextWindowFlag=false;
-
-	 const int windowMainW = 400;
-	 const int windowMainH = 400;
-	 const char windowMainStr[] = "Project 35";
-
-	 // HEADER BOX
-	 const int boxHeaderX = 20;
-	 const int boxHeaderY = 20;
-	 const int boxHeaderW = toConstInt(windowMainW - (boxHeaderX * 2));
-	 const int boxHeaderH = 90;
-	 const char boxHeaderStr[] = "CAPSTONE TEAM ASSIGNMENT SYSTEM";
-
-	 // NEW PROJECT BUTTON
-	 const int buttonStartX = toConstInt(boxHeaderX);
-	 const int buttonStartY = toConstInt(boxHeaderY + boxHeaderH + 20);
-	 const int buttonStartW = 100;
-	 const int buttonStartH = 50;
-	 const char buttonStartStr[] = "START";
-
-	 // OPEN PROJECT BUTTON
-	 const int buttonOpenProjectX = toConstInt(buttonStartX + buttonStartW + 20);
-	 const int buttonOpenProjectY = toConstInt(buttonStartY);
-	 const int buttonOpenProjectW = toConstInt(buttonStartW);
-	 const int buttonOpenProjectH = toConstInt(buttonStartH);
-	 const char buttonOpenProjectStr[] = "Open Project";
-
-	 // PROJECT INPUT
-	 const int InputProjectX = toConstInt(buttonStartX + buttonStartW + 20);
-	 const int InputProjectY = toConstInt(buttonStartY + 70);
-	 const int InputProjectW = toConstInt(buttonStartW);
-	 const int InputProjectH = toConstInt(buttonStartH);
-	 const char InputPStr[] = "#Projects";
-
-	 // STUDENT INPUT
-	 const int InputStudentX = toConstInt(buttonStartX + buttonStartW + 20);
-	 const int InputStudentY = toConstInt(buttonStartY + 140);
-	 const int InputStudentW = toConstInt(buttonStartW);
-	 const int InputStudentH = toConstInt(buttonStartH);
-	 const char InputSStr[] = "#Students";
-
-	 // GENERATE TEAMS BUTTON
-	 const int generateTeamsX = toConstInt(buttonStartX + buttonStartW + 130);
-	 const int generateTeamsY = toConstInt(buttonStartY + 120);
-	 const int generateTeamsW = toConstInt(buttonStartW);
-	 const int generateTeamsH = toConstInt(buttonStartH + 20);
-	 const char generateTeamsStr[] = "Generate Teams";
-
-
-	 // INITIALIZE COMPONENTS
-	 windowMain = new Fl_Window(windowMainW, windowMainH, windowMainStr);
-	 boxHeader = new Fl_Box(boxHeaderX, boxHeaderY, boxHeaderW,
-	 boxHeaderH, boxHeaderStr);
-	 buttonStart = new Fl_Button(buttonStartX, buttonStartY,
-	 buttonStartW, buttonStartH, buttonStartStr);
-	 //buttonOpenProject = new Fl_Button(buttonOpenProjectX, buttonOpenProjectY,
-	 //    buttonOpenProjectW, buttonOpenProjectH, buttonOpenProjectStr);
-
-	 inputprojects = new Fl_Int_Input(InputProjectX, InputProjectY,
-	 InputProjectW, InputProjectH, InputPStr );
-
-	 inputstudents = new Fl_Int_Input(InputStudentX, InputStudentY,
-	 InputStudentW, InputStudentH, InputSStr );
-
-	 generateTeams = new Fl_Button(generateTeamsX, generateTeamsY,
-	 TeamLogo1.w(), TeamLogo1.h());
-
-	 //CALLBACKS
-	 generateTeams->callback(static_TeamsButtonClick, this);
-	 buttonStart->callback(static_StartButtonClick, this);
-
-
-
-	 windowMain->color(ASU_WHITE);
-	 windowMain->box(FL_BORDER_BOX);
-	 windowMain->resizable(boxHeader);
-
-
-	 buttonStart->color(ASU_GOLD);
-	 buttonStart->labelfont(FL_HELVETICA_BOLD);
-	 buttonStart->labelcolor(ASU_BLACK);
-	 buttonStart->labelsize(12);
-	 buttonStart->selection_color(ASU_MAROON);
-
-	 generateTeams->image(TeamLogo1);
-	 generateTeams->color(ASU_GOLD);
-	 generateTeams->selection_color(ASU_MAROON);
-	 generateTeams->labelcolor(ASU_BLACK);
-	 generateTeams->labelfont(FL_HELVETICA_ITALIC);
-	 generateTeams->labelsize(12);
-	 generateTeams->box(FL_NO_BOX);
-	 generateTeams->tooltip("Generate Teams");
-	 generateTeams->down_box(FL_NO_BOX);
-
-
-	 buttonOpenProject->color(ASU_GOLD);
-	 buttonOpenProject->labelcolor(ASU_BLACK);
-
-
-	 boxHeader->box(FL_FLAT_BOX);
-	 boxHeader->color(ASU_MAROON);
-	 boxHeader->image(ASU_LOGO_BLACK1);
-	 boxHeader->labelfont(FL_HELVETICA_ITALIC);
-	 boxHeader->labelsize(15);
-	 boxHeader->labelcolor(ASU_WHITE);
-	 boxHeader->redraw();
-
-	 windowMain->show();
-	 windowMain->end();
-
-
-	 Fl::run(); */
-
 }
 
 // DESTRUCTOR
 MainWindow::~MainWindow() {
+	delete progressWindow;
+	delete progressBar;
+	delete progressBox;
+	delete TeamsButton;
+	delete doneButton;
+	delete imageBox;
+	delete windowMain;
+	delete nextWindow;
+	delete boxHeader;
+	delete buttonStart;
+	delete buttonOpenProject;
+	delete generateTeams;
+	delete inputprojects;
+	delete inputstudents;
 
+}
+
+void running(Fl_Window *w) {
+
+	while (w->shown() == true) {
+
+	}
 }
 
 void MainWindow::MainWindow2() {
@@ -341,7 +254,6 @@ void MainWindow::MainWindow2() {
 		}
 
 		tabs->end();
-
 	}
 
 	/* for running / testing inputs */
@@ -389,14 +301,14 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 
 	//PROGRESS BAR WINDOW
 
-	progressWindow = new Fl_Window(570, 400, "Team Assignment Progress");
+	progressWindow = new Fl_Window(570, 500, "Team Assignment Progress");
 	progressWindow->begin();
 
-	Fl_Box *backBox = new Fl_Box(0, 250, 570, 150);
+	Fl_Box *backBox = new Fl_Box(0, 250, 570, 250);
 	backBox->box(FL_BORDER_BOX);
 	backBox->color(ASU_GREY);
 
-	Fl_Box *backBox1 = new Fl_Box(0, 0, 10, 400);
+	Fl_Box *backBox1 = new Fl_Box(0, 0, 10, 500);
 	backBox1->box(FL_FLAT_BOX);
 	backBox1->color(ASU_GREY);
 
@@ -404,13 +316,13 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	backBox2->box(FL_FLAT_BOX);
 	backBox2->color(ASU_GREY);
 
-	Fl_Box *backBox3 = new Fl_Box(560, 0, 10, 400);
+	Fl_Box *backBox3 = new Fl_Box(560, 0, 10, 500);
 	backBox3->box(FL_FLAT_BOX);
 	backBox3->color(ASU_GREY);
 
-	TeamsButton = new Fl_Button(25, 260, 200, 50, "Generate Teams");
-	doneButton = new Fl_Button(345, 260, 200, 50, "Done");
-	progressBar = new Fl_Progress(20, 325, 530, 40);
+	TeamsButton = new Fl_Button(25, 360, 200, 50, "Generate Teams");
+	doneButton = new Fl_Button(345, 360, 200, 50, "Done");
+	progressBar = new Fl_Progress(20, 425, 530, 40);
 
 	//progressBox = new Fl_Box(10, 330, 550, 40, "");
 
@@ -434,7 +346,20 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	imageBox->image(baseImage);
 	imageBox->redraw();
 
-	progressBox = new Fl_Box(10, 210, 550, 40, "");
+	// Buffer
+	terminalBuffer = new Fl_Text_Buffer();
+
+	//Text Display
+	terminalTextDisplay = new Fl_Text_Display(10, 260, 550, 80);
+	terminalTextDisplay->buffer(terminalBuffer);
+	terminalTextDisplay->textfont(FL_HELVETICA);
+	terminalTextDisplay->textcolor(ASU_BLACK);
+	terminalTextDisplay->textsize(15);
+	terminalTextDisplay->selection_color(ASU_GOLD);
+
+	progressBox = new Fl_Box(10, 230, 550, 25, "");
+	progressBox->box(FL_FLAT_BOX);
+	progressBox->color(ASU_WHITE);
 
 	doneButton->color(ASU_GOLD);
 	doneButton->selection_color(ASU_MAROON);
@@ -458,11 +383,9 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 
 	progressBar->value(0);
 	progressBar->label(0);
-
 	TeamsButton->callback(static_ProgressTeamsButtonClick, this);
 	doneButton->callback(static_DoneButtonClick, this);
 	progressWindow->redraw();
-
 
 	Fl::run();
 }
@@ -510,8 +433,8 @@ void animate(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 void teamAssignment(int num_students, int num_projects,
 		Fl_Progress *progressBar) {
 
-	main m;
-	m.main_run(num_projects, num_students, progressBar);
+	//main m;
+	//m.main_run(num_projects, num_students, progressBar, terminalBuffer);
 }
 
 /*****************************************************************************
@@ -537,9 +460,9 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	TeamsButton->deactivate();
 	progressBox->label("Team Assignment System Running...");
-	progressBox->labelfont(FL_HELVETICA);
-	progressBox->labelsize(20);
-	progressBox->labelcolor(ASU_BLACK);
+	progressBox->labelfont(FL_HELVETICA_BOLD);
+	progressBox->labelsize(18);
+	progressBox->labelcolor(ASU_GREY);
 	imageBox->redraw();
 
 	XInitThreads();
@@ -553,7 +476,9 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
-	m.main_run(num_projects, num_students, progressBar);
+
+	m.main_run(num_projects, num_students, mwProjfile, progressBar,
+			terminalBuffer);
 
 	//join threads
 	for (int i = 0; i < 1; i++) {
@@ -566,8 +491,9 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	doneButton->activate();
 	progressBox->label("Team Assignment Complete! Click 'Done' to continue.");
-	progressBox->labelsize(18);
-	progressBox->labelfont(FL_HELVETICA);
+	progressBox->labelsize(16);
+	progressBox->labelfont(FL_HELVETICA_BOLD);
+	progressBox->labelcolor(ASU_GREEN);
 
 }
 
@@ -578,7 +504,6 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
  *
  * Description:
  *		When the Done button is clicked, the results window is opened.
- *
  *
  * Arguments:
  *		Fl_Widget* w
@@ -592,6 +517,212 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
 	ResultWindow windowResult;
 	windowResult.buffer->loadfile("results.txt", 1000000);
 	windowResult.addText();
+}
+
+//variables for the mini-browser session static functions
+bool Auth;
+typedef void *user_data;
+vector<SoupCookie> cookiedata;
+
+//callback when the window is closed via the close button
+static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
+	cout << "Exiting mini-browser" << endl;
+	gtk_main_quit();
+	if (Auth != true) {
+		cout << "Quit login session! EXITING PROGRAM" << endl;
+		exit(1);
+	}
+
+}
+
+//callback when the window is closed via the close button
+static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window) {
+	gtk_widget_destroy(window);
+	return TRUE;
+}
+
+/*****************************************************************************
+ * getCookiesCB
+ *
+ * Author(s): Myles,
+ *
+ * Description:
+ *		Callback function for the cookie fetch function.
+ *		Finishes getting the cookies from the mini-browser session.
+ *		Takes in the data in a Glist, and loops over the contents type casting
+ *		the data to a soupcookie, and storing it in a vector to pass to the libcurl
+ *		HTTP request functions.
+ *
+ * Arguments:
+ *		WebKitCookieManager *manager,
+ *	    GAsyncResult *asyncResult
+ *
+ * Returns:
+ *		nothing
+ */
+static void getCookiesCB(WebKitCookieManager *manager,
+		GAsyncResult *asyncResult) {
+	//GList *dataList = webkit_website_data_manager_fetch_finish(manager, asyncResult, NULL);
+
+	GList *dataList = webkit_cookie_manager_get_cookies_finish(manager,
+			asyncResult, NULL);
+
+	//clear cookie data from the vector
+	cookiedata.clear();
+
+	SoupCookie *cookies;
+
+	int i = 0;
+	for (GList *l = dataList; l && l->data; l = g_list_next(l)) {
+
+		cookies = (SoupCookie*) l->data;
+		cout << cookies->name << endl;
+		cout << cookies->value << endl;
+		cout << cookies->domain << endl;
+		cout << cookies->path << endl;
+		cout << cookies->expires << endl;
+
+		//add the current cookie to the cookiedata vector
+		cookiedata.push_back(*cookies);
+		i++;
+	}
+
+	//free the data from memory
+	//g_list_free_full(dataList, (GDestroyNotify)soup_cookie_free);
+
+}
+
+/*****************************************************************************
+ * load_changedWebViewCb
+ *
+ * Author(s): Myles,
+ *
+ * Description:
+ *		Callback function that listens for a change in the url in the mini-browser.
+ *		Once the mini-browser reaches the login success page, the mini-browser is exited.
+ *		This function also calls the cookie manager get cookies function to get the incoming cookies
+ *		for every url change.
+ *
+ * Arguments:
+ *		WebKitWebView *webView,
+		GtkWidget *window
+ *
+ * Returns:
+ *		gboolean
+ */
+static gboolean load_changedWebViewCb(WebKitWebView *webView,
+		GtkWidget *window) {
+	cout << "listening" << endl;
+	cout << webkit_web_view_get_uri(webView) << endl;
+	void *data;
+
+	//Get request for the current cookies in the mini-browser session.
+	webkit_cookie_manager_get_cookies(
+			webkit_web_context_get_cookie_manager(
+					(webkit_web_view_get_context(webView))),
+			webkit_web_view_get_uri(webView), 0,
+			(GAsyncReadyCallback) getCookiesCB, data);
+
+	//check to see if the login success page has been reached.
+	if (strcmp(webkit_web_view_get_uri(webView),
+			"https://canvas.asu.edu/?login_success=1") == 0) {
+
+		//check to see if the login success page is done loading.
+		if (webkit_web_view_is_loading(webView) == false) {
+
+			cout << "Canvas reached! authentication complete!" << endl;
+			Auth = true;
+			//quit the mini-browser
+
+			//gtk_widget_destroy(window);
+			gtk_main_quit();
+			//TO-DO Find a way to close the browser window correctly,
+			//as it eats up memory while open.
+
+		}
+	}
+
+	return TRUE;
+}
+
+/*****************************************************************************
+ * mini_browserSP
+ *
+ * Author(s): Myles, Matthew, Cristi
+ *
+ * Description:
+ *		This function creates a mini-browser session so the user can login
+ *		and create an authenticated session. The cookies from this session will
+ *		be stored for future HTTP requests. This function uses gtk, and webkitgtk
+ *		to create the mini-browser.
+ *
+ * Arguments:
+ *		nothing
+ *
+ * Returns:
+ *		nothing
+ */
+void mini_browser() {
+
+	int argc;
+	char **argv;
+
+	//Initialize GTK+
+	gtk_init(&argc, &argv);
+
+	// Create an 800x600 window that will contain the browser instance
+	GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
+	gtk_window_set_title(GTK_WINDOW(main_window), "ASU Canvas Authentication");
+	//create the data manager
+	WebKitWebsiteDataManager *manager = webkit_website_data_manager_new(0);
+	//create the context
+	WebKitWebContext *context =
+			webkit_web_context_new_with_website_data_manager(manager);
+	//create cookie manager
+	WebKitCookieManager *cookiejar = webkit_web_context_get_cookie_manager(
+			context);
+	// Create a browser instance
+	WebKitWebView *webView = WEBKIT_WEB_VIEW(
+			webkit_web_view_new_with_context(context));
+
+	//webkit_web_context_set_automation_allowed(context, 1);
+
+	WebKitSettings *settings = webkit_settings_new();
+
+	g_object_set(G_OBJECT(settings), "enable-offline-web-application-cache",
+	TRUE, NULL);
+
+	// Apply the result
+	webkit_web_view_set_settings(webView, settings);
+
+	// Put the browser area into the main window
+	gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
+
+	// Set up callbacks so that if either the main window or the browser instance is
+	// closed, the program will exit
+	g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
+	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
+
+	g_signal_connect(webView, "load-changed", G_CALLBACK(load_changedWebViewCb),
+			main_window);
+
+	// Load a web page into the browser instance
+	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
+
+	// Make sure that when the browser area becomes visible, it will get mouse
+	// and keyboard events
+	gtk_widget_grab_focus(GTK_WIDGET(webView));
+
+	// Make sure the main window and all its contents are visible
+	gtk_widget_show_all(main_window);
+
+	// Run the main GTK+ event loop
+	gtk_main();
+
+	//terminate the window
+	//gtk_widget_destroy(main_window);
+
 }
 
 /*****************************************************************************
@@ -611,19 +742,25 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
  */
 void MainWindow::StartButtonClick(Fl_Widget *w) {
 
-
-	//open the firefox browser for ASU canvas login page.
-	//system("firefox https://canvas.asu.edu/login");
-
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
+
+	//nextWindow = windowMain;
+
+	//if the user is not authenticated yet,
+	//open the mini-browser for canvas authentication
+	if (Authenticated != true) {
+		Auth = false;
+		mini_browser();
+	}
+	Authenticated = Auth;
+
 	windowMain->hide();
 
-	//CanvasUtility Canvas;
-	 //Canvas.getCourses();
-	 //Canvas.getQuizzes();
+	//call to get the course information
+	CookieManager cookieMonster;
+	cookieMonster.getCourses(cookiedata);
 
-	//call to next GUI window.
 	DataEntryGUI dataGUI(windowMain);
 
 }
@@ -648,4 +785,3 @@ void MainWindow::callTeams(Fl_Widget *w) {
 	TeamsButtonClick(windowMain);
 
 }
-
