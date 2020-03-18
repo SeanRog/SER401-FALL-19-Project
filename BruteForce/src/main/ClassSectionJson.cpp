@@ -111,7 +111,6 @@ const int ClassSectionJson::getNumClasses(string filename){
 void ClassSectionJson::getAllClassSectionJsonObjects(string filename, ClassSection courses[])
 {
 
-
 	ifstream ifs(filename);
 	Json::Reader reader;
 	Json::Value obj;

@@ -567,11 +567,12 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 	}
 
 	//Get the Quiz data from the student survey.
+	string QuizName = fileInput_StudentQuizName->value();
     CookieManager CM;
 
 	for (int j = 0; j < num_of_selected_courses; j++) {
 
-		CM.getQuizzes(cookiedataDE, classes[j].OfficialClassID);
+		CM.getQuizzes(cookiedataDE, classes[j].OfficialClassID, QuizName);
 
 	}
 

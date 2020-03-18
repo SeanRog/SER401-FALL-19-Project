@@ -1798,3 +1798,47 @@ vector<Project> Utility::csvToProjectsVector(string filename, Project projectPoo
 	return projects;
 }
 
+
+/*********************************************************
+ * GetQuizID
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Reads in all the quizzes from a Json file, and searches for the quiz ID of the
+ * 	quiz that matches the string name entered.
+ *
+ *Arguments:
+ *	string
+ *
+ *Returns:
+ *  int value of the quiz ID
+ */
+int Utility::GetQuizID(string quizName, string filename) {
+
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	int quiz_ID;
+
+	const int numberOfQuizzes = obj["quizzes"].size();
+
+	ClassSection classSection[numberOfQuizzes];
+
+	for (int i = 0; i < numberOfQuizzes; i++) {
+
+		if(quizName.compare(obj["quizzes"].get((int) i, "")["title"].asString()) == 0){
+
+			quiz_ID = obj["quizzes"].get((int) i, "")["id"].asInt();
+		}
+
+	}
+
+	return quiz_ID;
+
+}
+
+
