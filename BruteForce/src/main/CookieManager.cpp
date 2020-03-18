@@ -367,6 +367,95 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 	curl_easy_cleanup(curl);
 }
 
+void CookieManager::getStudents(vector<SoupCookie> cookiedata) {
+	CURL *curl;
+	CURLcode res;
+	std::string readBuffer;
+	std::string cookieBuffer;
+	struct curl_slist *headers = NULL;
+
+	//read in the cookie data from the vector and store it in a string
+	std::string cookies;
+	std::string temp_cookies;
+
+	cookies = cookiedata[0].name;
+	cookies += "=";
+	cookies += cookiedata[0].value;
+	cookies += "; ";
+
+	temp_cookies = cookiedata[0].name;
+	temp_cookies += "=";
+	temp_cookies += cookiedata[0].value;
+	temp_cookies += "; \n";
+
+	for(int i = 1; i < cookiedata.size(); i++){
+		cookies += cookiedata[i].name;
+		cookies += "=";
+		cookies += cookiedata[i].value;
+		cookies += "; ";
+
+		temp_cookies += cookiedata[i].name;
+		temp_cookies += "=";
+		temp_cookies += cookiedata[i].value;
+		temp_cookies += "; \n";
+	}
+
+	//print temp_cookie string to console for debugging
+	//cout<<"\n\n(getStudents)THE CANVAS ASU AUTHENTICATION COOKIES:"<<endl;
+	//cout<<temp_cookies<<endl;
+
+
+	//convert the cookie string to a char*
+	int length = cookies.length();
+	char cookie_char[length + 1];
+	strcpy(cookie_char, cookies.c_str());
+
+	char *cookiesAll = cookie_char;
+	//cout<<cookiesAll<<endl;
+
+	//start libcurl
+	curl = curl_easy_init();
+
+	if (curl) {
+		//curl_easy_setopt(curl, CURLOPT_URL,
+		//		"https://canvas.asu.edu/api/v1/courses?page=1&per_page=100");
+		curl_easy_setopt(curl, CURLOPT_URL,
+				"https://canvas.asu.edu/api/v1/courses/47570/enrollments?page=1&per_page=100");
+
+		curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
+
+		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
+
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+
+		res = curl_easy_perform(curl);
+
+		readBuffer.erase(0,9);
+		std::cout << readBuffer << std::endl;
+
+
+		//write all the courses to a json file.
+
+		ofstream courses;
+		courses.open("allStudents.json");
+		courses<<"{\"students\": ";
+		courses<<readBuffer;
+		courses<<"}";
+		courses.close();
+
+		/* Check for errors */
+		if (res != CURLE_OK) {
+			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
+					curl_easy_strerror(res));
+		}
+	}
+
+	/* always cleanup */
+	curl_easy_cleanup(curl);
+}
+
 void CookieManager::getQuizzes() {
 	CURL *curl;
 	CURLcode res;
@@ -409,47 +498,6 @@ void CookieManager::getQuizzes() {
 	curl_easy_cleanup(curl);
 }
 
-void CookieManager::getStudents() {
-	CURL *curl;
-	CURLcode res;
-	std::string readBuffer;
-	struct curl_slist *headers = NULL;
-
-	curl = curl_easy_init();
-	if (curl) {
-		curl_easy_setopt(curl, CURLOPT_URL,
-				"https://canvas.asu.edu/api/v1/courses/47570/quizzes?page=1&per_page=100");
-
-		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
-
-		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt");
-		curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
-
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-
-		res = curl_easy_perform(curl);
-
-		std::cout << readBuffer << std::endl;
-
-		//write all the quizzes to a json file.
-		ofstream courses;
-		courses.open("allStudents.json");
-		courses << readBuffer;
-		courses.close();
-
-		/* Check for errors */
-		if (res != CURLE_OK) {
-			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
-					curl_easy_strerror(res));
-		}
-	}
-
-	print_cookies(curl);
-	/* always cleanup */
-	curl_easy_cleanup(curl);
-}
 
 static void destroyWindowCb(GtkWidget *widget, GtkWidget *window);
 static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window);

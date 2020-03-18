@@ -760,6 +760,7 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	//call to get the course information
 	CookieManager cookieMonster;
 	cookieMonster.getCourses(cookiedata);
+	cookieMonster.getStudents(cookiedata);
 
 	DataEntryGUI dataGUI(windowMain);
 
