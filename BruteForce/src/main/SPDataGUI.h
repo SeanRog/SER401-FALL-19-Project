@@ -18,6 +18,8 @@
 #include <cstdlib>
 #include <stdio.h>
 
+#include <libsoup/soup.h>
+#include <vector>
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
@@ -131,7 +133,7 @@ public:
 	// Confirm or Go Back
 	Fl_Box *goBackorConfirmInstructionsBox;
 
-	SPDataGUI(Fl_Window *win);
+	SPDataGUI(Fl_Window *win, vector<SoupCookie> cookiedata);
 	virtual ~SPDataGUI();
 
 	//string array of courses for use in testing.
