@@ -1800,7 +1800,7 @@ vector<Project> Utility::csvToProjectsVector(string filename, Project projectPoo
 
 
 /*********************************************************
- * GetQuizID
+ * getQuizID
  *
  * Author: Myles Colina
  *
@@ -1809,13 +1809,12 @@ vector<Project> Utility::csvToProjectsVector(string filename, Project projectPoo
  * 	quiz that matches the string name entered.
  *
  *Arguments:
- *	string
+ *	string quizName, string filename
  *
  *Returns:
  *  int value of the quiz ID
  */
-int Utility::GetQuizID(string quizName, string filename) {
-
+int Utility::getQuizID(string quizName, string filename) {
 
 	ifstream ifs(filename);
 	Json::Reader reader;
@@ -1841,4 +1840,45 @@ int Utility::GetQuizID(string quizName, string filename) {
 
 }
 
+/*********************************************************
+ * getAssignmentID
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Reads in all the assignments from a Json file, and searches for the assignment ID of the
+ * 	assignment whose quiz_id that matches the parameter quiz_id .
+ *
+ *Arguments:
+ *	string
+ *
+ *Returns:
+ *  int value of the assignment ID
+ */
+int Utility::getAssignmentID(int quiz_ID, string filename) {
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	int assignment_ID;
+
+	const int numberOfQuizzes = obj["assignments"].size();
+
+	ClassSection classSection[numberOfQuizzes];
+
+	for (int i = 0; i < numberOfQuizzes; i++) {
+
+		//make sure that the quiz ids match
+		if(quiz_ID == obj["assignments"].get((int) i, "")["quiz_id"].asInt()){
+
+			assignment_ID = obj["assignments"].get((int) i, "")["id"].asInt();
+		}
+
+	}
+
+	return assignment_ID;
+
+}
 

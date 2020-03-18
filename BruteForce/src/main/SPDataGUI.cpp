@@ -11,6 +11,7 @@
 #include "SteamPunkGUI1.h"
 #include "ClassSectionJson.h"
 #include "ClassSection.h"
+#include "CookieManager.h"
 #include "main.h"
 
 #include <libsoup/soup.h>
@@ -693,6 +694,18 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 			cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
 		}
 
+
+		//Get the Quiz data from the student survey.
+			string QuizName = fileInput_StudentQuizName->value();
+		    CookieManager CM;
+
+			for (int j = 0; j < num_of_selected_courses; j++) {
+
+				CM.getQuizzes(cookiedataSP, classes[j].OfficialClassID, QuizName);
+
+			}
+
+
 	masterWindow->hide();
 	confirmWindow->hide();
 
@@ -704,26 +717,12 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 }
 
 void SPDataGUI::chooseProjectFile_cb(Fl_Widget*) {
-	/*Fl_Native_File_Chooser fileChooser;
-	 fileChooser.title("Choose File");
-	 fileChooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
-	 fileChooser.preset_file(fileInput_Project->value());
-
-	 switch ( fileChooser.show() ) {
-	 default:
-	 if ( fileChooser.filename() ) {
-	 fileInput_Project->value(fileChooser.filename());
-	 } else {
-	 fileInput_Project->value("NULL");
-	 }
-	 break;
-	 }*/
 
 	// Create the file chooser, and show it
-	Fl_File_Chooser chooser(".",                        // directory
-			"*",                        // filter
-			Fl_File_Chooser::SINGLE,     // chooser type
-			"Select Project CSV file");        // title
+	Fl_File_Chooser chooser(".",
+			"*",
+			Fl_File_Chooser::SINGLE,
+			"Select Project CSV file");
 
 	chooser.color(ASU_WHITE);
 	chooser.textfont(FL_HELVETICA);

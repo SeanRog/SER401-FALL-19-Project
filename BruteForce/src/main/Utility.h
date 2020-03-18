@@ -74,7 +74,8 @@ public:
 	vector<vector<string>> toCSVsse(string filename);
 	vector<vector<string>> toCSVcse(string filename);
 	vector<Project> csvToProjectsVector(string filename, Project projectPool[], int numProjects);
-	int GetQuizID(string quizName, string filename);
+	int getQuizID(string quizName, string filename);
+	int getAssignmentID(int quiz_ID, string filename);
 	~Utility();
 };
 

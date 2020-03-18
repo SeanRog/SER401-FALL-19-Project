@@ -352,7 +352,7 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 	curl_easy_cleanup(curl);
 }
 
-void CookieManager::getQuizzes(vector<SoupCookie> cookiedata, int course_id, string quizName) {
+void CookieManager::getQuizzes(vector<SoupCookie> cookiedata, int course_ID, string quizName) {
 
 	CURL *curl;
 	CURLcode res;
@@ -388,7 +388,7 @@ void CookieManager::getQuizzes(vector<SoupCookie> cookiedata, int course_id, str
 	std::string url;
 
 	url = "https://canvas.asu.edu/api/v1/courses/";
-	url += to_string(course_id);
+	url += to_string(course_ID);
 	url += "/quizzes?page=1&per_page=100";
 
 	//convert the url string to a char*
@@ -439,15 +439,212 @@ void CookieManager::getQuizzes(vector<SoupCookie> cookiedata, int course_id, str
 	//Get the unique Quiz id, by searching all the quizzes in the Json file
 	//for the quiz whose name matches the quiz name.
 	Utility util;
-	int quiz_ID = util.GetQuizID(quizName, "allQuizzes.json");
+	int quiz_ID = util.getQuizID(quizName, "allQuizzes.json");
 
 	cout<<"Quiz ID for the quiz: "<<quiz_ID<<endl;
+
+	//delete the quiz json file now that we are done with it.
+	remove("allQuizzes.json");
+
+	getAssignment(cookiedata, course_ID,  quiz_ID);
 
 }
 
 
+void CookieManager::getAssignment(vector<SoupCookie> cookiedata, int course_ID, int quiz_ID) {
+
+	CURL *curl;
+	CURLcode res;
+	std::string readBuffer;
+	std::string cookieBuffer;
+	struct curl_slist *headers = NULL;
+
+	//read in the cookie data from the vector and store it in a string
+	std::string cookies;
+	std::string temp_cookies;
+
+	cookies = cookiedata[0].name;
+	cookies += "=";
+	cookies += cookiedata[0].value;
+	cookies += "; ";
+
+	for(int i = 1; i < cookiedata.size(); i++){
+		cookies += cookiedata[i].name;
+		cookies += "=";
+		cookies += cookiedata[i].value;
+		cookies += "; ";
+	}
+
+	//convert the cookie string to a char*
+	int length = cookies.length();
+	char cookie_char[length + 1];
+	strcpy(cookie_char, cookies.c_str());
+
+	char *cookiesAll = cookie_char;
+	cout<<cookiesAll<<endl;
+
+	//configure the URL
+	std::string url;
+
+	url = "https://canvas.asu.edu/api/v1/courses/";
+	url += to_string(course_ID);
+	url +=	"/assignments?page=1&per_page=100";
+
+	//convert the url string to a char*
+	int length_url = url.length();
+	char url_char[length_url + 1];
+	strcpy(url_char, url.c_str());
+	cout<<url_char<<endl;
+
+	//start libcurl
+	curl = curl_easy_init();
+	if (curl) {
+		curl_easy_setopt(curl, CURLOPT_URL,
+				url_char);
+
+		curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
+
+		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
+
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 
 
+		res = curl_easy_perform(curl);
 
 
+		readBuffer.erase(0,9); //removes the "while (1);" from the string.
+		std::cout << readBuffer << std::endl;
+
+		//write all the quizzes to a json file.
+		ofstream quizzes;
+		quizzes.open("allAssignments.json");
+		quizzes<<"{\"assignments\": ";
+		quizzes<<readBuffer;
+		quizzes<<"}";
+		quizzes.close();
+
+		/* Check for errors */
+		if (res != CURLE_OK) {
+			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
+					curl_easy_strerror(res));
+		}
+	}
+
+	/* always cleanup */
+	curl_easy_cleanup(curl);
+
+	//Get the unique assignment id, by searching all the quizzes in the Json file
+	//for the quiz whose name matches the quiz name.
+	Utility util;
+	int assignment_ID = util.getAssignmentID(quiz_ID,"allAssignments.json");
+
+	cout<<"Assignment ID for the quiz: "<<assignment_ID<<endl;
+
+	//delete the quiz json file now that we are done with it.
+	remove("allAssignments.json");
+
+	getQuizSubmissions(cookiedata, course_ID,  quiz_ID, assignment_ID);
+
+}
+
+
+void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,int course_ID, int quiz_ID, int assignment_ID){
+
+	CURL *curl;
+	CURLcode res;
+	std::string readBuffer;
+	std::string cookieBuffer;
+	struct curl_slist *headers = NULL;
+
+	//read in the cookie data from the vector and store it in a string
+	std::string cookies;
+	std::string temp_cookies;
+
+	cookies = cookiedata[0].name;
+	cookies += "=";
+	cookies += cookiedata[0].value;
+	cookies += "; ";
+
+	for(int i = 1; i < cookiedata.size(); i++){
+		cookies += cookiedata[i].name;
+		cookies += "=";
+		cookies += cookiedata[i].value;
+		cookies += "; ";
+	}
+
+	//convert the cookie string to a char*
+	int length = cookies.length();
+	char cookie_char[length + 1];
+	strcpy(cookie_char, cookies.c_str());
+
+	char *cookiesAll = cookie_char;
+	cout<<cookiesAll<<endl;
+
+	//configure the URL
+	std::string url;
+
+	url = "https://canvas.asu.edu/api/v1/courses/";
+	url += to_string(course_ID);
+	url += "/assignments/";
+	url += to_string(assignment_ID);
+	url +=	"/submissions?include[]=submission_history&page=1&per_page=100";
+
+	//convert the url string to a char*
+	int length_url = url.length();
+	char url_char[length_url + 1];
+	strcpy(url_char, url.c_str());
+	cout<<url_char<<endl;
+
+	//start libcurl
+	curl = curl_easy_init();
+	if (curl) {
+		curl_easy_setopt(curl, CURLOPT_URL,
+				url_char);
+
+		curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
+
+		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
+
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+
+
+		res = curl_easy_perform(curl);
+
+
+		readBuffer.erase(0,9); //removes the "while (1);" from the string.
+		std::cout << readBuffer << std::endl;
+
+		//write all the quizzes to a json file.
+		ofstream quizzes;
+		quizzes.open("allSubmissions.json");
+		quizzes<<"{\"submissions\": ";
+		quizzes<<readBuffer;
+		quizzes<<"}";
+		quizzes.close();
+
+		/* Check for errors */
+		if (res != CURLE_OK) {
+			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
+					curl_easy_strerror(res));
+		}
+	}
+
+	/* always cleanup */
+	curl_easy_cleanup(curl);
+/*
+	//Get the unique assignment id, by searching all the quizzes in the Json file
+	//for the quiz whose name matches the quiz name.
+	Utility util;
+	//int assignment_ID = util.getAssignmentID(quiz_ID,"allAssignments.json");
+
+	cout<<"Assignment ID for the quiz: "<<assignment_ID<<endl;
+
+	//delete the quiz json file now that we are done with it.
+	remove("allAssignments.json");*/
+
+}
 
