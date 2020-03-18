@@ -883,22 +883,21 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 
 	//nextWindow = windowMain;
 
-	cout << "working" << endl;
+
 
 	//if the user is not authenticated yet,
 	//open the mini-browser for canvas authentication
 	if (Authenticated != true) {
 		Auth1 = false;
-		mini_browserSP();
+		//mini_browserSP();
 	}
 	Authenticated = Auth1;
 
 	windowMain->hide();
-
 	//call to get the course information
-	CookieManager cookieMonster;
-	cookieMonster.getCourses(cookiedata1);
-
+	//CookieManager cookieMonster;
+	//cookieMonster.getCourses(cookiedata1);
+	cout << "working" << endl;
 	SPDataGUI dataGUI(windowMain);
 
 }

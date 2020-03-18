@@ -741,7 +741,6 @@ void mini_browser() {
  *		nothing
  */
 void MainWindow::StartButtonClick(Fl_Widget *w) {
-
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
 
@@ -751,15 +750,15 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	//open the mini-browser for canvas authentication
 	if (Authenticated != true) {
 		Auth = false;
-		mini_browser();
+		//mini_browser();
 	}
 	Authenticated = Auth;
 
 	windowMain->hide();
 
 	//call to get the course information
-	CookieManager cookieMonster;
-	cookieMonster.getCourses(cookiedata);
+	//CookieManager cookieMonster;
+	//cookieMonster.getCourses(cookiedata);
 
 	DataEntryGUI dataGUI(windowMain);
 

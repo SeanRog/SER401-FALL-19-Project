@@ -155,9 +155,8 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 
 		//end
 		cout<<"Read in all courses!"<<endl;
-		cout<<Courses[0].Course_Code<<endl;
-		cout<<Courses[1].Course_Code<<endl;
-
+		//cout<<Courses[0].Course_Code<<endl;
+		//cout<<Courses[1].Course_Code<<endl;
 		string courses[NUM_CLASS_SECTIONS];
 		AllCourseNames = courses;
 		AllCourses = Courses;
