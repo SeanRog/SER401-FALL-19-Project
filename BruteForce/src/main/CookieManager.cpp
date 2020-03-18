@@ -435,7 +435,7 @@ void CookieManager::getStudents() {
 
 		//write all the quizzes to a json file.
 		ofstream courses;
-		courses.open("allQuizzes.json");
+		courses.open("allStudents.json");
 		courses << readBuffer;
 		courses.close();
 
