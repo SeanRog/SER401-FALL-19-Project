@@ -22,6 +22,7 @@
 #include "CookieManager.h"
 #include "main.h"
 #include "webview.h"
+#include "Utility.h"
 
 #include <iostream>
 #include <fstream>
@@ -497,6 +498,50 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 }
 
+Fl_Window *backWindow;
+
+void okClick(Fl_Widget *w) {
+
+	backWindow->hide();
+	//exit(1);
+}
+
+void errorMessage() {
+	backWindow = new Fl_Window(650, 220, "Capstone Team Assignment System");
+	backWindow->begin();
+
+	Fl_Box promptBox1(0, 10, 650, 50, "Error!");
+	promptBox1.align(FL_ALIGN_CENTER);
+	promptBox1.labelsize(40);
+
+	Fl_Box promptBox2(50, 70, 550, 20,
+			"There are not enough projects for the students.");
+	promptBox2.align(FL_ALIGN_CENTER);
+	promptBox2.labelsize(20);
+	promptBox2.labelfont(FL_HELVETICA_BOLD_ITALIC);
+
+	Fl_Box promptBox3(50, 90, 550, 20, "Please enter more projects.");
+	promptBox3.align(FL_ALIGN_CENTER);
+	promptBox3.labelsize(20);
+	promptBox3.labelfont(FL_HELVETICA);
+
+	Fl_Button okButton(250, 150, 175, 50, "OK");
+	okButton.color(ASU_WHITE);
+	okButton.labelfont(FL_HELVETICA);
+	okButton.labelcolor(ASU_BLACK);
+	okButton.labelsize(15);
+	okButton.selection_color(ASU_MAROON);
+	okButton.callback(okClick);
+
+	backWindow->color(ASU_GOLD);
+	backWindow->box(FL_BORDER_BOX);
+	backWindow->resizable(promptBox2);
+	backWindow->end();
+	backWindow->show();
+
+	Fl::run();
+}
+
 /*****************************************************************************
  * DoneButtonClick
  *
@@ -605,7 +650,7 @@ static void getCookiesCB(WebKitCookieManager *manager,
  *
  * Arguments:
  *		WebKitWebView *webView,
-		GtkWidget *window
+ GtkWidget *window
  *
  * Returns:
  *		gboolean
@@ -635,7 +680,10 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 			//quit the mini-browser
 
 			//gtk_widget_destroy(window);
+			//gtk_window_close(GTK_WINDOW(window));
+			//gtk_window_iconify(GTK_WINDOW(window));
 			gtk_main_quit();
+
 			//TO-DO Find a way to close the browser window correctly,
 			//as it eats up memory while open.
 
@@ -719,6 +767,8 @@ void mini_browser() {
 
 	// Run the main GTK+ event loop
 	gtk_main();
+	cout<<"closed?"<<endl;
+
 
 	//terminate the window
 	//gtk_widget_destroy(main_window);
@@ -742,27 +792,63 @@ void mini_browser() {
  */
 void MainWindow::StartButtonClick(Fl_Widget *w) {
 
+	bool error = false;
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
 
-	//nextWindow = windowMain;
+	//check to make sure that there are enough projects given the
+	//entered number of students. This check can be changed to work
+	//in the final system, by letting the user know if there are not enough
+	//projects in the csv file for the students read in from Canvas.
 
-	//if the user is not authenticated yet,
-	//open the mini-browser for canvas authentication
-	if (Authenticated != true) {
-		Auth = false;
-		mini_browser();
+	//find the number of students in each of the 4 class sections
+	int num_students1 = num_students * 0.25;
+	int num_students2 = num_students * 0.25;
+	int num_students3 = num_students - num_students1 + num_students2;
+	int num_students4 = num_students - num_students1 + num_students2;
+
+	//find the number of projects for each of the 4 class sections
+	int num_projects1 = num_projects * 0.25;
+	int num_projects2 = num_projects * 0.25;
+	int num_projects3 = num_projects - num_projects1 + num_projects2;
+	int num_projects4 = num_projects - num_projects1 + num_projects2;
+
+	Utility util;
+
+	int needed_projects1 = util.calc_projects(num_students1, 5, 4);
+	int needed_projects2 = util.calc_projects(num_students2, 5, 4);
+	int needed_projects3 = util.calc_projects(num_students3, 5, 4);
+	int needed_projects4 = util.calc_projects(num_students4, 5, 4);
+
+	if (needed_projects1 > num_projects1 || needed_projects2 > num_projects2
+			|| needed_projects3 > num_projects3
+			|| needed_projects4 > num_projects4 || num_projects == 0 || num_students == 0) {
+		errorMessage();
+		error = true;
 	}
-	Authenticated = Auth;
 
-	windowMain->hide();
+	if (error == false) {
 
-	//call to get the course information
-	CookieManager cookieMonster;
-	cookieMonster.getCourses(cookiedata);
+		cout<<"working"<<endl;
+		//if the user is not authenticated yet,
+		//open the mini-browser for canvas authentication
+		if (Authenticated != true) {
+			Auth = false;
+			mini_browser();
+		}
+		Authenticated = Auth;
 
-	DataEntryGUI dataGUI(windowMain);
 
+		windowMain->hide();
+
+
+		//call to get the course information
+		CookieManager cookieMonster;
+		cookieMonster.getCourses(cookiedata);
+
+		DataEntryGUI dataGUI(windowMain);
+
+	}
 }
 
 int MainWindow::handle(int event) {
