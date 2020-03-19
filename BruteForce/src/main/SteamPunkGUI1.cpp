@@ -19,6 +19,7 @@
 #include "ResultWindow.h"
 #include "CookieManager.h"
 #include "main.h"
+#include "Utility.h"
 
 #include <iostream>
 #include <fstream>
@@ -653,6 +654,53 @@ void SteamPunkGUI1::DoneButtonClick(Fl_Widget *w) {
 	windowResult.addText();
 }
 
+Fl_Window *backWindowSP;
+
+void okClickSP(Fl_Widget *w) {
+
+	backWindowSP->hide();
+	//exit(1);
+}
+
+void errorMessageSP() {
+	backWindowSP = new Fl_Window(650, 220, "Capstone Team Assignment System");
+	backWindowSP->begin();
+
+	Fl_Box promptBox1(0, 10, 650, 50, "ERROR!");
+	promptBox1.align(FL_ALIGN_CENTER);
+	promptBox1.labelsize(40);
+	promptBox1.labelcolor(ASU_WHITE);
+
+	Fl_Box promptBox2(50, 70, 550, 20,
+			"There are not enough projects for the students.");
+	promptBox2.align(FL_ALIGN_CENTER);
+	promptBox2.labelsize(20);
+	promptBox2.labelfont(FL_TIMES_BOLD_ITALIC);
+	promptBox2.labelcolor(ASU_WHITE);
+
+	Fl_Box promptBox3(50, 90, 550, 20, "Please enter more projects.");
+	promptBox3.align(FL_ALIGN_CENTER);
+	promptBox3.labelsize(20);
+	promptBox3.labelfont(FL_TIMES);
+	promptBox3.labelcolor(ASU_WHITE);
+
+	Fl_Button okButton(250, 150, 175, 50, "OK");
+	okButton.color(DARK_BRASS);
+	okButton.labelfont(FL_TIMES_ITALIC);
+	okButton.labelcolor(ASU_BLACK);
+	okButton.labelsize(15);
+	okButton.selection_color(DARK);
+	okButton.callback(okClickSP);
+
+	backWindowSP->color(DARK_TAUPE);
+	backWindowSP->box(FL_BORDER_BOX);
+	backWindowSP->resizable(promptBox2);
+	backWindowSP->end();
+	backWindowSP->show();
+
+	Fl::run();
+}
+
 //variables for the mini-browser session static functions
 bool Auth1;
 typedef void *user_data;
@@ -878,13 +926,45 @@ void mini_browserSP() {
  */
 void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 
+	bool error = false;
 	num_projects = atol(inputprojects->value());
 	num_students = atol(inputstudents->value());
 
-	//nextWindow = windowMain;
+	//check to make sure that there are enough projects given the
+		//entered number of students. This check can be changed to work
+		//in the final system, by letting the user know if there are not enough
+		//projects in the csv file for the students read in from Canvas.
 
+		//find the number of students in each of the 4 class sections
+		int num_students1 = num_students * 0.25;
+		int num_students2 = num_students * 0.25;
+		int num_students3 = num_students - num_students1 + num_students2;
+		int num_students4 = num_students - num_students1 + num_students2;
 
+		//find the number of projects for each of the 4 class sections
+		int num_projects1 = num_projects * 0.25;
+		int num_projects2 = num_projects * 0.25;
+		int num_projects3 = num_projects - num_projects1 + num_projects2;
+		int num_projects4 = num_projects - num_projects1 + num_projects2;
 
+		Utility util;
+
+		int needed_projects1 = util.calc_projects(num_students1, 5, 4);
+		int needed_projects2 = util.calc_projects(num_students2, 5, 4);
+		int needed_projects3 = util.calc_projects(num_students3, 5, 4);
+		int needed_projects4 = util.calc_projects(num_students4, 5, 4);
+
+		if (needed_projects1 > num_projects1 || needed_projects2 > num_projects2
+				|| needed_projects3 > num_projects3
+				|| needed_projects4 > num_projects4 || num_projects == 0 || num_students == 0) {
+			errorMessageSP();
+			error = true;
+		}
+
+		if (error == false) {
+//>>>>>>> dev
+
+			cout<<"Working"<<endl;
 	//if the user is not authenticated yet,
 	//open the mini-browser for canvas authentication
 	if (Authenticated != true) {
@@ -899,7 +979,7 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 	//cookieMonster.getCourses(cookiedata1);
 	cout << "working" << endl;
 	SPDataGUI dataGUI(windowMain);
-
+		}
 }
 
 int SteamPunkGUI1::handle(int event) {
