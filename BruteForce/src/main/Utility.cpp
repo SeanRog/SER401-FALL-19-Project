@@ -1882,3 +1882,101 @@ int Utility::getAssignmentID(int quiz_ID, string filename) {
 
 }
 
+
+/*********************************************************
+ * getSurveyAnswers
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Reads in all the quiz answers from a Json file, and matches the answers to
+ * 	to the student whose ID matches.
+ *
+ *
+ *Arguments:
+ *	vector <Student> students, int quiz_ID, string filename
+ *
+ *Returns:
+ *  a vector of students who have all their skills and other data.
+ */
+vector <Student> Utility::getSurveyAnswers(vector <Student> students, int quiz_ID, string filename) {
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	int assignment_ID;
+
+	const int numberSubmissions = obj["assignments"].size();
+
+	int numSkills = 14;
+
+	ClassSection classSection[numberSubmissions];
+
+	for (int i = 0; i < numberSubmissions; i++) {
+
+		for(int j = 0; j < students.size(); j++){
+
+			if(students[j].StudentID == obj["submissions"].get((int) i, "")["user"].asInt()){
+
+		}
+		}
+		//make sure that the quiz ids match
+		if(quiz_ID == obj["submissions"].get((int) i, "")["quiz"].asInt()){
+
+			//assign quiz answer data to the students
+
+			//assign the students first and last name, space separated.
+			students[i].name = (obj["submissions"].get((int) i, "")["submission_data"].get((int) 0,"")["text"].asString());
+			students[i].name += " ";
+			students[i].name += (obj["submissions"].get((int) i, "")["submission_data"].get((int) 1,"")["text"].asString());
+
+			//assign the list of asuriteIDS the student does NOT want to work with.
+			string negativeAffinty = (obj["submissions"].get((int) i, "")["submission_data"].get((int) 2,"")["text"].asString());
+
+
+			pair<int, bool> x;
+			std::istringstream is1(negativeAffinty);
+			for(string negativeAffinity; is1 >> negativeAffinity; ){
+
+				x.first = negativeAffinity;
+				x.second = false ;
+				students[i].StudentAffinity.push_back(x); }
+
+			//assign the list of asuriteIDS the student does want to work with.
+			string positiveAffinty = (obj["submissions"].get((int) i, "")["submission_data"].get((int) 3,"")["text"].asString());
+
+
+
+			std::istringstream is2(positiveAffinty);
+			for(string positiveAffinty; is2 >> positiveAffinty; ){
+
+				x.first = positiveAffinity;
+				x.second = true;
+				students[i].StudentAffinity.push_back(x); }
+
+			//get all the skill information from the quiz
+			for (int k = 0; k < numSkills; k++) {
+				string current_skill = "answer_id_for_skill";
+				current_skill += to_string(k+1);
+
+				students[i].Skills[i]  = (obj["submissions"].get((int) i, "")["submission_data"].get((int) 4,"")[current_skill].asInt());
+			}
+
+			//get all the time availability data
+
+			//get all the skill information from the quiz
+			for (int k = 0; k < numSkills; k++) {
+				string current_time = "answer_id_for_Time";
+				current_time += to_string(k+1);
+
+				students[i].Availability[i]  = (obj["submissions"].get((int) i, "")["submission_data"].get((int) 5,"")[current_time].asInt());
+			}
+
+		}
+	}
+
+	return students;
+
+}

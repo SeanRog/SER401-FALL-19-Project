@@ -636,15 +636,22 @@ void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,int course_
 	/* always cleanup */
 	curl_easy_cleanup(curl);
 /*
-	//Get the unique assignment id, by searching all the quizzes in the Json file
-	//for the quiz whose name matches the quiz name.
+	//To-Do
+
+
+	*/
+
+	vector <Student> students;
+
+	//add in the fake test student
+	Student testStudent;
+	testStudent.StudentID = 440510;
+	students.push_back(testStudent);
+
+
 	Utility util;
-	//int assignment_ID = util.getAssignmentID(quiz_ID,"allAssignments.json");
 
-	cout<<"Assignment ID for the quiz: "<<assignment_ID<<endl;
-
-	//delete the quiz json file now that we are done with it.
-	remove("allAssignments.json");*/
+	util.getSurveyAnswers(students, quiz_ID, "allSubmissions");
 
 }
 
