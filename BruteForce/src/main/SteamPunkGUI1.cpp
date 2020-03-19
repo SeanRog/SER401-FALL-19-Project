@@ -963,7 +963,7 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 
 		if (error == false) {
 //>>>>>>> dev
-
+//
 			cout<<"Working"<<endl;
 	//if the user is not authenticated yet,
 	//open the mini-browser for canvas authentication
