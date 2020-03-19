@@ -81,6 +81,7 @@ public:
 	Fl_Int_Input *inputprojects;
 	Fl_Int_Input *inputstudents;
 
+
 	//virtual int handle(int event);
 	void MainWindow1();
 	void MainWindow2();
