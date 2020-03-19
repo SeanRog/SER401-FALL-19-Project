@@ -645,13 +645,33 @@ void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,int course_
 
 	//add in the fake test student
 	Student testStudent;
-	testStudent.StudentID = 440510;
+	testStudent.StudentID = 461471;
 	students.push_back(testStudent);
 
 
 	Utility util;
+/*
+	vector <Student> allStudents = util.getSurveyAnswers(students, assignment_ID, "allSubmissions.json");
 
-	util.getSurveyAnswers(students, quiz_ID, "allSubmissions");
+	cout<<"student data:"<<endl;
+	for(int i = 0; i< allStudents.size(); i++){
+	cout<<"name: "<<allStudents[i].name<<endl;
 
+	cout<<"Affinity: "<<endl;
+	for(int j = 0; ;j++){
+	cout<<allStudents[i].StudentAffinity[j].first<<allStudents[i].StudentAffinity[j].second<<endl;
+	}
+
+	cout<<"skill scores: "<<endl;
+	for(int j = 0; ;j++){
+	cout<<"skill "<<to_string(j+1)<<": "<<allStudents[i].Skills[j]<<endl;
+	}
+
+	cout<<"Availability: "<<endl;
+	for(int j = 0; ;j++){
+	cout<<allStudents[i].Availability[j]<<endl;
+	}
+
+	}*/
 }
 

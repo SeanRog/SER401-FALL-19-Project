@@ -76,7 +76,7 @@ public:
 	vector<Project> csvToProjectsVector(string filename, Project projectPool[], int numProjects);
 	int getQuizID(string quizName, string filename);
 	int getAssignmentID(int quiz_ID, string filename);
-	vector <Student> getSurveyAnswers(vector <Student> students, int quiz_ID, string filename);
+	vector <Student> getSurveyAnswers(vector <Student> students, int assignment_ID, string filename);
 	~Utility();
 };
 
