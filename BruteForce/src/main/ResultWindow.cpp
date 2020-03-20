@@ -21,6 +21,7 @@
 #include <string>
 #include <cstdlib>
 #include <stdio.h>
+#include <stdlib.h>
 #include <fstream>
 
 #include <FL/Fl.H>
@@ -48,35 +49,35 @@ constexpr int toConstInt(int constInt) {
 ResultWindow::ResultWindow() {
 
 	// MAIN WINDOW
-	windowResult = new Fl_Window(900, 800, "Capstone Team Assignment Results");
+	windowResult = new Fl_Window(1500, 800, "Capstone Team Assignment Results");
 
-	Fl_Box *backBox1 = new Fl_Box(0, 0, 10, 400);
+	Fl_Box *backBox1 = new Fl_Box(0, 0, 10, 800);
 	backBox1->box(FL_FLAT_BOX);
 	backBox1->color(ASU_BLACK);
 
-	Fl_Box *backBox2 = new Fl_Box(0, 0, 900, 10);
+	Fl_Box *backBox2 = new Fl_Box(0, 0, 1500, 10);
 	backBox2->box(FL_FLAT_BOX);
 	backBox2->color(ASU_BLACK);
 
-	Fl_Box *backBox3 = new Fl_Box(890, 0, 10, 400);
+	Fl_Box *backBox3 = new Fl_Box(0, 790, 1000, 10);
 	backBox3->box(FL_FLAT_BOX);
 	backBox3->color(ASU_BLACK);
 
 	// Buffer
 	buffer = new Fl_Text_Buffer();
-	borderBox = new Fl_Box(0, 400, 900, 400);
+	borderBox = new Fl_Box(860, 0, 640, 800);
 	borderBox->box(FL_FLAT_BOX);
 	borderBox->color(ASU_BLACK);
 
 	//Text Display
-	textDisplay = new Fl_Text_Display(10, 410, 900 - 20, 600 - 220);
+	textDisplay = new Fl_Text_Display(870, 10, 620, 780);
 	textDisplay->buffer(buffer);
 	textDisplay->textfont(FL_HELVETICA);
 	textDisplay->textsize(15);
 	textDisplay->selection_color(ASU_GOLD);
 
 	//Save BUTTON
-	buttonSave = new Fl_Button(50, 330, 175, 50, "Save .csv Report");
+	buttonSave = new Fl_Button(485, 20, 175, 50, "Save .csv Report");
 	buttonSave->color(ASU_GOLD);
 	buttonSave->labelfont(FL_HELVETICA);
 	buttonSave->labelcolor(ASU_BLACK);
@@ -84,7 +85,16 @@ ResultWindow::ResultWindow() {
 	buttonSave->selection_color(ASU_BLACK);
 	buttonSave->callback(static_saveClicked, this);
 
-	permBox = new Fl_Box(280, 330, 5, 20, "");
+	//Exit BUTTON
+	buttonExit = new Fl_Button(675, 20, 175, 50, "Exit");
+	buttonExit->color(ASU_GOLD);
+	buttonExit->labelfont(FL_HELVETICA);
+	buttonExit->labelcolor(ASU_BLACK);
+	buttonExit->labelsize(15);
+	buttonExit->selection_color(ASU_BLACK);
+	buttonExit->callback(static_exitClicked, this);
+
+	permBox = new Fl_Box(10, 20, 5, 20, "");
 	permBox->box(FL_FLAT_BOX);
 	permBox->color(ASU_GREY);
 	permBox->align(FL_ALIGN_RIGHT);
@@ -92,7 +102,7 @@ ResultWindow::ResultWindow() {
 	permBox->labelsize(15);
 	permBox->labelcolor(ASU_WHITE);
 
-	swapBox = new Fl_Box(280, 360, 5, 20, "");
+	swapBox = new Fl_Box(10, 50, 5, 20, "");
 	swapBox->box(FL_FLAT_BOX);
 	swapBox->color(ASU_GREY);
 	swapBox->align(FL_ALIGN_RIGHT);
@@ -100,31 +110,31 @@ ResultWindow::ResultWindow() {
 	swapBox->labelsize(15);
 	swapBox->labelcolor(ASU_WHITE);
 
-	teamBox = new Fl_Box(350, 275, 5, 20, "");
+	teamBox = new Fl_Box(330, 85, 5, 20, "");
 	teamBox->box(FL_FLAT_BOX);
 	teamBox->color(ASU_GREY);
 	teamBox->align(FL_ALIGN_RIGHT);
-	teamBox->labelfont(FL_HELVETICA);
+	teamBox->labelfont(FL_HELVETICA_BOLD);
 	teamBox->labelsize(15);
 	teamBox->labelcolor(ASU_WHITE);
 
-	bestBox = new Fl_Box(620, 275, 5, 20, "");
+	bestBox = new Fl_Box(580, 85, 5, 20, "");
 	bestBox->box(FL_FLAT_BOX);
 	bestBox->color(ASU_GREY);
 	bestBox->align(FL_ALIGN_RIGHT);
-	bestBox->labelfont(FL_HELVETICA);
+	bestBox->labelfont(FL_HELVETICA_BOLD);
 	bestBox->labelsize(15);
 	bestBox->labelcolor(ASU_WHITE);
 
-	badBox = new Fl_Box(30, 275, 5, 20, "");
+	badBox = new Fl_Box(10, 85, 5, 20, "");
 	badBox->box(FL_FLAT_BOX);
 	badBox->color(ASU_GREY);
 	badBox->align(FL_ALIGN_RIGHT);
-	badBox->labelfont(FL_HELVETICA);
+	badBox->labelfont(FL_HELVETICA_BOLD);
 	badBox->labelsize(15);
 	badBox->labelcolor(ASU_WHITE);
 
-	labelBox1 = new Fl_Box(40, 15, 5, 20, "Number of Teams within Score Range");
+	labelBox1 = new Fl_Box(30, 130, 5, 20, "Number of Teams within Score Range");
 	labelBox1->box(FL_FLAT_BOX);
 	labelBox1->color(ASU_GREY);
 	labelBox1->align(FL_ALIGN_RIGHT);
@@ -132,7 +142,7 @@ ResultWindow::ResultWindow() {
 	labelBox1->labelsize(15);
 	labelBox1->labelcolor(ASU_WHITE);
 
-	labelBox2 = new Fl_Box(510, 15, 5, 20, "Team Scores by Project Priority");
+	labelBox2 = new Fl_Box(475, 130, 5, 20, "Team Scores by Project Priority");
 	labelBox2->box(FL_FLAT_BOX);
 	labelBox2->color(ASU_GREY);
 	labelBox2->align(FL_ALIGN_RIGHT);
@@ -140,7 +150,7 @@ ResultWindow::ResultWindow() {
 	labelBox2->labelsize(15);
 	labelBox2->labelcolor(ASU_WHITE);
 
-	labelBox3 = new Fl_Box(450, 40, 5, 15, "Low");
+	labelBox3 = new Fl_Box(435, 150, 5, 15, "Low");
 	labelBox3->box(FL_FLAT_BOX);
 	labelBox3->color(ASU_GREY);
 	labelBox3->align(FL_ALIGN_RIGHT);
@@ -148,7 +158,7 @@ ResultWindow::ResultWindow() {
 	labelBox3->labelsize(12);
 	labelBox3->labelcolor(ASU_BLUE);
 
-	labelBox4 = new Fl_Box(620, 40, 5, 15, "Medium");
+	labelBox4 = new Fl_Box(595, 150, 5, 15, "Medium");
 	labelBox4->box(FL_FLAT_BOX);
 	labelBox4->color(ASU_GREY);
 	labelBox4->align(FL_ALIGN_RIGHT);
@@ -156,7 +166,7 @@ ResultWindow::ResultWindow() {
 	labelBox4->labelsize(12);
 	labelBox4->labelcolor(ASU_ORANGE);
 
-	labelBox5 = new Fl_Box(790, 40, 5, 15, "High");
+	labelBox5 = new Fl_Box(745, 150, 5, 15, "High");
 	labelBox5->box(FL_FLAT_BOX);
 	labelBox5->color(ASU_GREY);
 	labelBox5->align(FL_ALIGN_RIGHT);
@@ -164,8 +174,8 @@ ResultWindow::ResultWindow() {
 	labelBox5->labelsize(12);
 	labelBox5->labelcolor(ASU_GOLD);
 
-	spacer = new Fl_Box(20, 295, 900-40, 15, "______________________________________"
-			"________________________________________________________________________");
+	spacer = new Fl_Box(10, 105, 840, 15, "_________________________________"
+			"___________________________________________________________________________");
 	spacer->box(FL_FLAT_BOX);
 	spacer->color(ASU_GREY);
 	spacer->align(FL_ALIGN_CENTER);
@@ -173,7 +183,7 @@ ResultWindow::ResultWindow() {
 	spacer->labelsize(15);
 	spacer->labelcolor(ASU_BLACK);
 
-	pieChart = new Fl_Chart(30, 50, 350, 210);
+	pieChart = new Fl_Chart(20, 155, 350, 210);
 	pieChart->type(FL_PIE_CHART);
 	pieChart->textfont(FL_HELVETICA);
 	pieChart->textcolor(ASU_BLACK);
@@ -182,7 +192,7 @@ ResultWindow::ResultWindow() {
 	pieChart->labelsize(16);
 	pieChart->labelcolor(ASU_WHITE);
 
-	barChart = new Fl_Chart(420, 60, 450, 200);
+	barChart = new Fl_Chart(395, 165, 450, 200);
 	barChart->type(FL_SPIKE_CHART);
 
 }
@@ -192,6 +202,12 @@ ResultWindow::ResultWindow() {
 /* event handler for the save button. Saves file as .txt */
 void ResultWindow::saveClicked(Fl_Widget *w) {
 	buffer->savefile("results.csv", 1000000);
+}
+
+
+/* event handler for the save button. Saves file as .txt */
+void ResultWindow::exitClicked(Fl_Widget *w) {
+	exit(0);
 }
 
 
@@ -307,11 +323,6 @@ void ResultWindow::calculateStats() {
 	low1 =0, low2 =0, avg1 =0, avg2 =0, high1 =0, high2 =0;
 	string line;
 
-	for(int i = 0; i < count; i++) {
-		cout << project_pool[0][i] << " " << project_pool[1][i] << " " <<
-				project_pool[2][i] <<" " << project_pool[3][i] << "\n";
-	}
-
 
 	//calculating average team score
 	for(int i =  0; i < count; i ++) {
@@ -365,6 +376,7 @@ ResultWindow::~ResultWindow() {
 	delete textDisplay;
 	delete buffer;
 	delete buttonSave;
+	delete buttonExit;
 	delete permBox;
 	delete swapBox;
 	delete borderBox;

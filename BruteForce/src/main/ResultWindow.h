@@ -29,6 +29,12 @@ class ResultWindow {
 
 	void saveClicked(Fl_Widget *w);
 
+	static void static_exitClicked(Fl_Widget *w, void *data) {
+		((ResultWindow*) data)->exitClicked(w);
+	}
+
+	void exitClicked(Fl_Widget *w);
+
 	int teamScoreAvg, bestScore, badScore;
 	int bestTeam, worstTeam, percent, notAssign;
 	int low1, low2, avg1, avg2, high1, high2;
@@ -42,7 +48,7 @@ public:
 	Fl_Window *windowResult;
 	Fl_Text_Display *textDisplay;
 	Fl_Text_Buffer *buffer;
-	Fl_Button *buttonSave;
+	Fl_Button *buttonSave, *buttonExit;
 	Fl_Box *permBox, *swapBox;
 	Fl_Box *teamBox, *bestBox, *badBox;
 	Fl_Box *spacer, *borderBox;
