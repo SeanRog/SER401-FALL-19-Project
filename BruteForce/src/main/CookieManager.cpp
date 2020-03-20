@@ -29,7 +29,6 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
-#include <string>
 #include <stdio.h>
 
 using namespace std;
@@ -276,7 +275,22 @@ void CookieManager::print_cookies(CURL *curl) {
 	curl_slist_free_all(cookies);
 }
 
-//function to get all courses
+/*********************************************************
+ * getQuizzes
+ *
+ * Author: Myles Colina, Cristi Deleo
+ *
+ * Description:
+ * 	Performs an HTTP get request to CANVAS to get all the courses
+ * 	That the user has access to.
+ *
+ *
+ *Arguments:
+ *	vector<SoupCookie> cookiedata, int course_ID, string quizName
+ *
+ *Returns:
+ *  nothing
+ */
 void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 
 	CURL *curl;
@@ -352,6 +366,23 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 	curl_easy_cleanup(curl);
 }
 
+/*********************************************************
+ * getQuizzes
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Performs an HTTP get request to CANVAS to get the quiz submissions.
+ * 	Then calls a utility function to get the quiz id whose title mathces the
+ * 	name entered in the GUI.
+ *
+ *
+ *Arguments:
+ *	vector<SoupCookie> cookiedata, int course_ID, string quizName
+ *
+ *Returns:
+ *  nothing
+ */
 void CookieManager::getQuizzes(vector<SoupCookie> cookiedata, int course_ID, string quizName) {
 
 	CURL *curl;
@@ -450,7 +481,23 @@ void CookieManager::getQuizzes(vector<SoupCookie> cookiedata, int course_ID, str
 
 }
 
-
+/*********************************************************
+ * getAssignment
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Performs an HTTP get request to CANVAS to get the assignments
+ * 	for all the students based on the course. Then calls a utility
+ * 	function to get the assignment id for the survey.
+ *
+ *
+ *Arguments:
+ *	vector<SoupCookie> cookiedata,int course_ID, int quiz_ID
+ *
+ *Returns:
+ *  nothing
+ */
 void CookieManager::getAssignment(vector<SoupCookie> cookiedata, int course_ID, int quiz_ID) {
 
 	CURL *curl;
@@ -549,7 +596,23 @@ void CookieManager::getAssignment(vector<SoupCookie> cookiedata, int course_ID, 
 
 }
 
-
+/*********************************************************
+ * getQuizSubmissions
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Performs an HTTP get request to CANVAS to get the quiz submission answers
+ * 	for all the students. Then calls a utility
+ * 	function to assign all the quiz answer data to the students.
+ *
+ *
+ *Arguments:
+ *	vector<SoupCookie> cookiedata, int course_ID, int quiz_ID, int assignment_ID
+ *
+ *Returns:
+ *  nothing
+ */
 void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,int course_ID, int quiz_ID, int assignment_ID){
 
 	CURL *curl;
@@ -611,9 +674,7 @@ void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,int course_
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 
-
 		res = curl_easy_perform(curl);
-
 
 		readBuffer.erase(0,9); //removes the "while (1);" from the string.
 		std::cout << readBuffer << std::endl;
@@ -635,11 +696,7 @@ void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,int course_
 
 	/* always cleanup */
 	curl_easy_cleanup(curl);
-/*
-	//To-Do
 
-
-	*/
 
 	vector <Student> students;
 
@@ -650,7 +707,7 @@ void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,int course_
 
 
 	Utility util;
-/*
+
 	vector <Student> allStudents = util.getSurveyAnswers(students, assignment_ID, "allSubmissions.json");
 
 	cout<<"student data:"<<endl;
@@ -658,20 +715,21 @@ void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,int course_
 	cout<<"name: "<<allStudents[i].name<<endl;
 
 	cout<<"Affinity: "<<endl;
-	for(int j = 0; ;j++){
+	for(int j = 0;j< 6;j++){
 	cout<<allStudents[i].StudentAffinity[j].first<<allStudents[i].StudentAffinity[j].second<<endl;
 	}
 
 	cout<<"skill scores: "<<endl;
-	for(int j = 0; ;j++){
+	for(int j = 0; j<14 ;j++){
 	cout<<"skill "<<to_string(j+1)<<": "<<allStudents[i].Skills[j]<<endl;
 	}
 
 	cout<<"Availability: "<<endl;
-	for(int j = 0; ;j++){
+	for(int j = 0; j<4 ;j++){
 	cout<<allStudents[i].Availability[j]<<endl;
 	}
 
-	}*/
+	}
+
 }
 
