@@ -1596,6 +1596,33 @@ int Utility::NumOfTeamsOf4(int numStudents, int teamSize) {
 	}
 
 }
+int Utility::getStudentsFromJson(string filename) {
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	int quiz_ID;
+
+	const int numberOfQuizzes = obj["quizzes"].size();
+
+	ClassSection classSection[numberOfQuizzes];
+
+//	for (int i = 0; i < numberOfQuizzes; i++) {
+//
+//		if (quizName.compare(
+//				obj["quizzes"].get((int) i, "")["title"].asString()) == 0) {
+//
+//			quiz_ID = obj["quizzes"].get((int) i, "")["id"].asInt();
+//		}
+//
+//	}
+
+	return quiz_ID;
+
+}
+
 
 /*********************************************************
  * toCSVsse
