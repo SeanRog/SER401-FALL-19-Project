@@ -1597,7 +1597,6 @@ int Utility::NumOfTeamsOf4(int numStudents, int teamSize) {
 
 }
 int Utility::getStudentsFromJson(string filename) {
-
 	ifstream ifs(filename);
 	Json::Reader reader;
 	Json::Value obj;
