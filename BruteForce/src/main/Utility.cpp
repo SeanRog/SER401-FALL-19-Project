@@ -1596,7 +1596,7 @@ int Utility::NumOfTeamsOf4(int numStudents, int teamSize) {
 	}
 
 }
-int Utility::getStudentsFromJson(string filename) {
+vector<Student> Utility::getStudentsFromJson(string filename) {
 	ifstream ifs(filename);
 	Json::Reader reader;
 	Json::Value obj;
@@ -1606,9 +1606,9 @@ int Utility::getStudentsFromJson(string filename) {
 
 	const int numberOfStudents = obj["students"].size();
 
-	vector<Student>students = new vector<Student>;
+	vector<Student> students = new vector<Student>;
 
-//	for (int i = 0; i < numberOfQuizzes; i++) {
+//	for (int i = 0; i < numberOfStudents; i++) {
 //
 //		if (quizName.compare(obj["quizzes"].get((int) i, "")["title"].asString()) == 0) {
 //
@@ -1617,7 +1617,7 @@ int Utility::getStudentsFromJson(string filename) {
 //
 //	}
 
-	return quiz_ID;
+	return students;
 
 }
 
