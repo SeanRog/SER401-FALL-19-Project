@@ -1604,14 +1604,13 @@ int Utility::getStudentsFromJson(string filename) {
 
 	int quiz_ID;
 
-	const int numberOfQuizzes = obj["quizzes"].size();
+	const int numberOfStudents = obj["students"].size();
 
-	ClassSection classSection[numberOfQuizzes];
+	vector<Student>students = new vector<Student>;
 
 //	for (int i = 0; i < numberOfQuizzes; i++) {
 //
-//		if (quizName.compare(
-//				obj["quizzes"].get((int) i, "")["title"].asString()) == 0) {
+//		if (quizName.compare(obj["quizzes"].get((int) i, "")["title"].asString()) == 0) {
 //
 //			quiz_ID = obj["quizzes"].get((int) i, "")["id"].asInt();
 //		}

@@ -41,3 +41,7 @@ results.txt
 *.exe
 *.out
 *.app
+/allQuizzes.json
+/allStudents.json
+/allStudentsTQuizzes.json
+/cookies.txt
