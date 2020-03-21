@@ -1602,8 +1602,6 @@ vector<Student> Utility::getStudentsFromJson(string filename) {
 	Json::Value obj;
 	reader.parse(ifs, obj);
 
-	int quiz_ID;
-
 	const int numberOfStudents = obj["students"].size();
 
 	vector<Student> students;
