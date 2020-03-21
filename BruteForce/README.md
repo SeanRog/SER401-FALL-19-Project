@@ -50,6 +50,7 @@ cd -
 Finally make and run the program.
 
 ```
+$ cd ./SER401-FALL-19-Project35/BruteForce
 $ make clean
 $ make
 $ make run
