@@ -1606,16 +1606,14 @@ vector<Student> Utility::getStudentsFromJson(string filename) {
 
 	const int numberOfStudents = obj["students"].size();
 
-	vector<Student> students = new vector<Student>;
+	vector<Student> students;
+	Student student;
 
-//	for (int i = 0; i < numberOfStudents; i++) {
-//
-//		if (quizName.compare(obj["quizzes"].get((int) i, "")["title"].asString()) == 0) {
-//
-//			quiz_ID = obj["quizzes"].get((int) i, "")["id"].asInt();
-//		}
-//
-//	}
+	for (int i = 0; i < numberOfStudents; i++) {
+		student.StudentID = obj["students"].get((int)i, "")["user_id"].asInt();
+		student.ASUriteID = obj["students"].get((int)i, "")["user"]["login_id"].asString();
+		students.push_back(student);
+	}
 
 	return students;
 
