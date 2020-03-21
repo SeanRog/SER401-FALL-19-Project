@@ -978,7 +978,7 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 	CookieManager cookieMonster;
 	cookieMonster.getCourses(cookiedata1);
 
-	SPDataGUI dataGUI(windowMain);
+	SPDataGUI dataGUI(windowMain, cookiedata1);
 		}
 }
 
