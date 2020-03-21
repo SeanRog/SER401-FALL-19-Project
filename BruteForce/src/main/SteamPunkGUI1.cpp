@@ -975,10 +975,17 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 
 	windowMain->hide();
 	//call to get the course information
+//<<<<<<< HEAD
 	//CookieManager cookieMonster;
 	//cookieMonster.getCourses(cookiedata1);
-	cout << "working" << endl;
-	SPDataGUI dataGUI(windowMain);
+	//cout << "working" << endl;
+	//SPDataGUI dataGUI(windowMain);
+//=======
+	//CookieManager cookieMonster;
+	//cookieMonster.getCourses(cookiedata1);
+
+	SPDataGUI dataGUI(windowMain, cookiedata1);
+//>>>>>>> dev
 		}
 }
 
