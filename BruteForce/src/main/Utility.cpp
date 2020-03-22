@@ -1883,6 +1883,31 @@ int Utility::getAssignmentID(int quiz_ID, string filename) {
 
 }
 
+vector<Student> Utility::getStudentsFromJson(string filename) {
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	const int numberOfStudents = obj["students"].size();
+
+	vector<Student> students;
+	Student student;
+	string desiredRole = "StudentEnrollment";
+
+	for (int i = 0; i < numberOfStudents; i++) {
+		if (desiredRole.compare(obj["students"].get((int) i, "")["role"].asString()) == 0) {
+			student.StudentID = obj["students"].get((int)i, "")["user_id"].asInt();
+			student.ASUriteID = obj["students"].get((int)i, "")["user"]["login_id"].asString();
+			student.ClassID = obj["students"].get((int)i, "")["course_id"].asInt();
+			students.push_back(student);
+		}
+	}
+
+	return students;
+
+}
+
 /*********************************************************
  * getSurveyAnswers
  *

@@ -575,7 +575,24 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 		CM.getQuizzes(cookiedataDE, classes[j].OfficialClassID, QuizName);
 
 	}
+	//Get Student data from each course
+	// test with one course
+	//CM.getStudents(cookiedataDE, 47570);
+	vector<vector<Student>> allStudents;
+	vector<Student> students;
+	for (int j = 0; j < num_of_selected_courses; j++) {
+		students = CM.getStudents(cookiedataDE, classes[j].OfficialClassID);
+		allStudents.push_back(students);
+	}
 
+	// debug students
+	cout << endl << "Debugging Students" << endl;
+	for (int j = 0; j < allStudents.size(); j++){
+		for (int k = 0; k < allStudents.at(j).size(); k++){
+			cout << "ClassID: "<< allStudents.at(j).at(k).ClassID << endl;
+			cout << "StudentID: "<< allStudents.at(j).at(k).StudentID << endl;
+			cout << "ASUriteID: "<< allStudents.at(j).at(k).ASUriteID << endl;		}
+	}
 
 	masterWindow->hide();
 	confirmWindow->hide();
