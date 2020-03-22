@@ -1302,7 +1302,13 @@ void Utility::makeProjectJSON(int numProj, int numSkill) {
  *    nothing
  */
 void Utility::makeProjectCSV(int numProj, int numSkill) {
-
+	string skills[14] =
+		{ "ArtificialIntelligence", "WebApplicationProgramming",
+				"IOSMobileApplicationProgramming",
+				"AndroidMobileApplicationProgramming",
+				"Sensing/Control/Embedded", "DesktopApplicationProgramming",
+				"DatabaseProgramming", "NetworkSecurity", "C", "C++", "C#",
+				"Java", "JavaScript", "Python" };
 	// Variables
 	ofstream file;
 	int numProjects = numProj;
@@ -1334,14 +1340,50 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 		file << "Project Motivation" << projectID << ",";
 		file << "Project Description" << projectID << ",";
 		file << "Project Deliverables" << projectID << ",";
-		file << "Technology Areas" << projectID << ",";
+		/*file << "Technology Areas" << projectID << ",";
 		file << "Preferred Language Skills" << projectID << ",";
 		file << "Requires NDA" << projectID << ",";
 		file << "Requires IPR" << projectID << ",";
 		file << "Requires Shared Hardware" << projectID << ",";
 		file << "Type" << projectID << ",";
 		file << "Section" << projectID << ",";
-		file << "Priority" << projectID;
+		file << "Priority" << projectID;*/
+
+		/*Prints out schema: "Skills": [(skills)], generates Skills from
+		 * numSkills. Randomizes values between 0-4 for each skill.      */
+		try {
+			if(numSkills != 14) {
+				cout << "WARNING: numSkills does not equal the number of skills specified in the project schema" << endl;
+			}
+			file << "[";
+			for (int i = 0; i < (8); i++) {
+				if (i < (8 - 1)) {
+					if((rand() % (2 + 1)) == 0) {
+						file << skills[i] << ",";
+					}
+				} else {
+					if((rand() % (2 + 1)) == 0) {
+						file << skills[i];
+					}
+					file << "],";
+				}
+			}
+			file << "[";
+			for (int i = 8; i < (14); i++) {
+				if (i < (14 - 1)) {
+					if((rand() % (2 + 1)) == 0) {
+						file << skills[i] << ",";
+					}
+				} else {
+					if((rand() % (2 + 1)) == 0) {
+						file << skills[i];
+					}
+					file << "],";
+				}
+			}
+		} catch(range_error& e) {
+					cout << "Index out of range" << endl;
+		}
 		/*Prints out schema: {"NDA": bool, */
 		/*Prints out schema: {"IPR": bool, */
 		//25 percent of projects will require students sign an IPR and NDA agreement.
@@ -1367,17 +1409,6 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 		/*Prints out schema: "Priority": (Priority), priority can be
 		 * 0,1, or 2. This file randomizes it between the three options.  */
 		file << " \"Priority\": " << rand() % (2 + 1) << ",\n";
-
-		/*Prints out schema: "Skills": [(skills)], generates Skills from
-		 * numSkills. Randomizes values between 0-4 for each skill.      */
-		file << " \"Skills\": [";
-		for (int i = 0; i < (numSkills); i++) {
-			if (i < (numSkills - 1)) {
-				file << rand() % (2 + 1) << ",";
-			} else {
-				file << rand() % (2 + 1) << "],\n";
-			}
-		}
 
 		/*Prints out schema: "Type": O/G/H, right now 80% is hybrid
 		 * 10% online and 10% ground projects    */
