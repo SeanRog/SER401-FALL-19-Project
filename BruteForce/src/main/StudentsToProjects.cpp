@@ -1319,8 +1319,9 @@ bool StudentsToProjects::NegativeAffinityCheck(Student team[5]) {
 						// the other student. In this case we will change our negativeAffinity flag to true. We can break out of this function with
 						// one instance of negative affinity. The team won't work.
 					} else {
-						if (((team[studentTeamCounter].StudentAffinity.at(
-								currentStudentAffinityCounter).first).compare(team[otherStudentsCounter].ASUriteID)==0)
+						if ((team[studentTeamCounter].StudentAffinity.at(
+								currentStudentAffinityCounter).first
+								== team[otherStudentsCounter].StudentID)
 								&& (team[studentTeamCounter].StudentAffinity.at(
 										currentStudentAffinityCounter).second
 										== false)) {

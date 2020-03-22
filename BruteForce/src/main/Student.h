@@ -63,7 +63,7 @@ public:
 	 * 											current Student wants to avoid working with the other student.
 	 * 											[0]PeerID | 0 = negative affinity | 1 = positive affinity
 	 */
-	vector<pair<string, bool> > StudentAffinity;
+	vector<pair<int, bool> > StudentAffinity;
 
 	/* Availability -	Students indicate their preferred meeting times on the student survey.
 	 * 					A students preferred meeting times are stored in an integer array
@@ -99,7 +99,7 @@ public:
 	 * vector<pair<int,bool>> aff - Student's affinity vector
 	 * int times[] - student's availablity or preferred meeting times array
 	 */
-	Student(int stID, int cID, int s[], vector<pair<string, bool> > aff,
+	Student(int stID, int cID, int s[], vector<pair<int, bool> > aff,
 			int times[]) {
 
 		StudentID = stID;
@@ -110,7 +110,7 @@ public:
 		}
 
 		for (int i = 0; i < aff.size(); i++) {
-			pair<string, bool> x = { aff[i].first, aff[i].second };
+			pair<int, bool> x = { aff[i].first, aff[i].second };
 			StudentAffinity.push_back(x);
 		}
 

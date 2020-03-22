@@ -846,7 +846,7 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 		CookieManager cookieMonster;
 		cookieMonster.getCourses(cookiedata);
 
-		DataEntryGUI dataGUI(windowMain, cookiedata);
+		DataEntryGUI dataGUI(windowMain);
 
 	}
 }

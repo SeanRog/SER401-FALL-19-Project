@@ -120,7 +120,7 @@ void Test::PrintStudentPool(Student studentPool[], int numStudents,
 		cout << "Begin Affinities: " << endl;
 		for (int i = 0; i < numAffinities; i++) {
 			cout
-					<< "Peer ID: " + student.StudentAffinity[i].first
+					<< "Peer ID: " + to_string(student.StudentAffinity[i].first)
 							+ "  Affinity: "
 							+ to_string(student.StudentAffinity[i].second)
 					<< endl;
@@ -203,12 +203,12 @@ void Test::StructTest() {
 	//skills
 	int s[7] = { 1, 0, 2, 0, 3, 2, 2 };
 	//StudentAffinity
-	vector<pair<string, bool> > aff;
+	vector<pair<int, bool> > aff;
 	for (int i = 0; i < count; i++) {
-		pair<string, bool> x = { to_string(12310 + i), true };
+		pair<int, bool> x = { 12310 + i, true };
 		aff.push_back(x);
 		if (i >= 5) {
-			pair<string, bool> x = { to_string(12310 + i), false };
+			pair<int, bool> x = { 12310 + i, false };
 			aff.push_back(x);
 		}
 	}
@@ -229,7 +229,7 @@ void Test::StructTest() {
 	cout << endl;
 	for (int i = 0; i < count; i++) {
 		cout
-				<< "Peer ID: " + s1.StudentAffinity[i].first
+				<< "Peer ID: " + to_string(s1.StudentAffinity[i].first)
 						+ "  Affinity: "
 						+ to_string(s1.StudentAffinity[i].second) << endl;
 	}
