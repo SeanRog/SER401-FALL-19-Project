@@ -54,7 +54,7 @@ public:
 	Fl_Box *spacer, *borderBox;
 	Fl_Box *labelBox3, *labelBox4, *labelBox5;
 	Fl_Box *labelBox1, *labelBox2;
-	Fl_Chart *pieChart, *barChart;
+	Fl_Chart *pieChart, *barChart, *classChart;
 
 	ResultWindow();
 	~ResultWindow();
