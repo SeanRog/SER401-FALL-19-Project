@@ -27,10 +27,7 @@ public:
 	int newHttpsSession(const char *hostURL);
 
 	void getCourses(vector<SoupCookie> cookiedata);
-	void getQuizzes(vector<SoupCookie> cookiedata, int course_id, string quizName);
-	void getAssignment(vector<SoupCookie> cookiedata, int course_ID, int quiz_ID);
-	void getQuizSubmissions(vector<SoupCookie> cookiedata,int course_ID, int quiz_ID, int assignment_ID);
-
+	void getQuizzes();
 	static size_t WriteCallback(void *contents, size_t size, size_t nmemb,
 			void *userp);
 	static void print_cookies(CURL *curl);

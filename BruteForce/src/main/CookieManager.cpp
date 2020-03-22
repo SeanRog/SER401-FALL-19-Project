@@ -18,7 +18,6 @@
  *
  */
 #include "CookieManager.h"
-#include "Utility.h"
 
 #include <gtk/gtk.h>
 #include <webkit2/webkit2.h>
@@ -29,6 +28,7 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
+#include <string>
 #include <stdio.h>
 
 using namespace std;
@@ -275,23 +275,9 @@ void CookieManager::print_cookies(CURL *curl) {
 	curl_slist_free_all(cookies);
 }
 
-/*********************************************************
- * getQuizzes
- *
- * Author: Myles Colina, Cristi Deleo
- *
- * Description:
- * 	Performs an HTTP get request to CANVAS to get all the courses
- * 	That the user has access to.
- *
- *
- *Arguments:
- *	vector<SoupCookie> cookiedata, int course_ID, string quizName
- *
- *Returns:
- *  nothing
- */
+//function to get all courses
 void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
+
 
 	CURL *curl;
 	CURLcode res;
@@ -308,12 +294,27 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 	cookies += cookiedata[0].value;
 	cookies += "; ";
 
+	temp_cookies = cookiedata[0].name;
+	temp_cookies += "=";
+	temp_cookies += cookiedata[0].value;
+	temp_cookies += "; \n";
+
 	for(int i = 1; i < cookiedata.size(); i++){
 		cookies += cookiedata[i].name;
 		cookies += "=";
 		cookies += cookiedata[i].value;
 		cookies += "; ";
+
+		temp_cookies += cookiedata[i].name;
+		temp_cookies += "=";
+		temp_cookies += cookiedata[i].value;
+		temp_cookies += "; \n";
 	}
+
+	//print temp_cookie string to console for debugging
+	cout<<"\n\nTHE CANVAS ASU AUTHENTICATION COOKIES:"<<endl;
+	cout<<temp_cookies<<endl;
+
 
 	//convert the cookie string to a char*
 	int length = cookies.length();
@@ -342,7 +343,7 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 
 		res = curl_easy_perform(curl);
 
-		readBuffer.erase(0,9); //removes the "while (1);" from the string.
+		readBuffer.erase(0,9);
 		std::cout << readBuffer << std::endl;
 
 
@@ -366,96 +367,35 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 	curl_easy_cleanup(curl);
 }
 
-/*********************************************************
- * getQuizzes
- *
- * Author: Myles Colina
- *
- * Description:
- * 	Performs an HTTP get request to CANVAS to get the quiz submissions.
- * 	Then calls a utility function to get the quiz id whose title mathces the
- * 	name entered in the GUI.
- *
- *
- *Arguments:
- *	vector<SoupCookie> cookiedata, int course_ID, string quizName
- *
- *Returns:
- *  nothing
- */
-void CookieManager::getQuizzes(vector<SoupCookie> cookiedata, int course_ID, string quizName) {
-
+void CookieManager::getQuizzes() {
 	CURL *curl;
 	CURLcode res;
 	std::string readBuffer;
-	std::string cookieBuffer;
 	struct curl_slist *headers = NULL;
 
-	//read in the cookie data from the vector and store it in a string
-	std::string cookies;
-	std::string temp_cookies;
-
-	cookies = cookiedata[0].name;
-	cookies += "=";
-	cookies += cookiedata[0].value;
-	cookies += "; ";
-
-	for(int i = 1; i < cookiedata.size(); i++){
-		cookies += cookiedata[i].name;
-		cookies += "=";
-		cookies += cookiedata[i].value;
-		cookies += "; ";
-	}
-
-	//convert the cookie string to a char*
-	int length = cookies.length();
-	char cookie_char[length + 1];
-	strcpy(cookie_char, cookies.c_str());
-
-	char *cookiesAll = cookie_char;
-	cout<<cookiesAll<<endl;
-
-	//configure the URL
-	std::string url;
-
-	url = "https://canvas.asu.edu/api/v1/courses/";
-	url += to_string(course_ID);
-	url += "/quizzes?page=1&per_page=100";
-
-	//convert the url string to a char*
-	int length_url = url.length();
-	char url_char[length_url + 1];
-	strcpy(url_char, url.c_str());
-	cout<<url_char<<endl;
-
-	//start libcurl
 	curl = curl_easy_init();
 	if (curl) {
 		curl_easy_setopt(curl, CURLOPT_URL,
-				url_char);
-
-		curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
+				"https://canvas.asu.edu/api/v1/courses/47570/quizzes?page=1&per_page=100");
 
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
 
+		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt");
+		curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
+
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 
-
 		res = curl_easy_perform(curl);
 
-
-		readBuffer.erase(0,9); //removes the "while (1);" from the string.
 		std::cout << readBuffer << std::endl;
 
 		//write all the quizzes to a json file.
-		ofstream quizzes;
-		quizzes.open("allQuizzes.json");
-		quizzes<<"{\"quizzes\": ";
-		quizzes<<readBuffer;
-		quizzes<<"}";
-		quizzes.close();
+		ofstream courses;
+		courses.open("allQuizzes.json");
+		courses << readBuffer;
+		courses.close();
 
 		/* Check for errors */
 		if (res != CURLE_OK) {
@@ -464,272 +404,61 @@ void CookieManager::getQuizzes(vector<SoupCookie> cookiedata, int course_ID, str
 		}
 	}
 
+	print_cookies(curl);
 	/* always cleanup */
 	curl_easy_cleanup(curl);
-
-	//Get the unique Quiz id, by searching all the quizzes in the Json file
-	//for the quiz whose name matches the quiz name.
-	Utility util;
-	int quiz_ID = util.getQuizID(quizName, "allQuizzes.json");
-
-	cout<<"Quiz ID for the quiz: "<<quiz_ID<<endl;
-
-	//delete the quiz json file now that we are done with it.
-	remove("allQuizzes.json");
-
-	getAssignment(cookiedata, course_ID,  quiz_ID);
-
 }
 
-/*********************************************************
- * getAssignment
- *
- * Author: Myles Colina
- *
- * Description:
- * 	Performs an HTTP get request to CANVAS to get the assignments
- * 	for all the students based on the course. Then calls a utility
- * 	function to get the assignment id for the survey.
- *
- *
- *Arguments:
- *	vector<SoupCookie> cookiedata,int course_ID, int quiz_ID
- *
- *Returns:
- *  nothing
- */
-void CookieManager::getAssignment(vector<SoupCookie> cookiedata, int course_ID, int quiz_ID) {
+static void destroyWindowCb(GtkWidget *widget, GtkWidget *window);
+static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window);
 
-	CURL *curl;
-	CURLcode res;
-	std::string readBuffer;
-	std::string cookieBuffer;
-	struct curl_slist *headers = NULL;
+int main2(int argc, char *argv[]) {
+	// Initialize GTK+
+	gtk_init(&argc, &argv);
 
-	//read in the cookie data from the vector and store it in a string
-	std::string cookies;
-	std::string temp_cookies;
+	// Create an 800x600 window that will contain the browser instance
+	GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
 
-	cookies = cookiedata[0].name;
-	cookies += "=";
-	cookies += cookiedata[0].value;
-	cookies += "; ";
+	// Create a browser instance
+	WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
 
-	for(int i = 1; i < cookiedata.size(); i++){
-		cookies += cookiedata[i].name;
-		cookies += "=";
-		cookies += cookiedata[i].value;
-		cookies += "; ";
-	}
+	// Put the browser area into the main window
+	gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
 
-	//convert the cookie string to a char*
-	int length = cookies.length();
-	char cookie_char[length + 1];
-	strcpy(cookie_char, cookies.c_str());
+	// Set up callbacks so that if either the main window or the browser instance is
+	// closed, the program will exit
+	g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
+	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
 
-	char *cookiesAll = cookie_char;
-	cout<<cookiesAll<<endl;
+	// Load a web page into the browser instance
+	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
 
-	//configure the URL
-	std::string url;
+	// Make sure that when the browser area becomes visible, it will get mouse
+	// and keyboard events
+	gtk_widget_grab_focus(GTK_WIDGET(webView));
 
-	url = "https://canvas.asu.edu/api/v1/courses/";
-	url += to_string(course_ID);
-	url +=	"/assignments?page=1&per_page=100";
+	// Make sure the main window and all its contents are visible
+	gtk_widget_show_all(main_window);
 
-	//convert the url string to a char*
-	int length_url = url.length();
-	char url_char[length_url + 1];
-	strcpy(url_char, url.c_str());
-	cout<<url_char<<endl;
+	// Run the main GTK+ event loop
+	gtk_main();
 
-	//start libcurl
-	curl = curl_easy_init();
-	if (curl) {
-		curl_easy_setopt(curl, CURLOPT_URL,
-				url_char);
-
-		curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
-
-		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
-
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-
-
-		res = curl_easy_perform(curl);
-
-
-		readBuffer.erase(0,9); //removes the "while (1);" from the string.
-		std::cout << readBuffer << std::endl;
-
-		//write all the quizzes to a json file.
-		ofstream quizzes;
-		quizzes.open("allAssignments.json");
-		quizzes<<"{\"assignments\": ";
-		quizzes<<readBuffer;
-		quizzes<<"}";
-		quizzes.close();
-
-		/* Check for errors */
-		if (res != CURLE_OK) {
-			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
-					curl_easy_strerror(res));
-		}
-	}
-
-	/* always cleanup */
-	curl_easy_cleanup(curl);
-
-	//Get the unique assignment id, by searching all the quizzes in the Json file
-	//for the quiz whose name matches the quiz name.
-	Utility util;
-	int assignment_ID = util.getAssignmentID(quiz_ID,"allAssignments.json");
-
-	cout<<"Assignment ID for the quiz: "<<assignment_ID<<endl;
-
-	//delete the quiz json file now that we are done with it.
-	remove("allAssignments.json");
-
-	getQuizSubmissions(cookiedata, course_ID,  quiz_ID, assignment_ID);
-
+	return 0;
 }
 
-/*********************************************************
- * getQuizSubmissions
- *
- * Author: Myles Colina
- *
- * Description:
- * 	Performs an HTTP get request to CANVAS to get the quiz submission answers
- * 	for all the students. Then calls a utility
- * 	function to assign all the quiz answer data to the students.
- *
- *
- *Arguments:
- *	vector<SoupCookie> cookiedata, int course_ID, int quiz_ID, int assignment_ID
- *
- *Returns:
- *  nothing
- */
-void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,int course_ID, int quiz_ID, int assignment_ID){
+static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
+	gtk_main_quit();
+}
 
-	CURL *curl;
-	CURLcode res;
-	std::string readBuffer;
-	std::string cookieBuffer;
-	struct curl_slist *headers = NULL;
+static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window) {
+	gtk_widget_destroy(window);
+	return TRUE;
+}
 
-	//read in the cookie data from the vector and store it in a string
-	std::string cookies;
-	std::string temp_cookies;
+int CookieManager::MiniBrowser(int argc, char *argv[]) {
 
-	cookies = cookiedata[0].name;
-	cookies += "=";
-	cookies += cookiedata[0].value;
-	cookies += "; ";
-
-	for(int i = 1; i < cookiedata.size(); i++){
-		cookies += cookiedata[i].name;
-		cookies += "=";
-		cookies += cookiedata[i].value;
-		cookies += "; ";
-	}
-
-	//convert the cookie string to a char*
-	int length = cookies.length();
-	char cookie_char[length + 1];
-	strcpy(cookie_char, cookies.c_str());
-
-	char *cookiesAll = cookie_char;
-	cout<<cookiesAll<<endl;
-
-	//configure the URL
-	std::string url;
-
-	url = "https://canvas.asu.edu/api/v1/courses/";
-	url += to_string(course_ID);
-	url += "/assignments/";
-	url += to_string(assignment_ID);
-	url +=	"/submissions?include[]=submission_history&page=1&per_page=100";
-
-	//convert the url string to a char*
-	int length_url = url.length();
-	char url_char[length_url + 1];
-	strcpy(url_char, url.c_str());
-	cout<<url_char<<endl;
-
-	//start libcurl
-	curl = curl_easy_init();
-	if (curl) {
-		curl_easy_setopt(curl, CURLOPT_URL,
-				url_char);
-
-		curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
-
-		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
-
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-
-		res = curl_easy_perform(curl);
-
-		readBuffer.erase(0,9); //removes the "while (1);" from the string.
-		std::cout << readBuffer << std::endl;
-
-		//write all the quizzes to a json file.
-		ofstream quizzes;
-		quizzes.open("allSubmissions.json");
-		quizzes<<"{\"submissions\": ";
-		quizzes<<readBuffer;
-		quizzes<<"}";
-		quizzes.close();
-
-		/* Check for errors */
-		if (res != CURLE_OK) {
-			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
-					curl_easy_strerror(res));
-		}
-	}
-
-	/* always cleanup */
-	curl_easy_cleanup(curl);
-
-
-	vector <Student> students;
-
-	//add in the fake test student
-	Student testStudent;
-	testStudent.StudentID = 461471;
-	students.push_back(testStudent);
-
-
-	Utility util;
-
-	vector <Student> allStudents = util.getSurveyAnswers(students, assignment_ID, "allSubmissions.json");
-
-	cout<<"student data:"<<endl;
-	for(int i = 0; i< allStudents.size(); i++){
-	cout<<"name: "<<allStudents[i].name<<endl;
-
-	cout<<"Affinity: "<<endl;
-	for(int j = 0;j< 6;j++){
-	cout<<allStudents[i].StudentAffinity[j].first<<allStudents[i].StudentAffinity[j].second<<endl;
-	}
-
-	cout<<"skill scores: "<<endl;
-	for(int j = 0; j<14 ;j++){
-	cout<<"skill "<<to_string(j+1)<<": "<<allStudents[i].Skills[j]<<endl;
-	}
-
-	cout<<"Availability: "<<endl;
-	for(int j = 0; j<4 ;j++){
-	cout<<allStudents[i].Availability[j]<<endl;
-	}
-
-	}
-
+	main2(argc, argv);
+	return 1;
 }
 

@@ -85,9 +85,9 @@ Student StudentJson::getStudentJsonObject(string filename, int i) {
 	student.ClassID = obj["students"].get((int) i, "")["ClassID"].asInt();
 
 	for (int j = 0; j < numAffinities; j = j + 2) {
-		pair<string, bool> x =
+		pair<int, bool> x =
 				{
-						obj["students"].get((int) i, "")["StudentAffinity"][j].asString(),
+						obj["students"].get((int) i, "")["StudentAffinity"][j].asInt(),
 						obj["students"].get((int) i, "")["StudentAffinity"][j
 								+ 1].asBool() };
 		student.StudentAffinity.push_back(x);
@@ -140,7 +140,7 @@ void StudentJson::StudentReader(string filename) {
 	int StudentID;
 	int ClassID;
 	int skills[7];
-	vector<pair<string, bool> > affinity;
+	vector<pair<int, bool> > affinity;
 	int times[4];
 
 	int numberOfSkills = 0;
@@ -170,9 +170,9 @@ void StudentJson::StudentReader(string filename) {
 		numberOfAff =
 				obj["students"].get((int) i, "")["StudentAffinity"].size();
 		for (int j = 0; j < numberOfAff; j = j + 2) {
-			pair<string, bool> x =
+			pair<int, bool> x =
 					{
-							obj["students"].get((int) i, "")["StudentAffinity"][j].asString(),
+							obj["students"].get((int) i, "")["StudentAffinity"][j].asInt(),
 							obj["students"].get((int) i, "")["StudentAffinity"][j
 									+ 1].asBool() };
 			affinity.push_back(x);

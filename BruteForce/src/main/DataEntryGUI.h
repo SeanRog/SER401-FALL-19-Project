@@ -12,9 +12,6 @@
 #include "ClassSectionJson.h"
 #include "ClassSection.h"
 #include "main.h"
-
-#include <libsoup/soup.h>
-#include <vector>
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -93,7 +90,7 @@ public:
 	Fl_Box *goBackorConfirmInstructionsBox;
 
 
-	DataEntryGUI(Fl_Window *win,vector<SoupCookie> cookiedata);
+	DataEntryGUI(Fl_Window *win);
 	virtual ~DataEntryGUI();
 
 	//callback functions
