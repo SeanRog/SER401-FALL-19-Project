@@ -969,7 +969,7 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 	//open the mini-browser for canvas authentication
 	if (Authenticated != true) {
 		Auth1 = false;
-		//mini_browserSP();
+		mini_browserSP();
 	}
 	Authenticated = Auth1;
 
@@ -981,8 +981,8 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 	//cout << "working" << endl;
 	//SPDataGUI dataGUI(windowMain);
 //=======
-	//CookieManager cookieMonster;
-	//cookieMonster.getCourses(cookiedata1);
+	CookieManager cookieMonster;
+	cookieMonster.getCourses(cookiedata1);
 
 	SPDataGUI dataGUI(windowMain, cookiedata1);
 //>>>>>>> dev
