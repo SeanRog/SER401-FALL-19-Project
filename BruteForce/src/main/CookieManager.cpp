@@ -337,11 +337,20 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
+		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+				curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+				curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 
-		res = curl_easy_perform(curl);
+				res = curl_easy_perform(curl);
+
+				if(res == CURLE_OK){
+				long header_size;
+				res = curl_easy_getinfo(curl, CURLINFO_HEADER_SIZE, &header_size);
+				cout<<"header size"<<to_string(header_size)<<endl;
+				}
+
+
 
 		readBuffer.erase(0,9); //removes the "while (1);" from the string.
 		std::cout << readBuffer << std::endl;
