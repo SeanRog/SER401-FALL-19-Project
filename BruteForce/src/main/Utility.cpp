@@ -1288,6 +1288,155 @@ void Utility::makeProjectJSON(int numProj, int numSkill) {
 }
 
 /*************************************************
+ * makeProjectCSV
+ *
+ * Description:
+ *   This function creates a new CSV file with random data for
+ *   a specified number of projects.
+ *
+ * Arguments:
+ * int numProj, - number of projects to create in the CSV file
+ * int numSkill
+ *
+ * Returns:
+ *    nothing
+ */
+void Utility::makeProjectCSV(int numProj, int numSkill) {
+	string skills[14] =
+		{ "ArtificialIntelligence", "WebApplicationProgramming",
+				"IOSMobileApplicationProgramming",
+				"AndroidMobileApplicationProgramming",
+				"Sensing/Control/Embedded", "DesktopApplicationProgramming",
+				"DatabaseProgramming", "NetworkSecurity", "C", "C++", "C#",
+				"Java", "JavaScript", "Python" };
+	// Variables
+	ofstream file;
+	int numProjects = numProj;
+	int numSkills = numSkill;
+
+	// opening file in out(write) mode
+	// ios::out Open for output operations.
+	file.open("newProjects.csv", ios::out);
+
+	//Start of CSV file
+	file << "Company,Submitter Name,Submitter Title,Submitter Email,Submitter Contact Phone #,Technical Contact Name,Technical Contact Title,Technical Contact E-mail,Technical Contact Phone Number,Project Motivation,Project Description,Project Deliverables,Technology Areas,PreferredLanguageSkills,RequiresNDA,RequiresIPR,RequiresSharedHardware,Type,Section,Priority";
+
+	//Loops through projectID to print
+	for (int projectID = 1; projectID < (numProjects + 1); projectID++) {
+
+		/*Prints out schema: {"ProjectID": (projectID#),the projectID
+		 * number is set to have width of 3 if the number (e.g. 1)
+		 * is less than 3, it will fill with 0's. (e.g. 001)     */
+		//file << "{\"ProjectID\": " << projectID << ",\n";
+		file << "Company" << projectID << ",";
+		file << "Submitter Name" << projectID << ",";
+		file << "Submitter Title" << projectID << ",";
+		file << "Submitter Email" << projectID << ",";
+		file << "Submitter Contact Phone #" << projectID << ",";
+		file << "Technical Contact Name" << projectID << ",";
+		file << "Technical Contact Title" << projectID << ",";
+		file << "Technical Contact E-mail" << projectID << ",";
+		file << "Technical Contact Phone Number" << projectID << ",";
+		file << "Project Motivation" << projectID << ",";
+		file << "Project Description" << projectID << ",";
+		file << "Project Deliverables" << projectID << ",";
+		/*file << "Technology Areas" << projectID << ",";
+		file << "Preferred Language Skills" << projectID << ",";
+		file << "Requires NDA" << projectID << ",";
+		file << "Requires IPR" << projectID << ",";
+		file << "Requires Shared Hardware" << projectID << ",";
+		file << "Type" << projectID << ",";
+		file << "Section" << projectID << ",";
+		file << "Priority" << projectID;*/
+
+		/*Prints out schema: "Skills": [(skills)], generates Skills from
+		 * numSkills. Randomizes values between 0-4 for each skill.      */
+		try {
+			if(numSkills != 14) {
+				cout << "WARNING: numSkills does not equal the number of skills specified in the project schema" << endl;
+			}
+			file << "[";
+			for (int i = 0; i < (8); i++) {
+				if (i < (8 - 1)) {
+					if((rand() % (2 + 1)) == 0) {
+						file << skills[i] << ",";
+					}
+				} else {
+					if((rand() % (2 + 1)) == 0) {
+						file << skills[i];
+					}
+					file << "],";
+				}
+			}
+			file << "[";
+			for (int i = 8; i < (14); i++) {
+				if (i < (14 - 1)) {
+					if((rand() % (2 + 1)) == 0) {
+						file << skills[i] << ",";
+					}
+				} else {
+					if((rand() % (2 + 1)) == 0) {
+						file << skills[i];
+					}
+					file << "],";
+				}
+			}
+		} catch(range_error& e) {
+					cout << "Index out of range" << endl;
+		}
+		/*Prints out schema: {"NDA": bool, */
+		/*Prints out schema: {"IPR": bool, */
+		//25 percent of projects will require students sign an IPR and NDA agreement.
+		int percent = (int) numProjects * (0.25);
+		if (projectID < (percent + 1)) {
+			file << "1,";
+			file << "1,";
+		} else {
+			file << "0,";
+			file << "0,";
+		}
+
+		//5 percent of projects will require students use shared hardware.
+		percent = (int) numProjects * (0.05);
+		if (projectID < (percent + 1)) {
+			file << "1,";
+		} else {
+			file << "0,";
+		}
+
+		/*Prints out schema: "Type": O/G/H, right now 80% is hybrid
+		 * 10% online and 10% ground projects    */
+		percent = (int) numProjects * (0.10);
+		if (projectID < (percent + 1)) {
+			file << "O,";
+		} else if (projectID > percent
+				&& projectID < ((percent + percent + 1))) {
+			file << "G,";
+		} else if (projectID == numProjects) {
+			file << "H,";
+		} else {
+			file << "H,";
+		}
+
+		//Prints out schema: "Section": 0, 1, 2, or 3
+		file << (projectID % 4) << ",";
+
+		/*Prints out schema: "Priority": (Priority), priority can be
+				 * 0,1, or 2. This file randomizes it between the three options.  */
+		file << rand() % (2 + 1) << "\n";
+
+	}
+
+
+
+
+	file << "]\n}";
+
+	file.close();
+
+}
+
+/*************************************************
  * makeStudentJSON
  *
  * Description:

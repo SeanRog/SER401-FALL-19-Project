@@ -76,7 +76,12 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 
 	//end
 	cout<<"Read in all courses!"<<endl;
+//<<<<<<< HEAD
+	//cout<<Courses[0].Course_Code<<endl;
+	//cout<<Courses[1].Course_Code<<endl;
+//=======
 
+//>>>>>>> dev
 
 	string courses[NUM_CLASS_SECTIONS];
 	AllCourseNames = courses;
