@@ -1327,7 +1327,7 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 		/*Prints out schema: {"ProjectID": (projectID#),the projectID
 		 * number is set to have width of 3 if the number (e.g. 1)
 		 * is less than 3, it will fill with 0's. (e.g. 001)     */
-		file << "{\"ProjectID\": " << projectID << ",\n";
+		//file << "{\"ProjectID\": " << projectID << ",\n";
 		file << "Company" << projectID << ",";
 		file << "Submitter Name" << projectID << ",";
 		file << "Submitter Title" << projectID << ",";
@@ -1389,45 +1389,47 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 		//25 percent of projects will require students sign an IPR and NDA agreement.
 		int percent = (int) numProjects * (0.25);
 		if (projectID < (percent + 1)) {
-			file << "\"NDA\": true,\n";
-			file << "\"IPR\": true,\n";
+			file << "1,";
+			file << "1,";
 		} else {
-			file << "\"NDA\": false,\n";
-			file << "\"IPR\": false,\n";
+			file << "0,";
+			file << "0,";
 		}
 
-		/*Prints out schema: {"NDA": bool, */
-		/*Prints out schema: {"IPR": bool, */
 		//5 percent of projects will require students use shared hardware.
 		percent = (int) numProjects * (0.05);
 		if (projectID < (percent + 1)) {
-			file << "\"sharedHardware\": true,\n";
+			file << "1,";
 		} else {
-			file << "\"sharedHardware\": false,\n";
+			file << "0,";
 		}
-
-		/*Prints out schema: "Priority": (Priority), priority can be
-		 * 0,1, or 2. This file randomizes it between the three options.  */
-		file << " \"Priority\": " << rand() % (2 + 1) << ",\n";
 
 		/*Prints out schema: "Type": O/G/H, right now 80% is hybrid
 		 * 10% online and 10% ground projects    */
-
-		//file << " \"Type\": ";
-		//      file << "\"H\" },\n\n";
-		file << " \"Type\": ";
 		percent = (int) numProjects * (0.10);
 		if (projectID < (percent + 1)) {
-			file << "\"O\" }, \n\n";
+			file << "O,";
 		} else if (projectID > percent
 				&& projectID < ((percent + percent + 1))) {
-			file << "\"G\" }, \n\n";
+			file << "G,";
 		} else if (projectID == numProjects) {
-			file << "\"H\" }\n\n";
+			file << "H,";
 		} else {
-			file << "\"H\" },\n\n";
+			file << "H,";
 		}
+
+		//Prints out schema: "Section": 0, 1, 2, or 3
+		file << (projectID % 4) << ",";
+
+		/*Prints out schema: "Priority": (Priority), priority can be
+				 * 0,1, or 2. This file randomizes it between the three options.  */
+		file << rand() % (2 + 1) << "\n";
+
 	}
+
+
+
+
 	file << "]\n}";
 
 	file.close();
