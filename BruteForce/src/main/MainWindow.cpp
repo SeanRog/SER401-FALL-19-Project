@@ -791,6 +791,19 @@ void mini_browser() {
  *		nothing
  */
 void MainWindow::StartButtonClick(Fl_Widget *w) {
+//<<<<<<< HEAD
+	/*num_projects = atol(inputprojects->value());
+	num_students = atol(inputstudents->value());
+
+	//nextWindow = windowMain;
+
+	//if the user is not authenticated yet,
+	//open the mini-browser for canvas authentication
+	if (Authenticated != true) {
+		Auth = false;
+		mini_browser();
+	}*/
+//=======
 
 	bool error = false;
 	num_projects = atol(inputprojects->value());
@@ -825,6 +838,7 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 			|| needed_projects4 > num_projects4 || num_projects == 0 || num_students == 0) {
 		errorMessage();
 		error = true;
+//>>>>>>> dev
 	}
 
 	if (error == false) {
@@ -841,6 +855,12 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 
 		windowMain->hide();
 
+//<<<<<<< HEAD
+	//call to get the course information
+	//CookieManager cookieMonster;
+	//cookieMonster.getCourses(cookiedata);
+//=======
+//>>>>>>> dev
 
 		//call to get the course information
 		CookieManager cookieMonster;

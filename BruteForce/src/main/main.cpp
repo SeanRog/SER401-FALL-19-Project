@@ -647,27 +647,13 @@ int main() {
 int main::main_run(int projects_input, int students_input, string filepath, Fl_Progress *pb, Fl_Text_Buffer *tb) {
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
+
+
+
 	srand(time(NULL));
 	string file = "";
 	string file2 = "";
 	cout << "Hi Team 35" << endl;
-	cout << "main " << filepath << endl;
-	for (int i = filepath.length() - 1; i >= 0; i--) {
-		file.push_back(filepath.at(i));
-		if(filepath.at(i) == 47) {
-			file.push_back('.');
-			break;
-		}
-	}
-
-	for(int i = file.length() - 1; i >=0; i--) {
-		file2.push_back(file.at(i));
-	}
-	for(int i = 0; i < file.length(); i++) {
-			cout << file2.at(i) << ',';
-		}
-	cout << endl;
-
 	//set up the progress bar with 5 percent
 	progressBar = pb;
 	pb->value(5 / 100.0);
@@ -695,6 +681,24 @@ int main::main_run(int projects_input, int students_input, string filepath, Fl_P
 	//of number of projects, and number of students
 	util.makeProjectJSON(NUM_PROJECTS, NUM_SKILLS);
 	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS);
+	//create the CSV file of random projects
+	util.makeProjectCSV(NUM_PROJECTS, NUM_SKILLS);
+
+	cout << "main " << filepath << endl;
+	for (int i = filepath.length() - 1; i >= 0; i--) {
+		file.push_back(filepath.at(i));
+		if(filepath.at(i) == 47) {
+			file.push_back('.');
+			break;
+		}
+	}
+
+	for(int i = file.length() - 1; i >=0; i--) {
+		file2.push_back(file.at(i));
+	}
+	for(int i = 0; i < file.length(); i++) {
+			cout << file2.at(i) << ',';
+	}
 
 	//const string PROJECT_FILE = "./newProjects.json";
 	cout << endl;
