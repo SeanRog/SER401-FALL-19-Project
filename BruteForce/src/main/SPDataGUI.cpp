@@ -12,6 +12,7 @@
 #include "ClassSectionJson.h"
 #include "ClassSection.h"
 #include "CookieManager.h"
+#include "Utility.h"
 #include "main.h"
 
 #include <libsoup/soup.h>
@@ -243,6 +244,9 @@ SPDataGUI::SPDataGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 	fileInput_StudentQuizName = new Fl_Input(20, 320, 710, 30);
 	fileInput_StudentQuizName->textfont(FL_TIMES_ITALIC);
 	fileInput_StudentQuizName->color(LIGHT_CREAM);
+
+//>>>>Set the initial value to Survey. Need to remove for the Final System.
+	fileInput_StudentQuizName->value("Survey");
 
 	//INITIALIZE CLASS SECTION SELECTOR COMPONENTS
 	// input year
@@ -695,15 +699,54 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 		}
 
 
-		//Get the Quiz data from the student survey.
+			//Get the Quiz data from the student survey.
 			string QuizName = fileInput_StudentQuizName->value();
 		    CookieManager CM;
+		    Utility util;
 
+			//Get Student data from each course
+			// test with one course
+			//CM.getStudents(cookiedataDE, 47570);
+			vector<vector<Student>> allStudents;
+			vector<Student> students;
 			for (int j = 0; j < num_of_selected_courses; j++) {
+				students = CM.getStudents(cookiedataSP, classes[j].OfficialClassID);
 
-				CM.getQuizzes(cookiedataSP, classes[j].OfficialClassID, QuizName);
+				CM.getQuizzes(cookiedataSP, classes[j].OfficialClassID, QuizName, students);
+				students = CM.currentStudents;
 
+				allStudents.push_back(students);
 			}
+
+			// debug students
+			cout << endl << "Debugging Students" << endl;
+			for (int j = 0; j < allStudents.size(); j++){
+				for (int k = 0; k < allStudents.at(j).size(); k++){
+					cout << "ClassID: "<< allStudents.at(j).at(k).ClassID << endl;
+					cout << "StudentID: "<< allStudents.at(j).at(k).StudentID << endl;
+					cout << "ASUriteID: "<< allStudents.at(j).at(k).ASUriteID << endl;
+					cout<<"name: "<<allStudents.at(j).at(k).name<<endl;
+
+					cout<<"Affinity: "<<endl;
+					for(int x = 0;x< 6;x++){
+					cout<<allStudents.at(j).at(k).StudentAffinity[x].first<<allStudents.at(j).at(k).StudentAffinity[x].second<<endl;
+					}
+
+					cout<<"skill scores: "<<endl;
+					for(int x = 0; x<14 ;x++){
+					cout<<"skill "<<to_string(x+1)<<": "<<allStudents.at(j).at(k).Skills[x]<<endl;
+					}
+
+					cout<<"Availability: "<<endl;
+					for(int x = 0; x<4 ;x++){
+					cout<<allStudents.at(j).at(k).Availability[x]<<endl;
+					}
+
+				}
+			}
+
+
+
 
 
 	masterWindow->hide();

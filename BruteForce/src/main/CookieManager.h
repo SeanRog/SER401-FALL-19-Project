@@ -23,14 +23,16 @@ using namespace std;
 
 class CookieManager {
 public:
+	vector <Student> currentStudents;
+
 	CookieManager();
 	~CookieManager();
 	int newHttpsSession(const char *hostURL);
 
 	void getCourses(vector<SoupCookie> cookiedata);
-	void getQuizzes(vector<SoupCookie> cookiedata, int course_id, string quizName);
-	void getAssignment(vector<SoupCookie> cookiedata, int course_ID, int quiz_ID);
-	void getQuizSubmissions(vector<SoupCookie> cookiedata,int course_ID, int quiz_ID, int assignment_ID);
+	void getQuizzes(vector<SoupCookie> cookiedata, int course_id, string quizName, vector<Student> students);
+	void getAssignment(vector<SoupCookie> cookiedata, int course_ID, int quiz_ID, vector<Student> students);
+	void getQuizSubmissions(vector<SoupCookie> cookiedata,int course_ID, int quiz_ID, int assignment_ID, vector<Student> students);
 	vector<Student> getStudents(vector<SoupCookie> cookiedata, int course_ID);
 
 	static size_t WriteCallback(void *contents, size_t size, size_t nmemb,
