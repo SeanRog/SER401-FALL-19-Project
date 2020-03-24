@@ -92,7 +92,7 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 		cout<<AllCourseNames[i]<<endl;
 	}
 
-	remove("allCourses.json");
+	//remove("allCourses.json");
 
 	// Initialize components in scope, but not on main data entry gui
 	GenerateTeamsButton = NULL;
