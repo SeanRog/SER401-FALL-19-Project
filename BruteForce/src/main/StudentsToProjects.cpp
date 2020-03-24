@@ -82,7 +82,7 @@ using namespace std;
 using namespace std::chrono;
 int ResultWindow::permutations = 0;
 int ResultWindow::swaps = 0;
-int ResultWindow::project_pool[4][200]= {};
+int ResultWindow::project_pool[5][200]= {};
 
 //Constructor
 StudentsToProjects::StudentsToProjects() {

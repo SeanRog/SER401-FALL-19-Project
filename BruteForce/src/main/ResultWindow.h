@@ -43,7 +43,7 @@ public:
 	static int permutations;
 	static int swaps;
 	static int count;
-	static int project_pool[4][200];
+	static int project_pool[5][200];
 
 	Fl_Window *windowResult;
 	Fl_Text_Display *textDisplay;

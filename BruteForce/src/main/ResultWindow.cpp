@@ -298,24 +298,14 @@ void ResultWindow::addText() {
 
 
 	// Filling in class section chart
-	int sections[20];
-	int count1 = 0;
-	for(int i = 0; i < count; i ++) {
-		int unique = 0;
-		for(int j = 0; j < 20; j++) {
-			if(project_pool[3][i] == sections[j] && project_pool[2][i] != 0) {
-				unique = 1;
-			}
-		}
-		if(unique == 0) {
-			sections[count1] = project_pool[3][i];
-			count1++;
-		}
+	for(int i = 0; i  < count; i ++){
+		cout << project_pool[0][i] << " " << project_pool[1][i] << " " << project_pool[2][i] << " " << project_pool[3][i] << " " << project_pool[4][i] << "\n";
 	}
 
-	for(int j = 0; j < count1; j++) {
+	for(int j = 0; j < count; j++) {
 		for(int i = 0; i < count; i ++) {
-			if(project_pool[3][i] == sections[j]) {
+			if(project_pool[3][i] == project_pool[3][j] && project_pool[4][i] != 1) {
+				project_pool[4][i] = 1;
 				char priob[2];
 				buff = sprintf(priob, "%d", project_pool[2][i]);
 				const char *prioa = priob;
