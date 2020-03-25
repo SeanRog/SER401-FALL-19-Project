@@ -2101,14 +2101,13 @@ vector<Student> Utility::getSurveyAnswers(vector<Student> students,
 					//assign quiz answer data to the student
 					auto submissionHistoryArray = obj["submissions"].get(
 							(int) i, "")["submission_history"];
-					cout << "working?" << endl;
+
 
 					auto data = submissionHistoryArray[0];
 
 					auto submissionData = data["submission_data"];
 					auto currentQuestion = submissionData[0];
 
-					cout << currentQuestion["text"].asString() << endl;
 
 					//#1-#2 get the students first and last name, space separated.
 					students[j].name = currentQuestion["text"].asString();
