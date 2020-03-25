@@ -384,7 +384,7 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
  *Returns:
  *  nothing
  */
-void CookieManager::getQuizzes(vector<SoupCookie> cookiedata, int course_ID, string quizName) {
+void CookieManager::getQuizzes(vector<SoupCookie> cookiedata, int course_ID, string quizName, vector<Student> students) {
 
 	CURL *curl;
 	CURLcode res;
@@ -478,7 +478,7 @@ void CookieManager::getQuizzes(vector<SoupCookie> cookiedata, int course_ID, str
 	//delete the quiz json file now that we are done with it.
 	remove("allQuizzes.json");
 
-	getAssignment(cookiedata, course_ID,  quiz_ID);
+	getAssignment(cookiedata, course_ID,  quiz_ID, students);
 
 }
 
@@ -609,7 +609,7 @@ vector<Student> CookieManager::getStudents(vector<SoupCookie> cookiedata, int co
  *Returns:
  *  nothing
  */
-void CookieManager::getAssignment(vector<SoupCookie> cookiedata, int course_ID, int quiz_ID) {
+void CookieManager::getAssignment(vector<SoupCookie> cookiedata, int course_ID, int quiz_ID, vector<Student> students) {
 
 	CURL *curl;
 	CURLcode res;
@@ -703,7 +703,7 @@ void CookieManager::getAssignment(vector<SoupCookie> cookiedata, int course_ID, 
 	//delete the quiz json file now that we are done with it.
 	remove("allAssignments.json");
 
-	getQuizSubmissions(cookiedata, course_ID,  quiz_ID, assignment_ID);
+	getQuizSubmissions(cookiedata, course_ID,  quiz_ID, assignment_ID, students);
 
 }
 
@@ -724,7 +724,7 @@ void CookieManager::getAssignment(vector<SoupCookie> cookiedata, int course_ID, 
  *Returns:
  *  nothing
  */
-void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,int course_ID, int quiz_ID, int assignment_ID){
+void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,int course_ID, int quiz_ID, int assignment_ID, vector<Student> students){
 
 	CURL *curl;
 	CURLcode res;
@@ -808,7 +808,7 @@ void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,int course_
 	/* always cleanup */
 	curl_easy_cleanup(curl);
 
-
+/*
 	vector <Student> students;
 
 	//add in the fake test student
@@ -816,31 +816,14 @@ void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,int course_
 	testStudent.StudentID = 461471;
 	students.push_back(testStudent);
 
-
+*/
 	Utility util;
 
-	vector <Student> allStudents = util.getSurveyAnswers(students, assignment_ID, "allSubmissions.json");
+	vector <Student> Allstudents = util.getSurveyAnswers(students, assignment_ID, "allSubmissions.json");
 
-	cout<<"student data:"<<endl;
-	for(int i = 0; i< allStudents.size(); i++){
-	cout<<"name: "<<allStudents[i].name<<endl;
+	currentStudents = Allstudents;
 
-	cout<<"Affinity: "<<endl;
-	for(int j = 0;j< 6;j++){
-	cout<<allStudents[i].StudentAffinity[j].first<<allStudents[i].StudentAffinity[j].second<<endl;
-	}
-
-	cout<<"skill scores: "<<endl;
-	for(int j = 0; j<14 ;j++){
-	cout<<"skill "<<to_string(j+1)<<": "<<allStudents[i].Skills[j]<<endl;
-	}
-
-	cout<<"Availability: "<<endl;
-	for(int j = 0; j<4 ;j++){
-	cout<<allStudents[i].Availability[j]<<endl;
-	}
-
-	}
+	remove("allSubmissions.json");
 
 }
 
