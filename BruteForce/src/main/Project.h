@@ -54,7 +54,7 @@ public:
 	 * 			Project Skills are defined as:
 	 * 			0 = not required | 1 = nice to have skill | 2 = required skill
 	 */
-	int Skills[15];
+	int Skills[14];
 
 	Project() {
 	}

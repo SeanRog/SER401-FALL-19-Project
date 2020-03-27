@@ -78,7 +78,7 @@ MainWindow::MainWindow() {
 //ASU logos
 Fl_PNG_Image ASU_LOGO_BLACK1("./Images/asu_sunburst_rgb_black_150ppi_1.png");
 Fl_PNG_Image ASU_LOGO_BLACK2("./Images/asu_sunburst_rgb_black_150ppi_0.png");
-Fl_PNG_Image ASU_LOGO_WHITE2("./Images/asu_university_horiz_rgb_white_150.png");
+Fl_PNG_Image ASU_LOGO_WHITE2("./Images/asu_university_horiz_rgb_white_600.png");
 
 //team button
 Fl_PNG_Image TeamLogo1("./Images/TeamsButton.png");
