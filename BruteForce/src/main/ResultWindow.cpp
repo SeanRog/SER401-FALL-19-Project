@@ -168,7 +168,7 @@ ResultWindow::ResultWindow() {
 	pieChart->labelsize(16);
 	pieChart->labelcolor(ASU_WHITE);
 
-	barChart = new Fl_Chart(20, 300, 810, 200, "Team Scores by Project Priority");
+	barChart = new Fl_Chart(20, 300, 810, 210, "Team Scores by Project Priority");
 	barChart->type(FL_SPIKE_CHART);
 	barChart->textfont(FL_HELVETICA);
 	barChart->textcolor(ASU_BLACK);
@@ -177,7 +177,7 @@ ResultWindow::ResultWindow() {
 	barChart->labelsize(16);
 	barChart->labelcolor(ASU_WHITE);
 
-	classChart = new Fl_Chart(20, 555, 810, 210, "Team Scores per Class Section");
+	classChart = new Fl_Chart(20, 545, 810, 220, "Team Scores per Class Section");
 	classChart->type(FL_SPIKE_CHART);
 	classChart->textfont(FL_HELVETICA);
 	classChart->textcolor(ASU_BLACK);
@@ -298,8 +298,7 @@ void ResultWindow::addText() {
 
 
 	// Filling in class section chart
-	int count1 = 1, sections[10];
-	sections[0] = project_pool[3][0];
+	int count1 = 0, sections[10], changed = 0;
 
 	for(int j = 0; j < count; j++) {
 		for(int i = 0; i < count; i ++) {
@@ -308,11 +307,21 @@ void ResultWindow::addText() {
 				if(project_pool[3][i] != sections[count1-1]) {
 					sections[count1] = project_pool[3][i];
 					count1++;
+					changed = 1;
 				}
 
 				project_pool[4][i] = 1;
-				char priob[2];
-				buff = sprintf(priob, "%d", project_pool[2][i]);
+				char priob[10];
+
+				if(changed == 1) {
+					classChart->add(0, "", ASU_MAROON);
+					classChart->add(0, "", ASU_MAROON);
+
+					buff = sprintf(priob, "S#%d-  %d", project_pool[3][i], project_pool[2][i]);
+					changed = 0;
+				} else {
+					buff = sprintf(priob, "%d", project_pool[2][i]);
+				}
 				const char *prioa = priob;
 
 				if(j % 2 == 0) { classChart->add(project_pool[2][i], prioa, ASU_GOLD);}
@@ -321,169 +330,8 @@ void ResultWindow::addText() {
 		}
 	}
 
-	int spacing = 700/count1;
-
-	Fl_Box *classBox0 = new Fl_Box(spacing, 535, 50, 15);
-	Fl_Box *classBox1 = new Fl_Box(spacing*2, 535, 50, 15);
-	Fl_Box *classBox2 = new Fl_Box(spacing*3, 535, 50, 15);
-	Fl_Box *classBox3 = new Fl_Box(spacing*4, 535, 50, 15);
-	Fl_Box *classBox4 = new Fl_Box(spacing*5, 535, 50, 15);
-	Fl_Box *classBox5 = new Fl_Box(spacing*6, 535, 50, 15);
-	Fl_Box *classBox6 = new Fl_Box(spacing*7, 535, 50, 15);
-	Fl_Box *classBox7 = new Fl_Box(spacing*8, 535, 50, 15);
-	Fl_Box *classBox8 = new Fl_Box(spacing*9, 535, 50, 15);
-	Fl_Box *classBox9 = new Fl_Box(spacing*10, 535, 50, 15);
-
-	for(int i = 0; i < count1; i++) {
-
-		switch(i) {
-				case 0: {
-					char priob[10];
-					buff = sprintf(priob, "%d", sections[0]);
-					const char *prioa = priob;
-
-					classBox0->label(prioa);
-					classBox0->box(FL_FLAT_BOX);
-					classBox0->color(ASU_GREY);
-					classBox0->align(FL_ALIGN_CENTER);
-					classBox0->labelfont(FL_HELVETICA_BOLD);
-					classBox0->labelsize(12);
-					classBox0->labelcolor(ASU_GOLD);
-					break; }
-
-				case 1: {
-					char priob[10];
-					buff = sprintf(priob, "%d", sections[1]);
-					const char *prioa = priob;
-
-					classBox1->label(prioa);
-					classBox1->box(FL_FLAT_BOX);
-					classBox1->color(ASU_GREY);
-					classBox1->align(FL_ALIGN_CENTER);
-					classBox1->labelfont(FL_HELVETICA_BOLD);
-					classBox1->labelsize(12);
-					classBox1->labelcolor(ASU_MAROON);
-					break; }
-
-				case 2: {
-					char priob[10];
-					buff = sprintf(priob, "%d", sections[2]);
-					const char *prioa = priob;
-
-					classBox2->label(prioa);
-					classBox2->box(FL_FLAT_BOX);
-					classBox2->color(ASU_GREY);
-					classBox2->align(FL_ALIGN_CENTER);
-					classBox2->labelfont(FL_HELVETICA_BOLD);
-					classBox2->labelsize(12);
-					classBox2->labelcolor(ASU_GOLD);
-					break; }
-
-				case 3: {
-					char priob[10];
-					buff = sprintf(priob, "%d", sections[3]);
-					const char *prioa = priob;
-
-					classBox3->label(prioa);
-					classBox3->box(FL_FLAT_BOX);
-					classBox3->color(ASU_GREY);
-					classBox3->align(FL_ALIGN_CENTER);
-					classBox3->labelfont(FL_HELVETICA_BOLD);
-					classBox3->labelsize(12);
-					classBox3->labelcolor(ASU_MAROON);
-					break; }
-
-				case 4: {
-					char priob[10];
-					buff = sprintf(priob, "%d", sections[4]);
-					const char *prioa = priob;
-
-					classBox4->label(prioa);
-					classBox4->box(FL_FLAT_BOX);
-					classBox4->color(ASU_GREY);
-					classBox4->align(FL_ALIGN_CENTER);
-					classBox4->labelfont(FL_HELVETICA_BOLD);
-					classBox4->labelsize(12);
-					classBox4->labelcolor(ASU_GOLD);
-					break; }
-
-				case 5: {
-					char priob[10];
-					buff = sprintf(priob, "%d", sections[5]);
-					const char *prioa = priob;
-
-					classBox5->label(prioa);
-					classBox5->box(FL_FLAT_BOX);
-					classBox5->color(ASU_GREY);
-					classBox5->align(FL_ALIGN_CENTER);
-					classBox5->labelfont(FL_HELVETICA_BOLD);
-					classBox5->labelsize(12);
-					classBox5->labelcolor(ASU_MAROON);
-					break; }
-
-				case 6: {
-					char priob[10];
-					buff = sprintf(priob, "%d", sections[6]);
-					const char *prioa = priob;
-
-					classBox6->label(prioa);
-					classBox6->box(FL_FLAT_BOX);
-					classBox6->color(ASU_GREY);
-					classBox6->align(FL_ALIGN_CENTER);
-					classBox6->labelfont(FL_HELVETICA_BOLD);
-					classBox6->labelsize(12);
-					classBox6->labelcolor(ASU_GOLD);
-					break; }
-
-				case 7: {
-					char priob[10];
-					buff = sprintf(priob, "%d", sections[7]);
-					const char *prioa = priob;
-
-					classBox7->label(prioa);
-					classBox7->box(FL_FLAT_BOX);
-					classBox7->color(ASU_GREY);
-					classBox7->align(FL_ALIGN_CENTER);
-					classBox7->labelfont(FL_HELVETICA_BOLD);
-					classBox7->labelsize(12);
-					classBox7->labelcolor(ASU_MAROON);
-					break; }
-
-				case 8: {
-					char priob[10];
-					buff = sprintf(priob, "%d", sections[8]);
-					const char *prioa = priob;
-
-					classBox8->label(prioa);
-					classBox8->box(FL_FLAT_BOX);
-					classBox8->color(ASU_GREY);
-					classBox8->align(FL_ALIGN_CENTER);
-					classBox8->labelfont(FL_HELVETICA_BOLD);
-					classBox8->labelsize(12);
-					classBox8->labelcolor(ASU_GOLD);
-					break; }
-
-				case 9: {
-					char priob[10];
-					buff = sprintf(priob, "%d", sections[9]);
-					const char *prioa = priob;
-
-					classBox9->label(prioa);
-					classBox9->box(FL_FLAT_BOX);
-					classBox9->color(ASU_GREY);
-					classBox9->align(FL_ALIGN_CENTER);
-					classBox9->labelfont(FL_HELVETICA_BOLD);
-					classBox9->labelsize(12);
-					classBox9->labelcolor(ASU_MAROON);
-					break; }
-
-				default: { break; }
-		}
-	}
-
-
-
-
+	classChart->add(0, "", ASU_MAROON);
+	classChart->add(0, "", ASU_MAROON);
 
 	//Show window
 	windowResult->resizable(textDisplay);
