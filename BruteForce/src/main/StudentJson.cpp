@@ -190,4 +190,3 @@ void StudentJson::StudentReader(string filename) {
 		allStudents.push_back(s);
 	}
 }
-
