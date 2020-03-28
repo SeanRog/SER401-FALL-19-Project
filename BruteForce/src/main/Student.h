@@ -49,7 +49,7 @@ public:
 	 * 			of the predefined skills. Each value is rated on a five point scale:
 	 * 			0 = none | 1 = some | 2 = average | 3 = proficient | 4 = expert
 	 */
-	int Skills[15];
+	int Skills[14];
 	double skillAverage; //Average skill of the student, used from skills above
 
 	/* vector<pair<int,bool>> StudentAffinity	- Students, additionally, are allowed in indicate other students that they

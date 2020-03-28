@@ -18,6 +18,8 @@
  *
  */
 #include "CookieManager.h"
+#include "Utility.h"
+#include "Student.h"
 
 #include <gtk/gtk.h>
 #include <webkit2/webkit2.h>
@@ -30,6 +32,11 @@
 #include <cstdlib>
 #include <string>
 #include <stdio.h>
+
+#include <stdlib.h>
+#include <sstream>
+#include <map>
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 
@@ -75,7 +82,6 @@ int CookieManager::newHttpSession(const char *hostURL) {
 		curl_easy_setopt(curl, CURLOPT_URL, hostURL);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 		curl_easy_setopt(curl, CURLOPT_NETRC, CURL_NETRC_REQUIRED);
-
 
 		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt"); /* start cookie engine */
 		curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
@@ -175,8 +181,8 @@ int CookieManager::newHttpsSession(const char *hostURL) {
 	if (curl) {
 
 		//curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/4.0");
-		curl_easy_setopt(curl, CURLOPT_AUTOREFERER, 1 );
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1 );
+		curl_easy_setopt(curl, CURLOPT_AUTOREFERER, 1);
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
 
 		curl_easy_setopt(curl, CURLOPT_URL, hostURL);
 
@@ -187,7 +193,7 @@ int CookieManager::newHttpsSession(const char *hostURL) {
 
 		headers = curl_slist_append(headers, "Content-Type: application/json");
 		headers = curl_slist_append(headers,
-		    "Authorization: Bearer <ENTER TOKEN HERE>");
+				"Authorization: Bearer <ENTER TOKEN HERE>");
 
 		//curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
@@ -198,9 +204,6 @@ int CookieManager::newHttpsSession(const char *hostURL) {
 		//curl_easy_setopt(curl, CURLOPT_COOKIELIST, "RELAOD");
 
 		res = curl_easy_perform(curl);
-
-
-
 
 		if (!res) {
 			/* extract all known cookies */
@@ -275,15 +278,44 @@ void CookieManager::print_cookies(CURL *curl) {
 	curl_slist_free_all(cookies);
 }
 
-//function to get all courses
+/*********************************************************
+ * getCourses
+ *
+ * Author: Myles Colina, Cristi Deleo
+ *
+ * Description:
+ * 	Performs an HTTP get request to CANVAS to get all the courses
+ * 	That the user has access to. Implements pagination to get all
+ * 	of the data.
+ *
+ *Arguments:
+ *	vector<SoupCookie> cookiedata, int course_ID, string quizName
+ *
+ *Returns:
+ *  nothing
+ */
 void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 
 
 	CURL *curl;
 	CURLcode res;
-	std::string readBuffer;
 	std::string cookieBuffer;
 	struct curl_slist *headers = NULL;
+
+	bool next_url_present = true;
+	bool first = true;
+
+	//the URL for the first HTTP request
+	char *url_request;
+	string url_string;
+	string url_request_string =
+			"https://canvas.asu.edu/api/v1/courses?page=1&per_page=100";
+
+	//convert the cookie string to a char*
+	int length_url_string = url_request_string.length();
+	char url_request1[length_url_string + 1];
+	strcpy(url_request1, url_request_string.c_str());
+	url_request = url_request1;
 
 	//read in the cookie data from the vector and store it in a string
 	std::string cookies;
@@ -294,12 +326,7 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 	cookies += cookiedata[0].value;
 	cookies += "; ";
 
-	temp_cookies = cookiedata[0].name;
-	temp_cookies += "=";
-	temp_cookies += cookiedata[0].value;
-	temp_cookies += "; \n";
-
-	for(int i = 1; i < cookiedata.size(); i++){
+	for (int i = 1; i < cookiedata.size(); i++) {
 		cookies += cookiedata[i].name;
 		cookies += "=";
 		cookies += cookiedata[i].value;
@@ -322,143 +349,1106 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 	strcpy(cookie_char, cookies.c_str());
 
 	char *cookiesAll = cookie_char;
-	cout<<cookiesAll<<endl;
+	cout << cookiesAll << endl;
 
-	//start libcurl
-	curl = curl_easy_init();
+	//while loop
+	while (next_url_present == true) {
+		std::string Headers;
+		std::string readBuffer;
 
-	if (curl) {
-		//curl_easy_setopt(curl, CURLOPT_URL,
-		//		"https://canvas.asu.edu/api/v1/courses?page=1&per_page=100");
-		curl_easy_setopt(curl, CURLOPT_URL,
-				"https://canvas.asu.edu/api/v1/courses?page=1&per_page=100");
+		//start libcurl
+		curl = curl_easy_init();
 
-		curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
+		if (curl) {
+			//curl_easy_setopt(curl, CURLOPT_URL,
+			//		"https://canvas.asu.edu/api/v1/courses?page=1&per_page=100");
 
-		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
+			if (first == true) {
+				curl_easy_setopt(curl, CURLOPT_URL, url_request);
+			} else {
 
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+				int length_url = url_string.length();
+				char url_char[length_url + 1];
+				strcpy(url_char, url_string.c_str());
 
-		res = curl_easy_perform(curl);
+				cout << url_char << endl;
+				curl_easy_setopt(curl, CURLOPT_URL, url_char);
+			}
 
-		readBuffer.erase(0,9);
-		std::cout << readBuffer << std::endl;
+			curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
+
+			curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
+			curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
+
+			//curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L); //for debugging
+
+			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+
+			curl_easy_setopt(curl, CURLOPT_HEADERDATA, &Headers);
+
+			res = curl_easy_perform(curl);
+
+			if (first == true) {
+				readBuffer.erase(0, 9); //removes the "while (1);" from the string.
+
+			} else {
+				readBuffer.erase(0, 10); //removes the "while (1);[" from the string.
+			}
+
+			//for debugging
+			//std::cout << readBuffer << std::endl;
+			//std::cout << Headers << std::endl;
+
+			//store the header string into a map of string Key and Value pairs.
+			std::map<string, string> HeaderMap;
+			istringstream resp(Headers);
+			string header;
+			string::size_type index;
+			while (getline(resp, header) && header != "\r") {
+				index = header.find(':', 0);
+				if (index != string::npos) {
+					HeaderMap.insert(
+							std::make_pair(
+									boost::algorithm::trim_copy(
+											header.substr(0, index)),
+									boost::algorithm::trim_copy(
+											header.substr(index + 1))));
+				}
+			}
+
+			//get the Link Headers from the header string.
+			string LinkHeaders;
+			for (auto &KeyValue : HeaderMap) {
+
+				if (KeyValue.first.compare("Link") == 0) {
+
+					LinkHeaders = KeyValue.second;
+				}
+			}
 
 
-		//write all the courses to a json file.
+			//if the link header contains rel ="next" then get the corresponding url
+			//from link header to the next page.
+			if (LinkHeaders.find("rel=\"next\"") != string::npos) {
 
+				std::string delimiter1 = ">; rel=\"next\"";
+				std::string delimiter2 = ">; rel=\"current\",<";
+
+				size_t pos = 0;
+				size_t pos2 = 0;
+				string url;
+				string url_temp;
+				pos = LinkHeaders.find(delimiter1);
+				pos2 = LinkHeaders.find(delimiter2);
+				pos2 += delimiter2.length();
+
+				url_temp = LinkHeaders.substr(0, pos);
+				url = url_temp.substr(pos2, url_temp.length());
+
+				//set the url string to the one found in the
+				//link header
+				url_string = url;
+
+			} else {
+				//no more pages.
+				next_url_present = false;
+			}
+
+			//write the course data to a Json file
+			if (first == true) {
+
+				//if there is another page to read in
+				if (next_url_present == true) {
+
+					readBuffer.erase(
+							readBuffer.begin() + readBuffer.length() - 2,
+							readBuffer.end());
+				}
+				//write all the courses to a json file.
+				ofstream courses;
+				courses.open("allCourses.json");
+				courses << "{\"courses\": ";
+				courses << readBuffer;
+				courses.close();
+
+			} else {
+
+				//if there is another page to read in
+				if (next_url_present == true) {
+
+					readBuffer.erase(
+							readBuffer.begin() + readBuffer.length() - 2,
+							readBuffer.end());
+				}
+				ofstream courses;
+				courses.open("allCourses.json", ios::app);
+				courses << ",";
+				courses << readBuffer;
+				courses.close();
+			}
+
+			first = false;
+
+		}
+
+		//add the final bracket to the Json file
 		ofstream courses;
-		courses.open("allCourses.json");
-		courses<<"{\"courses\": ";
-		courses<<readBuffer;
-		courses<<"}";
+		courses.open("allCourses.json", ios::app);
+		courses << "}";
 		courses.close();
 
-		/* Check for errors */
+		// Check for errors
 		if (res != CURLE_OK) {
 			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
 					curl_easy_strerror(res));
 		}
 	}
 
-	/* always cleanup */
+	// always cleanup
 	curl_easy_cleanup(curl);
 }
 
-void CookieManager::getQuizzes() {
+/*********************************************************
+ * getQuizzes
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Performs an HTTP get request to CANVAS to get the quiz submissions.
+ * 	Then calls a utility function to get the quiz id whose title mathces the
+ * 	name entered in the GUI.
+ *
+ *
+ *Arguments:
+ *	vector<SoupCookie> cookiedata, int course_ID, string quizName
+ *
+ *Returns:
+ *  nothing
+ */
+void CookieManager::getQuizzes(vector<SoupCookie> cookiedata, int course_ID,
+		string quizName, vector<Student> students) {
+
 	CURL *curl;
 	CURLcode res;
-	std::string readBuffer;
+	std::string cookieBuffer;
 	struct curl_slist *headers = NULL;
 
-	curl = curl_easy_init();
-	if (curl) {
-		curl_easy_setopt(curl, CURLOPT_URL,
-				"https://canvas.asu.edu/api/v1/courses/47570/quizzes?page=1&per_page=100");
+	bool next_url_present = true;
+	bool first = true;
 
-		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
+	//read in the cookie data from the vector and store it in a string
+	std::string cookies;
+	std::string temp_cookies;
 
-		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt");
-		curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
+	cookies = cookiedata[0].name;
+	cookies += "=";
+	cookies += cookiedata[0].value;
+	cookies += "; ";
 
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+	for (int i = 1; i < cookiedata.size(); i++) {
+		cookies += cookiedata[i].name;
+		cookies += "=";
+		cookies += cookiedata[i].value;
+		cookies += "; ";
+	}
 
-		res = curl_easy_perform(curl);
+	//convert the cookie string to a char*
+	int length = cookies.length();
+	char cookie_char[length + 1];
+	strcpy(cookie_char, cookies.c_str());
 
-		std::cout << readBuffer << std::endl;
+	char *cookiesAll = cookie_char;
+	cout << cookiesAll << endl;
 
-		//write all the quizzes to a json file.
+	//configure the URL
+	//the URL for the first HTTP request
+	char *url_request;
+	string url_string;
+	string url_request_string;
+	url_request_string = "https://canvas.asu.edu/api/v1/courses/";
+	url_request_string += to_string(course_ID);
+	url_request_string += "/quizzes?page=1&per_page=100";
+
+	//convert the cookie string to a char*
+	int length_url_string = url_request_string.length();
+	char url_request1[length_url_string + 1];
+	strcpy(url_request1, url_request_string.c_str());
+	url_request = url_request1;
+
+
+	//while loop
+	while (next_url_present == true) {
+		std::string Headers;
+		std::string readBuffer;
+
+		//start libcurl
+		curl = curl_easy_init();
+
+		if (curl) {
+			if (first == true) {
+				curl_easy_setopt(curl, CURLOPT_URL, url_request);
+			} else {
+
+				int length_url = url_string.length();
+				char url_char[length_url + 1];
+				strcpy(url_char, url_string.c_str());
+
+				cout << url_char << endl;
+				curl_easy_setopt(curl, CURLOPT_URL, url_char);
+			}
+
+			curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
+
+			curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
+			curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
+
+			//curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L); //for debugging
+
+			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+
+			curl_easy_setopt(curl, CURLOPT_HEADERDATA, &Headers);
+
+			res = curl_easy_perform(curl);
+
+			if (first == true) {
+				readBuffer.erase(0, 9); //removes the "while (1);" from the string.
+
+			} else {
+				readBuffer.erase(0, 10); //removes the "while (1);[" from the string.
+			}
+
+			//for debugging
+			//std::cout << readBuffer << std::endl;
+			//std::cout << Headers << std::endl;
+
+			//store the header string into a map of string Key and Value pairs.
+			std::map<string, string> HeaderMap;
+			istringstream resp(Headers);
+			string header;
+			string::size_type index;
+			while (getline(resp, header) && header != "\r") {
+				index = header.find(':', 0);
+				if (index != string::npos) {
+					HeaderMap.insert(
+							std::make_pair(
+									boost::algorithm::trim_copy(
+											header.substr(0, index)),
+									boost::algorithm::trim_copy(
+											header.substr(index + 1))));
+				}
+			}
+
+			//get the Link Headers from the header string.
+			string LinkHeaders;
+			for (auto &KeyValue : HeaderMap) {
+
+				if (KeyValue.first.compare("Link") == 0) {
+
+					LinkHeaders = KeyValue.second;
+				}
+			}
+
+
+			//if the link header contains rel ="next" then get the corresponding url
+			//from link header to the next page.
+			if (LinkHeaders.find("rel=\"next\"") != string::npos) {
+
+				std::string delimiter1 = ">; rel=\"next\"";
+				std::string delimiter2 = ">; rel=\"current\",<";
+
+				size_t pos = 0;
+				size_t pos2 = 0;
+				string url;
+				string url_temp;
+				pos = LinkHeaders.find(delimiter1);
+				pos2 = LinkHeaders.find(delimiter2);
+				pos2 += delimiter2.length();
+
+				url_temp = LinkHeaders.substr(0, pos);
+				url = url_temp.substr(pos2, url_temp.length());
+
+				//set the url string to the one found in the
+				//link header
+				url_string = url;
+
+			} else {
+				//no more pages.
+				next_url_present = false;
+			}
+
+			//write the course data to a Json file
+			if (first == true) {
+
+				//if there is another page to read in
+				if (next_url_present == true) {
+
+					readBuffer.erase(
+							readBuffer.begin() + readBuffer.length() - 2,
+							readBuffer.end());
+				}
+				//write all the courses to a json file.
+				ofstream courses;
+				courses.open("allQuizzes.json");
+				courses << "{\"quizzes\": ";
+				courses << readBuffer;
+				courses.close();
+
+			} else {
+
+				//if there is another page to read in
+				if (next_url_present == true) {
+
+					readBuffer.erase(
+							readBuffer.begin() + readBuffer.length() - 2,
+							readBuffer.end());
+				}
+				ofstream courses;
+				courses.open("allQuizzes.json", ios::app);
+				courses << ",";
+				courses << readBuffer;
+				courses.close();
+			}
+
+			first = false;
+
+		}
+
+		//add the final bracket to the Json file
 		ofstream courses;
-		courses.open("allQuizzes.json");
-		courses << readBuffer;
+		courses.open("allQuizzes.json", ios::app);
+		courses << "}";
 		courses.close();
 
-		/* Check for errors */
+		// Check for errors
 		if (res != CURLE_OK) {
 			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
 					curl_easy_strerror(res));
 		}
 	}
 
-	print_cookies(curl);
-	/* always cleanup */
+	// always cleanup
 	curl_easy_cleanup(curl);
+
+	//Get the unique Quiz id, by searching all the quizzes in the Json file
+	//for the quiz whose name matches the quiz name.
+	Utility util;
+	int quiz_ID = util.getQuizID(quizName, "allQuizzes.json");
+
+	cout << "Quiz ID for the quiz: " << quiz_ID << endl;
+
+	//delete the quiz json file now that we are done with it.
+	remove("allQuizzes.json");
+
+	getAssignment(cookiedata, course_ID, quiz_ID, students);
+
 }
 
-static void destroyWindowCb(GtkWidget *widget, GtkWidget *window);
-static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window);
+/*********************************************************
+ * getStudents
+ *
+ * Author: Matt Cilibraise
+ *
+ * Description:
+ * 	Performs an HTTP get request to CANVAS to get the student enrollment.
+ * 	Then calls a utility function to get the student enrollment for a
+ * 	course id
+ *
+ *
+ *Arguments:
+ *	vector<SoupCookie> cookiedata, int course_ID
+ *
+ *Returns:
+ *  vector of students from the selected course
+ */
+vector<Student> CookieManager::getStudents(vector<SoupCookie> cookiedata,
+		int course_ID) {
 
-int main2(int argc, char *argv[]) {
-	// Initialize GTK+
-	gtk_init(&argc, &argv);
+	CURL *curl;
+	CURLcode res;
+	std::string cookieBuffer;
+	struct curl_slist *headers = NULL;
 
-	// Create an 800x600 window that will contain the browser instance
-	GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
+	bool next_url_present = true;
+	bool first = true;
+
+	//read in the cookie data from the vector and store it in a string
+	std::string cookies;
+	std::string temp_cookies;
+
+	cookies = cookiedata[0].name;
+	cookies += "=";
+	cookies += cookiedata[0].value;
+	cookies += "; ";
+
+	for (int i = 1; i < cookiedata.size(); i++) {
+		cookies += cookiedata[i].name;
+		cookies += "=";
+		cookies += cookiedata[i].value;
+		cookies += "; ";
+	}
+
+	//convert the cookie string to a char*
+	int length = cookies.length();
+	char cookie_char[length + 1];
+	strcpy(cookie_char, cookies.c_str());
+
+	char *cookiesAll = cookie_char;
+	cout << cookiesAll << endl;
+
+	//configure the URL
+	//the URL for the first HTTP request
+	char *url_request;
+	string url_string;
+	string url_request_string;
+
+		url_request_string = "https://canvas.asu.edu/api/v1/courses/";
+		url_request_string += to_string(course_ID);
+		url_request_string += "/enrollments?page=1&per_page=100";
+
+	//convert the cookie string to a char*
+	int length_url_string = url_request_string.length();
+	char url_request1[length_url_string + 1];
+	strcpy(url_request1, url_request_string.c_str());
+	url_request = url_request1;
+
+
+	//while loop
+	while (next_url_present == true) {
+		std::string Headers;
+		std::string readBuffer;
+
+		//start libcurl
+		curl = curl_easy_init();
+
+		if (curl) {
+
+			if (first == true) {
+				curl_easy_setopt(curl, CURLOPT_URL, url_request);
+			} else {
+
+				int length_url = url_string.length();
+				char url_char[length_url + 1];
+				strcpy(url_char, url_string.c_str());
+
+				cout << url_char << endl;
+				curl_easy_setopt(curl, CURLOPT_URL, url_char);
+			}
+
+			curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
+
+			curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
+			curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
+
+			//curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L); //for debugging
+
+			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+
+			curl_easy_setopt(curl, CURLOPT_HEADERDATA, &Headers);
+
+			res = curl_easy_perform(curl);
+
+			if (first == true) {
+				readBuffer.erase(0, 9); //removes the "while (1);" from the string.
+
+			} else {
+				readBuffer.erase(0, 10); //removes the "while (1);[" from the string.
+			}
+
+			//for debugging
+			//std::cout << readBuffer << std::endl;
+			//std::cout << Headers << std::endl;
+
+			//store the header string into a map of string Key and Value pairs.
+			std::map<string, string> HeaderMap;
+			istringstream resp(Headers);
+			string header;
+			string::size_type index;
+			while (getline(resp, header) && header != "\r") {
+				index = header.find(':', 0);
+				if (index != string::npos) {
+					HeaderMap.insert(
+							std::make_pair(
+									boost::algorithm::trim_copy(
+											header.substr(0, index)),
+									boost::algorithm::trim_copy(
+											header.substr(index + 1))));
+				}
+			}
+
+			//get the Link Headers from the header string.
+			string LinkHeaders;
+			for (auto &KeyValue : HeaderMap) {
+
+				if (KeyValue.first.compare("Link") == 0) {
+
+					LinkHeaders = KeyValue.second;
+				}
+			}
+
+
+			//if the link header contains rel ="next" then get the corresponding url
+			//from link header to the next page.
+			if (LinkHeaders.find("rel=\"next\"") != string::npos) {
+
+				std::string delimiter1 = ">; rel=\"next\"";
+				std::string delimiter2 = ">; rel=\"current\",<";
+
+				size_t pos = 0;
+				size_t pos2 = 0;
+				string url;
+				string url_temp;
+				pos = LinkHeaders.find(delimiter1);
+				pos2 = LinkHeaders.find(delimiter2);
+				pos2 += delimiter2.length();
+
+				url_temp = LinkHeaders.substr(0, pos);
+				url = url_temp.substr(pos2, url_temp.length());
+
+				//set the url string to the one found in the
+				//link header
+				url_string = url;
+
+			} else {
+				//no more pages.
+				next_url_present = false;
+			}
+
+			//write the course data to a Json file
+			if (first == true) {
+
+				//if there is another page to read in
+				if (next_url_present == true) {
+
+					readBuffer.erase(
+							readBuffer.begin() + readBuffer.length() - 2,
+							readBuffer.end());
+				}
+				//write all the courses to a json file.
+				ofstream courses;
+				courses.open("allStudents.json");
+				courses << "{\"students\": ";
+				courses << readBuffer;
+				courses.close();
+
+			} else {
+
+				//if there is another page to read in
+				if (next_url_present == true) {
+
+					readBuffer.erase(
+							readBuffer.begin() + readBuffer.length() - 2,
+							readBuffer.end());
+				}
+				ofstream courses;
+				courses.open("allStudents.json", ios::app);
+				courses << ",";
+				courses << readBuffer;
+				courses.close();
+			}
+
+			first = false;
+
+		}
+
+		//add the final bracket to the Json file
+		ofstream courses;
+		courses.open("allStudents.json", ios::app);
+		courses << "}";
+		courses.close();
+
+		// Check for errors
+		if (res != CURLE_OK) {
+			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
+					curl_easy_strerror(res));
+		}
+	}
+
+	// always cleanup
+	curl_easy_cleanup(curl);
+
+	Utility u;
+	vector<Student> students = u.getStudentsFromJson("allStudents.json");
+
+	remove("allStudents.json");
+
+	return students;
+
+}
+
+/*********************************************************
+ * getAssignment
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Performs an HTTP get request to CANVAS to get the assignments
+ * 	for all the students based on the course. Then calls a utility
+ * 	function to get the assignment id for the survey.
+ *
+ *
+ *Arguments:
+ *	vector<SoupCookie> cookiedata,int course_ID, int quiz_ID
+ *
+ *Returns:
+ *  nothing
+ */
+void CookieManager::getAssignment(vector<SoupCookie> cookiedata, int course_ID,
+		int quiz_ID, vector<Student> students) {
+
+	CURL *curl;
+	CURLcode res;
+	std::string cookieBuffer;
+	struct curl_slist *headers = NULL;
+
+	bool next_url_present = true;
+	bool first = true;
+
+	//read in the cookie data from the vector and store it in a string
+	std::string cookies;
+	std::string temp_cookies;
+
+	cookies = cookiedata[0].name;
+	cookies += "=";
+	cookies += cookiedata[0].value;
+	cookies += "; ";
+
+	for (int i = 1; i < cookiedata.size(); i++) {
+		cookies += cookiedata[i].name;
+		cookies += "=";
+		cookies += cookiedata[i].value;
+		cookies += "; ";
+	}
+
+	//convert the cookie string to a char*
+	int length = cookies.length();
+	char cookie_char[length + 1];
+	strcpy(cookie_char, cookies.c_str());
+
+	char *cookiesAll = cookie_char;
+	cout << cookiesAll << endl;
+
+	//configure the URL
+	//the URL for the first HTTP request
+	char *url_request;
+	string url_string;
+	string url_request_string;
+
+	url_request_string = "https://canvas.asu.edu/api/v1/courses/";
+	url_request_string += to_string(course_ID);
+	url_request_string += "/assignments?page=1&per_page=100";
+
+	//convert the cookie string to a char*
+	int length_url_string = url_request_string.length();
+	char url_request1[length_url_string + 1];
+	strcpy(url_request1, url_request_string.c_str());
+	url_request = url_request1;
+
+
+	//while loop
+	while (next_url_present == true) {
+		std::string Headers;
+		std::string readBuffer;
+
+		//start libcurl
+		curl = curl_easy_init();
+
+		if (curl) {
+			if (first == true) {
+				curl_easy_setopt(curl, CURLOPT_URL, url_request);
+			} else {
+
+				int length_url = url_string.length();
+				char url_char[length_url + 1];
+				strcpy(url_char, url_string.c_str());
+
+				cout << url_char << endl;
+				curl_easy_setopt(curl, CURLOPT_URL, url_char);
+			}
+
+			curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
+
+			curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
+			curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
+
+			//curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L); //for debugging
+
+			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+
+			curl_easy_setopt(curl, CURLOPT_HEADERDATA, &Headers);
+
+			res = curl_easy_perform(curl);
+
+			if (first == true) {
+				readBuffer.erase(0, 9); //removes the "while (1);" from the string.
+
+			} else {
+				readBuffer.erase(0, 10); //removes the "while (1);[" from the string.
+			}
+
+			//for debugging
+			//std::cout << readBuffer << std::endl;
+			//std::cout << Headers << std::endl;
+
+			//store the header string into a map of string Key and Value pairs.
+			std::map<string, string> HeaderMap;
+			istringstream resp(Headers);
+			string header;
+			string::size_type index;
+			while (getline(resp, header) && header != "\r") {
+				index = header.find(':', 0);
+				if (index != string::npos) {
+					HeaderMap.insert(
+							std::make_pair(
+									boost::algorithm::trim_copy(
+											header.substr(0, index)),
+									boost::algorithm::trim_copy(
+											header.substr(index + 1))));
+				}
+			}
+
+			//get the Link Headers from the header string.
+			string LinkHeaders;
+			for (auto &KeyValue : HeaderMap) {
+
+				if (KeyValue.first.compare("Link") == 0) {
+
+					LinkHeaders = KeyValue.second;
+				}
+			}
+
+
+			//if the link header contains rel ="next" then get the corresponding url
+			//from link header to the next page.
+			if (LinkHeaders.find("rel=\"next\"") != string::npos) {
+
+				std::string delimiter1 = ">; rel=\"next\"";
+				std::string delimiter2 = ">; rel=\"current\",<";
+
+				size_t pos = 0;
+				size_t pos2 = 0;
+				string url;
+				string url_temp;
+				pos = LinkHeaders.find(delimiter1);
+				pos2 = LinkHeaders.find(delimiter2);
+				pos2 += delimiter2.length();
+
+				url_temp = LinkHeaders.substr(0, pos);
+				url = url_temp.substr(pos2, url_temp.length());
+
+				//set the url string to the one found in the
+				//link header
+				url_string = url;
+
+			} else {
+				//no more pages.
+				next_url_present = false;
+			}
+
+			//write the course data to a Json file
+			if (first == true) {
+
+				//if there is another page to read in
+				if (next_url_present == true) {
+
+					readBuffer.erase(
+							readBuffer.begin() + readBuffer.length() - 2,
+							readBuffer.end());
+				}
+				//write all the courses to a json file.
+				ofstream courses;
+				courses.open("allAssignments.json");
+				courses << "{\"assignments\": ";
+				courses << readBuffer;
+				courses.close();
+
+			} else {
+
+				//if there is another page to read in
+				if (next_url_present == true) {
+
+					readBuffer.erase(
+							readBuffer.begin() + readBuffer.length() - 2,
+							readBuffer.end());
+				}
+				ofstream courses;
+				courses.open("allAssignments.json", ios::app);
+				courses << ",";
+				courses << readBuffer;
+				courses.close();
+			}
+
+			first = false;
+
+		}
+
+		//add the final bracket to the Json file
+		ofstream courses;
+		courses.open("allAssignments.json", ios::app);
+		courses << "}";
+		courses.close();
+
+		// Check for errors
+		if (res != CURLE_OK) {
+			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
+					curl_easy_strerror(res));
+		}
+	}
+	// always cleanup
+	curl_easy_cleanup(curl);
+
+
+	//Get the unique assignment id, by searching all the quizzes in the Json file
+	//for the quiz whose name matches the quiz name.
+	Utility util;
+	int assignment_ID = util.getAssignmentID(quiz_ID, "allAssignments.json");
+
+	cout << "Assignment ID for the quiz: " << assignment_ID << endl;
+
+	//delete the quiz json file now that we are done with it.
+	remove("allAssignments.json");
+
+	getQuizSubmissions(cookiedata, course_ID, quiz_ID, assignment_ID, students);
+
+}
+
+/*********************************************************
+ * getQuizSubmissions
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Performs an HTTP get request to CANVAS to get the quiz submission answers
+ * 	for all the students. Then calls a utility
+ * 	function to assign all the quiz answer data to the students.
+ *
+ *
+ *Arguments:
+ *	vector<SoupCookie> cookiedata, int course_ID, int quiz_ID, int assignment_ID
+ *
+ *Returns:
+ *  nothing
+ */
+void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,
+		int course_ID, int quiz_ID, int assignment_ID,
+		vector<Student> students) {
+
+	CURL *curl;
+	CURLcode res;
+	std::string cookieBuffer;
+	struct curl_slist *headers = NULL;
+
+	bool next_url_present = true;
+	bool first = true;
+
+	//read in the cookie data from the vector and store it in a string
+	std::string cookies;
+	std::string temp_cookies;
 
 	// Create a browser instance
 	WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
 
-	// Put the browser area into the main window
-	gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
 
-	// Set up callbacks so that if either the main window or the browser instance is
-	// closed, the program will exit
-	g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
-	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
+	for (int i = 1; i < cookiedata.size(); i++) {
+		cookies += cookiedata[i].name;
+		cookies += "=";
+		cookies += cookiedata[i].value;
+		cookies += "; ";
+	}
 
-	// Load a web page into the browser instance
-	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
+	//convert the cookie string to a char*
+	int length = cookies.length();
+	char cookie_char[length + 1];
+	strcpy(cookie_char, cookies.c_str());
 
-	// Make sure that when the browser area becomes visible, it will get mouse
-	// and keyboard events
-	gtk_widget_grab_focus(GTK_WIDGET(webView));
+	char *cookiesAll = cookie_char;
+	cout << cookiesAll << endl;
 
-	// Make sure the main window and all its contents are visible
-	gtk_widget_show_all(main_window);
+	//configure the URL
+	//the URL for the first HTTP request
+	char *url_request;
+	string url_string;
+	string url_request_string;
 
-	// Run the main GTK+ event loop
-	gtk_main();
+	url_request_string = "https://canvas.asu.edu/api/v1/courses/";
+	url_request_string += to_string(course_ID);
+	url_request_string += "/assignments/";
+	url_request_string += to_string(assignment_ID);
+	url_request_string += "/submissions?include[]=submission_history&page=1&per_page=100";
 
-	return 0;
-}
+	//convert the cookie string to a char*
+	int length_url_string = url_request_string.length();
+	char url_request1[length_url_string + 1];
+	strcpy(url_request1, url_request_string.c_str());
+	url_request = url_request1;
 
-static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
-	gtk_main_quit();
-}
+	//while loop
+	while (next_url_present == true) {
+		std::string Headers;
+		std::string readBuffer;
 
-static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window) {
-	gtk_widget_destroy(window);
-	return TRUE;
-}
+		//start libcurl
+		curl = curl_easy_init();
 
-int CookieManager::MiniBrowser(int argc, char *argv[]) {
+		if (curl) {
 
-	main2(argc, argv);
-	return 1;
+			if (first == true) {
+				curl_easy_setopt(curl, CURLOPT_URL, url_request);
+			} else {
+
+				int length_url = url_string.length();
+				char url_char[length_url + 1];
+				strcpy(url_char, url_string.c_str());
+
+				cout << url_char << endl;
+				curl_easy_setopt(curl, CURLOPT_URL, url_char);
+			}
+
+			curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
+
+			curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); /* no more POST */
+			curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); /* redirects! */
+
+			//curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L); //for debugging
+
+			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+
+			curl_easy_setopt(curl, CURLOPT_HEADERDATA, &Headers);
+
+			res = curl_easy_perform(curl);
+
+			if (first == true) {
+				readBuffer.erase(0, 9); //removes the "while (1);" from the string.
+
+			} else {
+				readBuffer.erase(0, 10); //removes the "while (1);[" from the string.
+			}
+
+			//for debugging
+			//std::cout << readBuffer << std::endl;
+			//std::cout << Headers << std::endl;
+
+			//store the header string into a map of string Key and Value pairs.
+			std::map<string, string> HeaderMap;
+			istringstream resp(Headers);
+			string header;
+			string::size_type index;
+			while (getline(resp, header) && header != "\r") {
+				index = header.find(':', 0);
+				if (index != string::npos) {
+					HeaderMap.insert(
+							std::make_pair(
+									boost::algorithm::trim_copy(
+											header.substr(0, index)),
+									boost::algorithm::trim_copy(
+											header.substr(index + 1))));
+				}
+			}
+
+			//get the Link Headers from the header string.
+			string LinkHeaders;
+			for (auto &KeyValue : HeaderMap) {
+
+				if (KeyValue.first.compare("Link") == 0) {
+
+					LinkHeaders = KeyValue.second;
+				}
+			}
+
+
+			//if the link header contains rel ="next" then get the corresponding url
+			//from link header to the next page.
+			if (LinkHeaders.find("rel=\"next\"") != string::npos) {
+
+				std::string delimiter1 = ">; rel=\"next\"";
+				std::string delimiter2 = ">; rel=\"current\",<";
+
+				size_t pos = 0;
+				size_t pos2 = 0;
+				string url;
+				string url_temp;
+				pos = LinkHeaders.find(delimiter1);
+				pos2 = LinkHeaders.find(delimiter2);
+				pos2 += delimiter2.length();
+
+				url_temp = LinkHeaders.substr(0, pos);
+				url = url_temp.substr(pos2, url_temp.length());
+
+				//set the url string to the one found in the
+				//link header
+				url_string = url;
+
+			} else {
+				//no more pages.
+				next_url_present = false;
+			}
+
+			//write the course data to a Json file
+			if (first == true) {
+
+				//if there is another page to read in
+				if (next_url_present == true) {
+
+					readBuffer.erase(
+							readBuffer.begin() + readBuffer.length() - 2,
+							readBuffer.end());
+				}
+				//write all the courses to a json file.
+				ofstream courses;
+				courses.open("allSubmissions.json");
+				courses << "{\"submissions\": ";
+				courses << readBuffer;
+				courses.close();
+
+			} else {
+
+				//if there is another page to read in
+				if (next_url_present == true) {
+
+					readBuffer.erase(
+							readBuffer.begin() + readBuffer.length() - 2,
+							readBuffer.end());
+				}
+				ofstream courses;
+				courses.open("allSubmissions.json", ios::app);
+				courses << ",";
+				courses << readBuffer;
+				courses.close();
+			}
+
+			first = false;
+
+		}
+
+		//add the final bracket to the Json file
+		ofstream courses;
+		courses.open("allSubmissions.json", ios::app);
+		courses << "}";
+		courses.close();
+
+		// Check for errors
+		if (res != CURLE_OK) {
+			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
+					curl_easy_strerror(res));
+		}
+	}
+
+	// always cleanup
+	curl_easy_cleanup(curl);
+
+
+	Utility util;
+
+	vector<Student> Allstudents = util.getSurveyAnswers(students, assignment_ID,
+			"allSubmissions.json");
+
+	currentStudents = Allstudents;
+
+	remove("allSubmissions.json");
+
 }
 

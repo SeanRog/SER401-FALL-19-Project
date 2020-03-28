@@ -962,7 +962,8 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 		}
 
 		if (error == false) {
-
+//>>>>>>> dev
+//
 			cout<<"Working"<<endl;
 	//if the user is not authenticated yet,
 	//open the mini-browser for canvas authentication
@@ -973,12 +974,18 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 	Authenticated = Auth1;
 
 	windowMain->hide();
-
 	//call to get the course information
+//<<<<<<< HEAD
+	//CookieManager cookieMonster;
+	//cookieMonster.getCourses(cookiedata1);
+	//cout << "working" << endl;
+	//SPDataGUI dataGUI(windowMain);
+//=======
 	CookieManager cookieMonster;
 	cookieMonster.getCourses(cookiedata1);
 
-	SPDataGUI dataGUI(windowMain);
+	SPDataGUI dataGUI(windowMain, cookiedata1);
+//>>>>>>> dev
 		}
 }
 

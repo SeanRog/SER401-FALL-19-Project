@@ -1288,6 +1288,155 @@ void Utility::makeProjectJSON(int numProj, int numSkill) {
 }
 
 /*************************************************
+ * makeProjectCSV
+ *
+ * Description:
+ *   This function creates a new CSV file with random data for
+ *   a specified number of projects.
+ *
+ * Arguments:
+ * int numProj, - number of projects to create in the CSV file
+ * int numSkill
+ *
+ * Returns:
+ *    nothing
+ */
+void Utility::makeProjectCSV(int numProj, int numSkill) {
+	string skills[14] =
+		{ "ArtificialIntelligence", "WebApplicationProgramming",
+				"IOSMobileApplicationProgramming",
+				"AndroidMobileApplicationProgramming",
+				"Sensing/Control/Embedded", "DesktopApplicationProgramming",
+				"DatabaseProgramming", "NetworkSecurity", "C", "C++", "C#",
+				"Java", "JavaScript", "Python" };
+	// Variables
+	ofstream file;
+	int numProjects = numProj;
+	int numSkills = numSkill;
+
+	// opening file in out(write) mode
+	// ios::out Open for output operations.
+	file.open("newProjects.csv", ios::out);
+
+	//Start of CSV file
+	file << "Company,Submitter Name,Submitter Title,Submitter Email,Submitter Contact Phone #,Technical Contact Name,Technical Contact Title,Technical Contact E-mail,Technical Contact Phone Number,Project Motivation,Project Description,Project Deliverables,Technology Areas,PreferredLanguageSkills,RequiresNDA,RequiresIPR,RequiresSharedHardware,Type,Section,Priority";
+
+	//Loops through projectID to print
+	for (int projectID = 1; projectID < (numProjects + 1); projectID++) {
+
+		/*Prints out schema: {"ProjectID": (projectID#),the projectID
+		 * number is set to have width of 3 if the number (e.g. 1)
+		 * is less than 3, it will fill with 0's. (e.g. 001)     */
+		//file << "{\"ProjectID\": " << projectID << ",\n";
+		file << "Company" << projectID << ",";
+		file << "Submitter Name" << projectID << ",";
+		file << "Submitter Title" << projectID << ",";
+		file << "Submitter Email" << projectID << ",";
+		file << "Submitter Contact Phone #" << projectID << ",";
+		file << "Technical Contact Name" << projectID << ",";
+		file << "Technical Contact Title" << projectID << ",";
+		file << "Technical Contact E-mail" << projectID << ",";
+		file << "Technical Contact Phone Number" << projectID << ",";
+		file << "Project Motivation" << projectID << ",";
+		file << "Project Description" << projectID << ",";
+		file << "Project Deliverables" << projectID << ",";
+		/*file << "Technology Areas" << projectID << ",";
+		file << "Preferred Language Skills" << projectID << ",";
+		file << "Requires NDA" << projectID << ",";
+		file << "Requires IPR" << projectID << ",";
+		file << "Requires Shared Hardware" << projectID << ",";
+		file << "Type" << projectID << ",";
+		file << "Section" << projectID << ",";
+		file << "Priority" << projectID;*/
+
+		/*Prints out schema: "Skills": [(skills)], generates Skills from
+		 * numSkills. Randomizes values between 0-4 for each skill.      */
+		try {
+			if(numSkills != 14) {
+				cout << "WARNING: numSkills does not equal the number of skills specified in the project schema" << endl;
+			}
+			file << "[";
+			for (int i = 0; i < (8); i++) {
+				if (i < (8 - 1)) {
+					if((rand() % (2 + 1)) == 0) {
+						file << skills[i] << ",";
+					}
+				} else {
+					if((rand() % (2 + 1)) == 0) {
+						file << skills[i];
+					}
+					file << "],";
+				}
+			}
+			file << "[";
+			for (int i = 8; i < (14); i++) {
+				if (i < (14 - 1)) {
+					if((rand() % (2 + 1)) == 0) {
+						file << skills[i] << ",";
+					}
+				} else {
+					if((rand() % (2 + 1)) == 0) {
+						file << skills[i];
+					}
+					file << "],";
+				}
+			}
+		} catch(range_error& e) {
+					cout << "Index out of range" << endl;
+		}
+		/*Prints out schema: {"NDA": bool, */
+		/*Prints out schema: {"IPR": bool, */
+		//25 percent of projects will require students sign an IPR and NDA agreement.
+		int percent = (int) numProjects * (0.25);
+		if (projectID < (percent + 1)) {
+			file << "1,";
+			file << "1,";
+		} else {
+			file << "0,";
+			file << "0,";
+		}
+
+		//5 percent of projects will require students use shared hardware.
+		percent = (int) numProjects * (0.05);
+		if (projectID < (percent + 1)) {
+			file << "1,";
+		} else {
+			file << "0,";
+		}
+
+		/*Prints out schema: "Type": O/G/H, right now 80% is hybrid
+		 * 10% online and 10% ground projects    */
+		percent = (int) numProjects * (0.10);
+		if (projectID < (percent + 1)) {
+			file << "O,";
+		} else if (projectID > percent
+				&& projectID < ((percent + percent + 1))) {
+			file << "G,";
+		} else if (projectID == numProjects) {
+			file << "H,";
+		} else {
+			file << "H,";
+		}
+
+		//Prints out schema: "Section": 0, 1, 2, or 3
+		file << (projectID % 4) << ",";
+
+		/*Prints out schema: "Priority": (Priority), priority can be
+				 * 0,1, or 2. This file randomizes it between the three options.  */
+		file << rand() % (2 + 1) << "\n";
+
+	}
+
+
+
+
+	file << "]\n}";
+
+	file.close();
+
+}
+
+/*************************************************
  * makeStudentJSON
  *
  * Description:
@@ -1798,3 +1947,254 @@ vector<Project> Utility::csvToProjectsVector(string filename, Project projectPoo
 	return projects;
 }
 
+
+/*********************************************************
+ * getQuizID
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Reads in all the quizzes from a Json file, and searches for the quiz ID of the
+ * 	quiz that matches the string name entered.
+ *
+ *Arguments:
+ *	string quizName, string filename
+ *
+ *Returns:
+ *  int value of the quiz ID
+ */
+int Utility::getQuizID(string quizName, string filename) {
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	int quiz_ID;
+
+	const int numberOfQuizzes = obj["quizzes"].size();
+
+	ClassSection classSection[numberOfQuizzes];
+
+	for (int i = 0; i < numberOfQuizzes; i++) {
+
+		if (quizName.compare(
+				obj["quizzes"].get((int) i, "")["title"].asString()) == 0) {
+
+			quiz_ID = obj["quizzes"].get((int) i, "")["id"].asInt();
+		}
+
+	}
+
+	return quiz_ID;
+
+}
+
+/*********************************************************
+ * getAssignmentID
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Reads in all the assignments from a Json file, and searches for the assignment ID of the
+ * 	assignment whose quiz_id that matches the parameter quiz_id .
+ *
+ *Arguments:
+ *	string
+ *
+ *Returns:
+ *  int value of the assignment ID
+ */
+int Utility::getAssignmentID(int quiz_ID, string filename) {
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	int assignment_ID;
+
+	const int numberOfQuizzes = obj["assignments"].size();
+
+	ClassSection classSection[numberOfQuizzes];
+
+	for (int i = 0; i < numberOfQuizzes; i++) {
+
+		//make sure that the quiz ids match
+		if (quiz_ID == obj["assignments"].get((int) i, "")["quiz_id"].asInt()) {
+
+			assignment_ID = obj["assignments"].get((int) i, "")["id"].asInt();
+		}
+
+	}
+
+	return assignment_ID;
+
+}
+
+vector<Student> Utility::getStudentsFromJson(string filename) {
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	const int numberOfStudents = obj["students"].size();
+
+	vector<Student> students;
+	Student student;
+	string desiredRole = "StudentEnrollment";
+
+	for (int i = 0; i < numberOfStudents; i++) {
+		if (desiredRole.compare(obj["students"].get((int) i, "")["role"].asString()) == 0) {
+			student.StudentID = obj["students"].get((int)i, "")["user_id"].asInt();
+			student.ASUriteID = obj["students"].get((int)i, "")["user"]["login_id"].asString();
+			student.ClassID = obj["students"].get((int)i, "")["course_id"].asInt();
+			students.push_back(student);
+		}
+	}
+
+	return students;
+
+}
+
+/*********************************************************
+ * getSurveyAnswers
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Reads in all the Survey quiz answers from a Json file, and matches the answers to
+ * 	to the student whose ID matches.
+ *
+ *
+ *Arguments:
+ *	vector <Student> students, int quiz_ID, string filename
+ *
+ *Returns:
+ *  a vector of students who have all their skills and other data.
+ */
+vector<Student> Utility::getSurveyAnswers(vector<Student> students,
+		int assignment_ID, string filename) {
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	const int numberSubmissions = obj["submissions"].size();
+
+	int numSkills = 14;
+
+	//loop over all submissions
+	for (int i = 0; i < numberSubmissions; i++) {
+
+		//loop over all students to find the student who matches the user_id
+		for (int j = 0; j < students.size(); j++) {
+
+			if (students[j].StudentID
+					== obj["submissions"].get((int) i, "")["user_id"].asInt()) {
+
+				//make sure that the ids match
+				if (assignment_ID
+						== obj["submissions"].get((int) i, "")["assignment_id"].asInt()) {
+
+					//assign quiz answer data to the student
+					auto submissionHistoryArray = obj["submissions"].get(
+							(int) i, "")["submission_history"];
+
+
+					auto data = submissionHistoryArray[0];
+
+					auto submissionData = data["submission_data"];
+					auto currentQuestion = submissionData[0];
+
+
+					//#1-#2 get the students first and last name, space separated.
+					students[j].name = currentQuestion["text"].asString();
+					students[j].name += " ";
+					currentQuestion = submissionData[1];	//next Question #2
+					students[j].name += currentQuestion["text"].asString();
+
+					//#3 get the list of asuriteIDS the student does NOT want to work with.
+					currentQuestion = submissionData[2];	//next Question #3
+					string negativeAffinity =
+							currentQuestion["text"].asString();
+
+					//remove the <p><span> from the front and back of the string
+					negativeAffinity.erase(0, 9);
+					negativeAffinity.erase(negativeAffinity.length() - 11, 12);
+
+					pair<string, bool> x;
+					std::istringstream is1(negativeAffinity);
+					for (string negativeAffinity; is1 >> negativeAffinity;) {
+
+						x.first = negativeAffinity;
+						x.second = false;
+						students[j].StudentAffinity.push_back(x);
+					}
+
+					//#4 get the list of asuriteIDS the student does want to work with.
+					currentQuestion = submissionData[3];	//next Question #4
+					string positiveAffinity =
+							currentQuestion["text"].asString();
+
+					//remove the <p><span> from the front and back of the string
+					positiveAffinity.erase(0, 9);
+					positiveAffinity.erase(positiveAffinity.length() - 11, 12);
+
+					std::istringstream is2(positiveAffinity);
+					for (string positiveAffinty; is2 >> positiveAffinity;) {
+
+						x.first = positiveAffinity;
+						x.second = true;
+						students[j].StudentAffinity.push_back(x);
+					}
+
+					//#5 get all the skill information from the quiz
+					currentQuestion = submissionData[4];	//next Question #5
+					for (int k = 0; k < numSkills; k++) {
+						string current_skill = "answer_for_skill";
+						current_skill += to_string(k + 1);
+
+						students[j].Skills[k] = stoi(
+								currentQuestion[current_skill].asString());
+
+					}
+
+					//#6 get all the time availability data
+					currentQuestion = submissionData[5];	//next Question #6
+					for (int k = 0; k < 4; k++) {
+						string current_time = "answer_for_Time";
+						current_time += to_string(k + 1);
+
+						students[j].Availability[k] = stoi(
+								currentQuestion[current_time].asString());
+					}
+
+					//#7 get the NDA and the IPR agreement data
+					currentQuestion = submissionData[6];	//next Question #7
+					int NDA = stoi(
+							currentQuestion["answer_for_NDA"].asString());
+					int IPR = stoi(
+							currentQuestion["answer_for_IPR"].asString());
+
+					if (NDA == 1) {
+						students[j].NDA = true;
+					} else if (NDA == 0) {
+						students[j].NDA = false;
+					}
+
+					if (IPR == 1) {
+						students[j].IPR = true;
+					} else if (IPR == 0) {
+						students[j].IPR = false;
+					}
+
+				}
+			}
+		}
+	}
+
+	return students;
+
+}
