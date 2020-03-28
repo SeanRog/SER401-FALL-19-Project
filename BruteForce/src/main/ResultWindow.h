@@ -43,7 +43,7 @@ public:
 	static int permutations;
 	static int swaps;
 	static int count;
-	static int project_pool[4][200];
+	static int project_pool[5][200];
 
 	Fl_Window *windowResult;
 	Fl_Text_Display *textDisplay;
@@ -54,7 +54,7 @@ public:
 	Fl_Box *spacer, *borderBox;
 	Fl_Box *labelBox3, *labelBox4, *labelBox5;
 	Fl_Box *labelBox1, *labelBox2;
-	Fl_Chart *pieChart, *barChart;
+	Fl_Chart *pieChart, *barChart, *classChart;
 
 	ResultWindow();
 	~ResultWindow();

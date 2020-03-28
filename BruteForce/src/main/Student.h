@@ -130,4 +130,3 @@ public:
 };
 
 #endif /* BRUTEFORCE_SRC_MAIN_STUDENT_H_ */
-

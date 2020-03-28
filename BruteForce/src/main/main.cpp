@@ -845,6 +845,7 @@ int main::main_run(int projects_input, int students_input, string filepath,
 	//set the number of projects in each class section to the indexes of projectsInSections[]
 	for (int i = 0; i < NUM_PROJECTS; i++) {
 		ResultWindow::project_pool[3][i] = PROJECT_POOL[i].ClassID;
+		ResultWindow::project_pool[4][i] = 0;
 		for (int j = 0; j < NUM_CLASS_SECTIONS; j++) {
 			if (PROJECT_POOL[i].ClassID == j) {
 				projectsInSections[j]++;
