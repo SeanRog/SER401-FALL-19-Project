@@ -14,6 +14,8 @@
 #include "Utility.h"
 #include "main.h"
 
+#include <libsoup/soup.h>
+#include <vector>
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -35,6 +37,7 @@
 // ASU LOGO
 Fl_PNG_Image LOGO_BLACK1("./Images/asu_sunburst_rgb_maroongold_150ppi.png");
 string dataEntryGUIFilename;
+vector<SoupCookie> cookiedataDE;
 
 
 
@@ -51,11 +54,13 @@ string dataEntryGUIFilename;
  *	nothing
  */
 
-DataEntryGUI::DataEntryGUI(Fl_Window *win) {
+DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
+
 	//reference to the homepage window
 	prevWindow = win;
 	masterWindow = new Fl_Window(750, 760, "Capstone Team Assignment System");
 
+	cookiedataDE = cookies;
 	ClassSectionJson CSJson;
 
 	//read in all the courses from canvas.
@@ -71,6 +76,13 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win) {
 
 	//end
 	cout<<"Read in all courses!"<<endl;
+//<<<<<<< HEAD
+	//cout<<Courses[0].Course_Code<<endl;
+	//cout<<Courses[1].Course_Code<<endl;
+//=======
+
+//>>>>>>> dev
+
 	string courses[NUM_CLASS_SECTIONS];
 	AllCourseNames = courses;
 	AllCourses = Courses;
@@ -308,8 +320,6 @@ void DataEntryGUI::FindCoursesClick(Fl_Widget *w) {
 	classBrowser->clear();
 	year = inputYear->value();
 	semester = inputSemester->value();
-	cout << year << endl;
-	cout << semester << endl;
 
 	for (int i = 1; i < num_of_all_courses; i++)
 	{  string course = AllCourseNames[i];
@@ -318,7 +328,6 @@ void DataEntryGUI::FindCoursesClick(Fl_Widget *w) {
 			int length = course.length();
 			char course_char[length + 1];
 			strcpy(course_char, course.c_str());
-			cout << course << endl;
 			classBrowser->add(course_char);
 		}
 	}
@@ -475,8 +484,6 @@ void DataEntryGUI::ConfirmClick(Fl_Widget *w) {
 
 	for (int i = 0; i < course_count; i++) {
 		s[i] = selections[i];
-
-		cout<<selections[i]<<endl;
 	}
 	num_of_selected_courses = course_count;
 	SelectedCourseNames = s;
@@ -557,15 +564,14 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 
 		if((AllCourses[i].Course_Code).compare(SelectedCourseNames[j]) == 0){
 			classes[j] = AllCourses[i];
-
 		}
-
 		}
 
 	}
 	SelectedCourses=classes;
 
 	for (int j = 0; j < num_of_selected_courses; j++) {
+
 		cout<<classes[j].Course_Name<<"  "<<classes[j].OfficialClassID<<SelectedCourses[j].Course_Code<<" "<<SelectedCourses[j].OfficialClassID<<endl;
 	}
 
@@ -624,27 +630,11 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 
 void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*) {
 	string filename;
-	/*Fl_Native_File_Chooser fileChooser;
-	 fileChooser.title("Choose File");
-	 fileChooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
-	 fileChooser.preset_file(fileInput_Project->value());
-
-	 switch ( fileChooser.show() ) {
-	 default:
-	 if ( fileChooser.filename() ) {
-	 fileInput_Project->value(fileChooser.filename());
-	 filename = fileChooser.filename()
-	 } else {
-	 fileInput_Project->value("NULL");
-	 }
-	 break;
-	 }*/
 
 	// Create the file chooser, and show it
-	Fl_File_Chooser chooser(".",                        // directory
-			"*",                        // filter
-			Fl_File_Chooser::SINGLE,     // chooser type
-			"Select Project CSV file");        // title
+	Fl_File_Chooser chooser(".","*",
+			Fl_File_Chooser::SINGLE,
+			"Select Project CSV file");
 
 	chooser.color(ASU_WHITE);
 	chooser.textfont(FL_HELVETICA);

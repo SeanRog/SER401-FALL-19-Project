@@ -33,10 +33,10 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
+#include <stdio.h>
 #include <string>
 #include <vector>
 #include <iterator>
-#include <stdio.h>
 
 using namespace std;
 
@@ -1579,45 +1579,45 @@ void Utility::makeStudentJSON(int numStud, int numSkill) {
 			file << "[";
 			if (studentID % 3 == 0) {
 				if (studentID < student_25) {
-					file << rand_1_25 << ", false";
+					file << "\"ASU" << rand_1_25 << "\", false";
 				}
 				if (studentID >= student_25 && studentID < student_50) {
-					file << rand_1_50 << ", false";
+					file << "\"ASU" << rand_1_50 << "\", false";
 				}
 				if (studentID >= student_50 && studentID < student_75) {
-					file << rand_1_75 << ", false";
+					file << "\"ASU" << rand_1_75 << "\", false";
 				}
 				if (studentID >= student_75 && studentID <= numStudent) {
-					file << rand_1_100 << ", false";
+					file << "\"ASU" << rand_1_100 << "\", false";
 				}
 			}
 			if (studentID % 4 == 0) {
 				if (studentID % 3 != 0) {
 					if (studentID < student_25) {
-						file << rand_2_25 << ", true";
+						file << "\"ASU" << rand_2_25 << "\", true";
 					}
 					if (studentID >= student_25 && studentID < student_50) {
-						file << rand_2_50 << ", true";
+						file << "\"ASU" << rand_2_50 << "\", true";
 					}
 					if (studentID >= student_50 && studentID < student_75) {
-						file << rand_2_75 << ", true";
+						file << "\"ASU" << rand_2_75 << "\", true";
 					}
 					if (studentID >= student_75 && studentID <= numStudent) {
-						file << rand_2_100 << ", true";
+						file << "\"ASU" << rand_2_100 << "\", true";
 					}
 				}
 				if (studentID % 3 == 0) {
 					if (studentID < student_25) {
-						file << ", " << rand_2_25 << ", true";
+						file << ", " << "\"ASU" << rand_2_25 << "\", true";
 					}
 					if (studentID >= student_25 && studentID < student_50) {
-						file << ", " << rand_2_50 << ", true";
+						file << ", " << "\"ASU" << rand_2_50 << "\", true";
 					}
 					if (studentID >= student_50 && studentID < student_75) {
-						file << ", " << rand_2_75 << ", true";
+						file << ", " << "\"ASU" << rand_2_75 << "\", true";
 					}
 					if (studentID >= student_75 && studentID <= numStudent) {
-						file << ", " << rand_2_100 << ", true";
+						file << ", " << "\"ASU" << rand_2_100 << "\", true";
 					}
 				}
 			}
@@ -1847,7 +1847,8 @@ vector<vector<string>> Utility::toCSVcse(string filename) {
  *Returns:
  *  vector<Project> containing the project objects obtained from the projects in the CSV file.
  */
-vector<Project> Utility::csvToProjectsVector(string filename, Project projectPool[], int numProjects) {
+vector<Project> Utility::csvToProjectsVector(string filename,
+		Project projectPool[], int numProjects) {
 	string skills1[14] =
 			{ "ArtificialIntelligence", "WebApplicationProgramming",
 					"IOSMobileApplicationProgramming",
@@ -1892,7 +1893,7 @@ vector<Project> Utility::csvToProjectsVector(string filename, Project projectPoo
 		dataList.push_back(vec);
 	}
 	file.close();
-	if(numProjects > dataList.size()) {
+	if (numProjects > dataList.size()) {
 		cout << "numProjects can't be bigger than " << dataList.size() << endl;
 		throw numProjects;
 	}
@@ -1946,7 +1947,6 @@ vector<Project> Utility::csvToProjectsVector(string filename, Project projectPoo
 	}
 	return projects;
 }
-
 
 /*********************************************************
  * getQuizID

@@ -30,7 +30,6 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
-#include <string>
 #include <stdio.h>
 
 #include <stdlib.h>
@@ -296,7 +295,6 @@ void CookieManager::print_cookies(CURL *curl) {
  */
 void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 
-
 	CURL *curl;
 	CURLcode res;
 	std::string cookieBuffer;
@@ -331,17 +329,7 @@ void CookieManager::getCourses(vector<SoupCookie> cookiedata) {
 		cookies += "=";
 		cookies += cookiedata[i].value;
 		cookies += "; ";
-
-		temp_cookies += cookiedata[i].name;
-		temp_cookies += "=";
-		temp_cookies += cookiedata[i].value;
-		temp_cookies += "; \n";
 	}
-
-	//print temp_cookie string to console for debugging
-	cout<<"\n\nTHE CANVAS ASU AUTHENTICATION COOKIES:"<<endl;
-	cout<<temp_cookies<<endl;
-
 
 	//convert the cookie string to a char*
 	int length = cookies.length();
@@ -586,6 +574,7 @@ void CookieManager::getQuizzes(vector<SoupCookie> cookiedata, int course_ID,
 		curl = curl_easy_init();
 
 		if (curl) {
+
 			if (first == true) {
 				curl_easy_setopt(curl, CURLOPT_URL, url_request);
 			} else {
@@ -1056,6 +1045,7 @@ void CookieManager::getAssignment(vector<SoupCookie> cookiedata, int course_ID,
 		curl = curl_easy_init();
 
 		if (curl) {
+
 			if (first == true) {
 				curl_easy_setopt(curl, CURLOPT_URL, url_request);
 			} else {
@@ -1197,6 +1187,7 @@ void CookieManager::getAssignment(vector<SoupCookie> cookiedata, int course_ID,
 					curl_easy_strerror(res));
 		}
 	}
+
 	// always cleanup
 	curl_easy_cleanup(curl);
 
@@ -1248,9 +1239,10 @@ void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,
 	std::string cookies;
 	std::string temp_cookies;
 
-	// Create a browser instance
-	WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
-
+	cookies = cookiedata[0].name;
+	cookies += "=";
+	cookies += cookiedata[0].value;
+	cookies += "; ";
 
 	for (int i = 1; i < cookiedata.size(); i++) {
 		cookies += cookiedata[i].name;

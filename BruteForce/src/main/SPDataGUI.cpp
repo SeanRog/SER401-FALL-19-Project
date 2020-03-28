@@ -15,6 +15,8 @@
 #include "Utility.h"
 #include "main.h"
 
+#include <libsoup/soup.h>
+#include <vector>
 #include <bits/stdc++.h>
 #include <iostream>
 #include <fstream>
@@ -49,6 +51,7 @@ Fl_PNG_Image Wall3("./Images/Steampunk/Wall14.png");
 Fl_PNG_Image *SteamPngs[13];
 Fl_PNG_Image *Steam2Pngs[13];
 string projectFilePath;
+vector<SoupCookie> cookiedataSP;
 
 void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2, int end) {
 
@@ -89,40 +92,6 @@ void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2, int end) {
 		}
 	}            //end while loop
 
-	/*	int i = 0;
-	 int x =0;
-	 while (w->shown()==true) {
-
-	 if(x == 1){
-	 b->image(SteamPngs[i]);
-	 //b2->image(Steam2Pngs[i]);
-	 w->redraw();
-	 Fl::check();
-	 std::this_thread::sleep_for(std::chrono::milliseconds(100));
-	 //usleep(100000);
-	 }
-	 else if (x == 0){
-	 //b->image(SteamPngs[i]);
-	 b2->image(Steam2Pngs[i]);
-	 w->redraw();
-	 Fl::check();
-	 std::this_thread::sleep_for(std::chrono::milliseconds(100));
-	 //usleep(100000);
-	 }
-	 i++;
-	 if (i == 13) {
-	 Fl::check();
-	 std::this_thread::sleep_for(std::chrono::milliseconds(200));
-	 Fl::check();
-	 //usleep(100000);
-	 i = 0;
-	 if(x==1){
-	 x=0;
-	 }else if(x==0){
-	 x=1;
-	 }
-	 }
-	 }            //end while loop*/
 }
 
 /*************************************************************************************
@@ -137,10 +106,12 @@ void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2, int end) {
  *Returns:
  *	nothing
  */
-SPDataGUI::SPDataGUI(Fl_Window *win) {
+SPDataGUI::SPDataGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 
 	//reference to the homepage window
 	prevWindow = win;
+
+	cookiedataSP = cookies;
 
 	ClassSectionJson CSJson;
 
@@ -788,26 +759,12 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 }
 
 void SPDataGUI::chooseProjectFile_cb(Fl_Widget*) {
-	/*Fl_Native_File_Chooser fileChooser;
-	 fileChooser.title("Choose File");
-	 fileChooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
-	 fileChooser.preset_file(fileInput_Project->value());
-
-	 switch ( fileChooser.show() ) {
-	 default:
-	 if ( fileChooser.filename() ) {
-	 fileInput_Project->value(fileChooser.filename());
-	 } else {
-	 fileInput_Project->value("NULL");
-	 }
-	 break;
-	 }*/
 
 	// Create the file chooser, and show it
-	Fl_File_Chooser chooser(".",                        // directory
-			"*",                        // filter
-			Fl_File_Chooser::SINGLE,     // chooser type
-			"Select Project CSV file");        // title
+	Fl_File_Chooser chooser(".",
+			"*",
+			Fl_File_Chooser::SINGLE,
+			"Select Project CSV file");
 
 	chooser.color(ASU_WHITE);
 	chooser.textfont(FL_HELVETICA);
