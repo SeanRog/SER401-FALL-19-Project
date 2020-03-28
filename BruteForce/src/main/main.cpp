@@ -625,6 +625,8 @@ void ASU_Option(Fl_Widget *w) {
  */
 
 int main() {
+	Utility util;
+	util.makeStudentCSV(50, 14);
 
 	XInitThreads();
 
