@@ -13,6 +13,8 @@
 #include <cstdlib>
 #include <stdio.h>
 
+#include "Student.h"
+
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
@@ -64,6 +66,7 @@ public:
 	static int num_projects;
 	static int num_students;
 	string SPGprojfile;
+	vector<Student> studentsFromCanvas;
 	bool nextWindowFlag;
 	bool Authenticated;
 

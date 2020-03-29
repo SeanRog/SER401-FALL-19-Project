@@ -625,6 +625,7 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 	confirmWindow->hide();
 	MainWindow mainWin;
 	mainWin.mwProjfile = dataEntryGUIFilename;
+	mainWin.studentsFromCanvas = allStudents;
 	mainWin.callTeams(w);
 }
 

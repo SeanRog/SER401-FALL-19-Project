@@ -57,6 +57,7 @@ public:
 	bool nextWindowFlag;
 	bool Authenticated;
 	string mwProjfile;
+	vector<Student> studentsFromCanvas;
 
 	//progress bar window
 	int barCount;

@@ -675,78 +675,67 @@ void SPDataGUI::ConfirmClick(Fl_Widget *w) {
 void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 
 	//store the selected class sections into a new Class section Array.
-		//for use in the assignment system.
-		ClassSection classes[num_of_selected_courses];
+	//for use in the assignment system.
+	ClassSection classes[num_of_selected_courses];
 
-		for (int i = 0; i < num_of_all_courses; i++) {
-			for (int j = 0; j < num_of_selected_courses; j++) {
-
-
+	for (int i = 0; i < num_of_all_courses; i++) {
+		for (int j = 0; j < num_of_selected_courses; j++) {
 			if((AllCourses[i].Course_Code).compare(SelectedCourseNames[j]) == 0){
 				classes[j] = AllCourses[i];
-
 			}
-
-			}
-
 		}
-		SelectedCourses=classes;
+	}
+	SelectedCourses=classes;
+	for (int j = 0; j < num_of_selected_courses; j++) {
+		cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
+	}
+	//Get the Quiz data from the student survey.
+	string QuizName = fileInput_StudentQuizName->value();
+    CookieManager CM;
+    Utility util;
 
-		for (int j = 0; j < num_of_selected_courses; j++) {
+    //Get Student data from each course
+	// test with one course
+	//CM.getStudents(cookiedataDE, 47570);
+	vector<vector<Student>> allStudents;
+	vector<Student> students;
 
-			cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
+	for (int j = 0; j < num_of_selected_courses; j++) {
+		students = CM.getStudents(cookiedataSP, classes[j].OfficialClassID);
+		CM.getQuizzes(cookiedataSP, classes[j].OfficialClassID, QuizName, students);
+
+		students = CM.currentStudents;
+		allStudents.push_back(students);
+	}
+
+	// debug students
+	cout << endl << "Debugging Students" << endl;
+	for (int j = 0; j < allStudents.size(); j++){
+
+		for (int k = 0; k < allStudents.at(j).size(); k++){
+
+			cout << "ClassID: " << allStudents.at(j).at(k).ClassID << endl;
+			cout << "StudentID: " << allStudents.at(j).at(k).StudentID << endl;
+			cout << "ASUriteID: " << allStudents.at(j).at(k).ASUriteID << endl;
+			cout << "name: " << allStudents.at(j).at(k).name << endl;
+
+			cout<<"Affinity: "<<endl;
+			for(int x = 0;x < 6;x++){
+				cout << allStudents.at(j).at(k).StudentAffinity[x].first << allStudents.at(j).at(k).StudentAffinity[x].second << endl;
+			}
+
+			cout << "skill scores: " << endl;
+			for(int x = 0; x < 14 ;x++){
+				cout << "skill " << to_string(x+1) << ": " << allStudents.at(j).at(k).Skills[x] << endl;
+			}
+
+			cout << "Availability: " << endl;
+			for(int x = 0; x < 4 ;x++){
+				cout << allStudents.at(j).at(k).Availability[x] << endl;
+			}
 		}
 
-
-			//Get the Quiz data from the student survey.
-			string QuizName = fileInput_StudentQuizName->value();
-		    CookieManager CM;
-		    Utility util;
-
-			//Get Student data from each course
-			// test with one course
-			//CM.getStudents(cookiedataDE, 47570);
-			vector<vector<Student>> allStudents;
-			vector<Student> students;
-			for (int j = 0; j < num_of_selected_courses; j++) {
-				students = CM.getStudents(cookiedataSP, classes[j].OfficialClassID);
-
-				CM.getQuizzes(cookiedataSP, classes[j].OfficialClassID, QuizName, students);
-				students = CM.currentStudents;
-
-				allStudents.push_back(students);
-			}
-
-			// debug students
-			cout << endl << "Debugging Students" << endl;
-			for (int j = 0; j < allStudents.size(); j++){
-				for (int k = 0; k < allStudents.at(j).size(); k++){
-					cout << "ClassID: "<< allStudents.at(j).at(k).ClassID << endl;
-					cout << "StudentID: "<< allStudents.at(j).at(k).StudentID << endl;
-					cout << "ASUriteID: "<< allStudents.at(j).at(k).ASUriteID << endl;
-					cout<<"name: "<<allStudents.at(j).at(k).name<<endl;
-
-					cout<<"Affinity: "<<endl;
-					for(int x = 0;x< 6;x++){
-					cout<<allStudents.at(j).at(k).StudentAffinity[x].first<<allStudents.at(j).at(k).StudentAffinity[x].second<<endl;
-					}
-
-					cout<<"skill scores: "<<endl;
-					for(int x = 0; x<14 ;x++){
-					cout<<"skill "<<to_string(x+1)<<": "<<allStudents.at(j).at(k).Skills[x]<<endl;
-					}
-
-					cout<<"Availability: "<<endl;
-					for(int x = 0; x<4 ;x++){
-					cout<<allStudents.at(j).at(k).Availability[x]<<endl;
-					}
-
-				}
-			}
-
-
-
-
+	}
 
 	masterWindow->hide();
 	confirmWindow->hide();
@@ -754,6 +743,7 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 	//MainWindow mainWin;
 	SteamPunkGUI1 mainWin;
 	mainWin.SPGprojfile = projectFilePath;
+	mainWin.studentsFromCanvas = allStudents;
 	mainWin.callTeams(w);
 
 }
