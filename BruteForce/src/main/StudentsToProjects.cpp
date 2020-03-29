@@ -83,6 +83,7 @@ using namespace std::chrono;
 int ResultWindow::permutations = 0;
 int ResultWindow::swaps = 0;
 int ResultWindow::project_pool[5][200]= {};
+vector<Team> ResultWindow::studentTeams;
 
 //Constructor
 StudentsToProjects::StudentsToProjects() {
@@ -914,6 +915,13 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 				ResultWindow::project_pool[2][j] = bestSet[i].TeamScore;
 		}	}
 
+		//bestSet[i].OfficialClassID = bestSet[i].project.OfficialClassID;
+
+
+		//adding the teams, for use in the post function to make groups
+		ResultWindow::studentTeams.push_back(bestSet[i]);
+
+
 		cout << "Team for project#" + to_string(bestSet[i].projectID) + " ";
 
 		result.append("PROJECT#" + to_string(bestSet[i].projectID) + ": ");
@@ -934,6 +942,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		result.append("\n");
 		cout << endl;
 		cout << "Team Score: " << bestSet[i].TeamScore << endl;
+//cout<<"this team belongs to class section:"<<bestSet[i].ClassID<<endl;
+//cout<<"Team:"<<bestSet[i].OfficialClassID<<endl;
+//cout<<"Project:"<<bestSet[i].project.OfficialClassID<<endl;
 
 
 		//output to the GUI

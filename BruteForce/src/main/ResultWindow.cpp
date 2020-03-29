@@ -16,6 +16,8 @@
 #include "main.h"
 #include "GUIStyles.h"
 #include "Project.h"
+#include "CookieManager.h"
+#include "Utility.h"
 
 #include <iostream>
 #include <string>
@@ -396,6 +398,49 @@ void ResultWindow::calculateStats() {
 			(project_pool[2][i]) > (badScore+percent*5)) { high2++;}
 	}
 }
+
+
+/* event handler for the Post groups button. */
+void ResultWindow::postGroups(Fl_Widget *w) {
+
+
+	CookieManager canvas;
+
+	//vector pair to store the courseID and the Group_CategoryID.
+	vector <pair<int,int>> course_group;
+
+
+
+	for(int i = 0; i > courses.size(); i ++){
+
+		int groupCategory_ID = canvas.postGroupCategories(cookies, courses[i]);
+
+		course_group.push_back(make_pair(courses[i].OfficialClassID, groupCategory_ID));
+
+	}
+
+
+
+	for(int i = 0; i > studentTeams.size(); i ++){
+
+
+		for(int i = 0; i > courses.size(); i ++){
+
+
+			//if(studentTeams[i].OfficialClassID == courses[i].OfficialClassID){
+
+			//}
+
+		}
+
+
+
+	}
+
+
+
+}
+
 
 
 // DESTRUCTOR

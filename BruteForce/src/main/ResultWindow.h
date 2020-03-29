@@ -5,6 +5,7 @@
 #include <string>
 #include <cstdlib>
 #include <stdio.h>
+#include <libsoup/soup.h>
 
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
@@ -18,6 +19,10 @@
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Chart.H>
 #include "Project.h"
+#include "ClassSection.h"
+#include "Team.h"
+
+
 
 using namespace std;
 
@@ -35,6 +40,12 @@ class ResultWindow {
 
 	void exitClicked(Fl_Widget *w);
 
+	static void static_postGroups(Fl_Widget *w, void *data) {
+		((ResultWindow*) data)->saveClicked(w);
+	}
+
+	void postGroups(Fl_Widget *w);
+
 	int teamScoreAvg, bestScore, badScore;
 	int bestTeam, worstTeam, percent, notAssign;
 	int low1, low2, avg1, avg2, high1, high2;
@@ -44,6 +55,9 @@ public:
 	static int swaps;
 	static int count;
 	static int project_pool[5][200];
+	static vector<Team> studentTeams;
+	static vector<ClassSection> courses;
+	static vector<SoupCookie> cookies;
 
 	Fl_Window *windowResult;
 	Fl_Text_Display *textDisplay;

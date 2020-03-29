@@ -612,7 +612,7 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
 	m.main_run(num_projects, num_students, SPGprojfile, progressBar,
-			terminalBuffer);
+			terminalBuffer,spAllStudents, spCourses, spCookies);
 
 	//join threads
 	for (int i = 0; i < 1; i++) {
@@ -962,8 +962,8 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 		}
 
 		if (error == false) {
-//>>>>>>> dev
-//
+
+
 			cout<<"Working"<<endl;
 	//if the user is not authenticated yet,
 	//open the mini-browser for canvas authentication
@@ -975,17 +975,11 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 
 	windowMain->hide();
 	//call to get the course information
-//<<<<<<< HEAD
-	//CookieManager cookieMonster;
-	//cookieMonster.getCourses(cookiedata1);
-	//cout << "working" << endl;
-	//SPDataGUI dataGUI(windowMain);
-//=======
 	CookieManager cookieMonster;
 	cookieMonster.getCourses(cookiedata1);
 
 	SPDataGUI dataGUI(windowMain, cookiedata1);
-//>>>>>>> dev
+
 		}
 }
 

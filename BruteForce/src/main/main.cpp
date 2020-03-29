@@ -61,6 +61,7 @@
 #include <cstdlib>
 #include <stdio.h>
 #include <chrono>
+#include <libsoup/soup.h>
 
 #include <bits/stdc++.h>
 #include "sys/types.h"
@@ -80,6 +81,8 @@
 using namespace std;
 using namespace std::chrono;
 int ResultWindow::count = 0;
+vector<ClassSection> ResultWindow::courses;
+vector<SoupCookie> ResultWindow::cookies;
 
 /*********************************************************
  * parseLine
@@ -697,9 +700,16 @@ int main() {
  *	int value 0.
  */
 int main::main_run(int projects_input, int students_input, string filepath,
-		Fl_Progress *pb, Fl_Text_Buffer *tb) {
+		Fl_Progress *pb, Fl_Text_Buffer *tb, vector<vector<Student>> allStudents, vector <ClassSection> allClassSections, vector<SoupCookie> cookies) {
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
+
+	//assign values to the results window for use when making the groups
+	for(int i = 0; i<allClassSections.size(); i++){
+	ResultWindow::courses.push_back(allClassSections[i]);
+	}
+	ResultWindow::cookies= cookies;
+
 
 	srand(time(NULL));
 	string file = "";

@@ -38,6 +38,7 @@ struct Team {
 	int ResultScore; //Score comprised of the student to student skills, and their availability scores.
 	int projectID; // represents the project that the student team is possibly assigned to.
 	int ClassID;       //class section this team belongs to.
+	//int OfficialClassID; //Unique 5 digit integer that identifies the ClassSection this team is in.
 	Project project;   //the project object that this team is assigned to.
 	Team() {
 	}

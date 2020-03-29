@@ -20,6 +20,7 @@
 #include "CookieManager.h"
 #include "Utility.h"
 #include "Student.h"
+#include "Team.h"
 
 #include <gtk/gtk.h>
 #include <webkit2/webkit2.h>
@@ -1379,7 +1380,7 @@ void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,
 				next_url_present = false;
 			}
 
-			//write the course data to a Json file
+			//write the data to a Json file
 			if (first == true) {
 
 				//if there is another page to read in
@@ -1442,5 +1443,326 @@ void CookieManager::getQuizSubmissions(vector<SoupCookie> cookiedata,
 
 	remove("allSubmissions.json");
 
+}
+/*********************************************************
+ * postGroupCategories
+ *
+ * Author: Myles Colina,
+ *
+ * Description:
+ * 	Performs an HTTP post request to CANVAS to make a groups categories, for the
+ * 	given course.
+ *
+ *Arguments:
+ *	vector<SoupCookie> cookiedata, ClassSection course
+ *
+ *Returns:
+ *  int the group_categoriy ID
+ */
+int CookieManager::postGroupCategories(vector<SoupCookie> cookiedata, ClassSection course) {
+
+	CURL *curl;
+	CURLcode res;
+	std::string cookieBuffer;
+	struct curl_slist *headers = NULL;
+
+	//read in the cookie data from the vector and store it in a string
+	std::string cookies;
+	std::string temp_cookies;
+
+	cookies = cookiedata[0].name;
+	cookies += "=";
+	cookies += cookiedata[0].value;
+	cookies += "; ";
+
+	for (int i = 1; i < cookiedata.size(); i++) {
+		cookies += cookiedata[i].name;
+		cookies += "=";
+		cookies += cookiedata[i].value;
+		cookies += "; ";
+	}
+
+	//convert the cookie string to a char*
+	int length = cookies.length();
+	char cookie_char[length + 1];
+	strcpy(cookie_char, cookies.c_str());
+
+	char *cookiesAll = cookie_char;
+	cout << cookiesAll << endl;
+
+		std::string Headers;
+		std::string readBuffer;
+
+		//start libcurl
+		curl = curl_easy_init();
+
+		if (curl) {
+
+			//the URL for request
+			string url_request_string =
+					"https://canvas.asu.edu/api/v1/courses/";
+			url_request_string += to_string(course.OfficialClassID);
+			url_request_string += "/group_categories";
+
+			//convert the url string to a char*
+			int length_url_string = url_request_string.length();
+			char url_request[length_url_string + 1];
+			strcpy(url_request, url_request_string.c_str());
+
+
+			curl_easy_setopt(curl, CURLOPT_URL, url_request);
+
+			curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
+
+			//set the group category data
+			string group_data = "name=Project Groups";
+
+			//convert the group data string to a char*
+			int length_group = group_data.length();
+			char group_data_char[length_group + 1];
+			strcpy(group_data_char, group_data.c_str());
+
+			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, group_data_char );
+
+			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+
+			res = curl_easy_perform(curl);
+
+			readBuffer.erase(0, 9); //removes the "while (1);" from the string.
+			cout<<readBuffer<<endl;
+
+			//write the data to a Json file
+				ofstream file;
+				file.open("groupCategories.json");
+				file << "{\"categories\": ";
+				file << readBuffer;
+				file << "}";
+				file.close();
+
+		// Check for errors
+		if (res != CURLE_OK) {
+			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
+					curl_easy_strerror(res));
+		}
+
+		// always cleanup
+			curl_easy_cleanup(curl);
+		}
+
+	Utility util;
+	int group_category_ID = util.getCategoryID(course.OfficialClassID ,"groupCategories.json");
+	remove("groupCategories.json");
+
+	return group_category_ID;
+}
+
+/*********************************************************
+ * postGroups
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Performs an HTTP post request to CANVAS to make all the groups.
+ *
+ *Arguments:
+ *	vector<SoupCookie> cookiedata
+ *
+ *Returns:
+ *  nothing
+ */
+void CookieManager::postGroups(vector<SoupCookie> cookiedata, vector <Team> allTeams) {
+
+	CURL *curl;
+	CURLcode res;
+	std::string cookieBuffer;
+	struct curl_slist *headers = NULL;
+
+
+	//the URL for the first HTTP request
+	char *url_request;
+	string url_string;
+	string url_request_string =
+			"https://canvas.asu.edu/api/v1/groups";
+
+	//convert the cookie string to a char*
+	int length_url_string = url_request_string.length();
+	char url_request1[length_url_string + 1];
+	strcpy(url_request1, url_request_string.c_str());
+	url_request = url_request1;
+
+	//read in the cookie data from the vector and store it in a string
+	std::string cookies;
+	std::string temp_cookies;
+
+	cookies = cookiedata[0].name;
+	cookies += "=";
+	cookies += cookiedata[0].value;
+	cookies += "; ";
+
+	for (int i = 1; i < cookiedata.size(); i++) {
+		cookies += cookiedata[i].name;
+		cookies += "=";
+		cookies += cookiedata[i].value;
+		cookies += "; ";
+	}
+
+	//convert the cookie string to a char*
+	int length = cookies.length();
+	char cookie_char[length + 1];
+	strcpy(cookie_char, cookies.c_str());
+
+	char *cookiesAll = cookie_char;
+	cout << cookiesAll << endl;
+
+	//for loop-making a group for each project team.
+	for(int i=0; i< allTeams.size(); i++){
+		std::string Headers;
+		std::string readBuffer;
+
+		//start libcurl
+		curl = curl_easy_init();
+
+		if (curl) {
+
+			curl_easy_setopt(curl, CURLOPT_URL, url_request);
+
+			curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
+
+			//for each team set the GROUP name
+
+			string group_data = "name=Project ";
+			group_data += to_string(allTeams[i].project.ProjectID);
+			group_data += "ASU (Capstone Project Assignment)";
+
+			group_data += "&is_public=false";
+
+			//convert the group data string to a char*
+			int length_group = group_data.length();
+			char group_data_char[length_group + 1];
+			strcpy(group_data_char, group_data.c_str());
+
+			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, group_data_char );
+
+			res = curl_easy_perform(curl);
+
+			//cout<<allTeams[i].<<endl;
+			//cout<<""<<endl;
+
+		// Check for errors
+		if (res != CURLE_OK) {
+			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
+					curl_easy_strerror(res));
+		}
+	}
+
+	}//end loop for num of teams
+
+	// always cleanup
+	curl_easy_cleanup(curl);
+}
+/*********************************************************
+ * postStudentstoGroups
+ *
+ * Author: Myles Colina, Cristi Deleo
+ *
+ * Description:
+ * 	Performs an HTTP post request to CANVAS to make all the groups.
+ *
+ *Arguments:
+ *	vector<SoupCookie> cookiedata
+ *
+ *Returns:
+ *  nothing
+ */
+void CookieManager::postStudentstoGroups(vector<SoupCookie> cookiedata, vector <Team> allTeams) {
+
+	CURL *curl;
+	CURLcode res;
+	std::string cookieBuffer;
+	struct curl_slist *headers = NULL;
+
+
+	//the URL for the first HTTP request
+	char *url_request;
+	string url_string;
+	string url_request_string =
+			"https://canvas.asu.edu/api/v1/groups";
+
+	//convert the cookie string to a char*
+	int length_url_string = url_request_string.length();
+	char url_request1[length_url_string + 1];
+	strcpy(url_request1, url_request_string.c_str());
+	url_request = url_request1;
+
+	//read in the cookie data from the vector and store it in a string
+	std::string cookies;
+	std::string temp_cookies;
+
+	cookies = cookiedata[0].name;
+	cookies += "=";
+	cookies += cookiedata[0].value;
+	cookies += "; ";
+
+	for (int i = 1; i < cookiedata.size(); i++) {
+		cookies += cookiedata[i].name;
+		cookies += "=";
+		cookies += cookiedata[i].value;
+		cookies += "; ";
+	}
+
+	//convert the cookie string to a char*
+	int length = cookies.length();
+	char cookie_char[length + 1];
+	strcpy(cookie_char, cookies.c_str());
+
+	char *cookiesAll = cookie_char;
+	cout << cookiesAll << endl;
+
+	//for loop-making a group for each project team.
+	for(int i=0; i< allTeams.size(); i++){
+		std::string Headers;
+		std::string readBuffer;
+
+		//start libcurl
+		curl = curl_easy_init();
+
+		if (curl) {
+
+			curl_easy_setopt(curl, CURLOPT_URL, url_request);
+
+			curl_easy_setopt(curl, CURLOPT_COOKIE, cookiesAll);
+
+			//for each team set the GROUP name
+
+			string group_data = "name=Project ";
+			group_data += to_string(allTeams[i].project.ProjectID);
+			group_data += "ASU (Capstone Project Assignment)";
+
+			group_data += "&is_public=false";
+
+			//convert the group data string to a char*
+			int length_group = group_data.length();
+			char group_data_char[length_group + 1];
+			strcpy(group_data_char, group_data.c_str());
+
+			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, group_data_char );
+
+			res = curl_easy_perform(curl);
+
+			//cout<<allTeams[i].<<endl;
+			//cout<<""<<endl;
+
+		// Check for errors
+		if (res != CURLE_OK) {
+			fprintf(stderr, "second curl_easy_perform() failed: %s\n",
+					curl_easy_strerror(res));
+		}
+	}
+
+	}//end loop for num of teams
+
+	// always cleanup
+	curl_easy_cleanup(curl);
 }
 

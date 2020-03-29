@@ -1033,6 +1033,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 								< MinProjectsPerClassSection[OnlineClassSections[j].ClassID]) {
 							classSection = OnlineClassSections[j];
 							projectPool[i].ClassID = classSection.ClassID;
+							//projectPool[i].OfficialClassID = classSection.OfficialClassID;
 							OnlineClassSections.erase(
 									OnlineClassSections.begin() + j);
 							//increment the number of projects added to this class section
@@ -1092,6 +1093,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 								< MinProjectsPerClassSection[GroundClassSections[j].ClassID]) {
 							classSection = GroundClassSections[j];
 							projectPool[i].ClassID = classSection.ClassID;
+							//projectPool[i].OfficialClassID = classSection.OfficialClassID;
 							GroundClassSections.erase(
 									GroundClassSections.begin() + j);
 							//increment the number of projects added to this class section
@@ -1145,6 +1147,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 								< MinProjectsPerClassSection[ClassSections[j].ClassID]) {
 							classSection = ClassSections[j];
 							projectPool[i].ClassID = classSection.ClassID;
+							//projectPool[i].ClassID = classSection.OfficialClassID;
 							//increment the number of projects added to this class section
 							ProjectsToClassCount[classSection.ClassID]++;
 							ClassSections.erase(ClassSections.begin() + j);
@@ -2030,6 +2033,44 @@ int Utility::getAssignmentID(int quiz_ID, string filename) {
 
 	return assignment_ID;
 
+}
+/*********************************************************
+ * getCategoryID
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Reads in all the group categories from a Json file, and searches for the category ID of the
+ * 	group category whose course_id that matches the parameter course_id .
+ *
+ *Arguments:
+ *	string
+ *
+ *Returns:
+ *  int value of the assignment ID
+ */
+int Utility::getCategoryID(int courseID, string filename) {
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	int group_category_ID;
+
+	const int numberOfCategories = obj["categories"].size();
+
+
+	for (int i = 0; i < numberOfCategories; i++) {
+
+		//make sure that the course ids match
+				if (courseID == obj["categories"].get((int) i, "")["course_id"].asInt()) {
+		group_category_ID = obj["categories"].get((int) i, "")["id"].asInt();
+
+				}
+	}
+
+	return group_category_ID;
 }
 
 vector<Student> Utility::getStudentsFromJson(string filename) {
