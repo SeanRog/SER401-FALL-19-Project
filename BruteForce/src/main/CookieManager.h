@@ -18,6 +18,9 @@
 #include <webkit2/webkit2.h>
 #include <libsoup/soup.h>
 #include "Student.h"
+#include "Project.h"
+#include "ClassSection.h"
+#include "Team.h"
 
 using namespace std;
 
@@ -39,6 +42,9 @@ public:
 			void *userp);
 	static void print_cookies(CURL *curl);
 	int newHttpSession(const char *hostURL);
+	int postGroupCategories(vector<SoupCookie> cookiedata, ClassSection course);
+	int postGroups(vector<SoupCookie> cookiedata, int course_ID, int group_category_ID, int project_number);
+	void putStudentstoGroups(vector<SoupCookie> cookiedata, Team currentTeam, int group_ID);
 	int MiniBrowser(int argc, char*[]);
 };
 

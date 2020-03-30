@@ -691,12 +691,14 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 
 		}
 		SelectedCourses=classes;
+		vector <ClassSection> selectedcourses;
+
 
 		for (int j = 0; j < num_of_selected_courses; j++) {
 
 			cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
+			selectedcourses.push_back(classes[j]);
 		}
-
 
 			//Get the Quiz data from the student survey.
 			string QuizName = fileInput_StudentQuizName->value();
@@ -754,6 +756,9 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 	//MainWindow mainWin;
 	SteamPunkGUI1 mainWin;
 	mainWin.SPGprojfile = projectFilePath;
+	mainWin.spCourses = selectedcourses;
+	mainWin.spAllStudents = allStudents;
+	mainWin.spCookies = cookiedataSP;
 	mainWin.callTeams(w);
 
 }

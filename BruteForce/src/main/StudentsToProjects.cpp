@@ -83,6 +83,7 @@ using namespace std::chrono;
 int ResultWindow::permutations = 0;
 int ResultWindow::swaps = 0;
 int ResultWindow::project_pool[5][200]= {};
+vector<Team> ResultWindow::studentTeams;
 
 //Constructor
 StudentsToProjects::StudentsToProjects() {
@@ -231,7 +232,7 @@ void StudentsToProjects::updateProgressBar(int num, Fl_Progress *pb) {
 string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		Project projectPool[], const int numStudents, const int numProjects,
 		const int numSkills, const int teamSize, const int numTopTeams,
-		Fl_Progress *progressBar, int progressIncrement, Fl_Text_Buffer *terminal) {
+		Fl_Progress *progressBar, int progressIncrement, Fl_Text_Buffer *terminal, int officialClassID) {
 
 	string result = "";
 
@@ -914,6 +915,13 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 				ResultWindow::project_pool[2][j] = bestSet[i].TeamScore;
 		}	}
 
+		bestSet[i].OfficialClassID = officialClassID;
+
+
+		//adding the teams, for use in the post function to make groups
+		ResultWindow::studentTeams.push_back(bestSet[i]);
+
+
 		cout << "Team for project#" + to_string(bestSet[i].projectID) + " ";
 
 		result.append("PROJECT#" + to_string(bestSet[i].projectID) + ": ");
@@ -934,6 +942,8 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		result.append("\n");
 		cout << endl;
 		cout << "Team Score: " << bestSet[i].TeamScore << endl;
+
+//cout<<"Project:"<<bestSet[i].project.OfficialClassID<<endl;
 
 
 		//output to the GUI
