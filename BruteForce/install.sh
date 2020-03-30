@@ -7,6 +7,7 @@ apt-get install -y pkg-config
 
 apt-get install libwebkit2gtk-4.0-dev -y
 apt-get install libboost-dev -y
+apt-get install libboost-graph-dev -y
 apt-get install libgtk3.0-dev -y
 apt-get install xorg-dev -y
 apt-get -y install libx11-dev -y
