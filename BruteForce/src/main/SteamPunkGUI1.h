@@ -12,7 +12,11 @@
 #include <string>
 #include <cstdlib>
 #include <stdio.h>
+#include <vector>
+#include "Student.h"
+#include "ClassSection.h"
 
+#include <libsoup/soup.h>
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
@@ -66,6 +70,10 @@ public:
 	string SPGprojfile;
 	bool nextWindowFlag;
 	bool Authenticated;
+
+	vector <ClassSection> spCourses;
+	vector<vector<Student>> spAllStudents;
+	vector <SoupCookie> spCookies;
 
 	//progress bar window
 	int barCount;
