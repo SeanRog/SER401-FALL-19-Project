@@ -5,6 +5,9 @@
 #include <string>
 #include <cstdlib>
 #include <stdio.h>
+#include <vector>
+#include "Student.h"
+#include "ClassSection.h"
 #include "main.h"
 
 #include <FL/Fl.H>
@@ -58,6 +61,10 @@ public:
 	bool Authenticated;
 	string mwProjfile;
 
+	vector <ClassSection> mwCourses;
+	vector<vector<Student>>  mwAllStudents;
+	vector <SoupCookie> mwCookies;
+
 	//progress bar window
 	int barCount;
 	//Fl_Box *backBox;
@@ -80,6 +87,7 @@ public:
 	Fl_Button *generateTeams;
 	Fl_Int_Input *inputprojects;
 	Fl_Int_Input *inputstudents;
+
 
 	//virtual int handle(int event);
 	void MainWindow1();

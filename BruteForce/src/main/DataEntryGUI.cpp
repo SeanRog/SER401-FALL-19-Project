@@ -10,8 +10,13 @@
 #include "GUIStyles.h"
 #include "ClassSectionJson.h"
 #include "ClassSection.h"
+#include "CookieManager.h"
+#include "ResultWindow.h"
+#include "Utility.h"
 #include "main.h"
 
+#include <libsoup/soup.h>
+#include <vector>
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -33,6 +38,7 @@
 // ASU LOGO
 Fl_PNG_Image LOGO_BLACK1("./Images/asu_sunburst_rgb_maroongold_150ppi.png");
 string dataEntryGUIFilename;
+vector<SoupCookie> cookiedataDE;
 
 
 
@@ -49,11 +55,13 @@ string dataEntryGUIFilename;
  *	nothing
  */
 
-DataEntryGUI::DataEntryGUI(Fl_Window *win) {
+DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
+
 	//reference to the homepage window
 	prevWindow = win;
 	masterWindow = new Fl_Window(750, 760, "Capstone Team Assignment System");
 
+	cookiedataDE = cookies;
 	ClassSectionJson CSJson;
 
 	//read in all the courses from canvas.
@@ -69,8 +77,12 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win) {
 
 	//end
 	cout<<"Read in all courses!"<<endl;
-	cout<<Courses[0].Course_Code<<endl;
-	cout<<Courses[1].Course_Code<<endl;
+//<<<<<<< HEAD
+	//cout<<Courses[0].Course_Code<<endl;
+	//cout<<Courses[1].Course_Code<<endl;
+//=======
+
+//>>>>>>> dev
 
 	string courses[NUM_CLASS_SECTIONS];
 	AllCourseNames = courses;
@@ -157,6 +169,9 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win) {
 	boxBack4.box(FL_FLAT_BOX);
 	boxBack4.color(ASU_MAROON);
 	fileInput_StudentQuizName = new Fl_Input(20, 320, 710, 30);
+
+	//>>>>Set the initial value to Survey. Need to remove for the Final System.
+    fileInput_StudentQuizName->value("Survey");
 
 	//INITIALIZE CLASS SECTION SELECTOR COMPONENTS
 	// input year
@@ -306,8 +321,6 @@ void DataEntryGUI::FindCoursesClick(Fl_Widget *w) {
 	classBrowser->clear();
 	year = inputYear->value();
 	semester = inputSemester->value();
-	cout << year << endl;
-	cout << semester << endl;
 
 	for (int i = 1; i < num_of_all_courses; i++)
 	{  string course = AllCourseNames[i];
@@ -316,7 +329,6 @@ void DataEntryGUI::FindCoursesClick(Fl_Widget *w) {
 			int length = course.length();
 			char course_char[length + 1];
 			strcpy(course_char, course.c_str());
-			cout << course << endl;
 			classBrowser->add(course_char);
 		}
 	}
@@ -473,8 +485,6 @@ void DataEntryGUI::ConfirmClick(Fl_Widget *w) {
 
 	for (int i = 0; i < course_count; i++) {
 		s[i] = selections[i];
-
-		cout<<selections[i]<<endl;
 	}
 	num_of_selected_courses = course_count;
 	SelectedCourseNames = s;
@@ -555,49 +565,86 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 
 		if((AllCourses[i].Course_Code).compare(SelectedCourseNames[j]) == 0){
 			classes[j] = AllCourses[i];
-
 		}
-
 		}
 
 	}
 	SelectedCourses=classes;
+	vector <ClassSection> selectedcourses;
 
 	for (int j = 0; j < num_of_selected_courses; j++) {
 
 		cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
+		selectedcourses.push_back(classes[j]);
 	}
+
+	//Get the Quiz data from the student survey.
+	string QuizName = fileInput_StudentQuizName->value();
+    CookieManager CM;
+    Utility util;
+
+	//Get Student data from each course
+	// test with one course
+	//CM.getStudents(cookiedataDE, 47570);
+	vector<vector<Student>> allStudents;
+	vector<Student> students;
+	for (int j = 0; j < num_of_selected_courses; j++) {
+
+
+		students = CM.getStudents(cookiedataDE, classes[j].OfficialClassID);
+
+		CM.getQuizzes(cookiedataDE, classes[j].OfficialClassID, QuizName, students);
+		students = CM.currentStudents;
+
+		allStudents.push_back(students);
+	}
+
+	// debug students
+	cout << endl << "Debugging Students" << endl;
+	for (int j = 0; j < allStudents.size(); j++){
+		for (int k = 0; k < allStudents.at(j).size(); k++){
+			cout << "ClassID: "<< allStudents.at(j).at(k).ClassID << endl;
+			cout << "StudentID: "<< allStudents.at(j).at(k).StudentID << endl;
+			cout << "ASUriteID: "<< allStudents.at(j).at(k).ASUriteID << endl;
+			cout<<"name: "<<allStudents.at(j).at(k).name<<endl;
+
+			cout<<"Affinity: "<<endl;
+			for(int x = 0;x< 6;x++){
+			cout<<allStudents.at(j).at(k).StudentAffinity[x].first<<allStudents.at(j).at(k).StudentAffinity[x].second<<endl;
+			}
+
+			cout<<"skill scores: "<<endl;
+			for(int x = 0; x<14 ;x++){
+			cout<<"skill "<<to_string(x+1)<<": "<<allStudents.at(j).at(k).Skills[x]<<endl;
+			}
+
+			cout<<"Availability: "<<endl;
+			for(int x = 0; x<4 ;x++){
+			cout<<allStudents.at(j).at(k).Availability[x]<<endl;
+			}
+
+		}
+	}
+
 
 	masterWindow->hide();
 	confirmWindow->hide();
 	MainWindow mainWin;
 	mainWin.mwProjfile = dataEntryGUIFilename;
+	mainWin.mwCourses = selectedcourses;
+	mainWin.mwAllStudents = allStudents;
+	mainWin.mwCookies = cookiedataDE;
+
 	mainWin.callTeams(w);
 }
 
 void DataEntryGUI::chooseProjectFile_cb(Fl_Widget*) {
 	string filename;
-	/*Fl_Native_File_Chooser fileChooser;
-	 fileChooser.title("Choose File");
-	 fileChooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
-	 fileChooser.preset_file(fileInput_Project->value());
-
-	 switch ( fileChooser.show() ) {
-	 default:
-	 if ( fileChooser.filename() ) {
-	 fileInput_Project->value(fileChooser.filename());
-	 filename = fileChooser.filename()
-	 } else {
-	 fileInput_Project->value("NULL");
-	 }
-	 break;
-	 }*/
 
 	// Create the file chooser, and show it
-	Fl_File_Chooser chooser(".",                        // directory
-			"*",                        // filter
-			Fl_File_Chooser::SINGLE,     // chooser type
-			"Select Project CSV file");        // title
+	Fl_File_Chooser chooser(".","*",
+			Fl_File_Chooser::SINGLE,
+			"Select Project CSV file");
 
 	chooser.color(ASU_WHITE);
 	chooser.textfont(FL_HELVETICA);

@@ -37,7 +37,7 @@ public:
 	string StudentsToProjectsAssignment(Student studentPool[],
 			Project projectPool[], const int numStudents, const int numProjects,
 			const int numSkills, const int teamSize, const int numTopTeams,
-			Fl_Progress *progressBar, int progressIncrement, Fl_Text_Buffer *terminal);
+			Fl_Progress *progressBar, int progressIncrement, Fl_Text_Buffer *terminal, int officialClassID);
 
 	void updateProgressBar(int value, Fl_Progress *pW); //function to update the progress bar.
 

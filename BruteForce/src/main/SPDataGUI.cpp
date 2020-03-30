@@ -11,8 +11,12 @@
 #include "SteamPunkGUI1.h"
 #include "ClassSectionJson.h"
 #include "ClassSection.h"
+#include "CookieManager.h"
+#include "Utility.h"
 #include "main.h"
 
+#include <libsoup/soup.h>
+#include <vector>
 #include <bits/stdc++.h>
 #include <iostream>
 #include <fstream>
@@ -47,6 +51,7 @@ Fl_PNG_Image Wall3("./Images/Steampunk/Wall14.png");
 Fl_PNG_Image *SteamPngs[13];
 Fl_PNG_Image *Steam2Pngs[13];
 string projectFilePath;
+vector<SoupCookie> cookiedataSP;
 
 void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2, int end) {
 
@@ -87,40 +92,6 @@ void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2, int end) {
 		}
 	}            //end while loop
 
-	/*	int i = 0;
-	 int x =0;
-	 while (w->shown()==true) {
-
-	 if(x == 1){
-	 b->image(SteamPngs[i]);
-	 //b2->image(Steam2Pngs[i]);
-	 w->redraw();
-	 Fl::check();
-	 std::this_thread::sleep_for(std::chrono::milliseconds(100));
-	 //usleep(100000);
-	 }
-	 else if (x == 0){
-	 //b->image(SteamPngs[i]);
-	 b2->image(Steam2Pngs[i]);
-	 w->redraw();
-	 Fl::check();
-	 std::this_thread::sleep_for(std::chrono::milliseconds(100));
-	 //usleep(100000);
-	 }
-	 i++;
-	 if (i == 13) {
-	 Fl::check();
-	 std::this_thread::sleep_for(std::chrono::milliseconds(200));
-	 Fl::check();
-	 //usleep(100000);
-	 i = 0;
-	 if(x==1){
-	 x=0;
-	 }else if(x==0){
-	 x=1;
-	 }
-	 }
-	 }            //end while loop*/
 }
 
 /*************************************************************************************
@@ -135,10 +106,12 @@ void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2, int end) {
  *Returns:
  *	nothing
  */
-SPDataGUI::SPDataGUI(Fl_Window *win) {
+SPDataGUI::SPDataGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 
 	//reference to the homepage window
 	prevWindow = win;
+
+	cookiedataSP = cookies;
 
 	ClassSectionJson CSJson;
 
@@ -155,9 +128,8 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 
 		//end
 		cout<<"Read in all courses!"<<endl;
-		cout<<Courses[0].Course_Code<<endl;
-		cout<<Courses[1].Course_Code<<endl;
-
+		//cout<<Courses[0].Course_Code<<endl;
+		//cout<<Courses[1].Course_Code<<endl;
 		string courses[NUM_CLASS_SECTIONS];
 		AllCourseNames = courses;
 		AllCourses = Courses;
@@ -271,6 +243,9 @@ SPDataGUI::SPDataGUI(Fl_Window *win) {
 	fileInput_StudentQuizName = new Fl_Input(20, 320, 710, 30);
 	fileInput_StudentQuizName->textfont(FL_TIMES_ITALIC);
 	fileInput_StudentQuizName->color(LIGHT_CREAM);
+
+//>>>>Set the initial value to Survey. Need to remove for the Final System.
+	fileInput_StudentQuizName->value("Survey");
 
 	//INITIALIZE CLASS SECTION SELECTOR COMPONENTS
 	// input year
@@ -716,11 +691,64 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 
 		}
 		SelectedCourses=classes;
+		vector <ClassSection> selectedcourses;
+
 
 		for (int j = 0; j < num_of_selected_courses; j++) {
 
 			cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
+			selectedcourses.push_back(classes[j]);
 		}
+
+			//Get the Quiz data from the student survey.
+			string QuizName = fileInput_StudentQuizName->value();
+		    CookieManager CM;
+		    Utility util;
+
+			//Get Student data from each course
+			// test with one course
+			//CM.getStudents(cookiedataDE, 47570);
+			vector<vector<Student>> allStudents;
+			vector<Student> students;
+			for (int j = 0; j < num_of_selected_courses; j++) {
+				students = CM.getStudents(cookiedataSP, classes[j].OfficialClassID);
+
+				CM.getQuizzes(cookiedataSP, classes[j].OfficialClassID, QuizName, students);
+				students = CM.currentStudents;
+
+				allStudents.push_back(students);
+			}
+
+			// debug students
+			cout << endl << "Debugging Students" << endl;
+			for (int j = 0; j < allStudents.size(); j++){
+				for (int k = 0; k < allStudents.at(j).size(); k++){
+					cout << "ClassID: "<< allStudents.at(j).at(k).ClassID << endl;
+					cout << "StudentID: "<< allStudents.at(j).at(k).StudentID << endl;
+					cout << "ASUriteID: "<< allStudents.at(j).at(k).ASUriteID << endl;
+					cout<<"name: "<<allStudents.at(j).at(k).name<<endl;
+
+					cout<<"Affinity: "<<endl;
+					for(int x = 0;x< 6;x++){
+					cout<<allStudents.at(j).at(k).StudentAffinity[x].first<<allStudents.at(j).at(k).StudentAffinity[x].second<<endl;
+					}
+
+					cout<<"skill scores: "<<endl;
+					for(int x = 0; x<14 ;x++){
+					cout<<"skill "<<to_string(x+1)<<": "<<allStudents.at(j).at(k).Skills[x]<<endl;
+					}
+
+					cout<<"Availability: "<<endl;
+					for(int x = 0; x<4 ;x++){
+					cout<<allStudents.at(j).at(k).Availability[x]<<endl;
+					}
+
+				}
+			}
+
+
+
+
 
 	masterWindow->hide();
 	confirmWindow->hide();
@@ -728,31 +756,20 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 	//MainWindow mainWin;
 	SteamPunkGUI1 mainWin;
 	mainWin.SPGprojfile = projectFilePath;
+	mainWin.spCourses = selectedcourses;
+	mainWin.spAllStudents = allStudents;
+	mainWin.spCookies = cookiedataSP;
 	mainWin.callTeams(w);
 
 }
 
 void SPDataGUI::chooseProjectFile_cb(Fl_Widget*) {
-	/*Fl_Native_File_Chooser fileChooser;
-	 fileChooser.title("Choose File");
-	 fileChooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
-	 fileChooser.preset_file(fileInput_Project->value());
-
-	 switch ( fileChooser.show() ) {
-	 default:
-	 if ( fileChooser.filename() ) {
-	 fileInput_Project->value(fileChooser.filename());
-	 } else {
-	 fileInput_Project->value("NULL");
-	 }
-	 break;
-	 }*/
 
 	// Create the file chooser, and show it
-	Fl_File_Chooser chooser(".",                        // directory
-			"*",                        // filter
-			Fl_File_Chooser::SINGLE,     // chooser type
-			"Select Project CSV file");        // title
+	Fl_File_Chooser chooser(".",
+			"*",
+			Fl_File_Chooser::SINGLE,
+			"Select Project CSV file");
 
 	chooser.color(ASU_WHITE);
 	chooser.textfont(FL_HELVETICA);

@@ -26,6 +26,7 @@ struct Project {
 public:
 	int ProjectID; // Unique integer identifying the project uniquely in the whole project population.
 	int ClassID; // Unique integer depicting the Class/Section the project is contained in.
+	//int OfficialClassID; //Unique 5 digit integer that identifies the ClassSection this project is in.
 	int PoolID; // Common integer to keep track of project in data structures. Used in determining index number in StudetsToProjects.
 	bool NDA; //bool value depicting whether this project requires that the students sign an NDA
 	bool IPR; //bool value depicting whether this project requires that the students sign an IPR
@@ -54,7 +55,7 @@ public:
 	 * 			Project Skills are defined as:
 	 * 			0 = not required | 1 = nice to have skill | 2 = required skill
 	 */
-	int Skills[15];
+	int Skills[14];
 
 	Project() {
 	}
