@@ -41,7 +41,7 @@ class ResultWindow {
 	void exitClicked(Fl_Widget *w);
 
 	static void static_postGroups(Fl_Widget *w, void *data) {
-		((ResultWindow*) data)->saveClicked(w);
+		((ResultWindow*) data)->postGroups(w);
 	}
 
 	void postGroups(Fl_Widget *w);
@@ -62,10 +62,10 @@ public:
 	Fl_Window *windowResult;
 	Fl_Text_Display *textDisplay;
 	Fl_Text_Buffer *buffer;
-	Fl_Button *buttonSave, *buttonExit;
+	Fl_Button *buttonSave, *buttonExit, *buttonPostGroups;
 	Fl_Box *permBox, *swapBox;
 	Fl_Box *teamBox, *bestBox, *badBox;
-	Fl_Box *spacer, *borderBox;
+	Fl_Box *spacer, *borderBox, *borderBox2;
 	Fl_Box *labelBox3, *labelBox4, *labelBox5;
 	Fl_Box *labelBox1, *labelBox2;
 	Fl_Chart *pieChart, *barChart, *classChart;

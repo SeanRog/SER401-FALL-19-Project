@@ -232,7 +232,7 @@ void StudentsToProjects::updateProgressBar(int num, Fl_Progress *pb) {
 string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		Project projectPool[], const int numStudents, const int numProjects,
 		const int numSkills, const int teamSize, const int numTopTeams,
-		Fl_Progress *progressBar, int progressIncrement, Fl_Text_Buffer *terminal) {
+		Fl_Progress *progressBar, int progressIncrement, Fl_Text_Buffer *terminal, int officialClassID) {
 
 	string result = "";
 
@@ -915,7 +915,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 				ResultWindow::project_pool[2][j] = bestSet[i].TeamScore;
 		}	}
 
-		//bestSet[i].OfficialClassID = bestSet[i].project.OfficialClassID;
+		bestSet[i].OfficialClassID = officialClassID;
 
 
 		//adding the teams, for use in the post function to make groups
@@ -942,8 +942,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		result.append("\n");
 		cout << endl;
 		cout << "Team Score: " << bestSet[i].TeamScore << endl;
-//cout<<"this team belongs to class section:"<<bestSet[i].ClassID<<endl;
-//cout<<"Team:"<<bestSet[i].OfficialClassID<<endl;
+
 //cout<<"Project:"<<bestSet[i].project.OfficialClassID<<endl;
 
 

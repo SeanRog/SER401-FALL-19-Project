@@ -47,7 +47,6 @@ constexpr int toConstInt(int constInt) {
 	return constInt;
 }
 
-
 /* constructor, preps the results window and buffer */
 ResultWindow::ResultWindow() {
 
@@ -72,15 +71,30 @@ ResultWindow::ResultWindow() {
 	borderBox->box(FL_FLAT_BOX);
 	borderBox->color(ASU_BLACK);
 
+	borderBox2 = new Fl_Box(850, 10, 640, 70);
+	borderBox2->box(FL_FLAT_BOX);
+	borderBox2->color(ASU_GREY);
+
 	//Text Display
-	textDisplay = new Fl_Text_Display(850, 10, 640, 780);
+	textDisplay = new Fl_Text_Display(850, 80, 640, 710);
 	textDisplay->buffer(buffer);
 	textDisplay->textfont(FL_HELVETICA);
 	textDisplay->textsize(15);
 	textDisplay->selection_color(ASU_GOLD);
 
+	//Post Teams BUTTON
+	buttonPostGroups = new Fl_Button(870, 20, 175, 50, "Post Groups");
+	buttonPostGroups->color(ASU_GOLD);
+	buttonPostGroups->labelfont(FL_HELVETICA);
+	buttonPostGroups->labelcolor(ASU_BLACK);
+	buttonPostGroups->labelsize(15);
+	buttonPostGroups->selection_color(ASU_BLACK);
+
+	//uncomment this to activate the post teams button.
+	//buttonPostGroups->callback(static_postGroups, this);
+
 	//Save BUTTON
-	buttonSave = new Fl_Button(410, 20, 175, 50, "Save .csv Report");
+	buttonSave = new Fl_Button(1070, 20, 175, 50, "Save .csv Report");
 	buttonSave->color(ASU_GOLD);
 	buttonSave->labelfont(FL_HELVETICA);
 	buttonSave->labelcolor(ASU_BLACK);
@@ -89,7 +103,7 @@ ResultWindow::ResultWindow() {
 	buttonSave->callback(static_saveClicked, this);
 
 	//Exit BUTTON
-	buttonExit = new Fl_Button(610, 20, 175, 50, "Exit");
+	buttonExit = new Fl_Button(1270, 20, 175, 50, "Exit");
 	buttonExit->color(ASU_GOLD);
 	buttonExit->labelfont(FL_HELVETICA);
 	buttonExit->labelcolor(ASU_BLACK);
@@ -161,7 +175,8 @@ ResultWindow::ResultWindow() {
 	labelBox5->labelsize(12);
 	labelBox5->labelcolor(ASU_GOLD);
 
-	pieChart = new Fl_Chart(20, 20, 380, 220, "Number of Teams within Score Range");
+	pieChart = new Fl_Chart(20, 20, 380, 220,
+			"Number of Teams within Score Range");
 	pieChart->type(FL_PIE_CHART);
 	pieChart->textfont(FL_HELVETICA);
 	pieChart->textcolor(ASU_BLACK);
@@ -170,7 +185,8 @@ ResultWindow::ResultWindow() {
 	pieChart->labelsize(16);
 	pieChart->labelcolor(ASU_WHITE);
 
-	barChart = new Fl_Chart(20, 300, 810, 210, "Team Scores by Project Priority");
+	barChart = new Fl_Chart(20, 300, 810, 210,
+			"Team Scores by Project Priority");
 	barChart->type(FL_SPIKE_CHART);
 	barChart->textfont(FL_HELVETICA);
 	barChart->textcolor(ASU_BLACK);
@@ -179,7 +195,8 @@ ResultWindow::ResultWindow() {
 	barChart->labelsize(16);
 	barChart->labelcolor(ASU_WHITE);
 
-	classChart = new Fl_Chart(20, 545, 810, 220, "Team Scores per Class Section");
+	classChart = new Fl_Chart(20, 545, 810, 220,
+			"Team Scores per Class Section");
 	classChart->type(FL_SPIKE_CHART);
 	classChart->textfont(FL_HELVETICA);
 	classChart->textcolor(ASU_BLACK);
@@ -190,20 +207,15 @@ ResultWindow::ResultWindow() {
 
 }
 
-
-
 /* event handler for the save button. Saves file as .txt */
 void ResultWindow::saveClicked(Fl_Widget *w) {
 	buffer->savefile("results.csv", 1000000);
 }
 
-
 /* event handler for the save button. Saves file as .txt */
 void ResultWindow::exitClicked(Fl_Widget *w) {
 	exit(0);
 }
-
-
 
 /* method to show the results window once the buffer has been filled */
 void ResultWindow::addText() {
@@ -228,51 +240,56 @@ void ResultWindow::addText() {
 	teamBox->label(teamNum1);
 
 	char bestNum[70];
-	buff = sprintf(bestNum, "Best Team Score:         %d (Team %d)", bestScore, bestTeam);
+	buff = sprintf(bestNum, "Best Team Score:         %d (Team %d)", bestScore,
+			bestTeam);
 	const char *bestNum1 = bestNum;
 	bestBox->label(bestNum1);
 
 	char badNum[70];
-	buff = sprintf(badNum,  "Worst Team Score:      %d (Team %d)", badScore, worstTeam);
+	buff = sprintf(badNum, "Worst Team Score:      %d (Team %d)", badScore,
+			worstTeam);
 	const char *badNum1 = badNum;
 	badBox->label(badNum1);
 
-
 	//Fills pie charts with data results
 	char low1a[50];
-	buff = sprintf(low1a, " %d-%d (%d)", badScore, badScore+percent, low1);
+	buff = sprintf(low1a, " %d-%d (%d)", badScore, badScore + percent, low1);
 	const char *low1b = low1a;
-	pieChart->add(low1,low1b, ASU_GREEN);
+	pieChart->add(low1, low1b, ASU_GREEN);
 
 	char low2a[50];
-	buff = sprintf(low2a, " %d-%d (%d)", badScore+(percent)+1, badScore+(percent*2)+1, low2);
+	buff = sprintf(low2a, " %d-%d (%d)", badScore + (percent) + 1,
+			badScore + (percent * 2) + 1, low2);
 	const char *low2b = low2a;
 	pieChart->add(low2, low2b, ASU_BLUE);
 
 	char avg1a[50];
-	buff = sprintf(avg1a, " %d-%d (%d)", badScore+(percent*2)+2, badScore+(percent*3)+1, avg1);
+	buff = sprintf(avg1a, " %d-%d (%d)", badScore + (percent * 2) + 2,
+			badScore + (percent * 3) + 1, avg1);
 	const char *avg1b = avg1a;
 	pieChart->add(avg1, avg1b, ASU_WHITE);
 
 	char avg2a[50];
-	buff = sprintf(avg2a, " %d-%d (%d)", badScore+(percent*3)+2, badScore+(percent*4)+1, avg2);
+	buff = sprintf(avg2a, " %d-%d (%d)", badScore + (percent * 3) + 2,
+			badScore + (percent * 4) + 1, avg2);
 	const char *avg2b = avg2a;
 	pieChart->add(avg2, avg2b, ASU_ORANGE);
 
 	char high1a[50];
-	buff = sprintf(high1a, " %d-%d (%d)", badScore+(percent*4)+2, badScore+(percent*5)+1, high1);
+	buff = sprintf(high1a, " %d-%d (%d)", badScore + (percent * 4) + 2,
+			badScore + (percent * 5) + 1, high1);
 	const char *high1b = high1a;
 	pieChart->add(high1, high1b, ASU_GOLD);
 
 	char high2a[50];
-	buff = sprintf(high2a, " %d-%d (%d)", badScore+(percent*5)+2, bestScore, high2);
+	buff = sprintf(high2a, " %d-%d (%d)", badScore + (percent * 5) + 2,
+			bestScore, high2);
 	const char *high2b = high2a;
 	pieChart->add(high2, high2b, ASU_MAROON);
 
-
 	// Filling in project priority chart
-	for(int i = 0; i < count; i ++) {
-		if(project_pool[1][i] == 0 && project_pool[2][i] != 0) {
+	for (int i = 0; i < count; i++) {
+		if (project_pool[1][i] == 0 && project_pool[2][i] != 0) {
 			char priob[2];
 			buff = sprintf(priob, "%d", project_pool[2][i]);
 			const char *prioa = priob;
@@ -280,8 +297,8 @@ void ResultWindow::addText() {
 		}
 	}
 
-	for(int i = 0; i < count; i ++) {
-		if(project_pool[1][i] == 1 && project_pool[2][i] != 0) {
+	for (int i = 0; i < count; i++) {
+		if (project_pool[1][i] == 1 && project_pool[2][i] != 0) {
 			char priob[2];
 			buff = sprintf(priob, "%d", project_pool[2][i]);
 			const char *prioa = priob;
@@ -289,8 +306,8 @@ void ResultWindow::addText() {
 		}
 	}
 
-	for(int i = 0; i < count; i ++) {
-		if(project_pool[1][i] == 2 && project_pool[2][i] != 0) {
+	for (int i = 0; i < count; i++) {
+		if (project_pool[1][i] == 2 && project_pool[2][i] != 0) {
 			char priob[2];
 			buff = sprintf(priob, "%d", project_pool[2][i]);
 			const char *prioa = priob;
@@ -298,15 +315,15 @@ void ResultWindow::addText() {
 		}
 	}
 
-
 	// Filling in class section chart
 	int count1 = 0, sections[10], changed = 0;
 
-	for(int j = 0; j < count; j++) {
-		for(int i = 0; i < count; i ++) {
-			if(project_pool[3][i] == project_pool[3][j] && project_pool[4][i] != 1) {
+	for (int j = 0; j < count; j++) {
+		for (int i = 0; i < count; i++) {
+			if (project_pool[3][i] == project_pool[3][j]
+					&& project_pool[4][i] != 1) {
 
-				if(project_pool[3][i] != sections[count1-1]) {
+				if (project_pool[3][i] != sections[count1 - 1]) {
 					sections[count1] = project_pool[3][i];
 					count1++;
 					changed = 1;
@@ -315,19 +332,23 @@ void ResultWindow::addText() {
 				project_pool[4][i] = 1;
 				char priob[10];
 
-				if(changed == 1) {
+				if (changed == 1) {
 					classChart->add(0, "", ASU_MAROON);
 					classChart->add(0, "", ASU_MAROON);
 
-					buff = sprintf(priob, "S#%d-  %d", project_pool[3][i], project_pool[2][i]);
+					buff = sprintf(priob, "S#%d-  %d", project_pool[3][i],
+							project_pool[2][i]);
 					changed = 0;
 				} else {
 					buff = sprintf(priob, "%d", project_pool[2][i]);
 				}
 				const char *prioa = priob;
 
-				if(j % 2 == 0) { classChart->add(project_pool[2][i], prioa, ASU_GOLD);}
-				else { classChart->add(project_pool[2][i], prioa, ASU_MAROON);}
+				if (j % 2 == 0) {
+					classChart->add(project_pool[2][i], prioa, ASU_GOLD);
+				} else {
+					classChart->add(project_pool[2][i], prioa, ASU_MAROON);
+				}
 			}
 		}
 	}
@@ -343,105 +364,144 @@ void ResultWindow::addText() {
 	Fl::run();
 }
 
-
 // Calculate the stats of how well the teams were formed
 void ResultWindow::calculateStats() {
 
 	//initialize variables
-	teamScoreAvg = 0, bestScore = 0, badScore = 100, notAssign=0;
-	int next1=0, next2=0;
-	low1 =0, low2 =0, avg1 =0, avg2 =0, high1 =0, high2 =0;
+	teamScoreAvg = 0, bestScore = 0, badScore = 100, notAssign = 0;
+	int next1 = 0, next2 = 0;
+	low1 = 0, low2 = 0, avg1 = 0, avg2 = 0, high1 = 0, high2 = 0;
 	string line;
 
-
 	//calculating average team score
-	for(int i =  0; i < count; i ++) {
-		if(project_pool[2][i] != 0) {
+	for (int i = 0; i < count; i++) {
+		if (project_pool[2][i] != 0) {
 			teamScoreAvg += project_pool[2][i];
 		} else {
 			notAssign++;
 		}
 	}
 
-	teamScoreAvg = teamScoreAvg/(count-notAssign);
+	teamScoreAvg = teamScoreAvg / (count - notAssign);
 
 	//calculating best team score
-	for(int i =  0; i < count; i ++) {
-		if(project_pool[2][i] > bestScore) {
+	for (int i = 0; i < count; i++) {
+		if (project_pool[2][i] > bestScore) {
 			bestScore = project_pool[2][i];
 			bestTeam = i;
 		}
 	}
 
 	//calculating worst team score
-	for(int i =  0; i < count; i ++) {
-		if((project_pool[2][i] < badScore) && (project_pool[2][i] != 0)) {
+	for (int i = 0; i < count; i++) {
+		if ((project_pool[2][i] < badScore) && (project_pool[2][i] != 0)) {
 			badScore = project_pool[2][i];
 			worstTeam = i;
 		}
 	}
 
-	percent = (bestScore-badScore)/6;
+	percent = (bestScore - badScore) / 6;
 
 	//filling teams within 6 data groups for pie chart
-	for(int i =  0; i < count; i ++) {
-		if(project_pool[2][i] <= (badScore+percent)) { low1++;	}
-		if((project_pool[2][i] <= badScore+(percent*2)) &&
-			(project_pool[2][i]) > (badScore+percent)) { low2++;	}
-		if((project_pool[2][i] <= badScore+(percent*3)) &&
-			(project_pool[2][i]) > (badScore+percent*2)) { avg1++;	}
-		if((project_pool[2][i] <= badScore+(percent*4)) &&
-			(project_pool[2][i]) > (badScore+percent*3)) { avg2++;	}
-		if((project_pool[2][i] <= badScore+(percent*5)) &&
-			(project_pool[2][i]) > (badScore+percent*4)) { high1++;}
-		if((project_pool[2][i] <= bestScore) &&
-			(project_pool[2][i]) > (badScore+percent*5)) { high2++;}
+	for (int i = 0; i < count; i++) {
+		if (project_pool[2][i] <= (badScore + percent)) {
+			low1++;
+		}
+		if ((project_pool[2][i] <= badScore + (percent * 2))
+				&& (project_pool[2][i]) > (badScore + percent)) {
+			low2++;
+		}
+		if ((project_pool[2][i] <= badScore + (percent * 3))
+				&& (project_pool[2][i]) > (badScore + percent * 2)) {
+			avg1++;
+		}
+		if ((project_pool[2][i] <= badScore + (percent * 4))
+				&& (project_pool[2][i]) > (badScore + percent * 3)) {
+			avg2++;
+		}
+		if ((project_pool[2][i] <= badScore + (percent * 5))
+				&& (project_pool[2][i]) > (badScore + percent * 4)) {
+			high1++;
+		}
+		if ((project_pool[2][i] <= bestScore)
+				&& (project_pool[2][i]) > (badScore + percent * 5)) {
+			high2++;
+		}
 	}
 }
-
 
 /* event handler for the Post groups button. */
 void ResultWindow::postGroups(Fl_Widget *w) {
 
-
+	cout << "Post Groups clicked" << endl;
 	CookieManager canvas;
 
+	//test data using the dev course id, and the test student id.
+	/*vector <ClassSection> test_courses;
+	 vector <Team> test_team;
+	 ClassSection course;
+	 Student test_student;
+
+	 Team emptyteam;
+	 test_team.push_back(emptyteam);
+	 course.OfficialClassID = 47570;
+	 test_student.StudentID = 461471;
+
+	 test_team[0].OfficialClassID = 47570;
+	 test_team[0].team[0] = test_student;
+
+	 test_courses.push_back(course);
+
+	 courses = test_courses;
+	 studentTeams = test_team;*/
+
 	//vector pair to store the courseID and the Group_CategoryID.
-	vector <pair<int,int>> course_group;
+	vector<pair<int, int>> course_group;
 
+	for (int i = 0; i < courses.size(); i++) {
 
-
-	for(int i = 0; i > courses.size(); i ++){
-
+		cout << "Here 1 " << endl;
 		int groupCategory_ID = canvas.postGroupCategories(cookies, courses[i]);
 
-		course_group.push_back(make_pair(courses[i].OfficialClassID, groupCategory_ID));
+		cout << groupCategory_ID << endl;
+
+		course_group.push_back(
+				make_pair(courses[i].OfficialClassID, groupCategory_ID));
 
 	}
 
+	for (int i = 0; i < studentTeams.size(); i++) {
 
+		for (int j = 0; j < courses.size(); j++) {
 
-	for(int i = 0; i > studentTeams.size(); i ++){
+			if (studentTeams[i].OfficialClassID == courses[j].OfficialClassID) {
 
+				for (int k = 0; k < course_group.size(); k++) {
 
-		for(int i = 0; i > courses.size(); i ++){
+					if (course_group[k].first
+							== studentTeams[i].OfficialClassID) {
 
+						//make and get the group ID for this team
+						int group_ID = canvas.postGroups(cookies,
+								course_group[k].first, course_group[k].second,
+								studentTeams[i].project.ProjectID);
 
-			//if(studentTeams[i].OfficialClassID == courses[i].OfficialClassID){
+						cout << group_ID << endl;
 
-			//}
+						//edit the group and add in the students
+						canvas.putStudentstoGroups(cookies, studentTeams[i],
+								group_ID);
+
+					}
+
+				}
+
+			}
 
 		}
-
-
-
 	}
 
-
-
 }
-
-
 
 // DESTRUCTOR
 ResultWindow::~ResultWindow() {

@@ -2073,6 +2073,46 @@ int Utility::getCategoryID(int courseID, string filename) {
 	return group_category_ID;
 }
 
+/*********************************************************
+ * getGroupID
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Reads in the group data from a Json file, and searches for the Group ID of the
+ * 	group whose course_id that matches the parameter course_id .
+ *
+ *Arguments:
+ *	string
+ *
+ *Returns:
+ *  int value of the assignment ID
+ */
+int Utility::getGroupID(int course_ID ,string filename) {
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	int group_ID;
+
+	const int numberOfCategories = obj["groups"].size();
+
+
+	for (int i = 0; i < numberOfCategories; i++) {
+
+		//make sure that the course ids match
+				if (course_ID == obj["groups"].get((int) i, "")["course_id"].asInt()) {
+					group_ID = obj["groups"].get((int) i, "")["id"].asInt();
+
+				}
+	}
+
+	return group_ID;
+}
+
+
 vector<Student> Utility::getStudentsFromJson(string filename) {
 	ifstream ifs(filename);
 	Json::Reader reader;
@@ -2097,6 +2137,7 @@ vector<Student> Utility::getStudentsFromJson(string filename) {
 	return students;
 
 }
+
 
 /*********************************************************
  * getSurveyAnswers
