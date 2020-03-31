@@ -353,6 +353,8 @@ SPDataGUI::SPDataGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 	steamBox2->box(FL_NO_BOX);
 	steamBox2->image(SteamPngs[12]);
 
+	masterWindow->resizable(boxHeader);
+
 	masterWindow->color(DARK_TAUPE);
 	masterWindow->box(FL_BORDER_BOX);
 	masterWindow->show();

@@ -258,6 +258,8 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 	findCourses->selection_color(ASU_MAROON);
 	findCourses->callback(static_FindCoursesClick, this);
 
+	masterWindow->resizable(boxHeader);
+
 	masterWindow->color(ASU_WHITE);
 	masterWindow->box(FL_BORDER_BOX);
 	masterWindow->show();
