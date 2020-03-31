@@ -40,6 +40,7 @@
 #include <FL/Fl_RGB_Image.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Widget.H>
+#include <FL/Fl_Scroll.H>
 #include <FL/Fl_File_Chooser.H>
 
 Fl_PNG_Image Pipes1("./Images/Steampunk/PipesBrick1.png");
@@ -167,7 +168,11 @@ SPDataGUI::SPDataGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 		Steam2Pngs[i] = new Fl_PNG_Image(png_char);
 	}
 
-	masterWindow = new Fl_Window(750, 790, "Capstone Team Assignment System");
+	masterWindow = new Fl_Window(750, 800, "Capstone Team Assignment System");
+    //add in the scroll bar
+	scroll =  new Fl_Scroll(0,0,750,800);
+
+	scroll->color(DARK_TAUPE);//background color
 
 	//background box 3 - background file chooser
 	Fl_Box boxBack3(10, 170, 730, 100);
@@ -352,6 +357,9 @@ SPDataGUI::SPDataGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 	steamBox2 = new Fl_Box(220, 650, 150, 150);
 	steamBox2->box(FL_NO_BOX);
 	steamBox2->image(SteamPngs[12]);
+
+	scroll->end();
+	masterWindow->resizable(scroll);
 
 	masterWindow->color(DARK_TAUPE);
 	masterWindow->box(FL_BORDER_BOX);
