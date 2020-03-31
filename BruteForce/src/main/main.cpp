@@ -61,6 +61,7 @@
 #include <cstdlib>
 #include <stdio.h>
 #include <chrono>
+#include <libsoup/soup.h>
 
 #include <bits/stdc++.h>
 #include "sys/types.h"
@@ -80,6 +81,8 @@
 using namespace std;
 using namespace std::chrono;
 int ResultWindow::count = 0;
+vector<ClassSection> ResultWindow::courses;
+vector<SoupCookie> ResultWindow::cookies;
 
 /*********************************************************
  * parseLine
@@ -193,7 +196,7 @@ Fl_Text_Buffer *terminal;
 void threadFunction(Student studentPool[], Project projectPool[],
 		const int numStudents, const int numProjects, const int numSkills,
 		const int teamSize, const int numTopTeams, string results[],
-		int classSection, int numClasses) {
+		int classSection, int numClasses, int officialClassID) {
 
 	//Progress Bar window- calculate the percentage to increment the bar by
 	int progressIncrement = (110 / numClasses) / 3;
@@ -552,24 +555,24 @@ void threadFunction(Student studentPool[], Project projectPool[],
 		//1st Call to function: Highest priority projects and highest skill average students
 		*(results + (classSection * 3 + 0)) = x.StudentsToProjectsAssignment(
 				STpriority2, PRpriority2, COUNT_2, PCOUNT_2, numSkills,
-				teamSize, numTopTeams, progressBar, progressIncrement,
-				terminal);
+				teamSize, numTopTeams, progressBar, progressIncrement, terminal,
+				officialClassID);
 	}
 
 	if (COUNT_1 != 0 && PCOUNT_1 != 0) {
 		//2nd Call to function: middle priority projects and middle skill average students
 		*(results + (classSection * 3 + 1)) = x.StudentsToProjectsAssignment(
 				STpriority1, PRpriority1, COUNT_1, PCOUNT_1, numSkills,
-				teamSize, numTopTeams, progressBar, progressIncrement,
-				terminal);
+				teamSize, numTopTeams, progressBar, progressIncrement, terminal,
+				officialClassID);
 	}
 
 	if (COUNT_0 != 0 && PCOUNT_0 != 0) {
 		//3rd Call to function: lowest priority projects and lowest skill average students
 		*(results + (classSection * 3 + 2)) = x.StudentsToProjectsAssignment(
 				STpriority0, PRpriority0, COUNT_0, PCOUNT_0, numSkills,
-				teamSize, numTopTeams, progressBar, progressIncrement,
-				terminal);
+				teamSize, numTopTeams, progressBar, progressIncrement, terminal,
+				officialClassID);
 	}
 
 	//output to the GUI
@@ -625,6 +628,8 @@ void ASU_Option(Fl_Widget *w) {
  */
 
 int main() {
+	Utility util;
+	util.makeStudentCSV(50, 14);
 
 	XInitThreads();
 
@@ -698,6 +703,7 @@ int main() {
  */
 
 int main::main_run(int projects_input, int students_input, string filepath,
+/*<<<<<<< HEAD
 		Fl_Progress *pb, Fl_Text_Buffer *tb, vector<Student> studentsFromCanvas) {
 
 
@@ -734,8 +740,19 @@ int main::main_run(int projects_input, int students_input, string filepath,
 //change main_run2 back to main_run after testing
 int main::main_run2(int projects_input, int students_input, string filepath,
 		Fl_Progress *pb, Fl_Text_Buffer *tb, vector<Student> studentsFromCanvas) {
+=======*/
+		Fl_Progress *pb, Fl_Text_Buffer *tb,
+		vector<vector<Student>> allStudents,
+		vector<ClassSection> allClassSections, vector<SoupCookie> cookies) {
+//>>>>>>> dev
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
+
+	//assign values to the results window for use when making the groups
+	for (int i = 0; i < allClassSections.size(); i++) {
+		ResultWindow::courses.push_back(allClassSections[i]);
+	}
+	ResultWindow::cookies = cookies;
 
 	srand(time(NULL));
 	string file = "";
@@ -949,7 +966,8 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 		threads[i] = thread(threadFunction, STUDENT_POOL_SECTION_X,
 				PROJECT_POOL_SECTION_X, studentsInSections[i],
 				projectsInSections[i], NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS,
-				results, i, NUM_CLASS_SECTIONS);
+				results, i, NUM_CLASS_SECTIONS,
+				CLASS_SECTION_POOL[i].OfficialClassID);
 
 		//delete STUDENT_POOL_SECTION_X;
 		//delete PROJECT_POOL_SECTION_X;

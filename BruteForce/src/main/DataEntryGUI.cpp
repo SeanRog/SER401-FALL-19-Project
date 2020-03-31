@@ -11,6 +11,7 @@
 #include "ClassSectionJson.h"
 #include "ClassSection.h"
 #include "CookieManager.h"
+#include "ResultWindow.h"
 #include "Utility.h"
 #include "main.h"
 
@@ -569,10 +570,12 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 
 	}
 	SelectedCourses=classes;
+	vector <ClassSection> selectedcourses;
 
 	for (int j = 0; j < num_of_selected_courses; j++) {
 
-		cout<<classes[j].Course_Name<<"  "<<classes[j].OfficialClassID<<SelectedCourses[j].Course_Code<<" "<<SelectedCourses[j].OfficialClassID<<endl;
+		cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
+		selectedcourses.push_back(classes[j]);
 	}
 
 	//Get the Quiz data from the student survey.
@@ -586,6 +589,8 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 	vector<vector<Student>> allStudents;
 	vector<Student> students;
 	for (int j = 0; j < num_of_selected_courses; j++) {
+
+
 		students = CM.getStudents(cookiedataDE, classes[j].OfficialClassID);
 
 		CM.getQuizzes(cookiedataDE, classes[j].OfficialClassID, QuizName, students);
@@ -621,11 +626,19 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 		}
 	}
 
+
 	masterWindow->hide();
 	confirmWindow->hide();
 	MainWindow mainWin;
 	mainWin.mwProjfile = dataEntryGUIFilename;
+/*<<<<<<< HEAD
 	mainWin.studentsFromCanvas = allStudents;
+=======*/
+	mainWin.mwCourses = selectedcourses;
+	mainWin.mwAllStudents = allStudents;
+	mainWin.mwCookies = cookiedataDE;
+
+//>>>>>>> dev
 	mainWin.callTeams(w);
 }
 
