@@ -683,25 +683,26 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 			if((AllCourses[i].Course_Code).compare(SelectedCourseNames[j]) == 0){
 				classes[j] = AllCourses[i];
 			}
-<<<<<<< HEAD
-=======
+/*<<<<<<< HEAD
+=======*/
 
-		}
-		SelectedCourses=classes;
-		vector <ClassSection> selectedcourses;
-
-
-		for (int j = 0; j < num_of_selected_courses; j++) {
-
-			cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
-			selectedcourses.push_back(classes[j]);
->>>>>>> dev
 		}
 	}
 	SelectedCourses=classes;
+	vector <ClassSection> selectedcourses;
+
+
+	for (int j = 0; j < num_of_selected_courses; j++) {
+
+		cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
+		selectedcourses.push_back(classes[j]);
+//>>>>>>> dev
+	}
+
+	/*SelectedCourses=classes;
 	for (int j = 0; j < num_of_selected_courses; j++) {
 		cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
-	}
+	}*/
 	//Get the Quiz data from the student survey.
 	string QuizName = fileInput_StudentQuizName->value();
     CookieManager CM;
@@ -721,15 +722,14 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 		allStudents.push_back(students);
 	}
 
-/*<<<<<<< HEAD
 	// debug students
 	cout << endl << "Debugging Students" << endl;
 	for (int j = 0; j < allStudents.size(); j++){
 
 		for (int k = 0; k < allStudents.at(j).size(); k++){
-=======*/
+
 			//Get the Quiz data from the student survey.
-			string QuizName = fileInput_StudentQuizName->value();
+			/*string QuizName = fileInput_StudentQuizName->value();
 		    CookieManager CM;
 		    Utility util;
 
@@ -740,7 +740,7 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 			vector<Student> students;
 			for (int j = 0; j < num_of_selected_courses; j++) {
 				students = CM.getStudents(cookiedataSP, classes[j].OfficialClassID);
-//>>>>>>> dev
+//>>>>>>> dev*/
 
 			cout << "ClassID: " << allStudents.at(j).at(k).ClassID << endl;
 			cout << "StudentID: " << allStudents.at(j).at(k).StudentID << endl;
@@ -762,7 +762,6 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 				cout << allStudents.at(j).at(k).Availability[x] << endl;
 			}
 		}
-
 	}
 
 	masterWindow->hide();
@@ -771,13 +770,13 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 	//MainWindow mainWin;
 	SteamPunkGUI1 mainWin;
 	mainWin.SPGprojfile = projectFilePath;
-<<<<<<< HEAD
+/*<<<<<<< HEAD
 	mainWin.studentsFromCanvas = allStudents;
-=======
+=======*/
 	mainWin.spCourses = selectedcourses;
 	mainWin.spAllStudents = allStudents;
 	mainWin.spCookies = cookiedataSP;
->>>>>>> dev
+//>>>>>>> dev
 	mainWin.callTeams(w);
 
 }
