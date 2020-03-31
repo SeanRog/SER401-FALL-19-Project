@@ -784,9 +784,10 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 	//creating random sample Json data based inputs
 	//of number of projects, and number of students
 	util.makeProjectJSON(NUM_PROJECTS, NUM_SKILLS);
-	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS);
+	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS, allStudents);
 	//create the CSV file of random projects
 	util.makeProjectCSV(NUM_PROJECTS, NUM_SKILLS);
+	util.makeStudentCSV(NUM_PROJECTS, NUM_SKILLS);
 
 	cout << "main " << filepath << endl;
 	for (int i = filepath.length() - 1; i >= 0; i--) {
