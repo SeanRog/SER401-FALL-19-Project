@@ -635,10 +635,14 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 	confirmWindow->hide();
 	MainWindow mainWin;
 	mainWin.mwProjfile = dataEntryGUIFilename;
+/*<<<<<<< HEAD
+	mainWin.studentsFromCanvas = allStudents;
+=======*/
 	mainWin.mwCourses = selectedcourses;
 	mainWin.mwAllStudents = allStudents;
 	mainWin.mwCookies = cookiedataDE;
 
+//>>>>>>> dev
 	mainWin.callTeams(w);
 }
 

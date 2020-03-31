@@ -60,6 +60,7 @@ public:
 	bool nextWindowFlag;
 	bool Authenticated;
 	string mwProjfile;
+	vector<Student> studentsFromCanvas;
 
 	vector <ClassSection> mwCourses;
 	vector<vector<Student>>  mwAllStudents;
