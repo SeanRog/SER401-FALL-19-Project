@@ -28,9 +28,11 @@
 #include <FL/Fl_Input_Choice.H>
 #include <FL/Fl_RGB_Image.H>
 #include <FL/Fl_Output.H>
+#include <FL/Fl_Scroll.H>
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_File_Chooser.H>
 #include <FL/Fl_Native_File_Chooser.H>
+
 
 using namespace std;
 
@@ -69,6 +71,7 @@ public:
 	Fl_Input *inputYear;
 	Fl_Input_Choice *inputSemester;
 	Fl_Box *classSectionInstructionsBox;
+	Fl_Scroll *scroll;
 
 	//Go Back window Components
 	Fl_Window *backWindow;
