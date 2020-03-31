@@ -25,6 +25,7 @@
 
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
+#include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Check_Browser.H>
@@ -34,6 +35,7 @@
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_File_Chooser.H>
+#include <FL/Fl_Scroll.H>
 
 // ASU LOGO
 Fl_PNG_Image LOGO_BLACK1("./Images/asu_sunburst_rgb_maroongold_150ppi.png");
@@ -59,7 +61,12 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 
 	//reference to the homepage window
 	prevWindow = win;
+	//masterWindow = new Fl_Window(750, 760, "Capstone Team Assignment System");
 	masterWindow = new Fl_Window(750, 760, "Capstone Team Assignment System");
+
+	scroll =  new Fl_Scroll(0,0,750,760);
+
+	scroll->color(ASU_WHITE);//background color
 
 	cookiedataDE = cookies;
 	ClassSectionJson CSJson;
@@ -77,12 +84,6 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 
 	//end
 	cout<<"Read in all courses!"<<endl;
-//<<<<<<< HEAD
-	//cout<<Courses[0].Course_Code<<endl;
-	//cout<<Courses[1].Course_Code<<endl;
-//=======
-
-//>>>>>>> dev
 
 	string courses[NUM_CLASS_SECTIONS];
 	AllCourseNames = courses;
@@ -258,7 +259,8 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 	findCourses->selection_color(ASU_MAROON);
 	findCourses->callback(static_FindCoursesClick, this);
 
-	masterWindow->resizable(boxHeader);
+	scroll->end();
+	masterWindow->resizable(scroll);
 
 	masterWindow->color(ASU_WHITE);
 	masterWindow->box(FL_BORDER_BOX);
