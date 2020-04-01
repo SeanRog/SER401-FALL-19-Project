@@ -764,11 +764,11 @@ static void getCookiesCB1(WebKitCookieManager *manager,
 	for (GList *l = dataList; l && l->data; l = g_list_next(l)) {
 
 		cookies = (SoupCookie*) l->data;
-		cout << cookies->name << endl;
+	/*	cout << cookies->name << endl;
 		cout << cookies->value << endl;
 		cout << cookies->domain << endl;
 		cout << cookies->path << endl;
-		cout << cookies->expires << endl;
+		cout << cookies->expires << endl;*/
 
 		//add the current cookie to the cookiedata vector
 		cookiedata1.push_back(*cookies);
@@ -819,7 +819,7 @@ static gboolean load_changedWebViewCb1(WebKitWebView *webView,
 			Auth1 = true;
 			//quit the mini-browser
 			gtk_widget_destroy(main_windowSP);
-			gtk_main_quit();
+			//gtk_main_quit();
 
 
 		}

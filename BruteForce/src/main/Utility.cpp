@@ -978,11 +978,17 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 
 	}
 
+
+	cout<<"All projects to be assigned"<<endl;
+
 	for (int i = 0; i < numProjects; i++) {
+
 
 		project = *(projectPool + i);
 		highestScore = 0;
 		highestClassSection = 0;
+
+		cout<<project.ProjectID<<endl;
 
 //Assign the Online projects
 		if (projectPool[i].Type == 'O') {
@@ -2306,7 +2312,7 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 
 		//last project
 		if(i == numProjects-1){
-			i=0;
+			i=numProjects;
 
 					p.ProjectID = numProjects;
 
@@ -2346,11 +2352,16 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 							}
 						}
 					}
-			projectPool[numProjects-2] = p;
+			projectPool[numProjects-1] = p;
 			i = numProjects-1;
 			cout<<p.ProjectID<<"  priority:"<<p.Priority<<endl;
 		}
 	}
+	for (int i = 0; i < numProjects; i++) {
+
+		cout<<"Project#: "<<projectPool[i].ProjectID<<"  priority:"<<projectPool[i].Priority<<endl;
+	}
+
 	return projects;
 }
 

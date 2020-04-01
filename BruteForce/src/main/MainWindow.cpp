@@ -388,6 +388,8 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	doneButton->callback(static_DoneButtonClick, this);
 	progressWindow->redraw();
 
+	usleep(500000);
+
 	Fl::run();
 }
 
@@ -458,6 +460,7 @@ void teamAssignment(int num_students, int num_projects,
  *		nothing
  */
 void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
+
 
 	TeamsButton->deactivate();
 	progressBox->label("Team Assignment System Running...");
@@ -632,11 +635,11 @@ static void getCookiesCB(WebKitCookieManager *manager,
 	for (GList *l = dataList; l && l->data; l = g_list_next(l)) {
 
 		cookies = (SoupCookie*) l->data;
-		cout << cookies->name << endl;
+	/*	cout << cookies->name << endl;
 		cout << cookies->value << endl;
 		cout << cookies->domain << endl;
 		cout << cookies->path << endl;
-		cout << cookies->expires << endl;
+		cout << cookies->expires << endl;*/
 
 		//add the current cookie to the cookiedata vector
 		cookiedata.push_back(*cookies);
@@ -698,10 +701,11 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 			cout << "Canvas reached! authentication complete!" << endl;
 			Auth = true;
 
+			usleep(500000);
 			//quit the mini-browser
-
+			//gtk_main_quit();
 			gtk_widget_destroy(main_window);
-			gtk_main_quit();
+
 
 			//gtk_widget_destroy(GTK_WIDGET(webView));
 			//gtk_widget_destroy(window);

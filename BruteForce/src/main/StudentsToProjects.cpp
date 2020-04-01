@@ -472,7 +472,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 					promptBox2.labelsize(20);
 					promptBox2.labelfont(FL_HELVETICA_BOLD_ITALIC);
 
-					Fl_Box promptBox3(50, 90, 550, 20, "Negative affinity all possible combinations of teams.");
+					Fl_Box promptBox3(50, 90, 550, 20, "Negative affinity on all possible team combinations.");
 					promptBox3.align(FL_ALIGN_CENTER);
 					promptBox3.labelsize(20);
 					promptBox3.labelfont(FL_HELVETICA);
