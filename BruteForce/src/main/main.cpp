@@ -701,10 +701,50 @@ int main() {
  *Returns:
  *	int value 0.
  */
+
 int main::main_run(int projects_input, int students_input, string filepath,
+/*<<<<<<< HEAD
+		Fl_Progress *pb, Fl_Text_Buffer *tb, vector<Student> studentsFromCanvas) {
+
+
+	cout << "main.cpp line 704" << endl;
+	//for (int j = 0; j < studentsFromCanvas.size(); j++){
+
+		for (int k = 0; k < studentsFromCanvas.size(); k++){
+			cout << "main.cpp line 708" << endl;
+			cout << "ClassID: " << studentsFromCanvas.at(k).ClassID << endl;
+			cout << "StudentID: " << studentsFromCanvas.at(k).StudentID << endl;
+			cout << "ASUriteID: " << studentsFromCanvas.at(k).ASUriteID << endl;
+			cout << "name: " << studentsFromCanvas.at(k).name << endl;
+
+			cout<<"Affinity: "<<endl;
+			for(int x = 0;x < 6;x++){
+				cout << studentsFromCanvas.at(k).StudentAffinity[x].first << studentsFromCanvas.at(k).StudentAffinity[x].second << endl;
+			}
+
+			cout << "skill scores: " << endl;
+			for(int x = 0; x < 14 ;x++){
+				cout << "skill " << to_string(x+1) << ": " << studentsFromCanvas.at(k).Skills[x] << endl;
+			}
+
+			cout << "Availability: " << endl;
+			for(int x = 0; x < 4 ;x++){
+				cout << studentsFromCanvas.at(k).Availability[x] << endl;
+			}
+		}
+	//}
+	cout << "main.cpp line 730" << endl;
+	return 1;
+}
+
+//change main_run2 back to main_run after testing
+int main::main_run2(int projects_input, int students_input, string filepath,
+		Fl_Progress *pb, Fl_Text_Buffer *tb, vector<Student> studentsFromCanvas) {
+=======*/
 		Fl_Progress *pb, Fl_Text_Buffer *tb,
 		vector<vector<Student>> allStudents,
 		vector<ClassSection> allClassSections, vector<SoupCookie> cookies) {
+//>>>>>>> dev
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
 
@@ -744,9 +784,10 @@ int main::main_run(int projects_input, int students_input, string filepath,
 	//creating random sample Json data based inputs
 	//of number of projects, and number of students
 	util.makeProjectJSON(NUM_PROJECTS, NUM_SKILLS);
-	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS);
+	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS, allStudents);
 	//create the CSV file of random projects
 	util.makeProjectCSV(NUM_PROJECTS, NUM_SKILLS);
+	util.makeStudentCSV(NUM_PROJECTS, NUM_SKILLS);
 
 	cout << "main " << filepath << endl;
 	for (int i = filepath.length() - 1; i >= 0; i--) {

@@ -479,7 +479,11 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 	main m;
 
 	m.main_run(num_projects, num_students, mwProjfile, progressBar,
+/*<<<<<<< HEAD
+			terminalBuffer, studentsFromCanvas);
+=======*/
 			terminalBuffer, mwAllStudents, mwCourses, mwCookies);
+//>>>>>>> dev
 
 	//join threads
 	for (int i = 0; i < 1; i++) {
