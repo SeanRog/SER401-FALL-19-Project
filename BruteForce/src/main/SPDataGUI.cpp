@@ -40,6 +40,7 @@
 #include <FL/Fl_RGB_Image.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Widget.H>
+#include <FL/Fl_Scroll.H>
 #include <FL/Fl_File_Chooser.H>
 
 Fl_PNG_Image Pipes1("./Images/Steampunk/PipesBrick1.png");
@@ -167,7 +168,11 @@ SPDataGUI::SPDataGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 		Steam2Pngs[i] = new Fl_PNG_Image(png_char);
 	}
 
-	masterWindow = new Fl_Window(750, 790, "Capstone Team Assignment System");
+	masterWindow = new Fl_Window(750, 800, "Capstone Team Assignment System");
+    //add in the scroll bar
+	scroll =  new Fl_Scroll(0,0,750,800);
+
+	scroll->color(DARK_TAUPE);//background color
 
 	//background box 3 - background file chooser
 	Fl_Box boxBack3(10, 170, 730, 100);
@@ -352,6 +357,9 @@ SPDataGUI::SPDataGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 	steamBox2 = new Fl_Box(220, 650, 150, 150);
 	steamBox2->box(FL_NO_BOX);
 	steamBox2->image(SteamPngs[12]);
+
+	scroll->end();
+	masterWindow->resizable(scroll);
 
 	masterWindow->color(DARK_TAUPE);
 	masterWindow->box(FL_BORDER_BOX);
@@ -675,31 +683,61 @@ void SPDataGUI::ConfirmClick(Fl_Widget *w) {
 void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 
 	//store the selected class sections into a new Class section Array.
-		//for use in the assignment system.
-		ClassSection classes[num_of_selected_courses];
+	//for use in the assignment system.
+	ClassSection classes[num_of_selected_courses];
 
-		for (int i = 0; i < num_of_all_courses; i++) {
-			for (int j = 0; j < num_of_selected_courses; j++) {
-
-
+	for (int i = 0; i < num_of_all_courses; i++) {
+		for (int j = 0; j < num_of_selected_courses; j++) {
 			if((AllCourses[i].Course_Code).compare(SelectedCourseNames[j]) == 0){
 				classes[j] = AllCourses[i];
-
 			}
-
-			}
+/*<<<<<<< HEAD
+=======*/
 
 		}
-		SelectedCourses=classes;
+	}
+	SelectedCourses=classes;
+	vector <ClassSection> selectedcourses;
 
-		for (int j = 0; j < num_of_selected_courses; j++) {
 
-			cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
-		}
+	for (int j = 0; j < num_of_selected_courses; j++) {
 
+		cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
+		selectedcourses.push_back(classes[j]);
+//>>>>>>> dev
+	}
+
+	/*SelectedCourses=classes;
+	for (int j = 0; j < num_of_selected_courses; j++) {
+		cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
+	}*/
+	//Get the Quiz data from the student survey.
+	string QuizName = fileInput_StudentQuizName->value();
+    CookieManager CM;
+    Utility util;
+
+    //Get Student data from each course
+	// test with one course
+	//CM.getStudents(cookiedataDE, 47570);
+	vector<vector<Student>> allStudents;
+	vector<Student> students;
+
+	for (int j = 0; j < num_of_selected_courses; j++) {
+		students = CM.getStudents(cookiedataSP, classes[j].OfficialClassID);
+		CM.getQuizzes(cookiedataSP, classes[j].OfficialClassID, QuizName, students);
+
+		students = CM.currentStudents;
+		allStudents.push_back(students);
+	}
+
+	// debug students
+	cout << endl << "Debugging Students" << endl;
+	for (int j = 0; j < allStudents.size(); j++){
+
+		for (int k = 0; k < allStudents.at(j).size(); k++){
 
 			//Get the Quiz data from the student survey.
-			string QuizName = fileInput_StudentQuizName->value();
+			/*string QuizName = fileInput_StudentQuizName->value();
 		    CookieManager CM;
 		    Utility util;
 
@@ -710,43 +748,29 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 			vector<Student> students;
 			for (int j = 0; j < num_of_selected_courses; j++) {
 				students = CM.getStudents(cookiedataSP, classes[j].OfficialClassID);
+//>>>>>>> dev*/
 
-				CM.getQuizzes(cookiedataSP, classes[j].OfficialClassID, QuizName, students);
-				students = CM.currentStudents;
+			cout << "ClassID: " << allStudents.at(j).at(k).ClassID << endl;
+			cout << "StudentID: " << allStudents.at(j).at(k).StudentID << endl;
+			cout << "ASUriteID: " << allStudents.at(j).at(k).ASUriteID << endl;
+			cout << "name: " << allStudents.at(j).at(k).name << endl;
 
-				allStudents.push_back(students);
+			cout<<"Affinity: "<<endl;
+			for(int x = 0;x < 6;x++){
+				cout << allStudents.at(j).at(k).StudentAffinity[x].first << allStudents.at(j).at(k).StudentAffinity[x].second << endl;
 			}
 
-			// debug students
-			cout << endl << "Debugging Students" << endl;
-			for (int j = 0; j < allStudents.size(); j++){
-				for (int k = 0; k < allStudents.at(j).size(); k++){
-					cout << "ClassID: "<< allStudents.at(j).at(k).ClassID << endl;
-					cout << "StudentID: "<< allStudents.at(j).at(k).StudentID << endl;
-					cout << "ASUriteID: "<< allStudents.at(j).at(k).ASUriteID << endl;
-					cout<<"name: "<<allStudents.at(j).at(k).name<<endl;
-
-					cout<<"Affinity: "<<endl;
-					for(int x = 0;x< 6;x++){
-					cout<<allStudents.at(j).at(k).StudentAffinity[x].first<<allStudents.at(j).at(k).StudentAffinity[x].second<<endl;
-					}
-
-					cout<<"skill scores: "<<endl;
-					for(int x = 0; x<14 ;x++){
-					cout<<"skill "<<to_string(x+1)<<": "<<allStudents.at(j).at(k).Skills[x]<<endl;
-					}
-
-					cout<<"Availability: "<<endl;
-					for(int x = 0; x<4 ;x++){
-					cout<<allStudents.at(j).at(k).Availability[x]<<endl;
-					}
-
-				}
+			cout << "skill scores: " << endl;
+			for(int x = 0; x < 14 ;x++){
+				cout << "skill " << to_string(x+1) << ": " << allStudents.at(j).at(k).Skills[x] << endl;
 			}
 
-
-
-
+			cout << "Availability: " << endl;
+			for(int x = 0; x < 4 ;x++){
+				cout << allStudents.at(j).at(k).Availability[x] << endl;
+			}
+		}
+	}
 
 	masterWindow->hide();
 	confirmWindow->hide();
@@ -754,6 +778,13 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 	//MainWindow mainWin;
 	SteamPunkGUI1 mainWin;
 	mainWin.SPGprojfile = projectFilePath;
+/*<<<<<<< HEAD
+	mainWin.studentsFromCanvas = allStudents;
+=======*/
+	mainWin.spCourses = selectedcourses;
+	mainWin.spAllStudents = allStudents;
+	mainWin.spCookies = cookiedataSP;
+//>>>>>>> dev
 	mainWin.callTeams(w);
 
 }

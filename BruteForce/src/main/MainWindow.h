@@ -5,6 +5,9 @@
 #include <string>
 #include <cstdlib>
 #include <stdio.h>
+#include <vector>
+#include "Student.h"
+#include "ClassSection.h"
 #include "main.h"
 
 #include <FL/Fl.H>
@@ -57,6 +60,11 @@ public:
 	bool nextWindowFlag;
 	bool Authenticated;
 	string mwProjfile;
+	vector<Student> studentsFromCanvas;
+
+	vector <ClassSection> mwCourses;
+	vector<vector<Student>>  mwAllStudents;
+	vector <SoupCookie> mwCookies;
 
 	//progress bar window
 	int barCount;

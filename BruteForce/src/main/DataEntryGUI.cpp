@@ -11,6 +11,7 @@
 #include "ClassSectionJson.h"
 #include "ClassSection.h"
 #include "CookieManager.h"
+#include "ResultWindow.h"
 #include "Utility.h"
 #include "main.h"
 
@@ -24,6 +25,7 @@
 
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
+#include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Check_Browser.H>
@@ -33,6 +35,7 @@
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_File_Chooser.H>
+#include <FL/Fl_Scroll.H>
 
 // ASU LOGO
 Fl_PNG_Image LOGO_BLACK1("./Images/asu_sunburst_rgb_maroongold_150ppi.png");
@@ -58,7 +61,12 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 
 	//reference to the homepage window
 	prevWindow = win;
+	//masterWindow = new Fl_Window(750, 760, "Capstone Team Assignment System");
 	masterWindow = new Fl_Window(750, 760, "Capstone Team Assignment System");
+
+	scroll =  new Fl_Scroll(0,0,750,760);
+
+	scroll->color(ASU_WHITE);//background color
 
 	cookiedataDE = cookies;
 	ClassSectionJson CSJson;
@@ -76,12 +84,6 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 
 	//end
 	cout<<"Read in all courses!"<<endl;
-//<<<<<<< HEAD
-	//cout<<Courses[0].Course_Code<<endl;
-	//cout<<Courses[1].Course_Code<<endl;
-//=======
-
-//>>>>>>> dev
 
 	string courses[NUM_CLASS_SECTIONS];
 	AllCourseNames = courses;
@@ -256,6 +258,9 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 	findCourses->labelsize(18);
 	findCourses->selection_color(ASU_MAROON);
 	findCourses->callback(static_FindCoursesClick, this);
+
+	scroll->end();
+	masterWindow->resizable(scroll);
 
 	masterWindow->color(ASU_WHITE);
 	masterWindow->box(FL_BORDER_BOX);
@@ -569,10 +574,12 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 
 	}
 	SelectedCourses=classes;
+	vector <ClassSection> selectedcourses;
 
 	for (int j = 0; j < num_of_selected_courses; j++) {
 
-		cout<<classes[j].Course_Name<<"  "<<classes[j].OfficialClassID<<SelectedCourses[j].Course_Code<<" "<<SelectedCourses[j].OfficialClassID<<endl;
+		cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
+		selectedcourses.push_back(classes[j]);
 	}
 
 	//Get the Quiz data from the student survey.
@@ -586,6 +593,8 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 	vector<vector<Student>> allStudents;
 	vector<Student> students;
 	for (int j = 0; j < num_of_selected_courses; j++) {
+
+
 		students = CM.getStudents(cookiedataDE, classes[j].OfficialClassID);
 
 		CM.getQuizzes(cookiedataDE, classes[j].OfficialClassID, QuizName, students);
@@ -621,10 +630,19 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 		}
 	}
 
+
 	masterWindow->hide();
 	confirmWindow->hide();
 	MainWindow mainWin;
 	mainWin.mwProjfile = dataEntryGUIFilename;
+/*<<<<<<< HEAD
+	mainWin.studentsFromCanvas = allStudents;
+=======*/
+	mainWin.mwCourses = selectedcourses;
+	mainWin.mwAllStudents = allStudents;
+	mainWin.mwCookies = cookiedataDE;
+
+//>>>>>>> dev
 	mainWin.callTeams(w);
 }
 

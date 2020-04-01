@@ -1033,6 +1033,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 								< MinProjectsPerClassSection[OnlineClassSections[j].ClassID]) {
 							classSection = OnlineClassSections[j];
 							projectPool[i].ClassID = classSection.ClassID;
+							//projectPool[i].OfficialClassID = classSection.OfficialClassID;
 							OnlineClassSections.erase(
 									OnlineClassSections.begin() + j);
 							//increment the number of projects added to this class section
@@ -1092,6 +1093,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 								< MinProjectsPerClassSection[GroundClassSections[j].ClassID]) {
 							classSection = GroundClassSections[j];
 							projectPool[i].ClassID = classSection.ClassID;
+							//projectPool[i].OfficialClassID = classSection.OfficialClassID;
 							GroundClassSections.erase(
 									GroundClassSections.begin() + j);
 							//increment the number of projects added to this class section
@@ -1145,6 +1147,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 								< MinProjectsPerClassSection[ClassSections[j].ClassID]) {
 							classSection = ClassSections[j];
 							projectPool[i].ClassID = classSection.ClassID;
+							//projectPool[i].ClassID = classSection.OfficialClassID;
 							//increment the number of projects added to this class section
 							ProjectsToClassCount[classSection.ClassID]++;
 							ClassSections.erase(ClassSections.begin() + j);
@@ -1355,7 +1358,7 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 			if(numSkills != 14) {
 				cout << "WARNING: numSkills does not equal the number of skills specified in the project schema" << endl;
 			}
-			file << "[";
+			file << "\"[";
 			for (int i = 0; i < (8); i++) {
 				if (i < (8 - 1)) {
 					if((rand() % (2 + 1)) == 0) {
@@ -1365,10 +1368,10 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 					if((rand() % (2 + 1)) == 0) {
 						file << skills[i];
 					}
-					file << "],";
+					file << "]\",";
 				}
 			}
-			file << "[";
+			file << "\"[";
 			for (int i = 8; i < (14); i++) {
 				if (i < (14 - 1)) {
 					if((rand() % (2 + 1)) == 0) {
@@ -1378,7 +1381,7 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 					if((rand() % (2 + 1)) == 0) {
 						file << skills[i];
 					}
-					file << "],";
+					file << "]\",";
 				}
 			}
 		} catch(range_error& e) {
@@ -1427,14 +1430,9 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 
 	}
 
-
-
-
-	file << "]\n}";
-
 	file.close();
 
-}
+}//end makeProjectsCSV
 
 /*************************************************
  * makeStudentJSON
@@ -1450,11 +1448,11 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
  * Returns:
  *    nothing
  */
-void Utility::makeStudentJSON(int numStud, int numSkill) {
+void Utility::makeStudentJSON(int numStud, int numSkill, vector<vector<Student>> studentsFromCanvas) {
 
 	// Variables
 	ofstream file;
-	int numStudent = numStud;
+	int numStudent = numStud - studentsFromCanvas.size();
 	int numSkills = numSkill;
 	int student_25 = (int) (numStudent * 0.25);
 	int student_50 = (int) (numStudent * 0.50);
@@ -1637,13 +1635,369 @@ void Utility::makeStudentJSON(int numStud, int numSkill) {
 				file << rand() % (5 + 1);
 			}
 		}
+
+
+		if (studentID < numStudent || studentsFromCanvas.size()> 0) {
+			file << "] },\n\n";
+		} else if (studentID == numStudent) {
+			file << "] }\n\n";
+		}
+	}
+	for(int i = 0; i < studentsFromCanvas.size(); i++) {
+		for(int j = 0; j < studentsFromCanvas.at(i).size(); j++) {
+			string asuID = studentsFromCanvas.at(i).at(j).ASUriteID;
+			/*Prints out schema: {"StudentID": (studentID#), */
+			file << "{\"ASUriteID\": \"" << asuID << "\",\n";
+
+			string studentID = to_string(studentsFromCanvas.at(i).at(j).StID);
+			/*Prints out schema: {"StudentID": (studentID#), */
+			file << "\"StudentID\": " << studentID << ",\n";
+
+			/*Prints out schema: {"name": studentName, */
+			file << "\"name\": \"" << studentsFromCanvas.at(i).at(j).name << "\",\n";
+
+			/*Prints out schema: "ClassID": (classID),*/
+			file << " \"ClassID\": " << studentsFromCanvas.at(i).at(j).ClassID << ",\n";
+
+			/*Prints out schema: {"NDA": bool, */
+			/*Prints out schema: {"IPR": bool, */
+			if(studentsFromCanvas.at(i).at(j).NDA) {
+				file << "\"NDA\": " << "true" << ",\n";
+			} else {
+				file << "\"NDA\": " << "false" << ",\n";
+			}
+			if(studentsFromCanvas.at(i).at(j).IPR) {
+				file << "\"IPR\": " << "true" << ",\n";
+			} else {
+				file << "\"IPR\": " << "false" << ",\n";
+			}
+			/*file << "\"NDA\": " << to_string(studentsFromCanvas.at(i).at(j).NDA) << ",\n";
+			file << "\"IPR\": " << to_string(studentsFromCanvas.at(i).at(j).IPR) << ",\n";*/
+
+			/*Prints out schema: "Skills": [(skills)],*/
+			file << " \"Skills\": [";
+			for (int k = 0; k < numSkills; k++) {
+				if (k < (numSkills - 1)) {
+					file << studentsFromCanvas.at(i).at(j).Skills[k] << ",";
+				} else {
+					file << studentsFromCanvas.at(i).at(j).Skills[k] << "],\n";
+				}
+			}
+
+			/*Prints out schema: "StudentAffinity": null OR [(studentID), T/F]*/
+			file << " \"StudentAffinity\": ";
+			if(studentsFromCanvas.at(i).at(j).StudentAffinity.size() == 0) {
+				file << "null,\n";
+			} else {
+				file << "[";
+				for (int k = 0; k < studentsFromCanvas.at(i).at(j).StudentAffinity.size(); k++) {
+					file << "\"" << studentsFromCanvas.at(i).at(j).StudentAffinity.at(k).first << "\", ";
+					if(studentsFromCanvas.at(i).at(j).StudentAffinity.at(k).second) {
+						if(k == studentsFromCanvas.at(i).at(j).StudentAffinity.size() - 1) {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/ << "true";
+						} else {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/ << "true, ";
+						}
+					} else {
+						if(k == studentsFromCanvas.at(i).at(j).StudentAffinity.size() - 1) {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/ << "false";
+						} else {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/ << "false, ";
+						}
+					}
+
+				}
+				file << "],\n";
+			}
+
+
+
+
+			/*Prints out schema: "Availability": [(Availability)] }*/
+			file << " \"Availability\": [";
+			for (int k = 0; k < 4; k++) {
+				if (k < 3) {
+					file << studentsFromCanvas.at(i).at(j).Availability[k] << ",";
+				} else {
+					file << studentsFromCanvas.at(i).at(j).Availability[k];
+				}
+			}
+			if (j < studentsFromCanvas.at(i).size()) {
+				file << "] },\n\n";
+			} else if (j == studentsFromCanvas.at(i).size()) {
+				file << "] }\n\n";
+			}
+		}
+	}
+
+	file << "]\n}";
+
+	file.close();
+
+}
+
+
+/*************************************************
+ * makeStudentCSV
+ *
+ * Description:
+ *   This function creates a new CSV file with random data for
+ *   a specified number of students.
+ *
+ * Arguments:
+ * int numStud, - number of students to create in the CSV file
+ * int numSkill
+ *
+ * Returns:
+ *    nothing
+ */
+void Utility::makeStudentCSV(int numStud, int numSkill) {
+
+	// Variables
+	ofstream file;
+	int numStudent = numStud;
+	int numSkills = numSkill;
+	int student_25 = (int) (numStudent * 0.25);
+	int student_50 = (int) (numStudent * 0.50);
+	int student_75 = (int) (numStudent * 0.75);
+
+	// opening file in write mode
+	//file.open("newStudents.json", ios::out);
+	file.open("newStudents.CSV", ios::out);
+
+	//Start of CSV file
+	//file << "{ \n\"students\":[\n";
+	file << "ASUriteID,StudentID,name,ClassID,NDA,IPR,Skills,StudentAffinity,Availability\n";
+	//Loops through studentIDs to print
+	for (int studentID = 1; studentID <= numStudent; studentID++) {
+
+		string asuID = "ASU" + to_string(studentID);
+		/*Prints out schema: {"StudentID": (studentID#), */
+		//file << "{\"ASUriteID\": \"" << asuID << "\",\n";
+		file << asuID << ",";
+
+		/*Prints out schema: {"StudentID": (studentID#), */
+		//file << "\"StudentID\": " << studentID << ",\n";
+		file << studentID << ",";
+
+		/*Prints out schema: {"StudentID": (studentID#), */
+		//file << "\"name\": \"" << names[studentID] << "\",\n";
+		file << names[studentID] << ",";
+
+		/*Prints out schema: "ClassID": (classID), classID is divided
+		 * equally into 4 sections   */
+		/*if (studentID <= student_25) {
+			file << " \"ClassID\": 0,\n";
+		}
+		if (studentID > student_25 && studentID <= student_50) {
+			file << " \"ClassID\": 1,\n";
+		}
+		if (studentID > student_50 && studentID <= student_75) {
+			file << " \"ClassID\": 2,\n";
+		}
+		if (studentID > student_75 && studentID <= numStudent) {
+			file << " \"ClassID\": 3,\n";
+		}*/
+		if (studentID <= student_25) {
+			file << "0,";
+			}
+		if (studentID > student_25 && studentID <= student_50) {
+			file << "1,";
+		}
+		if (studentID > student_50 && studentID <= student_75) {
+			file << "2,";
+		}
+		if (studentID > student_75 && studentID <= numStudent) {
+			file << "3,";
+		}
+
+		/*Prints out schema: {"NDA": bool, */
+		/*Prints out schema: {"IPR": bool, */
+		//5 percent of students will not want to sign the agreements.
+		int percent = (int) numStudent * (0.05);
+		/*if (studentID < (percent + 1)) {
+			file << "\"NDA\": false,\n";
+			file << "\"IPR\": false,\n";
+		} else {
+			file << "\"NDA\": true,\n";
+			file << "\"IPR\": true,\n";
+		}*/
+
+		if (studentID < (percent + 1)) {
+			file << "0,";
+			file << "0,";
+		} else {
+			file << "1,";
+			file << "1,";
+		}
+
+		/*Prints out schema: "Skills": [(skills)],  ramdomly generates skills
+		 * with values 0-4, total skills given as a parameter         */
+		//file << " \"Skills\": [";
+		file << "\"[";
+		for (int i = 0; i < numSkills; i++) {
+			if (i < (numSkills - 1)) {
+				file << rand() % (4 + 1) << ",";
+			} else {
+				//file << rand() % (4 + 1) << "],\n";
+				file << rand() % (4 + 1) << "]\",";
+			}
+		}
+
+		/*Prints out schema: "StudentAffinity": null OR [(studentID), T/F]
+		 * negative affinity: every 1/3 of students gets a randomized negative
+		 *                  affinity for another Student
+		 * positive affinity: every 1/4 of students gets a randomized positive
+		 *                  affinity for another Student
+		 *
+		 * It can fall where 1 student has a positive & negative affinity (1/12)
+		 * Else it will print "null"
+		 */
+		//file << " \"StudentAffinity\": ";
+		if (studentID % 3 == 0 || studentID % 4 == 0) {
+
+			//Negative affinity matches
+			int rand_1_25 = rand() % (student_25 + 1);
+			while (rand_1_25 == studentID) {
+				rand_1_25 = rand() % (student_25 + 1);
+			}
+
+			int rand_1_50 = rand() % (student_50 - student_25 + 1) + student_25;
+			while (rand_1_50 == studentID) {
+				rand_1_50 = rand() % (student_50 - student_25 + 1) + student_25;
+			}
+
+			int rand_1_75 = rand() % (student_75 - student_50 + 1) + student_50;
+			while (rand_1_75 == studentID) {
+				rand_1_75 = rand() % (student_75 - student_50 + 1) + student_50;
+			}
+
+			int rand_1_100 = rand() % (numStudent - student_75 + 1)
+					+ student_75;
+			while (rand_1_100 == studentID) {
+				rand_1_100 = rand() % (numStudent - student_75 + 1)
+						+ student_75;
+			}
+
+			//Positive affinity matches
+			int rand_2_25 = rand() % (student_25 + 1);
+			while (rand_2_25 == studentID || rand_2_25 == rand_1_25) {
+				rand_2_25 = rand() % (student_25 + 1);
+			}
+
+			int rand_2_50 = rand() % (student_50 - student_25 + 1) + student_25;
+			while (rand_2_50 == studentID || rand_2_50 == rand_1_50) {
+				rand_2_50 = rand() % (student_50 - student_25 + 1) + student_25;
+			}
+
+			int rand_2_75 = rand() % (student_75 - student_50 + 1) + student_50;
+			while (rand_2_75 == studentID || rand_2_75 == rand_1_75) {
+				rand_2_75 = rand() % (student_75 - student_50 + 1) + student_50;
+			}
+
+			int rand_2_100 = rand() % (numStudent - student_75 + 1)
+					+ student_75;
+			while (rand_2_100 == studentID || rand_2_100 == rand_1_100) {
+				rand_2_100 = rand() % (numStudent - student_75 + 1)
+						+ student_75;
+			}
+
+			//printing out affinity
+			file << "\"[";
+			if (studentID % 3 == 0) {
+				if (studentID < student_25) {
+					//file << "\"ASU" << rand_1_25 << "\", false";
+					file << "ASU" << rand_1_25 << " 0,";
+				}
+				if (studentID >= student_25 && studentID < student_50) {
+					//file << "\"ASU" << rand_1_50 << "\", false";
+					file << "ASU" << rand_1_50 << " 0,";
+				}
+				if (studentID >= student_50 && studentID < student_75) {
+					//file << "\"ASU" << rand_1_75 << "\", false";
+					file << "ASU" << rand_1_75 << " 0,";
+				}
+				if (studentID >= student_75 && studentID <= numStudent) {
+					//file << "\"ASU" << rand_1_100 << "\", false";
+					file << "ASU" << rand_1_100 << " 0,";
+				}
+			}
+			if (studentID % 4 == 0) {
+				if (studentID % 3 != 0) {
+					if (studentID < student_25) {
+						//file << "\"ASU" << rand_2_25 << "\", true";
+						file << "ASU" << rand_2_25 << " 1,";
+					}
+					if (studentID >= student_25 && studentID < student_50) {
+						//file << "\"ASU" << rand_2_50 << "\", true";
+						file << "ASU" << rand_2_50 << " 1,";
+					}
+					if (studentID >= student_50 && studentID < student_75) {
+						//file << "\"ASU" << rand_2_75 << "\", true";
+						file << "ASU" << rand_2_75 << " 1,";
+					}
+					if (studentID >= student_75 && studentID <= numStudent) {
+						//file << "\"ASU" << rand_2_100 << "\", true";
+						file << "ASU" << rand_2_100 << " 1,";
+					}
+				}
+				if (studentID % 3 == 0) {
+					if (studentID < student_25) {
+						//file << ", " << "\"ASU" << rand_2_25 << "\", true";
+						file << "ASU" << rand_2_25 << " 1,";
+					}
+					if (studentID >= student_25 && studentID < student_50) {
+						//file << ", " << "\"ASU" << rand_2_50 << "\", true";
+						file << "ASU" << rand_2_50 << " 1,";
+					}
+					if (studentID >= student_50 && studentID < student_75) {
+						//file << ", " << "\"ASU" << rand_2_75 << "\", true";
+						file << "ASU" << rand_2_75 << " 1,";
+					}
+					if (studentID >= student_75 && studentID <= numStudent) {
+						//file << ", " << "\"ASU" << rand_2_100 << "\", true";
+						file << "ASU" << rand_2_100 << " 1,";
+					}
+				}
+			}
+			file << "]\",";
+		} else {
+			file << "null,";
+		}
+
+		/*Prints out schema: "Availability": [(Availability)] }
+		 * ramdomly generates 4 times with values 0-5
+		 */
+		/*file << " \"Availability\": [";
+		for (int i = 0; i < 4; i++) {
+			if (i < 3) {
+				file << rand() % (5 + 1) << ",";
+			} else {
+				file << rand() % (5 + 1);
+			}
+		}
 		if (studentID < numStudent) {
 			file << "] },\n\n";
 		} else if (studentID == numStudent) {
 			file << "] }\n\n";
 		}
 	}
-	file << "]\n}";
+	file << "]\n}";*/
+	file << "\"[";
+		for (int i = 0; i < 4; i++) {
+			if (i < 3) {
+				file << rand() % (5 + 1) << ",";
+			} else {
+				file << rand() % (5 + 1);
+			}
+		}
+		if (studentID < numStudent) {
+			file << "]\"\n";
+		} else if (studentID == numStudent) {
+			file << "]\"";
+		}
+	}
+	//file << "]\n";
 
 	file.close();
 
@@ -2031,6 +2385,84 @@ int Utility::getAssignmentID(int quiz_ID, string filename) {
 	return assignment_ID;
 
 }
+/*********************************************************
+ * getCategoryID
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Reads in all the group categories from a Json file, and searches for the category ID of the
+ * 	group category whose course_id that matches the parameter course_id .
+ *
+ *Arguments:
+ *	string
+ *
+ *Returns:
+ *  int value of the assignment ID
+ */
+int Utility::getCategoryID(int courseID, string filename) {
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	int group_category_ID;
+
+	const int numberOfCategories = obj["categories"].size();
+
+
+	for (int i = 0; i < numberOfCategories; i++) {
+
+		//make sure that the course ids match
+				if (courseID == obj["categories"].get((int) i, "")["course_id"].asInt()) {
+		group_category_ID = obj["categories"].get((int) i, "")["id"].asInt();
+
+				}
+	}
+
+	return group_category_ID;
+}
+
+/*********************************************************
+ * getGroupID
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * 	Reads in the group data from a Json file, and searches for the Group ID of the
+ * 	group whose course_id that matches the parameter course_id .
+ *
+ *Arguments:
+ *	string
+ *
+ *Returns:
+ *  int value of the assignment ID
+ */
+int Utility::getGroupID(int course_ID ,string filename) {
+
+	ifstream ifs(filename);
+	Json::Reader reader;
+	Json::Value obj;
+	reader.parse(ifs, obj);
+
+	int group_ID;
+
+	const int numberOfCategories = obj["groups"].size();
+
+
+	for (int i = 0; i < numberOfCategories; i++) {
+
+		//make sure that the course ids match
+				if (course_ID == obj["groups"].get((int) i, "")["course_id"].asInt()) {
+					group_ID = obj["groups"].get((int) i, "")["id"].asInt();
+
+				}
+	}
+
+	return group_ID;
+}
+
 
 vector<Student> Utility::getStudentsFromJson(string filename) {
 	ifstream ifs(filename);
@@ -2056,6 +2488,7 @@ vector<Student> Utility::getStudentsFromJson(string filename) {
 	return students;
 
 }
+
 
 /*********************************************************
  * getSurveyAnswers
