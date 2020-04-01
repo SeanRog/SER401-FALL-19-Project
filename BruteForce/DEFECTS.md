@@ -44,3 +44,11 @@ ID# Name of defect (short description)
 - UX issue
 - Version: SteamPunk
 - Status: OPEN
+
+5. Text for "POST" and "SAVE" buttons after completion run over button boundaries (wrap-text needed)
+- Branch: dev
+- Cristi
+- 04/01/2020
+- UX issue
+- Version: SteamPunk
+- Status: OPEN
