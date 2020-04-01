@@ -572,6 +572,7 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
 bool Auth;
 typedef void *user_data;
 vector<SoupCookie> cookiedata;
+Fl_Window *backWindow2;
 
 //callback when the window is closed via the close button
 static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
@@ -588,6 +589,12 @@ static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
 static gboolean closeWebViewCb(WebKitWebView *webView, GtkWidget *window) {
 	gtk_widget_destroy(window);
 	return TRUE;
+}
+
+static void minimizeWindowCb(GtkWidget *widget, GtkWidget *window) {
+
+	gtk_widget_destroy(window);
+
 }
 
 /*****************************************************************************
@@ -640,6 +647,15 @@ static void getCookiesCB(WebKitCookieManager *manager,
 	//g_list_free_full(dataList, (GDestroyNotify)soup_cookie_free);
 
 }
+GtkWidget *main_window;
+
+void OkClick2(Fl_Widget *w) {
+
+	backWindow2->hide();
+
+	//gtk_main_quit();
+}
+
 
 /*****************************************************************************
  * load_changedWebViewCb
@@ -681,17 +697,65 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 
 			cout << "Canvas reached! authentication complete!" << endl;
 			Auth = true;
+
 			//quit the mini-browser
 
+			gtk_widget_destroy(main_window);
+			gtk_main_quit();
+
+			//gtk_widget_destroy(GTK_WIDGET(webView));
 			//gtk_widget_destroy(window);
 			//gtk_window_close(GTK_WINDOW(window));
 			//gtk_window_iconify(GTK_WINDOW(window));
-			gtk_main_quit();
+			//gtk_main_quit();
+
+			//cout << "Closed mini-browser" << endl;
+			//closeWebViewCb(webView, window);
 
 			//TO-DO Find a way to close the browser window correctly,
 			//as it eats up memory while open.
 
+/*				backWindow2 = new Fl_Window(650, 220, "Capstone Team Assignment System");
+				backWindow2->begin();
+
+				Fl_Box promptBox1(0, 10, 650, 50, "ATTENTION!");
+				promptBox1.align(FL_ALIGN_CENTER);
+				promptBox1.labelsize(40);
+
+				Fl_Box promptBox2(50, 70, 550, 20,
+						"Please close the mini-browser window to continue");
+				promptBox2.align(FL_ALIGN_CENTER);
+				promptBox2.labelsize(20);
+				promptBox2.labelfont(FL_HELVETICA);
+
+				/*Fl_Box promptBox3(50, 90, 550, 20, "All information entered will be lost");
+				promptBox3.align(FL_ALIGN_CENTER);
+				promptBox3.labelsize(20);
+				promptBox3.labelfont(FL_HELVETICA_BOLD_ITALIC);*/
+
+				/*Fl_Box promptBox4(50, 110, 550, 20, "Are you sure?");
+				promptBox4.align(FL_ALIGN_CENTER);
+				promptBox4.labelsize(20);
+				promptBox4.labelfont(FL_HELVETICA);*/
+
+	/*			Fl_Button OkButton(425, 150, 175, 50, "OK");
+				OkButton.color(ASU_WHITE);
+				OkButton.labelfont(FL_HELVETICA);
+				OkButton.labelcolor(ASU_BLACK);
+				OkButton.labelsize(15);
+				OkButton.selection_color(ASU_MAROON);
+				OkButton.callback(OkClick2);
+
+				backWindow2->color(ASU_GOLD);
+				backWindow2->box(FL_BORDER_BOX);
+				backWindow2->resizable(promptBox1);
+				backWindow2->end();
+				backWindow2->show();
+
+				Fl::run();*/
+
 		}
+
 	}
 
 	return TRUE;
@@ -723,7 +787,7 @@ void mini_browser() {
 	gtk_init(&argc, &argv);
 
 	// Create an 800x600 window that will contain the browser instance
-	GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
 	gtk_window_set_title(GTK_WINDOW(main_window), "ASU Canvas Authentication");
 	//create the data manager
@@ -742,8 +806,8 @@ void mini_browser() {
 
 	WebKitSettings *settings = webkit_settings_new();
 
-	g_object_set(G_OBJECT(settings), "enable-offline-web-application-cache",
-	TRUE, NULL);
+	//g_object_set(G_OBJECT(settings), "enable-offline-web-application-cache",
+	//TRUE, NULL);
 
 	// Apply the result
 	webkit_web_view_set_settings(webView, settings);
@@ -757,7 +821,7 @@ void mini_browser() {
 	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
 
 	g_signal_connect(webView, "load-changed", G_CALLBACK(load_changedWebViewCb),
-			main_window);
+			G_OBJECT(main_window));
 
 	// Load a web page into the browser instance
 	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
@@ -771,8 +835,8 @@ void mini_browser() {
 
 	// Run the main GTK+ event loop
 	gtk_main();
-	cout<<"closed?"<<endl;
-
+	//cout<<"closed?"<<endl;
+	//gtk_widget_destroy(main_window);
 
 	//terminate the window
 	//gtk_widget_destroy(main_window);
@@ -845,6 +909,7 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 //>>>>>>> dev
 	}
 
+
 	if (error == false) {
 
 		cout<<"working"<<endl;
@@ -856,8 +921,9 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 		}
 		Authenticated = Auth;
 
-
 		windowMain->hide();
+
+
 
 //<<<<<<< HEAD
 	//call to get the course information
