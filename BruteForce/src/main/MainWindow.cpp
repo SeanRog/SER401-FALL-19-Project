@@ -421,9 +421,11 @@ void animate(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 
 	int i = 0;
 	while (progressBar->value() != 100) {
+		mtx.lock();
 		Fl::check();
 		b->image(loadingPngs[i]);
 		b->redraw();
+		mtx.unlock();
 		usleep(50000);
 		i++;
 		if (i == 22) {
@@ -482,11 +484,8 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 	main m;
 
 	m.main_run(num_projects, num_students, mwProjfile, progressBar,
-/*<<<<<<< HEAD
-			terminalBuffer, studentsFromCanvas);
-=======*/
 			terminalBuffer, mwAllStudents, mwCourses, mwCookies);
-//>>>>>>> dev
+
 
 	//join threads
 	for (int i = 0; i < 1; i++) {

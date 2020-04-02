@@ -488,6 +488,8 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	doneButton->callback(static_DoneButtonClick, this);
 	progressWindow->redraw();
 
+	usleep(500000);
+
 	Fl::run();
 }
 
@@ -522,9 +524,11 @@ void animateSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 	std::this_thread::sleep_for(std::chrono::milliseconds(110));
 
 	for (int i = 0; i < 8; i++) {
+		mtx.lock();
 		Fl::check();
 		b->image(PreTrainPngs[i]);
 		b->redraw();
+		mtx.unlock();
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 		//usleep(50000);
 	}
@@ -532,9 +536,11 @@ void animateSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 	int j = 0;
 	int k = 0;
 	while (progressBar->value() != 100) {
+		mtx.lock();
 		Fl::check();
 		b->image(TrainPngs[j]);
 		b->redraw();
+		mtx.unlock();
 
 		/*b2->image(Gears1Pngs[k]);
 		 b2->redraw();
@@ -556,9 +562,11 @@ void animateSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 	}            //end while loop
 
 	for (int i = 0; i < 9; i++) {
+		mtx.lock();
 		Fl::check();
 		b->image(EndTrainPngs[i]);
 		b->redraw();
+		mtx.unlock();
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 		//usleep(50000);
 	}
@@ -612,11 +620,8 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
 	m.main_run(num_projects, num_students, SPGprojfile, progressBar,
-/*<<<<<<< HEAD
-			terminalBuffer, studentsFromCanvas);
-=======*/
 			terminalBuffer,spAllStudents, spCourses, spCookies);
-//>>>>>>> dev
+
 
 	//join threads
 	for (int i = 0; i < 1; i++) {
@@ -818,8 +823,10 @@ static gboolean load_changedWebViewCb1(WebKitWebView *webView,
 
 			Auth1 = true;
 			//quit the mini-browser
+			usleep(50000);
 			gtk_widget_destroy(main_windowSP);
-			//gtk_main_quit();
+			usleep(50000);
+			gtk_main_quit();
 
 
 		}
