@@ -440,7 +440,8 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 			topscores[j] = 0;
 		}
 		mtx.lock();
-		cout << "Project # " + to_string(projectPool[i].ProjectID)
+		cout
+				<< "Project # " + to_string(projectPool[i].ProjectID)
 						+ "  team combinations complete. " << endl;
 
 		//output to the GUI
@@ -466,7 +467,8 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	//CHECK TO SEE IF THERE ARE NO TEAMS IN THE TopTeams ARRAY.
 	//if there are no teams, that means that there was most likely negative affinity
 	//in every possible combination of student teams for these projects.
-	/*if(topTeams[0][0].TeamScore == 0){
+	for (int i2 = 0;i2 <numProjects ; i2++ ){
+	if(topTeams[i2][0].TeamScore == 0){
 		mtx.lock();
 		cout<<"ERROR: NO TEAMS COULD BE FORMED---------------!!!!!!!!!!!!!!!!!!!"<<endl;
 		//exit(1);
@@ -518,7 +520,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 
 		mtx.unlock();
 
-	}*/
+	}}
 
 
 	// START--------------------Project Set combinations
@@ -652,10 +654,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	//update the progress bar
 	mtx.lock();
 	updateProgressBar(progressIncrement * (0.65), progressBar);
-	mtx.unlock();
+
 
 	//Print out all the top teams with team scores for each project.
-	mtx.lock();
 	cout << "Top " << TOP_TEAMS << " teams for each project" << endl;
 
 	for (int i = 0; i < numProjects; i++) {

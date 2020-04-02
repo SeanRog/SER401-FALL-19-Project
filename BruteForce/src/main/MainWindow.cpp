@@ -702,8 +702,8 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 
 			usleep(500000);
 			//quit the mini-browser
-			//gtk_main_quit();
-			gtk_widget_destroy(main_window);
+			 //gtk_main_quit();
+			 gtk_widget_destroy(main_window);
 
 
 			//gtk_widget_destroy(GTK_WIDGET(webView));
