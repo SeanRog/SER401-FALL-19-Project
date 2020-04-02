@@ -18,6 +18,7 @@ ID# Name of defect (short description)
 - 03/04/2020
 - Run-time error
 - Executed application from branch Canvas1 with 25 projects and 125 students.
+- Status: CLOSED
 
 2. Terminate error called after throwing an instance of 'JSON::LogicError'
 - Branch: dev
@@ -25,6 +26,8 @@ ID# Name of defect (short description)
 - 03/29/2020
 - Run-time error
 - Version: SteamPunk | # of Projects: 10 | # of Students: 40 | Project file used: 100Projects.csv
+- Cause: Incorrect .csv file used - task opened to add instructions for testing system.
+- Status: OPEN
 
 3. Cannot view "Continue" button on laptop screen
 - Branch: dev
@@ -32,6 +35,7 @@ ID# Name of defect (short description)
 - 03/29/2020
 - UX issue
 - Version: SteamPunk
+- Status: CLOSED
 
 4. No message displayed for when there are no class sections for selected semester and year
 - Branch: dev
@@ -39,3 +43,4 @@ ID# Name of defect (short description)
 - 03/29/2020
 - UX issue
 - Version: SteamPunk
+- Status: OPEN
