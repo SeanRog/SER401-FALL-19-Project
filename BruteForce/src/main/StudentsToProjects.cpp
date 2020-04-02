@@ -480,7 +480,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 			cout<<" "<<endl;}
 
 
-		backWindow3 = new Fl_Window(750, 220, "Capstone Team Assignment System");
+		backWindow3 = new Fl_Window(650, 220, "Capstone Team Assignment System");
 					backWindow3->begin();
 
 					Fl_Box promptBox1(0, 10, 650, 50, "ATTENTION!");
@@ -493,7 +493,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 					promptBox2.labelsize(20);
 					promptBox2.labelfont(FL_HELVETICA_BOLD_ITALIC);
 
-					Fl_Box promptBox3(50, 90, 550, 20, "Negative affinity on all team combinations for 1 or more projects.");
+					Fl_Box promptBox3(50, 90, 550, 20, "Could not find any team combinations for 1 or more projects.");
 					promptBox3.align(FL_ALIGN_CENTER);
 					promptBox3.labelsize(20);
 					promptBox3.labelfont(FL_HELVETICA);

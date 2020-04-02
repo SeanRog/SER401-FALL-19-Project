@@ -1692,7 +1692,7 @@ void Utility::makeStudentJSON(int numStud, int numSkill, vector<vector<Student>>
 
 			/*Prints out schema: "ClassID": (classID),*/
 			//file << " \"ClassID\": " << studentsFromCanvas.at(i).at(j).ClassID << ",\n";
-			file << " \"ClassID\": " << to_string(3) << ",\n";
+			file << " \"ClassID\": " << to_string(0) << ",\n";
 
 			/*Prints out schema: {"NDA": bool, */
 			/*Prints out schema: {"IPR": bool, */
