@@ -62,6 +62,8 @@
 #include <stdio.h>
 #include <chrono>
 #include <libsoup/soup.h>
+#include <mutex>
+
 
 #include <bits/stdc++.h>
 #include "sys/types.h"
@@ -83,6 +85,7 @@ using namespace std::chrono;
 int ResultWindow::count = 0;
 vector<ClassSection> ResultWindow::courses;
 vector<SoupCookie> ResultWindow::cookies;
+mutex mtx;
 
 /*********************************************************
  * parseLine
@@ -540,6 +543,7 @@ void threadFunction(Student studentPool[], Project projectPool[],
 	}
 
 	//print out information to the console for debugging purposes
+	mtx.lock();
 	cout << "Class section # " << classSection << endl;
 	cout << "numProjects: " << numProjects << endl;
 	cout << "P2: " << PCOUNT_2 << endl;
@@ -549,6 +553,7 @@ void threadFunction(Student studentPool[], Project projectPool[],
 	cout << "S2: " << COUNT_2 << endl;
 	cout << "S1: " << COUNT_1 << endl;
 	cout << "S0: " << COUNT_0 << endl;
+	mtx.unlock();
 
 	StudentsToProjects x;
 	if (COUNT_2 != 0 && PCOUNT_2 != 0) {
@@ -576,6 +581,7 @@ void threadFunction(Student studentPool[], Project projectPool[],
 	}
 
 	//output to the GUI
+	mtx.lock();
 	string output = +"Class Section #" + to_string(classSection)
 			+ " Assignment Complete!\n";
 	int length = output.length();
@@ -586,6 +592,7 @@ void threadFunction(Student studentPool[], Project projectPool[],
 	terminal->text("");
 	terminal->append(output_char);
 	terminal->append(text);
+	mtx.unlock();
 
 }    //end threadFunction
 
@@ -907,7 +914,7 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 		}
 	}
 
-	cout << "ASUriteID|StudentID|ClassID: ";
+/*	cout << "ASUriteID|StudentID|ClassID: ";
 
 	//Print out for testing
 	for (int i = 0; i < NUM_STUDENTS; i++) {
@@ -915,7 +922,7 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 				<< "|" << STUDENT_POOL[i].ClassID << "  ";
 	}
 
-	cout << endl;
+	cout << endl;*/
 
 	//create a thread for each class section. store each thread in threads[]
 	thread threads[NUM_CLASS_SECTIONS];
@@ -927,7 +934,7 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 		Student *STUDENT_POOL_SECTION_X = new Student[studentsInSections[i]];
 		int indexToAddStudent = 0; //used to add a student to STUDENT_POOL_SECTION_X[] from STUDENT_POOL[]
 
-		cout << "StudentIDs in Class Section " << to_string(i) << ": ";
+		//cout << "StudentIDs in Class Section " << to_string(i) << ": ";
 
 		for (int j = 0; j < NUM_STUDENTS; j++) {
 			if (STUDENT_POOL[j].ClassID == i) {
@@ -951,15 +958,15 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 		}
 
 		//sort the projects based on priority
-		cout << endl;
+		//cout << endl;
 		util.PriorityPartition(PROJECT_POOL_SECTION_X, projectsInSections[i], 2,
 				1, 0);
 
 		for (int j = 0; j < studentsInSections[i]; j++) {
-			cout << STUDENT_POOL_SECTION_X[j].StudentID << " ";
+			//cout << STUDENT_POOL_SECTION_X[j].StudentID << " ";
 		}
 
-		cout << "Total: " + to_string(studentsInSections[i]) << endl;
+		//cout << "Total: " + to_string(studentsInSections[i]) << endl;
 		//threadFunction(STUDENT_POOL_SECTION_X, PROJECT_POOL_SECTION_X, studentsInSections[i], projectsInSections[i], NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS, results, i);
 		//threads[i] = thread (threadFunction, STUDENT_POOL, PROJECT_POOL, NUM_STUDENTS, NUM_PROJECTS, NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS);
 

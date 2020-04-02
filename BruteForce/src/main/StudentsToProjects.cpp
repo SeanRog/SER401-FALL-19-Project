@@ -59,6 +59,7 @@
 #include "Utility.h"
 #include "ResultWindow.h"
 #include "GUIStyles.h"
+#include "main.h"
 
 #include <FL/Fl.H>
 #include <FL/Fl_Progress.H>
@@ -75,6 +76,8 @@
 #include <algorithm>
 #include <fstream>
 #include <string>
+#include <mutex>
+
 
 #include <bits/stdc++.h>
 #include "sys/types.h"
@@ -86,6 +89,7 @@ int ResultWindow::permutations = 0;
 int ResultWindow::swaps = 0;
 int ResultWindow::project_pool[5][200]= {};
 vector<Team> ResultWindow::studentTeams;
+//mutex mtx;
 
 //Constructor
 StudentsToProjects::StudentsToProjects() {
@@ -194,6 +198,7 @@ int progressBarValue = 0;
  *  integer value.
  */
 void StudentsToProjects::updateProgressBar(int num, Fl_Progress *pb) {
+
 	progressBarValue += pb->value() + num;
 	pb->value(progressBarValue / 100.0);
 	char percent[10];
@@ -201,6 +206,7 @@ void StudentsToProjects::updateProgressBar(int num, Fl_Progress *pb) {
 	pb->label(percent);
 	pb->redraw();
 	Fl::check();
+
 }
 
 Fl_Window *backWindow3;
@@ -260,7 +266,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	//used to store the current team combinaniton.
 	Team currentTeam;
 	Team temp;
-	temp.TeamScore = 99999;
+	//temp.TeamScore = 0;
 
 	//used to store the top teams for every project.
 	Team currentTopTeams[TOP_TEAMS];
@@ -330,9 +336,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 //------------------------end skill calculations
 
 	//START--------------Team Combination process to find every student team combination for each project
-	cout << "STUDENTS TO PROJECTS ASSIGNMENT RUNNING..." << endl;
-	cout << getValueVirt() + getValuePhy()
-			<< " KB of memory usage: Start of Assignment" << endl;
+//	cout << "STUDENTS TO PROJECTS ASSIGNMENT RUNNING..." << endl;
+//	cout << getValueVirt() + getValuePhy()
+//			<< " KB of memory usage: Start of Assignment" << endl;
 
 	for (int i = 0; i < numProjects; i++) {
 
@@ -357,7 +363,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 				//for(int k = 0; k < numSkills; k++) {
 				//	teamskillscore += studentPool[studentIndexes[j] - 1].Skills[k] * projectPool[i].Skills[k];
 				//}
+				mtx.lock();
 				ResultWindow::permutations++;
+				mtx.unlock();
 			}
 			//----Now the team for this combination is formed.-----
 
@@ -427,10 +435,12 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		//for each iteration over the number of projects, add in the top teams for that project into
 		//the top teams 2d array.
 		for (int j = 0; j < TOP_TEAMS; j++) {
+			//currentTopTeams[j].projectID = projectPool[i].ProjectID;
 			topTeams[i][j] = currentTopTeams[j];
+			topTeams[i][j].project = projectPool[i];
 			topscores[j] = 0;
 		}
-
+		mtx.lock();
 		cout
 				<< "Project # " + to_string(projectPool[i].ProjectID)
 						+ "  team combinations complete. " << endl;
@@ -445,21 +455,32 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		terminal->text("");
 		terminal->append(output_char);
 		terminal->append(text);
+		mtx.unlock();
 
 	} // end i loop (for each project)
 
 	//END---------------------Team Combination process
 
 	//update the progress bar
+	mtx.lock();
 	updateProgressBar(progressIncrement * (0.35), progressBar);
-
+	mtx.unlock();
 	//CHECK TO SEE IF THERE ARE NO TEAMS IN THE TopTeams ARRAY.
 	//if there are no teams, that means that there was most likely negative affinity
 	//in every possible combination of student teams for these projects.
-	if(topTeams[0][0].TeamScore == 99999){
+	for (int i2 = 0;i2 <numProjects ; i2++ ){
+	if(topTeams[i2][0].TeamScore == 0){
+		mtx.lock();
 		cout<<"ERROR: NO TEAMS COULD BE FORMED---------------!!!!!!!!!!!!!!!!!!!"<<endl;
 		//exit(1);
-		backWindow3 = new Fl_Window(650, 220, "Capstone Team Assignment System");
+		for (int proj = 0;proj <numProjects ; proj++ ){
+			for (int f = 0; f < TOP_TEAMS; f++) {
+		cout<<topTeams[proj][f].TeamScore<<endl;
+			}
+			cout<<" "<<endl;}
+
+
+		backWindow3 = new Fl_Window(750, 220, "Capstone Team Assignment System");
 					backWindow3->begin();
 
 					Fl_Box promptBox1(0, 10, 650, 50, "ATTENTION!");
@@ -472,7 +493,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 					promptBox2.labelsize(20);
 					promptBox2.labelfont(FL_HELVETICA_BOLD_ITALIC);
 
-					Fl_Box promptBox3(50, 90, 550, 20, "Negative affinity on all possible team combinations.");
+					Fl_Box promptBox3(50, 90, 550, 20, "Negative affinity on all team combinations for 1 or more projects.");
 					promptBox3.align(FL_ALIGN_CENTER);
 					promptBox3.labelsize(20);
 					promptBox3.labelfont(FL_HELVETICA);
@@ -498,13 +519,15 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 
 					Fl::run();
 
-	}
+		mtx.unlock();
+
+	}}
 
 
 	// START--------------------Project Set combinations
 
 	// START -Project Set combinations here
-	cout << "TOP TEAMS TO PROJECTS SET RUNNING..." << endl;
+	//cout << "TOP TEAMS TO PROJECTS SET RUNNING..." << endl;
 
 	//Needed variables
 	//holds the current set of teams.
@@ -552,7 +575,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		teamNum++;
 	}
 
-	cout << "Number of duplicates Threshold : " << threshold << endl;
+	//cout << "Number of duplicates Threshold : " << threshold << endl;
 	//reset values
 	topscore = ProjectSetScore;
 	ProjectSetScore = 0;
@@ -630,7 +653,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 // END -------------------Project Set combinations
 
 	//update the progress bar
+	mtx.lock();
 	updateProgressBar(progressIncrement * (0.65), progressBar);
+
 
 	//Print out all the top teams with team scores for each project.
 	cout << "Top " << TOP_TEAMS << " teams for each project" << endl;
@@ -668,6 +693,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	cout << "Best Project Set score: " << BestProjectSetScore << endl;
 	cout << "Number of Duplicate Students: " << threshold << endl;
 
+	mtx.unlock();
 // START -------------------Duplicate Student Swapping
 
 	//set the assigned attribute for all the students on the bestSet to true.
@@ -690,8 +716,8 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	int num_assigned = numStudents - count;
 	const int NUM_UNASSIGNED = toConstInt(count);
 
-	cout << "Assigned Students : " << num_assigned << endl;
-	cout << "UnAssigned Students : " << count << endl;
+	//cout << "Assigned Students : " << num_assigned << endl;
+	//cout << "UnAssigned Students : " << count << endl;
 
 	//Find the number of placeholder students that we will need
 	int numPlaceholderStudents = util.NumOfTeamsOf4(numStudents, teamSize);
@@ -866,9 +892,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 					}
 				}
 				isduplicate = false;
-
+				mtx.lock();
 				ResultWindow::swaps++;
-
+				mtx.unlock();
 			}	             	                    	 //end j loop
 
 			//recalculate team score, now that all the duplicate
@@ -961,6 +987,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	}
 
 	//Prints out the best project set found, without duplicates.
+	mtx.lock();
 	cout << endl;
 	cout << "All duplicates Swapped out " << endl;
 	cout << "===============================================" << endl;
@@ -982,9 +1009,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		ResultWindow::studentTeams.push_back(bestSet[i]);
 
 
-		cout << "Team for project#" + to_string(bestSet[i].projectID) + " ";
+		cout << "Team for project#" + to_string(bestSet[i].project.ProjectID) + " ";
 
-		result.append("PROJECT#" + to_string(bestSet[i].projectID) + ": ");
+		result.append("PROJECT#" + to_string(bestSet[i].project.ProjectID) + ": ");
 		result.append("    Score: " + to_string(bestSet[i].TeamScore));
 		if (bestSet[i].project.Priority == 2){
 			result.append("    !High Priority!");
@@ -1035,6 +1062,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	cout << duration.count() << endl;
 	;
 	cout << endl;
+	mtx.unlock();
 
 	return result;
 }	             	    //END StudentsToProjectsAssignment
