@@ -1191,6 +1191,30 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 
 	}		  // end i num projects loop
 
+
+	//Final check to make sure that all class sections have the minimum number of porjects needed.
+	for (int j = 0; j < ClassSections.size(); j++) {
+						if (ProjectsToClassCount[ClassSections[j].ClassID]
+								< MinProjectsPerClassSection[ClassSections[j].ClassID]) {
+
+							for (int k = 0; k < numProjects; k++) {
+									//Project projectX = *(projectPool + k);
+
+									if( projectPool[k].ClassID==100){
+										//if (ProjectsToClassCount[ClassSections[j].ClassID]
+										//		< MinProjectsPerClassSection[ClassSections[j].ClassID]) {
+									//assign this project to the class section that needs it.
+										projectPool[k].ClassID = ClassSections[j].ClassID;
+										ProjectsToClassCount[ClassSections[j].ClassID]++;
+										cout<<"Assigned a project to class section. Class section# "<<ClassSections[j].ClassID
+												<<" Project# "<<projectPool[k].ProjectID<<endl;
+									}
+							}
+
+						}}
+
+
+
 	for (int k = 0; k < numClassSections; k++) {
 		cout << "Class section #" << k << " Number of Projects assigned: "
 				<< ProjectsToClassCount[k] << endl;
@@ -1652,10 +1676,14 @@ void Utility::makeStudentJSON(int numStud, int numSkill, vector<vector<Student>>
 	for(int i = 0; i < studentsFromCanvas.size(); i++) {
 		for(int j = 0; j < studentsFromCanvas.at(i).size(); j++) {
 			string asuID = studentsFromCanvas.at(i).at(j).ASUriteID;
+
+			asuID = "ASU";
+			asuID += to_string(numStud);
 			/*Prints out schema: {"StudentID": (studentID#), */
 			file << "{\"ASUriteID\": \"" << asuID << "\",\n";
 
 			string studentID = to_string(studentsFromCanvas.at(i).at(j).StID);
+			studentID = to_string(numStud);
 			/*Prints out schema: {"StudentID": (studentID#), */
 			file << "\"StudentID\": " << studentID << ",\n";
 
@@ -1663,7 +1691,8 @@ void Utility::makeStudentJSON(int numStud, int numSkill, vector<vector<Student>>
 			file << "\"name\": \"" << studentsFromCanvas.at(i).at(j).name << "\",\n";
 
 			/*Prints out schema: "ClassID": (classID),*/
-			file << " \"ClassID\": " << studentsFromCanvas.at(i).at(j).ClassID << ",\n";
+			//file << " \"ClassID\": " << studentsFromCanvas.at(i).at(j).ClassID << ",\n";
+			file << " \"ClassID\": " << to_string(0) << ",\n";
 
 			/*Prints out schema: {"NDA": bool, */
 			/*Prints out schema: {"IPR": bool, */
@@ -2271,8 +2300,11 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 		p.sharedHardware = atoi(
 				(dataList.at(i).at(dataList.at(i).size() - 4)).c_str());
 		p.Type = (dataList.at(i).at(dataList.at(i).size() - 3)).at(0);
-		p.ClassID = atoi(
-				(dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
+
+		//a value of 100 lets us know this class section has not been assigned
+		p.ClassID = 100;
+		//p.ClassID = atoi(
+		//		(dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
 		p.Priority = atoi(
 				(dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
 
@@ -2321,8 +2353,11 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 					p.sharedHardware = atoi(
 							(dataList.at(i).at(dataList.at(i).size() - 4)).c_str());
 					p.Type = (dataList.at(i).at(dataList.at(i).size() - 3)).at(0);
-					p.ClassID = atoi(
-							(dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
+
+					//a value of 100 lets us know this class section has not been assigned
+					p.ClassID = 100;
+					//p.ClassID = atoi(
+					//		(dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
 					p.Priority = atoi(
 							(dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
 

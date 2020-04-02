@@ -13,11 +13,14 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Text_Buffer.H>
 #include <vector>
+#include <mutex>
 #include <libsoup/soup.h>
 #include "Student.h"
 #include "ClassSection.h"
 
 using namespace std;
+
+extern mutex mtx;
 
 class main {
 
