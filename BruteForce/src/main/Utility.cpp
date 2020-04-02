@@ -1676,10 +1676,14 @@ void Utility::makeStudentJSON(int numStud, int numSkill, vector<vector<Student>>
 	for(int i = 0; i < studentsFromCanvas.size(); i++) {
 		for(int j = 0; j < studentsFromCanvas.at(i).size(); j++) {
 			string asuID = studentsFromCanvas.at(i).at(j).ASUriteID;
+
+			asuID = "ASU";
+			asuID += to_string(numStud);
 			/*Prints out schema: {"StudentID": (studentID#), */
 			file << "{\"ASUriteID\": \"" << asuID << "\",\n";
 
 			string studentID = to_string(studentsFromCanvas.at(i).at(j).StID);
+			studentID = to_string(numStud);
 			/*Prints out schema: {"StudentID": (studentID#), */
 			file << "\"StudentID\": " << studentID << ",\n";
 
@@ -1687,7 +1691,8 @@ void Utility::makeStudentJSON(int numStud, int numSkill, vector<vector<Student>>
 			file << "\"name\": \"" << studentsFromCanvas.at(i).at(j).name << "\",\n";
 
 			/*Prints out schema: "ClassID": (classID),*/
-			file << " \"ClassID\": " << studentsFromCanvas.at(i).at(j).ClassID << ",\n";
+			//file << " \"ClassID\": " << studentsFromCanvas.at(i).at(j).ClassID << ",\n";
+			file << " \"ClassID\": " << to_string(3) << ",\n";
 
 			/*Prints out schema: {"NDA": bool, */
 			/*Prints out schema: {"IPR": bool, */
