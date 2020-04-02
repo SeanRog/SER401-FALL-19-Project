@@ -709,6 +709,7 @@ void errorMessageSP() {
 bool Auth1;
 typedef void *user_data;
 vector<SoupCookie> cookiedata1;
+GtkWidget *main_windowSP;
 
 //callback when the window is closed via the close button
 static void destroyWindowCb1(GtkWidget *widget, GtkWidget *window) {
@@ -763,11 +764,11 @@ static void getCookiesCB1(WebKitCookieManager *manager,
 	for (GList *l = dataList; l && l->data; l = g_list_next(l)) {
 
 		cookies = (SoupCookie*) l->data;
-		cout << cookies->name << endl;
+	/*	cout << cookies->name << endl;
 		cout << cookies->value << endl;
 		cout << cookies->domain << endl;
 		cout << cookies->path << endl;
-		cout << cookies->expires << endl;
+		cout << cookies->expires << endl;*/
 
 		//add the current cookie to the cookiedata vector
 		cookiedata1.push_back(*cookies);
@@ -817,10 +818,9 @@ static gboolean load_changedWebViewCb1(WebKitWebView *webView,
 
 			Auth1 = true;
 			//quit the mini-browser
-			gtk_main_quit();
+			gtk_widget_destroy(main_windowSP);
+			//gtk_main_quit();
 
-			//TO-DO Find a way to close the browser window correctly,
-			//as it eats up memory while open.
 
 		}
 	}
@@ -855,9 +855,9 @@ void mini_browserSP() {
 	gtk_init(&argc, &argv);
 
 	// Create an 800x600 window that will contain the browser instance
-	GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
-	gtk_window_set_title(GTK_WINDOW(main_window), "ASU Canvas Authentication");
+	main_windowSP = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_default_size(GTK_WINDOW(main_windowSP), 800, 600);
+	gtk_window_set_title(GTK_WINDOW(main_windowSP), "ASU Canvas Authentication");
 	//create the data manager
 	WebKitWebsiteDataManager *manager = webkit_website_data_manager_new(0);
 	//create the context
@@ -881,17 +881,17 @@ void mini_browserSP() {
 	webkit_web_view_set_settings(webView, settings);
 
 	// Put the browser area into the main window
-	gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
+	gtk_container_add(GTK_CONTAINER(main_windowSP), GTK_WIDGET(webView));
 
 	// Set up callbacks so that if either the main window or the browser instance is
 	// closed, the program will exit
-	g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb1),
+	g_signal_connect(main_windowSP, "destroy", G_CALLBACK(destroyWindowCb1),
 			NULL);
 	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb1),
-			main_window);
+			main_windowSP);
 
 	g_signal_connect(webView, "load-changed",
-			G_CALLBACK(load_changedWebViewCb1), main_window);
+			G_CALLBACK(load_changedWebViewCb1), main_windowSP);
 
 	// Load a web page into the browser instance
 	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
@@ -901,7 +901,7 @@ void mini_browserSP() {
 	gtk_widget_grab_focus(GTK_WIDGET(webView));
 
 	// Make sure the main window and all its contents are visible
-	gtk_widget_show_all(main_window);
+	gtk_widget_show_all(main_windowSP);
 
 	// Run the main GTK+ event loop
 	gtk_main();

@@ -71,6 +71,10 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 	cookiedataDE = cookies;
 	ClassSectionJson CSJson;
 
+	//call to get the course information
+			CookieManager cookieMonster;
+			cookieMonster.getCourses(cookies);
+
 	//read in all the courses from canvas.
 	const string CLASS_SECTION_FILE = "./allCourses.json";
 	const int NUM_CLASS_SECTIONS = CSJson.getNumClasses(CLASS_SECTION_FILE);

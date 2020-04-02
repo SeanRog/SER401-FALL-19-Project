@@ -58,10 +58,12 @@
 #include "json/json.h"
 #include "Utility.h"
 #include "ResultWindow.h"
+#include "GUIStyles.h"
 
 #include <FL/Fl.H>
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Window.H>
+#include <FL/Fl_Widget.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Text_Buffer.H>
 
@@ -201,6 +203,15 @@ void StudentsToProjects::updateProgressBar(int num, Fl_Progress *pb) {
 	Fl::check();
 }
 
+Fl_Window *backWindow3;
+void OkClick3(Fl_Widget *w) {
+
+	exit(1);
+	//backWindow3->hide();
+
+	//gtk_main_quit();
+}
+
 /*********************************************************
  * StudentsToProjectsAssignment
  *
@@ -249,6 +260,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	//used to store the current team combinaniton.
 	Team currentTeam;
 	Team temp;
+	temp.TeamScore = 99999;
 
 	//used to store the top teams for every project.
 	Team currentTopTeams[TOP_TEAMS];
@@ -440,6 +452,54 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 
 	//update the progress bar
 	updateProgressBar(progressIncrement * (0.35), progressBar);
+
+	//CHECK TO SEE IF THERE ARE NO TEAMS IN THE TopTeams ARRAY.
+	//if there are no teams, that means that there was most likely negative affinity
+	//in every possible combination of student teams for these projects.
+	if(topTeams[0][0].TeamScore == 99999){
+		cout<<"ERROR: NO TEAMS COULD BE FORMED---------------!!!!!!!!!!!!!!!!!!!"<<endl;
+		//exit(1);
+		backWindow3 = new Fl_Window(650, 220, "Capstone Team Assignment System");
+					backWindow3->begin();
+
+					Fl_Box promptBox1(0, 10, 650, 50, "ATTENTION!");
+					promptBox1.align(FL_ALIGN_CENTER);
+					promptBox1.labelsize(40);
+
+					Fl_Box promptBox2(50, 70, 550, 20,
+							"No teams could be formed!");
+					promptBox2.align(FL_ALIGN_CENTER);
+					promptBox2.labelsize(20);
+					promptBox2.labelfont(FL_HELVETICA_BOLD_ITALIC);
+
+					Fl_Box promptBox3(50, 90, 550, 20, "Negative affinity on all possible team combinations.");
+					promptBox3.align(FL_ALIGN_CENTER);
+					promptBox3.labelsize(20);
+					promptBox3.labelfont(FL_HELVETICA);
+
+					Fl_Box promptBox4(50, 110, 550, 20, "The system will now exit.");
+					promptBox4.align(FL_ALIGN_CENTER);
+					promptBox4.labelsize(20);
+					promptBox4.labelfont(FL_HELVETICA);
+
+					Fl_Button OkButton(225, 150, 175, 50, "OK");
+					OkButton.color(ASU_WHITE);
+					OkButton.labelfont(FL_HELVETICA);
+					OkButton.labelcolor(ASU_BLACK);
+					OkButton.labelsize(15);
+					OkButton.selection_color(ASU_MAROON);
+					OkButton.callback(OkClick3);
+
+					backWindow3->color(ASU_GOLD);
+					backWindow3->box(FL_BORDER_BOX);
+					backWindow3->resizable(promptBox1);
+					backWindow3->end();
+					backWindow3->show();
+
+					Fl::run();
+
+	}
+
 
 	// START--------------------Project Set combinations
 
