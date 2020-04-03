@@ -180,7 +180,8 @@ Fl_Text_Buffer *terminal;
  *Authors: Sean, Myles, Elizabeth
  *
  *Description:
- *  This function is called by the threads inside main. It takes in all the students and projects for a given class section,
+ *  This function is called by the threads inside main. It takes in all the 
+ *  students and projects for a given class section,
  *  and partitions each section based on student skill, and project priority into 3 pools.
  *  (3 arrays for students, 3 arrays for projects).
  *  It passes this data, along with the other parameters into 3 calls to StudetnsToProjectsAssignment function.
@@ -198,18 +199,24 @@ void threadFunction(Student studentPool[], Project projectPool[],
 		const int teamSize, const int numTopTeams, string results[],
 		int classSection, int numClasses, int officialClassID) {
 
-	//Progress Bar window- calculate the percentage to increment the bar by
+	// Progress Bar window- calculate the percentage to increment the bar by
 	int progressIncrement = (110 / numClasses) / 3;
 
-	//Find the number of teams of 5 and number of teams of 4 needed for this class section.
+	// Find the number of teams of 5 and number of teams of 4 needed for 
+        // this class section.
 	Utility util;
+
 	int numTeamsOf4 = util.NumOfTeamsOf4(numStudents, teamSize);
 	int numTeamsOf5 = abs(numTeamsOf4 * 4 - numStudents) / 5;
 	int count4T = 0;
 	int count5T = 0;
-	vector<int> TeamsNeeded;
 
-	for (int i = 0; i < numProjects; i++) {
+	//vector<int> TeamsNeeded;
+        
+        int TeamsNeeded[numProjects];
+        
+/*
+        for (int i = 0; i < numProjects; i++) {
 
 		if (count5T < numTeamsOf5) {
 			TeamsNeeded.push_back(5);
@@ -217,6 +224,19 @@ void threadFunction(Student studentPool[], Project projectPool[],
 
 		} else if (count4T < numTeamsOf4) {
 			TeamsNeeded.push_back(4);
+			count4T++;
+		}
+	}
+*/
+
+	for (int i = 0; i < numProjects; i++) {
+
+		if (count5T < numTeamsOf5) {
+			TeamsNeeded[i] = 5;
+			count5T++;
+
+		} else if (count4T < numTeamsOf4) {
+			TeamsNeeded[i] = 4;
 			count4T++;
 		}
 	}
@@ -259,7 +279,8 @@ void threadFunction(Student studentPool[], Project projectPool[],
 
 	int count0 = abs(numProjects - count2 - count1);
 
-	//make sure each priority section does not have 1 project.(should have 0, or 3 or more. (P2 can have 2))
+	// make sure each priority section does not have 1 project
+        // (should have 0, or 3 or more. (P2 can have 2))
 	if (count2 == 1) {
 		if (count1 > 2) {
 			count1--;
@@ -330,9 +351,8 @@ void threadFunction(Student studentPool[], Project projectPool[],
 		count2++;
 	}
 
-	//make sure each priority has no more than 10 projects each,(if the number of projects is 30 or less).
-	//if there are 30 or less projects.
-
+	// make sure each priority has no more than 10 projects each,
+	// if there are 30 or less projects.
 	if (numProjects <= 30) {
 
 		while (count2 > 10) {
@@ -423,6 +443,7 @@ void threadFunction(Student studentPool[], Project projectPool[],
 			}
 		}
 	}
+
 	//If there are more than 30 projects, evenly distribute the projects by priority
 	if (numProjects > 30) {
 		bool A = true;
