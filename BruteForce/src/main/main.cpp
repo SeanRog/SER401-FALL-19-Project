@@ -783,9 +783,6 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 	const int NUM_STUDENTS = toConstInt(tempStud);
 	const int NUM_SKILLS = 14;
 
-
-	//only works without using threads
-	//static const int NUM_CLASS_SECTIONS = toConstInt(numCourses);
 	ResultWindow::count = NUM_PROJECTS;
 
 	Utility util;
@@ -805,6 +802,8 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 	const string CLASS_SECTION_FILE = "./SampleJsonFiles/4ClassSections.json";
 	//---------END 4 class sections test
 
+
+
 	//---------Start 1 class section test
 	/*
 	const int NUM_CLASS_SECTIONS = 1;
@@ -820,6 +819,10 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 	 */
 	//----------End 1 class section test
 
+
+	//The following function is to make a json file for all students for all
+	//the courses read in from canvas. So it should be used only in the final system.
+	//util.makeCanvasStudentRosterJSON(NUM_STUDENTS, NUM_SKILLS, allStudents, allClassSections);
 
 
 	cout << "main " << filepath << endl;

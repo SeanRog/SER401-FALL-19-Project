@@ -1465,11 +1465,11 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 }//end makeProjectsCSV
 
 /*************************************************
- * makeStudentJSON
+ * generateTestStudents
  *
  * Description:
  *   This function creates a Json file of test students
- *   for a given class sections. It makes a new Json file
+ *   for a given class section. It makes a new Json file
  *    with random data for a specified number of students.
  *
  * Arguments:
@@ -2279,6 +2279,139 @@ void Utility::makeStudentCSV(int numStud, int numSkill) {
 }
 
 
+/*************************************************
+ * makeStudentJSON
+ *
+ * Description:
+ *   This function creates a new Json file with random data for
+ *   a specified number of students.
+ *
+ * Arguments:
+ * int numStud, - number of students to create in the Json file
+ * int numSkill
+ *
+ * Returns:
+ *    nothing
+ */
+void Utility::makeCanvasStudentRosterJSON(int numStud, int numSkill, vector<vector<Student>> studentsFromCanvas,
+		vector <ClassSection> allClassSections) {
+
+	// Variables
+	ofstream file;
+	int numStudent = numStud - studentsFromCanvas.size();
+	int numSkills = numSkill;
+	int student_25 = (int) (numStudent * 0.25);
+	int student_50 = (int) (numStudent * 0.50);
+	int student_75 = (int) (numStudent * 0.75);
+
+	// opening file in write mode
+	file.open("newStudents.json", ios::out);
+
+	//Start of JSON file
+	file << "{ \n\"students\":[\n";
+
+
+	for(int i = 0; i < studentsFromCanvas.size(); i++) {
+		for(int j = 0; j < studentsFromCanvas.at(i).size(); j++) {
+
+			string asuID = studentsFromCanvas.at(i).at(j).ASUriteID;
+			/*Prints out schema: {"StudentID": (studentID#), */
+			file << "{\"ASUriteID\": \"" << asuID << "\",\n";
+
+			string studentID = to_string(studentsFromCanvas.at(i).at(j).StID);
+			/*Prints out schema: {"StudentID": (studentID#), */
+			file << "\"StudentID\": " << studentID << ",\n";
+
+			/*Prints out schema: {"name": studentName, */
+			file << "\"name\": \"" << studentsFromCanvas.at(i).at(j).name << "\",\n";
+
+			/*Prints out schema: "ClassID": (classID),*/
+			for(int k = 0 ;k < allClassSections.size() ; k++){
+
+				if(studentsFromCanvas.at(i).at(j).ClassID == allClassSections[k].OfficialClassID){
+
+					file << " \"ClassID\": " << allClassSections[k].ClassID << ",\n";
+				}
+			}
+
+			//file << " \"ClassID\": " << to_string(0) << ",\n";
+
+			/*Prints out schema: {"NDA": bool, */
+			/*Prints out schema: {"IPR": bool, */
+			if(studentsFromCanvas.at(i).at(j).NDA) {
+				file << "\"NDA\": " << "true" << ",\n";
+			} else {
+				file << "\"NDA\": " << "false" << ",\n";
+			}
+			if(studentsFromCanvas.at(i).at(j).IPR) {
+				file << "\"IPR\": " << "true" << ",\n";
+			} else {
+				file << "\"IPR\": " << "false" << ",\n";
+			}
+			/*file << "\"NDA\": " << to_string(studentsFromCanvas.at(i).at(j).NDA) << ",\n";
+			file << "\"IPR\": " << to_string(studentsFromCanvas.at(i).at(j).IPR) << ",\n";*/
+
+			/*Prints out schema: "Skills": [(skills)],*/
+			file << " \"Skills\": [";
+			for (int k = 0; k < numSkills; k++) {
+				if (k < (numSkills - 1)) {
+					file << studentsFromCanvas.at(i).at(j).Skills[k] << ",";
+				} else {
+					file << studentsFromCanvas.at(i).at(j).Skills[k] << "],\n";
+				}
+			}
+
+			/*Prints out schema: "StudentAffinity": null OR [(studentID), T/F]*/
+			file << " \"StudentAffinity\": ";
+			if(studentsFromCanvas.at(i).at(j).StudentAffinity.size() == 0) {
+				file << "null,\n";
+			} else {
+				file << "[";
+				for (int k = 0; k < studentsFromCanvas.at(i).at(j).StudentAffinity.size(); k++) {
+					file << "\"" << studentsFromCanvas.at(i).at(j).StudentAffinity.at(k).first << "\", ";
+					if(studentsFromCanvas.at(i).at(j).StudentAffinity.at(k).second) {
+						if(k == studentsFromCanvas.at(i).at(j).StudentAffinity.size() - 1) {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/ << "true";
+						} else {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/ << "true, ";
+						}
+					} else {
+						if(k == studentsFromCanvas.at(i).at(j).StudentAffinity.size() - 1) {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/ << "false";
+						} else {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/ << "false, ";
+						}
+					}
+
+				}
+				file << "],\n";
+			}
+
+
+
+
+			/*Prints out schema: "Availability": [(Availability)] }*/
+			file << " \"Availability\": [";
+			for (int k = 0; k < 4; k++) {
+				if (k < 3) {
+					file << studentsFromCanvas.at(i).at(j).Availability[k] << ",";
+				} else {
+					file << studentsFromCanvas.at(i).at(j).Availability[k];
+				}
+			}
+			if (j < studentsFromCanvas.at(i).size()-1) {
+				file << "] },\n\n";
+			} else if (j == studentsFromCanvas.at(i).size()-1) {
+				file << "] }\n\n";
+			}
+		}
+	}
+
+	file << "]\n}";
+
+	file.close();
+
+}
 
 /*************************************************
  * makeClassSectionJSON
