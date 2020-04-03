@@ -56,6 +56,8 @@ class MainWindow {
 public:
 	static int num_projects;
 	static int num_students;
+	static int num_classes;
+	int mwNumCourses;
 	//string csvProjectFileName;
 	bool nextWindowFlag;
 	bool Authenticated;

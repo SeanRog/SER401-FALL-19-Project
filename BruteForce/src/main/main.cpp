@@ -83,6 +83,7 @@ int ResultWindow::count = 0;
 vector<ClassSection> ResultWindow::courses;
 vector<SoupCookie> ResultWindow::cookies;
 mutex mtx;
+int main::numClasses = 0;
 
 /*********************************************************
  * parseLine
@@ -593,7 +594,7 @@ void threadFunction(Student studentPool[], Project projectPool[],
 
 }    //end threadFunction
 
-int tempProj, tempStud, textInput;
+int tempProj, tempStud, textInput, numCourses;
 
 Fl_Window *optionWindow;
 
@@ -748,7 +749,7 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 		Fl_Progress *pb, Fl_Text_Buffer *tb,
 		vector<vector<Student>> allStudents,
 		vector<ClassSection> allClassSections, vector<SoupCookie> cookies) {
-//>>>>>>> dev
+
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
 
@@ -772,26 +773,57 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 
 	//set up the terminal buffer
 	terminal = tb;
-
+	numCourses = allClassSections.size();
 	tempProj = projects_input;
 	tempStud = students_input;
+	//numCourses = numClasses;
 	//reading in inputs
 
 	const int NUM_PROJECTS = toConstInt(tempProj);
 	const int NUM_STUDENTS = toConstInt(tempStud);
 	const int NUM_SKILLS = 14;
-	const int NUM_CLASS_SECTIONS = 4;
+
 	ResultWindow::count = NUM_PROJECTS;
 
 	Utility util;
 
+	util.makeClassSectionJSON(allClassSections);
 	//creating random sample Json data based inputs
 	//of number of projects, and number of students
-//	util.makeProjectJSON(NUM_PROJECTS, NUM_SKILLS);
-	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS, allStudents);
+	//util.makeProjectJSON(NUM_PROJECTS, NUM_SKILLS);
+
 	//create the CSV file of random projects
 	util.makeProjectCSV(NUM_PROJECTS, NUM_SKILLS);
 	//util.makeStudentCSV(NUM_PROJECTS, NUM_SKILLS);
+
+	//---------Start 4 class sections test
+	const int NUM_CLASS_SECTIONS = 4;
+	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS, allStudents);
+	const string CLASS_SECTION_FILE = "./SampleJsonFiles/4ClassSections.json";
+	//---------END 4 class sections test
+
+
+
+	//---------Start 1 class section test
+	/*
+	const int NUM_CLASS_SECTIONS = 1;
+	//the below only works without using threads
+	//static const int NUM_CLASS_SECTIONS = toConstInt(numCourses);
+
+	for (int i = 0 ; i < allClassSections.size(); i++){
+		allClassSections[i].ClassID = i;
+	util.generateTestStudents(NUM_STUDENTS, NUM_SKILLS, allStudents, allClassSections[i]);
+	}
+
+	const string CLASS_SECTION_FILE = "./ClassSections.json";
+	 */
+	//----------End 1 class section test
+
+
+	//The following function is to make a json file for all students for all
+	//the courses read in from canvas. So it should be used only in the final system.
+	//util.makeCanvasStudentRosterJSON(NUM_STUDENTS, NUM_SKILLS, allStudents, allClassSections);
+
 
 	cout << "main " << filepath << endl;
 	for (int i = filepath.length() - 1; i >= 0; i--) {
@@ -816,7 +848,8 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 	//const string PROJECT_FILE = "./100Projects.csv";
 	const string PROJECT_FILE = file2;
 	const string STUDENT_FILE = "./newStudents.json";
-	const string CLASS_SECTION_FILE = "./SampleJsonFiles/4ClassSections.json";
+
+
 
 	//Change this value to change the number of top teams stored.
 	int tempNumTopTeams = 5;
@@ -853,7 +886,10 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 		ResultWindow::project_pool[1][j] = PROJECT_POOL[j].Priority;
 	}
 
-	string results[NUM_CLASS_SECTIONS * 3];	//Stores the results the assignment of students to projects each class section
+	int size1 =  NUM_CLASS_SECTIONS * 3;
+	//const int results_size = toConstInt(size1);
+
+	string results[NUM_CLASS_SECTIONS * 3];//Stores the results the assignment of students to projects each class section
 	int studentsInSections[NUM_CLASS_SECTIONS]; //stores the number of students in each class section
 	int projectsInSections[NUM_CLASS_SECTIONS]; //stores the number of students in each class section
 
@@ -861,6 +897,13 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 	for (int i = 0; i < NUM_CLASS_SECTIONS; i++) {
 		studentsInSections[i] = 0;
 		projectsInSections[i] = 0;
+		cout<<"Class Section Data"<<endl;
+		cout<<CLASS_SECTION_POOL[i].OfficialClassID<<endl;
+		cout<<CLASS_SECTION_POOL[i].ClassID<<endl;
+		cout<<CLASS_SECTION_POOL[i].Course_Code<<endl;
+		cout<<CLASS_SECTION_POOL[i].Course_Name<<endl;
+		cout<<CLASS_SECTION_POOL[i].Type<<endl;
+
 	}
 	//initialize results
 	for (int i = 0; i < NUM_CLASS_SECTIONS * 3; i++) {
@@ -967,12 +1010,21 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 		//threadFunction(STUDENT_POOL_SECTION_X, PROJECT_POOL_SECTION_X, studentsInSections[i], projectsInSections[i], NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS, results, i);
 		//threads[i] = thread (threadFunction, STUDENT_POOL, PROJECT_POOL, NUM_STUDENTS, NUM_PROJECTS, NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS);
 
+		const int officialID = toConstInt(CLASS_SECTION_POOL[i].OfficialClassID);
+
 		//call the thread (once for each class section)
 		threads[i] = thread(threadFunction, STUDENT_POOL_SECTION_X,
 				PROJECT_POOL_SECTION_X, studentsInSections[i],
 				projectsInSections[i], NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS,
 				results, i, NUM_CLASS_SECTIONS,
 				CLASS_SECTION_POOL[i].OfficialClassID);
+
+		//uncomment this to use without threads.
+	/*	threadFunction( STUDENT_POOL_SECTION_X,
+						PROJECT_POOL_SECTION_X, studentsInSections[i],
+						projectsInSections[i], NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS,
+						results, i, NUM_CLASS_SECTIONS,
+						CLASS_SECTION_POOL[i].OfficialClassID);*/
 
 		//delete STUDENT_POOL_SECTION_X;
 		//delete PROJECT_POOL_SECTION_X;

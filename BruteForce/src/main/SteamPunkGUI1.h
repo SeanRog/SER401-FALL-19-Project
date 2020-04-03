@@ -72,6 +72,9 @@ class SteamPunkGUI1 {
 public:
 	static int num_projects;
 	static int num_students;
+	static int num_classes;
+
+	int spNumCourses;
 	string SPGprojfile;
 	vector<Student> studentsFromCanvas;
 	bool nextWindowFlag;

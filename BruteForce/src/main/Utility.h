@@ -69,8 +69,13 @@ public:
 			int numSkills, int studentsInSections[]);
 	void makeProjectJSON(int numProj, int numSkill);
 	void makeProjectCSV(int numProj, int numSkill);
+	void generateTestStudents(int numStud, int numSkill,
+				vector<vector<Student>> studentsFromCanvas, ClassSection course);
 	void makeStudentJSON(int numStud, int numSkill, vector<vector<Student>> studentsFromCanvas);
 	void makeStudentCSV(int numStud, int numSkill);
+	void makeCanvasStudentRosterJSON(int numStud, int numSkill, vector<vector<Student>> studentsFromCanvas,
+			vector <ClassSection> allClassSections);
+	void makeClassSectionJSON(vector<ClassSection> allClassSections);
 	int calc_projects(int numStudents, int teamSize, int minTeamSize);
 	int NumOfTeamsOf4(int numStudents, int teamSize);
 	vector<vector<string>> toCSVsse(string filename);
