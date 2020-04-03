@@ -997,7 +997,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 			if (OnlineClassSections.empty()) {
 				for (int k = 0; k < numClassSections; k++) {
 					classSection = *(classSectionPool + k);
-					if (classSection.Type == 'G') {
+					if (classSection.Type == 'O') {
 						OnlineClassSections.push_back(*(classSectionPool + k));
 
 					}
@@ -1463,6 +1463,246 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 	file.close();
 
 }//end makeProjectsCSV
+
+/*************************************************
+ * makeStudentJSON
+ *
+ * Description:
+ *   This function creates a Json file of test students
+ *   for a given class sections. It makes a new Json file
+ *    with random data for a specified number of students.
+ *
+ * Arguments:
+ * int numStud, - number of students to create in the Json file
+ * int numSkill
+ *
+ * Returns:
+ *    nothing
+ */
+void Utility::generateTestStudents(int numStud, int numSkill, vector<vector<Student>> studentsFromCanvas, ClassSection course) {
+
+	// Variables
+	ofstream file;
+	int numStudent = numStud - studentsFromCanvas.size();
+	int numSkills = numSkill;
+	//int student_25 = (int) (numStudent * 0.25);
+	//int student_50 = (int) (numStudent * 0.50);
+	//int student_75 = (int) (numStudent * 0.75);
+
+	// opening file in write mode
+	file.open("newStudents.json", ios::out);
+
+	//Start of JSON file
+	file << "{ \n\"students\":[\n";
+
+	//Loops through studentIDs to print
+	for (int studentID = 1; studentID <= numStudent; studentID++) {
+
+		string asuID = "ASU" + to_string(studentID);
+		/*Prints out schema: {"StudentID": (studentID#), */
+		file << "{\"ASUriteID\": \"" << asuID << "\",\n";
+
+		/*Prints out schema: {"StudentID": (studentID#), */
+		file << "\"StudentID\": " << studentID << ",\n";
+
+		/*Prints out schema: {"StudentID": (studentID#), */
+		file << "\"name\": \"" << names[studentID] << "\",\n";
+
+		/*Prints out schema: {"ClassID": (studentID#), */
+		file << " \"ClassID\": " << course.ClassID << ",\n";
+
+
+		/*Prints out schema: {"NDA": bool, */
+		/*Prints out schema: {"IPR": bool, */
+		//5 percent of students will not want to sign the agreements.
+		int percent = (int) numStudent * (0.05);
+		if (studentID < (percent + 1)) {
+			file << "\"NDA\": false,\n";
+			file << "\"IPR\": false,\n";
+		} else {
+			file << "\"NDA\": true,\n";
+			file << "\"IPR\": true,\n";
+		}
+
+		/*Prints out schema: "Skills": [(skills)],  ramdomly generates skills
+		 * with values 0-4, total skills given as a parameter         */
+		file << " \"Skills\": [";
+		for (int i = 0; i < numSkills; i++) {
+			if (i < (numSkills - 1)) {
+				file << rand() % (4 + 1) << ",";
+			} else {
+				file << rand() % (4 + 1) << "],\n";
+			}
+		}
+
+		/*Prints out schema: "StudentAffinity": null OR [(studentID), T/F]
+		 * negative affinity: every 1/3 of students gets a randomized negative
+		 *                  affinity for another Student
+		 * positive affinity: every 1/4 of students gets a randomized positive
+		 *                  affinity for another Student
+		 *
+		 * It can fall where 1 student has a positive & negative affinity (1/12)
+		 * Else it will print "null"
+		 */
+		file << " \"StudentAffinity\": ";
+		if (studentID % 3 == 0 || studentID % 4 == 0) {
+
+			//Negative affinity matches
+			int rand_1 = rand() % (numStud);
+			while (rand_1 == studentID) {
+				rand_1 = rand() % (numStud);
+			}
+
+			//Positive affinity matches
+			int rand_2 = rand() % (numStud);
+			while (rand_2 == studentID || rand_2 == rand_1) {
+				rand_2 = rand() % (numStud);
+			}
+
+			//printing out affinity
+			file << "[";
+			if (studentID % 3 == 0) {
+				if (studentID < numStud) {
+					file << "\"ASU" << rand_1 << "\", false";
+
+			}
+			}
+			if (studentID % 4 == 0) {
+				if (studentID % 3 != 0) {
+					if (studentID < numStud) {
+						file << "\"ASU" << rand_2 << "\", true";
+				}
+				}
+			}
+				if (studentID % 3 == 0) {
+					if (studentID < numStud) {
+						file << ", " << "\"ASU" << rand_2 << "\", true";
+					}
+
+					}
+
+			file << "],\n";
+		} else {
+			file << "null,\n";
+		}
+
+		/*Prints out schema: "Availability": [(Availability)] }
+		 * ramdomly generates 4 times with values 0-5
+		 */
+		file << " \"Availability\": [";
+		for (int i = 0; i < 4; i++) {
+			if (i < 3) {
+				file << rand() % (5 + 1) << ",";
+			} else {
+				file << rand() % (5 + 1);
+			}
+		}
+
+
+		if (studentID < numStudent || studentsFromCanvas.size()> 0) {
+			file << "] },\n\n";
+		} else if (studentID == numStudent) {
+			file << "] }\n\n";
+		}
+	}
+
+	for(int i = 0; i < studentsFromCanvas.size(); i++) {
+		for(int j = 0; j < studentsFromCanvas.at(i).size(); j++) {
+			string asuID = studentsFromCanvas.at(i).at(j).ASUriteID;
+
+			asuID = "ASU";
+			asuID += to_string(numStud);
+			/*Prints out schema: {"StudentID": (studentID#), */
+			file << "{\"ASUriteID\": \"" << asuID << "\",\n";
+
+			string studentID = to_string(studentsFromCanvas.at(i).at(j).StID);
+			studentID = to_string(numStud);
+			/*Prints out schema: {"StudentID": (studentID#), */
+			file << "\"StudentID\": " << studentID << ",\n";
+
+			/*Prints out schema: {"name": studentName, */
+			file << "\"name\": \"" << studentsFromCanvas.at(i).at(j).name << "\",\n";
+
+			/*Prints out schema: "ClassID": (classID),*/
+			//file << " \"ClassID\": " << studentsFromCanvas.at(i).at(j).ClassID << ",\n";
+			file << " \"ClassID\": " << course.ClassID << ",\n";
+
+			/*Prints out schema: {"NDA": bool, */
+			/*Prints out schema: {"IPR": bool, */
+			if(studentsFromCanvas.at(i).at(j).NDA) {
+				file << "\"NDA\": " << "true" << ",\n";
+			} else {
+				file << "\"NDA\": " << "false" << ",\n";
+			}
+			if(studentsFromCanvas.at(i).at(j).IPR) {
+				file << "\"IPR\": " << "true" << ",\n";
+			} else {
+				file << "\"IPR\": " << "false" << ",\n";
+			}
+			/*file << "\"NDA\": " << to_string(studentsFromCanvas.at(i).at(j).NDA) << ",\n";
+			file << "\"IPR\": " << to_string(studentsFromCanvas.at(i).at(j).IPR) << ",\n";*/
+
+			/*Prints out schema: "Skills": [(skills)],*/
+			file << " \"Skills\": [";
+			for (int k = 0; k < numSkills; k++) {
+				if (k < (numSkills - 1)) {
+					file << studentsFromCanvas.at(i).at(j).Skills[k] << ",";
+				} else {
+					file << studentsFromCanvas.at(i).at(j).Skills[k] << "],\n";
+				}
+			}
+
+			/*Prints out schema: "StudentAffinity": null OR [(studentID), T/F]*/
+			file << " \"StudentAffinity\": ";
+			if(studentsFromCanvas.at(i).at(j).StudentAffinity.size() == 0) {
+				file << "null,\n";
+			} else {
+				file << "[";
+				for (int k = 0; k < studentsFromCanvas.at(i).at(j).StudentAffinity.size(); k++) {
+					file << "\"" << studentsFromCanvas.at(i).at(j).StudentAffinity.at(k).first << "\", ";
+					if(studentsFromCanvas.at(i).at(j).StudentAffinity.at(k).second) {
+						if(k == studentsFromCanvas.at(i).at(j).StudentAffinity.size() - 1) {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/ << "true";
+						} else {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/ << "true, ";
+						}
+					} else {
+						if(k == studentsFromCanvas.at(i).at(j).StudentAffinity.size() - 1) {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/ << "false";
+						} else {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/ << "false, ";
+						}
+					}
+
+				}
+				file << "],\n";
+			}
+
+
+
+
+			/*Prints out schema: "Availability": [(Availability)] }*/
+			file << " \"Availability\": [";
+			for (int k = 0; k < 4; k++) {
+				if (k < 3) {
+					file << studentsFromCanvas.at(i).at(j).Availability[k] << ",";
+				} else {
+					file << studentsFromCanvas.at(i).at(j).Availability[k];
+				}
+			}
+			if (j < studentsFromCanvas.at(i).size()) {
+				file << "] }\n\n";
+			} else if (j == studentsFromCanvas.at(i).size()) {
+				file << "] }\n\n";
+			}
+		}
+	}
+
+	file << "]\n}";
+
+	file.close();
+
+}
 
 /*************************************************
  * makeStudentJSON
@@ -2033,6 +2273,71 @@ void Utility::makeStudentCSV(int numStud, int numSkill) {
 		}
 	}
 	//file << "]\n";
+
+	file.close();
+
+}
+
+
+
+/*************************************************
+ * makeClassSectionJSON
+ *
+ * Description:
+ *   This function creates a new Json file that contains all
+ *   the selected class sections that the user wants to make
+ *   team assignments for.
+ *
+ * Arguments:
+ * vector<ClassSection> allClassSections
+ *
+ * Returns:
+ *    nothing
+ */
+void Utility::makeClassSectionJSON(vector<ClassSection> allClassSections) {
+
+	// Variables
+	ofstream file;
+	int numClassSections = allClassSections.size();
+
+	// opening file in write mode
+	file.open("ClassSections.json", ios::out);
+
+	//Start of JSON file
+	file << "{ \n\"courses\":[\n";
+
+	//Loops through all Class sections to print the Json file
+	for (int ClassID = 0; ClassID < numClassSections; ClassID++) {
+
+		/*Prints out schema: {"id": (Officail class ID#), */
+		file << "{\"id\": " << allClassSections[ClassID].OfficialClassID << ",\n";
+
+		/*Prints out schema: {"name": (ex SER 401 Capstone), */
+		file << "\"name\": \"" << allClassSections[ClassID].Course_Name << "\",\n";
+
+		/*Prints out schema: {"course_code": (Couse_Code), */
+		file << "\"course_code\": \"" << allClassSections[ClassID].Course_Code << "\",\n";
+
+		/*Prints out schema: {"course_code": (Couse_Code), */
+		if( allClassSections[ClassID].Type == 'O'){
+		file << "\"course_format\": \"online\",\n";}
+		else if( allClassSections[ClassID].Type == 'G'){
+		file << "\"course_format\": \"on_campus\",\n";}
+
+
+
+		/*Prints out schema: {"ClassID": (The class ID (integer from 0-on), */
+		file << "\"ClassID\": " << ClassID << "\n";
+
+
+		if (ClassID < numClassSections-1) {
+			file << " },\n\n";
+		} else if (ClassID == numClassSections-1) {
+			file << " }\n\n";
+		}
+	}
+
+	file << "]\n}";
 
 	file.close();
 

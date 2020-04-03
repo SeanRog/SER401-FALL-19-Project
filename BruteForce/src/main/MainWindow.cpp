@@ -63,6 +63,7 @@ using namespace std;
 
 int MainWindow::num_projects = 0;
 int MainWindow::num_students = 0;
+int MainWindow::num_classes = 0;
 
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
@@ -480,9 +481,9 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 	//if you want to load cookies.
 	//threads[0] = thread (cookieLoad, progressWindow, imageBox, progressBar);
 
+	num_classes = mwCourses.size();
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
-
 	m.main_run(num_projects, num_students, mwProjfile, progressBar,
 			terminalBuffer, mwAllStudents, mwCourses, mwCookies);
 

@@ -95,6 +95,7 @@ public:
 
 	int num_of_all_courses;
 	int num_of_selected_courses;
+	int course_count;
 
 	Fl_Window *masterWindow;
 	Fl_Window *prevWindow;
