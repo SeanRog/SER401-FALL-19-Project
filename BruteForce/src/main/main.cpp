@@ -706,7 +706,7 @@ int main::main_run(int projects_input, int students_input, string filepath,
 		Fl_Progress *pb, Fl_Text_Buffer *tb,
 		vector<vector<Student>> allStudents,
 		vector<ClassSection> allClassSections, vector<SoupCookie> cookies) {
-
+	mtx.lock();
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
 
@@ -727,6 +727,7 @@ int main::main_run(int projects_input, int students_input, string filepath,
 	sprintf(percent, "%d%%", int((5 / 100.0) * 100.0));
 	pb->label(percent);
 	Fl::check();
+	mtx.unlock();
 
 	//set up the terminal buffer
 	terminal = tb;
@@ -742,6 +743,8 @@ int main::main_run(int projects_input, int students_input, string filepath,
 
 	ResultWindow::count = NUM_PROJECTS;
 
+	//mtx.unlock();
+	//mtx.lock();
 	Utility util;
 
 	util.makeClassSectionJSON(allClassSections);
@@ -777,7 +780,9 @@ int main::main_run(int projects_input, int students_input, string filepath,
 	//The following function is to make a json file for all students for all
 	//the courses read in from canvas. So it should be used only in the final system.
 	//util.makeCanvasStudentRosterJSON(NUM_STUDENTS, NUM_SKILLS, allStudents, allClassSections);
+	//mtx.unlock();
 
+	//mtx.lock();
 	cout << "main " << filepath << endl;
 	for (int i = filepath.length() - 1; i >= 0; i--) {
 		file.push_back(filepath.at(i));
@@ -832,7 +837,9 @@ int main::main_run(int projects_input, int students_input, string filepath,
 			STUDENT_POOL, NUM_CLASS_SECTIONS, NUM_STUDENTS);
 	util.initProjectStudentSkills(PROJECT_POOL, STUDENT_POOL,
 			PROJECT_STUDENT_SKILLS, NUM_PROJECTS, NUM_STUDENTS, NUM_SKILLS);
+	//mtx.unlock();
 
+	//mtx.lock();
 	for (int j = 0; j < NUM_PROJECTS; j++) {
 		ResultWindow::project_pool[0][j] = PROJECT_POOL[j].ProjectID;
 		ResultWindow::project_pool[1][j] = PROJECT_POOL[j].Priority;
@@ -871,6 +878,9 @@ int main::main_run(int projects_input, int students_input, string filepath,
 		}
 	}
 
+	//mtx.unlock();
+
+	//mtx.lock();
 	// PARTITION POOLS BY TYPE (ONLINE/GROUND/HYBRID)
 	util.projectTypePartition(PROJECT_POOL, NUM_PROJECTS, 'O', 'G', 'H');
 	util.classSectionTypePartition(CLASS_SECTION_POOL, NUM_CLASS_SECTIONS, 'O',
@@ -887,6 +897,7 @@ int main::main_run(int projects_input, int students_input, string filepath,
 	cout << to_string(getValuePhy() + getValueVirt())
 			<< " KB total memory usage" << endl;
 
+	//mtx.unlock();
 // BEGIN - STUDENTS TO PROJECTS ASSIGNMENT
 
 	//Threads for each class section will start here

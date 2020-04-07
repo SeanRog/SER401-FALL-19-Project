@@ -576,6 +576,7 @@ bool Auth;
 typedef void *user_data;
 vector<SoupCookie> cookiedata;
 Fl_Window *backWindow2;
+WebKitWebView *webView;
 
 //callback when the window is closed via the close button
 static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
@@ -704,6 +705,7 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 			usleep(500000);
 			//quit the mini-browser
 			 //gtk_main_quit();
+			gtk_widget_destroy(GTK_WIDGET(webView));
 			 gtk_widget_destroy(main_window);
 
 
@@ -803,7 +805,7 @@ void mini_browser() {
 	WebKitCookieManager *cookiejar = webkit_web_context_get_cookie_manager(
 			context);
 	// Create a browser instance
-	WebKitWebView *webView = WEBKIT_WEB_VIEW(
+	webView = WEBKIT_WEB_VIEW(
 			webkit_web_view_new_with_context(context));
 
 	//webkit_web_context_set_automation_allowed(context, 1);
