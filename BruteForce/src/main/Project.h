@@ -31,6 +31,7 @@ public:
 	bool NDA; //bool value depicting whether this project requires that the students sign an NDA
 	bool IPR; //bool value depicting whether this project requires that the students sign an IPR
 	bool sharedHardware; //bool value depicting if this project requires shared hardware-limit to ground students
+	//string ProjectDescription; //sting value containing the project's description.
 
 	/* char Type - 	Projects can be dedicated to local students of the university, online students, or a combination.
 	 * 				Type is defined as: O = online | G = ground | H = hybrid

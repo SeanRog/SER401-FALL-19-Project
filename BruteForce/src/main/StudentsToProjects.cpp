@@ -476,6 +476,19 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		for (int proj = 0;proj <numProjects ; proj++ ){
 			for (int f = 0; f < TOP_TEAMS; f++) {
 		cout<<topTeams[proj][f].TeamScore<<endl;
+
+		cout<<"Project ID from project= "<<topTeams[proj][f].project.ProjectID<<" ID from ID: "<<topTeams[proj][f].projectID<<endl;
+		cout<<"Students for this team:"<<endl;
+		for (int h = 0; h < 5; h++) {
+		cout<<topTeams[proj][f].team[h].StID<<" "<<topTeams[proj][f].team[h].ClassID<<
+				" "<<topTeams[proj][f].team[h].name<<endl;
+		cout<<"Skills:"<<endl;
+		for (int d = 0; d < numSkills; d++) {
+
+			cout<<topTeams[proj][f].team[h].Skills[d]<<" ";
+
+		}
+		}
 			}
 			cout<<" "<<endl;}
 

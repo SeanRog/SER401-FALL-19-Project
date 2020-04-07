@@ -1352,10 +1352,10 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 	file.open("newProjects.csv", ios::out);
 
 	//Start of CSV file
-	file << "Company,Submitter Name,Submitter Title,Submitter Email,Submitter Contact Phone #,Technical Contact Name,Technical Contact Title,Technical Contact E-mail,Technical Contact Phone Number,Project Motivation,Project Description,Project Deliverables,Technology Areas,PreferredLanguageSkills,RequiresNDA,RequiresIPR,RequiresSharedHardware,Type,Section,Priority";
+	file << "Company,Submitter Name,Submitter Title,Submitter Email,Submitter Contact Phone #,Technical Contact Name,Technical Contact Title,Technical Contact E-mail,Technical Contact Phone Number,Project Motivation,Project Description,Project Deliverables,Technology Areas,PreferredLanguageSkills,RequiresNDA,RequiresIPR,RequiresSharedHardware,Type,Section,Priority\n";
 
 	//Loops through projectID to print
-	for (int projectID = 0; projectID < (numProjects + 1) ; projectID++) {
+	for (int projectID = 1; projectID <(numProjects+1) ; projectID++) {
 
 		/*Prints out schema: {"ProjectID": (projectID#),the projectID
 		 * number is set to have width of 3 if the number (e.g. 1)
@@ -1392,11 +1392,11 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 			for (int i = 0; i < (8); i++) {
 				if (i < (8 - 1)) {
 					if((rand() % (2 + 1)) == 0) {
-						file << skills[i] << ",";
+						file << skills[i]<< ",";
 					}
 				} else {
 					if((rand() % (2 + 1)) == 0) {
-						file << skills[i];
+						file << skills[i]<< ",";
 					}
 					file << "]\",";
 				}
@@ -1409,7 +1409,7 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 					}
 				} else {
 					if((rand() % (2 + 1)) == 0) {
-						file << skills[i];
+						file << skills[i]<< ",";
 					}
 					file << "]\",";
 				}
@@ -2675,8 +2675,8 @@ vector<vector<string>> Utility::toCSVcse(string filename) {
  *  vector<Project> containing the project objects obtained from the projects in the CSV file.
  */
 vector<Project> Utility::csvToProjectsVector(string filename,
-		Project projectPool[], int numProjects) {
-	string skills1[14] =
+		Project projectPool[], int numProjects, int numSkills) {
+	string skills1[numSkills] =
 			{ "ArtificialIntelligence", "WebApplicationProgramming",
 					"IOSMobileApplicationProgramming",
 					"AndroidMobileApplicationProgramming",
@@ -2728,7 +2728,7 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 	//repeat for all project data in CSV, return projects
 	for (int i = 1; i < numProjects; i++) {
 		Project p = Project();
-		for (int j = 0; j < 15; j++) {
+		for (int j = 0; j < numSkills; j++) {
 			p.Skills[j] = 0;
 		}
 
@@ -2746,93 +2746,167 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 		p.Priority = atoi(
 				(dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
 
+		cout<<p.ProjectID<<endl;
 		currentSkill = "";
 		for (int j = 0; j < dataList.at(i).at(12).size(); j++) {
+
 			if (dataList.at(i).at(12).at(j) == ',') {
+
+				cout<<currentSkill<<endl;
+				for (int k = 0; k < 8; k++) {
+					if (currentSkill.compare(skills1[k]) == 0) {
+						p.Skills[k] = 1;
+					}}
+				currentSkill = "";
+			} else {
+				if(dataList.at(i).at(12).at(j) != '\"'){
+				currentSkill.push_back(dataList.at(i).at(12).at(j));
+
+				}
+
+			}
+		}
+
+		currentSkill = "";
+		for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
+
+			if (dataList.at(i).at(13).at(j) == ',') {
+				cout<<currentSkill<<endl;
+				for (int k = 8; k < 14; k++) {
+					if (currentSkill.compare(skills1[k]) == 0) {
+						p.Skills[k] = 1;
+					}}
+				currentSkill = "";
+			} else {
+				if(dataList.at(i).at(13).at(j) != '\"'){
+				currentSkill.push_back(dataList.at(i).at(13).at(j));}
+
+			}
+
+		}
+
+
+
+
+	/*		if (dataList.at(i).at(12).at(j) == ',') {
 				currentSkill = "";
 			} else {
 				currentSkill.push_back(dataList.at(i).at(12).at(j));
+				cout<<currentSkill<<endl;
 				for (int k = 0; k < 8; k++) {
-					if (currentSkill.compare(skills1[k]) == 0) {
+					//if (currentSkill.compare(skills1[k]) == 0) {
+					//	p.Skills[k] = 1;
+					//}
+					if (currentSkill.find(skills1[k]) != string::npos) {
 						p.Skills[k] = 1;
 					}
 				}
 			}
 		}
+
 		currentSkill = "";
 		for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
+
 			if (dataList.at(i).at(13).at(j) == ',') {
 				currentSkill = "";
 			} else {
 				currentSkill.push_back(dataList.at(i).at(13).at(j));
+				cout<<currentSkill<<endl;
 				for (int k = 8; k < 14; k++) {
-					if (currentSkill.compare(skills1[k]) == 0) {
+					if (currentSkill.find(skills1[k]) != string::npos) {
 						p.Skills[k] = 1;
 					}
 				}
 			}
-		}
+		}*/
 
 
 
 		projects.push_back(p);
-		cout<<p.ProjectID<<"  priority:"<<p.Priority<<endl;
+		//cout<<p.ProjectID<<"  priority:"<<p.Priority<<endl;
+
 
 		projectPool[i-1] = p;
 
 		//last project
+
+
 		if(i == numProjects-1){
 			i=numProjects;
+			Project p1 = Project();
+			for (int j = 0; j < numSkills; j++) {
+				p1.Skills[j] = 0;
+			}
 
-					p.ProjectID = numProjects;
+					p1.ProjectID = numProjects;
 
-					p.NDA = atoi((dataList.at(i).at(dataList.at(i).size() - 6)).c_str());
-					p.IPR = atoi((dataList.at(i).at(dataList.at(i).size() - 5)).c_str());
-					p.sharedHardware = atoi(
+					p1.NDA = atoi((dataList.at(i).at(dataList.at(i).size() - 6)).c_str());
+					p1.IPR = atoi((dataList.at(i).at(dataList.at(i).size() - 5)).c_str());
+					p1.sharedHardware = atoi(
 							(dataList.at(i).at(dataList.at(i).size() - 4)).c_str());
-					p.Type = (dataList.at(i).at(dataList.at(i).size() - 3)).at(0);
+					p1.Type = (dataList.at(i).at(dataList.at(i).size() - 3)).at(0);
 
 					//a value of 100 lets us know this class section has not been assigned
-					p.ClassID = 100;
+					p1.ClassID = 100;
 					//p.ClassID = atoi(
 					//		(dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
-					p.Priority = atoi(
+					p1.Priority = atoi(
 							(dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
 
+					cout<<p1.ProjectID<<endl;
 					currentSkill = "";
 					for (int j = 0; j < dataList.at(i).at(12).size(); j++) {
+
 						if (dataList.at(i).at(12).at(j) == ',') {
-							currentSkill = "";
-						} else {
-							currentSkill.push_back(dataList.at(i).at(12).at(j));
+
+							cout<<currentSkill<<endl;
 							for (int k = 0; k < 8; k++) {
 								if (currentSkill.compare(skills1[k]) == 0) {
-									p.Skills[k] = 1;
-								}
-							}
-						}
-					}
-					currentSkill = "";
-					for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
-						if (dataList.at(i).at(13).at(j) == ',') {
+									p1.Skills[k] = 1;
+								}}
 							currentSkill = "";
 						} else {
-							currentSkill.push_back(dataList.at(i).at(13).at(j));
-							for (int k = 8; k < 14; k++) {
-								if (currentSkill.compare(skills1[k]) == 0) {
-									p.Skills[k] = 1;
-								}
+							if(dataList.at(i).at(12).at(j) != '\"'){
+							currentSkill.push_back(dataList.at(i).at(12).at(j));
+
 							}
+
 						}
 					}
-			projectPool[numProjects-1] = p;
+
+
+					currentSkill = "";
+					for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
+
+						if (dataList.at(i).at(13).at(j) == ',') {
+							cout<<currentSkill<<endl;
+							for (int k = 8; k < 14; k++) {
+								if (currentSkill.compare(skills1[k]) == 0) {
+									p1.Skills[k] = 1;
+								}}
+							currentSkill = "";
+						} else {
+							if(dataList.at(i).at(13).at(j) != '\"'){
+							currentSkill.push_back(dataList.at(i).at(13).at(j));}
+
+						}
+
+					}
+
+
+
+			projectPool[numProjects-1] = p1;
 			i = numProjects-1;
-			cout<<p.ProjectID<<"  priority:"<<p.Priority<<endl;
+
 		}
 	}
 	for (int i = 0; i < numProjects; i++) {
 
 		cout<<"Project#: "<<projectPool[i].ProjectID<<"  priority:"<<projectPool[i].Priority<<endl;
+		for (int d = 0; d < numSkills; d++) {
+					cout<<projectPool[i].Skills[d]<<" ";
+				}
+		cout<<endl;
 	}
 
 	return projects;
