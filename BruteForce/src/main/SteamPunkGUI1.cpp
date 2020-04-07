@@ -1,18 +1,87 @@
 /*
  *SteamPunkGUI1.cpp
  *
- * Description:  Contains functions relating to the creation and user
+ * Description:
+ * This class contains functions relating to the creation and user
  * interaction with the main window of the GUI/application.
  *
- * Created on:   Feb 19, 2020
+ * Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  *
- * Authors:   M. Cilibra, M. Colina, C. DeLeo, E. Marquise, S. Rogers
  *
  * List of functions:
- *    - TODO
+ *	void SteamPunkGUI1(void)
+ *		- Constructor, sets up basic framework for the GUI
  *
+ *	constexpr int toConstInt(int)
+ *		- takes an int and returns it as a const
+ *
+ * ~void SteamPunkGUI1(void)
+ *		- Destructor, sets up basic framework for the GUI
+ *
+ *	GearsAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2)
+ *		- Animates gears on steam punk window
+ *
+ *	void MainWindow2()
+ *		- second Constructor, sets up basic framework for the GUI
+ *
+ *	void TeamsButtonClick(Fl_Window *w)
+ *		- takes the inputs from the input boxes, and passes them to the
+ *	    main Team assignment class, creates a new window with a progress bar.
+ *
+ *	void cookieLoadSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar)
+ *		- Circles cookie images until progress bar reaches 100%
+ *
+ *	animateSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
+ *		Fl_PNG_Image *loadingPngs[23], Fl_Box *b2, Fl_Box *b3)
+ *		- Circles given image until progress bar reaches 100%
+ *
+ *	void ProgressTeamsButtonClick(Fl_Window *w)
+ *		- Takes the inputs and passes them to the main Team assignment class.
+ *
+ *	void okClick(Fl_Widget *w)
+ *		- hides last window when "okay" is clicked
+ *
+ *	void errorMessage(void)
+ *		- Pops up an error message if # project/students do not meet min requirements
+ *
+ *	void DoneButtonClick(Fl_Widget *w)
+ *		- When the Done button is clicked, the results window is opened.
+ *
+ *	void destroyWindowCb1(GtkWidget *widget, GtkWidget *window)
+ *		- callback when the window is closed via the close button
+ *
+ *	gboolean closeWebViewCb1(WebKitWebView *webView, GtkWidget *window)
+ *		- callback when the window is closed via the close button
+ *
+ *	 void getCookiesCB1(WebKitCookieManager *manager,GAsyncResult *asyncResult)
+ *		- Finishes getting the cookies from the mini-browser session. Takes in the
+ *		data in a Glist, and loops over the contents type casting to a soupcookie
+ *		and storing it in a vector to pass to the libcurl HTTP request functions.
+ *
+ *	static gboolean load_changedWebViewCb1(WebKitWebView *webView,GtkWidget *window)
+ *		- listens for a change in the url in the mini-browser, & exits reaches the login
+ *		success page, calls the cookie manager get cookies function to get the incoming cookies
+ *
+ *	void mini_browserSP(void)
+ *		- creates a mini-browser session so the user can authenticated, stores cookies
+ *
+ *	void StartButtonClick(Fl_Widget *w)
+ *		- When the Start button is clicked, Opens the next GUI window.
+ *
+ *	int MainWindow::handle(int event)
+ *		- changes different logos on different events
+ *
+ *	void MainWindow::callTeams(Fl_Widget *w)
+ *		- event handler to create teams
  */
 
+
+/********* BEGINNING OF INCLUSIONS **********/
+
+
+/* Class Inclusions */
 #include "SteamPunkGUI1.h"
 #include "SPDataGUI.h"
 #include "GUIStyles.h"
@@ -21,6 +90,8 @@
 #include "main.h"
 #include "Utility.h"
 
+
+/* Library Inclusions */
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -33,7 +104,13 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <sys/wait.h>
+#include <gtk/gtk.h>
+#include <webkit2/webkit2.h>
+#include <libsoup/soup.h>
+#include <curl/curl.h>
 
+
+/* FLTK Inclusions */
 #include <FL/Fl.H>
 #include <FL/Fl_Tabs.H>
 #include <FL/Fl_Window.H>
@@ -51,20 +128,38 @@
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
 
-#include <gtk/gtk.h>
-#include <webkit2/webkit2.h>
-#include <libsoup/soup.h>
-#include <curl/curl.h>
 
 using namespace std;
+
+
+ /********* BEGINNING OF PROGRAM CODE **********/
+
+
+// Variable declarations
 int SteamPunkGUI1::num_projects = 0;
 int SteamPunkGUI1::num_students = 0;
 int SteamPunkGUI1::num_classes = 0;
+
+Fl_PNG_Image *LoadingPngsSP[22];
+Fl_PNG_Image *TrainPngs[7];
+Fl_PNG_Image *PreTrainPngs[8];
+Fl_PNG_Image *EndTrainPngs[9];
+Fl_PNG_Image *Gears1Pngs[10];
+Fl_PNG_Image *Gears3Pngs[10];
+Fl_PNG_Image *Gears2Pngs[10];
+
+//variables for the mini-browser session static functions
+bool Auth1;
+typedef void *user_data;
+vector<SoupCookie> cookiedata1;
+GtkWidget *main_windowSP;
+
 
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
 	return constInt;
 }
+
 
 SteamPunkGUI1::SteamPunkGUI1() {
 	// TODO Auto-generated constructor stub
@@ -72,15 +167,6 @@ SteamPunkGUI1::SteamPunkGUI1() {
 
 }
 
-Fl_PNG_Image *LoadingPngsSP[22];
-
-Fl_PNG_Image *TrainPngs[7];
-Fl_PNG_Image *PreTrainPngs[8];
-Fl_PNG_Image *EndTrainPngs[9];
-
-Fl_PNG_Image *Gears1Pngs[10];
-Fl_PNG_Image *Gears3Pngs[10];
-Fl_PNG_Image *Gears2Pngs[10];
 
 void GearsAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2) {
 
@@ -97,6 +183,7 @@ void GearsAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2) {
 		}
 	}            //end while loop
 }
+
 
 void SteamPunkGUI1::MainWindow2() {
 
@@ -543,12 +630,6 @@ void animateSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 		b->redraw();
 		mtx.unlock();
 
-		/*b2->image(Gears1Pngs[k]);
-		 b2->redraw();
-
-		 b3->image(Gears3Pngs[k]);
-		 b3->redraw();*/
-
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 		//usleep(50000);
 		j++;
@@ -575,11 +656,8 @@ void animateSP(Fl_Window *w, Fl_Box *b, Fl_Progress *progressBar,
 }
 
 void teamAssignmentSP(int num_students, int num_projects,
-		Fl_Progress *progressBar) {
+		Fl_Progress *progressBar) { }
 
-	//main m;
-	//m.main_run(num_projects, num_students, progressBar, terminalBuffer);
-}
 
 /*****************************************************************************
  * ProgressTeamsButtonClick
@@ -714,11 +792,6 @@ void errorMessageSP() {
 	Fl::run();
 }
 
-//variables for the mini-browser session static functions
-bool Auth1;
-typedef void *user_data;
-vector<SoupCookie> cookiedata1;
-GtkWidget *main_windowSP;
 
 //callback when the window is closed via the close button
 static void destroyWindowCb1(GtkWidget *widget, GtkWidget *window) {

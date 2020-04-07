@@ -1,10 +1,58 @@
 /*
- * SPDataGUI.cpp
+ * SPDataGUI.h
  *
- *  Created on: Feb 25, 2020
- *      Author: myles
+ * Description:
+ *	This class creates the steampunk data entry window for the GUI, including:
+ *	- a project file input selector
+ *	- a entry for course survey questionnaire
+ *	- entry for semester and year to narrow down course selection *
+ *
+ * Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
+ *
+ *
+ * List of functions:
+ * void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2, int end)
+ * 		- Circles given image until progress bar reaches 100%
+ *
+ * 	SPDataGUI(Fl_Window *win, vector<SoupCookie> cookies)
+ * 		- Constructor function for the class section selector GUI window
+ *
+ * ~SPDataGUI
+ * 		- Destructor function for the class section selector GUI window
+ *
+ * FindCoursesClick(Fl_Widget  *w)
+ *		- updates the Browser based on the year and semester selected. Then
+ *		it searches the course sections for the relevant courses, and displays.
+ *
+ * GobackClick(Fl_Widget  *w)
+ *		- callback for the Go back button, returns to the previous GUI window.
+ *
+ *	YesClick(Fl_Widget  *w)
+ *		- callback for the Confirm button, opens the next GUI window.
+ *
+ *	CancelClick1(Fl_Widget *w)
+ *		- event handler to cancel
+ *
+ *	CancelClick2(Fl_Widget *w)
+ *		- event handler to cancel
+ *
+ *	ConfirmClick(Fl_Widget *w)
+ *		- callback for the Confirm button, opens the next GUI window.
+ *
+ *	GenerateTeamsClick(Fl_Widget *w)
+ *		- event handler for generate teams button
+ *
+ *	chooseProjectFile_cb(Fl_Widget*)
+ *		- event handler for the user to select the project file
  */
 
+
+/********* BEGINNING OF INCLUSIONS **********/
+
+
+/* Class Inclusions */
 #include "SPDataGUI.h"
 #include "SteamPunkGUI1.h"
 #include "GUIStyles.h"
@@ -15,6 +63,8 @@
 #include "Utility.h"
 #include "main.h"
 
+
+/* Library Inclusions */
 #include <libsoup/soup.h>
 #include <vector>
 #include <bits/stdc++.h>
@@ -30,6 +80,8 @@
 #include <sys/time.h>
 #include <sys/wait.h>
 
+
+/* FLTK Inclusions */
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
@@ -43,16 +95,22 @@
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_File_Chooser.H>
 
+
+/********* BEGINNING OF PROGRAM CODE **********/
+
+
+//Forward Variable Declarations
 Fl_PNG_Image Pipes1("./Images/Steampunk/PipesBrick1.png");
 Fl_PNG_Image Pipes2("./Images/Steampunk/PipesBrick2.png");
 Fl_PNG_Image Wall1("./Images/Steampunk/Wall1.png");
 Fl_PNG_Image Wall2("./Images/Steampunk/Wall3.png");
 Fl_PNG_Image Wall3("./Images/Steampunk/Wall14.png");
-
 Fl_PNG_Image *SteamPngs[13];
 Fl_PNG_Image *Steam2Pngs[13];
 string projectFilePath;
 vector<SoupCookie> cookiedataSP;
+
+
 
 void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2, int end) {
 
@@ -63,18 +121,17 @@ void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2, int end) {
 
 		if (x == 1) {
 			b->image(SteamPngs[i]);
-			//b2->image(Steam2Pngs[i]);
 			w->redraw();
 			Fl::check();
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
-			//usleep(100000);
+
 		} else if (x == 0) {
-			//b->image(SteamPngs[i]);
+
 			b2->image(Steam2Pngs[i]);
 			w->redraw();
 			Fl::check();
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
-			//usleep(100000);
+
 		}
 		i++;
 
@@ -82,7 +139,6 @@ void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2, int end) {
 			Fl::check();
 			std::this_thread::sleep_for(std::chrono::milliseconds(200));
 			Fl::check();
-			//usleep(100000);
 			i = 0;
 			y++;
 			if (x == 1) {
@@ -94,6 +150,7 @@ void SteamAnimate(Fl_Window *w, Fl_Box *b, Fl_Box *b2, int end) {
 	}            //end while loop
 
 }
+
 
 /*************************************************************************************
  * ClassSelectorGUI
@@ -515,7 +572,7 @@ void SPDataGUI::GobackClick(Fl_Widget *w) {
 }
 
 /*************************************************************************************
- * ConfirmClick
+ * YesClick
  *
  * Description:
  *		This function is the callback for the Confirm button.
