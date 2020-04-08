@@ -788,6 +788,7 @@ void ResultWindow::recommenderSystem(Fl_Widget *w)  {
 	cout<<endl;
 
 	if(topTeams5.size() == 0){
+		Student replacedStudent;
 	cout<<"Best replacement Team of 5: ";
 	cout<<"Project #"<<BestTeamOf5.project.ProjectID<<"  New TeamScore: "<<BestTeamOf5.TeamScore<<endl;
 
@@ -795,6 +796,7 @@ void ResultWindow::recommenderSystem(Fl_Widget *w)  {
 	if( BestTeamOf5.project.ProjectID== teamsOf5[i].project.ProjectID){
 		for(int j = 0; j< 5; j++){
 		if((studentX.name).compare(BestTeamOf5.team[j].name)==0){
+			replacedStudent = teamsOf5[i].team[j];
 			cout<<"Student to be replaced -> ASUriteID:"<<teamsOf5[i].team[j].ASUriteID<<"  name: "<<teamsOf5[i].team[j].name<<endl;
 		}}
 	}}
@@ -803,11 +805,26 @@ void ResultWindow::recommenderSystem(Fl_Widget *w)  {
 		cout<<" "<<BestTeamOf5.team[j].name<<", ";
 
 	}
-	cout<<"\n"<<endl;}
+	cout<<endl;
+
+	cout<<"New Team for Project #"<<teamX.project.ProjectID<<endl;
+	cout<<"Student Team: ";
+	for(int j = 0; j< 5; j++){
+	if((studentX.name).compare(teamX.team[j].name)==0){
+		cout<<replacedStudent.name<<", ";
+	}else{
+		cout<<teamX.team[j].name<<", ";
+
+	}
+	}
+	cout<<endl;
+
+	}
 
 	cout<<"Full list in order of possible project teams of 5 to switch."<<endl;
 for(int i = 0; i <topTeams5.size(); i++){
 
+	Student replacedStudent;
 	if(i == 0){
 		cout<<"Project #"<<topTeams5[i].second.project.ProjectID<<"  New TeamScore: "<<topTeams5[i].first<<endl;
 
@@ -817,6 +834,7 @@ for(int i = 0; i <topTeams5.size(); i++){
 				if( topTeams5[i].second.project.ProjectID== teamsOf5[x].project.ProjectID){
 					for(int j = 0; j< 5; j++){
 					if((studentX.name).compare(topTeams5[i].second.team[j].name)==0){
+						replacedStudent = teamsOf5[x].team[j];
 						cout<<"Student to be replaced -> ASUriteID:"<<teamsOf5[x].team[j].ASUriteID<<"  name: "<<teamsOf5[x].team[j].name<<endl;
 					}}
 				}
@@ -825,6 +843,21 @@ for(int i = 0; i <topTeams5.size(); i++){
 		for(int j = 0; j < 5; j++){
 			cout<<" "<<topTeams5[i].second.team[j].name<<", ";
 		}
+		cout<<endl;
+
+		cout<<"New Team for Project #"<<teamX.project.ProjectID<<endl;
+		cout<<"Student Team: ";
+		for(int j = 0; j< 5; j++){
+		if((studentX.name).compare(teamX.team[j].name)==0){
+			cout<<replacedStudent.name<<", ";
+		}else{
+			cout<<teamX.team[j].name<<", ";
+
+		}
+		}
+
+
+
 
 		cout<<"\n"<<endl;
 	}
@@ -837,6 +870,8 @@ for(int i = 0; i <topTeams5.size(); i++){
 		if( topTeams5[i].second.project.ProjectID== teamsOf5[x].project.ProjectID){
 			for(int j = 0; j< 5; j++){
 			if((studentX.name).compare(topTeams5[i].second.team[j].name)==0){
+
+				replacedStudent = teamsOf5[x].team[j];
 				cout<<"Student to be replaced -> ASUriteID:"<<teamsOf5[x].team[j].ASUriteID<<"  name: "<<teamsOf5[x].team[j].name<<endl;
 			}}
 		}
@@ -845,6 +880,21 @@ for(int i = 0; i <topTeams5.size(); i++){
 	for(int j = 0; j < 5; j++){
 		cout<<" "<<topTeams5[i].second.team[j].name<<", ";
 	}
+
+	cout<<endl;
+
+	cout<<"New Team for Project #"<<teamX.project.ProjectID<<endl;
+	cout<<"Student Team: ";
+	for(int j = 0; j< 5; j++){
+	if((studentX.name).compare(teamX.team[j].name)==0){
+		cout<<replacedStudent.name<<", ";
+	}else{
+		cout<<teamX.team[j].name<<", ";
+
+	}
+	}
+
+
 
 	cout<<"\n"<<endl;
 }}
