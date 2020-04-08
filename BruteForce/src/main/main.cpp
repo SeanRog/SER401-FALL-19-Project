@@ -1,33 +1,28 @@
 /*************************************************************************************
  * main.cpp
  *
- *  Created on: 10/27/2019
- *      Created by: Team#35 (Sean, Myles, Cristi, Matthew, Elizabeth)
- *
- *
  * Description:
- *		This class is the main driver for the skills based assignment of 
- *              Capstone project teams.  The algorithm takes in all the projects 
- *              via Json files, and assigns them to each student class section. 
- *              The class sections are either Online, or Ground. The algorithm, 
- *              then partitions each class sections, projects and students into 
- *              3 separate pools, and performs the assignment of student teams
- *              to projects for each pool. This takes into account negative 
- *              affinity between students, insuring that students who do not 
- *              want to work with each other will not be assigned to the same 
- *              team. It scores each team assignment based on student to student 
- *              skills, and availability, and finds the best combination of 
- *              student teams to projects for a given pool.
+ *				This class is the main driver for the skills based assignment of
+ *              capstone project teams. The main method of this class starts the
+ *              GUI application. Once the user completes all the GUI entries,
+ *              main_run is called which is the main driver for the team assignment
+ *              process.
  *
  * List of Functions:
- *		int main(void)  -The main driver for the skills based assignment of Capstone project teams.
- *	 	void threadFunction(Student studentPool[],
+ *		-int main(void)  -Initial function to start application. Opens the GUI window.
+ *		-int main_run    -The main driver for the skills based assignment of Capstone project teams.
+ *	 	-void threadFunction(Student studentPool[],
  *		Project projectPool[], const int numStudents, const int numProjects, const int numSkills,
- *		const int teamSize, const int numTopTeams, string results[], int classSection)
- *		int parseLine(char* line) - a function to monitor system memory usage
- *		int getValuePhy() - a function to monitor system memory usage
- *		int getValueVirt() - a function to monitor system memory usage
- *		constexpr int toConstInt(int constInt) - a function to convert an int to a constant
+ *		-const int teamSize, const int numTopTeams, string results[], int classSection)
+ *		-int parseLine(char* line) - a function to monitor system memory usage
+ *		-int getValuePhy() - a function to monitor system memory usage
+ *		-int getValueVirt() - a function to monitor system memory usage
+ *		-constexpr int toConstInt(int constInt) - a function to convert an int to a constant
+ *
+ * @author(s) Elizabeth Marquise, Myles Colina, Sean Rogers, Cristi Deleo, Matthew Cilibraise
+ *
+ * Copyright (C) 2020, ASU Capstone Project
+ * All Rights Reserved
  *
  */
 #include "Student.h"
@@ -61,7 +56,6 @@
 #include <libsoup/soup.h>
 #include <mutex>
 
-
 #include <bits/stdc++.h>
 #include "sys/types.h"
 #include "sys/sysinfo.h"
@@ -82,7 +76,13 @@ using namespace std::chrono;
 int ResultWindow::count = 0;
 vector<ClassSection> ResultWindow::courses;
 vector<SoupCookie> ResultWindow::cookies;
-mutex mtx;
+mutex mtx; //global mutex lock declaration
+int main::numClasses = 0;
+Fl_Progress *progressBar;//progress bar
+Fl_Text_Buffer *terminal;//progress window  text display
+int tempProj, tempStud, textInput, numCourses;
+Fl_Window *optionWindow; //FL Option selection window
+
 
 /*********************************************************
  * parseLine
@@ -168,28 +168,24 @@ constexpr int toConstInt(int constInt) {
 	return constInt;
 }
 
-//progress bar
-Fl_Progress *progressBar;
-
-//terminal buffer
-Fl_Text_Buffer *terminal;
-
-/*********************************************************
+/**********************************************************************
  * threadFunction
  *
  *Authors: Sean, Myles, Elizabeth
  *
  *Description:
- *  This function is called by the threads inside main. It takes in all the 
- *  students and projects for a given class section,
- *  and partitions each section based on student skill, and project priority into 3 pools.
- *  (3 arrays for students, 3 arrays for projects).
- *  It passes this data, along with the other parameters into 3 calls to StudetnsToProjectsAssignment function.
+ *  This function is called by the threads inside main. It takes
+ *  in all the students and projects for a given class section,
+ *  and partitions each section based on student skill, and project
+ *  priority into 3 pools.(3 arrays for students, 3 arrays for projects).
+ *  It passes this data, along with the other parameters into 3 calls
+ *  to StudetnsToProjectsAssignment function.
  *
  *Arguments:
  *	Student studentPool[],
- *	Project projectPool[], const int numStudents, const int numProjects, const int numSkills,
- *		const int teamSize, const int numTopTeams, string results[], int classSection, int numClasses
+ *	Project projectPool[], const int numStudents, const int numProjects,
+ *	const int numSkills, const int teamSize, const int numTopTeams,
+ *	string results[], int classSection, int numClasses
  *
  *Returns:
  *	void
@@ -279,8 +275,13 @@ void threadFunction(Student studentPool[], Project projectPool[],
 
 	int count0 = abs(numProjects - count2 - count1);
 
+<<<<<<< HEAD
 	// make sure each priority section does not have 1 project
         // (should have 0, or 3 or more. (P2 can have 2))
+=======
+	//make sure each priority section does not have 1 project.
+	//(should have 0, or 3 or more. (P2 can have 2))
+>>>>>>> p35/dev
 	if (count2 == 1) {
 		if (count1 > 2) {
 			count1--;
@@ -351,8 +352,14 @@ void threadFunction(Student studentPool[], Project projectPool[],
 		count2++;
 	}
 
+<<<<<<< HEAD
 	// make sure each priority has no more than 10 projects each,
 	// if there are 30 or less projects.
+=======
+	//make sure each priority has no more than 10 projects each,
+	//(if the number of projects is 30 or less).
+
+>>>>>>> p35/dev
 	if (numProjects <= 30) {
 
 		while (count2 > 10) {
@@ -614,11 +621,7 @@ void threadFunction(Student studentPool[], Project projectPool[],
 
 }    //end threadFunction
 
-int tempProj, tempStud, textInput;
-
-Fl_Window *optionWindow;
-
-//Callback for the Steampunk option button.
+//Callback function for the Steampunk option button.
 //Opens the Steampunk version of the GUI
 void Steampunk_Option(Fl_Widget *w) {
 
@@ -627,7 +630,7 @@ void Steampunk_Option(Fl_Widget *w) {
 	mainWin.MainWindow2();
 }
 
-//Callback for the ASU option button.
+//Callback function for the ASU option button.
 //Opens the ASU colors version of the GUI
 void ASU_Option(Fl_Widget *w) {
 
@@ -644,6 +647,8 @@ void ASU_Option(Fl_Widget *w) {
  *
  * Description:
  *		This function is the main method, and creates the MainWindow GUI.
+ *		It opens the option selection window which allows the user to select
+ *		the style of the application.
  *
  *Arguments:
  *	void
@@ -717,8 +722,8 @@ int main() {
  *      Created by: Team#35 (Sean, Myles, Cristi, Matthew, Elizabeth)
  *
  * Description:
- *		This class is the main driver for the skills based assignment of Capstone project teams.
- *	   (see class description)
+ *		This class is the main driver for the skills based assignment of
+ *		capstone project teams.
  *
  *Arguments:
  *	void
@@ -728,48 +733,10 @@ int main() {
  */
 
 int main::main_run(int projects_input, int students_input, string filepath,
-/*<<<<<<< HEAD
-		Fl_Progress *pb, Fl_Text_Buffer *tb, vector<Student> studentsFromCanvas) {
-
-
-	cout << "main.cpp line 704" << endl;
-	//for (int j = 0; j < studentsFromCanvas.size(); j++){
-
-		for (int k = 0; k < studentsFromCanvas.size(); k++){
-			cout << "main.cpp line 708" << endl;
-			cout << "ClassID: " << studentsFromCanvas.at(k).ClassID << endl;
-			cout << "StudentID: " << studentsFromCanvas.at(k).StudentID << endl;
-			cout << "ASUriteID: " << studentsFromCanvas.at(k).ASUriteID << endl;
-			cout << "name: " << studentsFromCanvas.at(k).name << endl;
-
-			cout<<"Affinity: "<<endl;
-			for(int x = 0;x < 6;x++){
-				cout << studentsFromCanvas.at(k).StudentAffinity[x].first << studentsFromCanvas.at(k).StudentAffinity[x].second << endl;
-			}
-
-			cout << "skill scores: " << endl;
-			for(int x = 0; x < 14 ;x++){
-				cout << "skill " << to_string(x+1) << ": " << studentsFromCanvas.at(k).Skills[x] << endl;
-			}
-
-			cout << "Availability: " << endl;
-			for(int x = 0; x < 4 ;x++){
-				cout << studentsFromCanvas.at(k).Availability[x] << endl;
-			}
-		}
-	//}
-	cout << "main.cpp line 730" << endl;
-	return 1;
-}
-
-//change main_run2 back to main_run after testing
-int main::main_run2(int projects_input, int students_input, string filepath,
-		Fl_Progress *pb, Fl_Text_Buffer *tb, vector<Student> studentsFromCanvas) {
-=======*/
 		Fl_Progress *pb, Fl_Text_Buffer *tb,
 		vector<vector<Student>> allStudents,
 		vector<ClassSection> allClassSections, vector<SoupCookie> cookies) {
-//>>>>>>> dev
+	mtx.lock();
 	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
 
@@ -790,30 +757,62 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 	sprintf(percent, "%d%%", int((5 / 100.0) * 100.0));
 	pb->label(percent);
 	Fl::check();
+	mtx.unlock();
 
 	//set up the terminal buffer
 	terminal = tb;
-
+	numCourses = allClassSections.size();
 	tempProj = projects_input;
 	tempStud = students_input;
+	//numCourses = numClasses;
 	//reading in inputs
 
 	const int NUM_PROJECTS = toConstInt(tempProj);
 	const int NUM_STUDENTS = toConstInt(tempStud);
 	const int NUM_SKILLS = 14;
-	const int NUM_CLASS_SECTIONS = 4;
+
 	ResultWindow::count = NUM_PROJECTS;
 
+	//mtx.unlock();
+	//mtx.lock();
 	Utility util;
 
+	util.makeClassSectionJSON(allClassSections);
 	//creating random sample Json data based inputs
 	//of number of projects, and number of students
-//	util.makeProjectJSON(NUM_PROJECTS, NUM_SKILLS);
-	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS, allStudents);
+	//util.makeProjectJSON(NUM_PROJECTS, NUM_SKILLS);
+
 	//create the CSV file of random projects
 	util.makeProjectCSV(NUM_PROJECTS, NUM_SKILLS);
 	//util.makeStudentCSV(NUM_PROJECTS, NUM_SKILLS);
 
+	//---------Start 4 class sections test
+	const int NUM_CLASS_SECTIONS = 4;
+	util.makeStudentJSON(NUM_STUDENTS, NUM_SKILLS, allStudents);
+	const string CLASS_SECTION_FILE = "./SampleJsonFiles/4ClassSections.json";
+	//---------END 4 class sections test
+
+	//---------Start 1 class section test
+	/*
+	 const int NUM_CLASS_SECTIONS = 1;
+	 //the below only works without using threads
+	 //static const int NUM_CLASS_SECTIONS = toConstInt(numCourses);
+
+	 for (int i = 0 ; i < allClassSections.size(); i++){
+	 allClassSections[i].ClassID = i;
+	 util.generateTestStudents(NUM_STUDENTS, NUM_SKILLS, allStudents, allClassSections[i]);
+	 }
+
+	 const string CLASS_SECTION_FILE = "./ClassSections.json";
+	 */
+	//----------End 1 class section test
+
+	//The following function is to make a json file for all students for all
+	//the courses read in from canvas. So it should be used only in the final system.
+	//util.makeCanvasStudentRosterJSON(NUM_STUDENTS, NUM_SKILLS, allStudents, allClassSections);
+	//mtx.unlock();
+
+	//mtx.lock();
 	cout << "main " << filepath << endl;
 	for (int i = filepath.length() - 1; i >= 0; i--) {
 		file.push_back(filepath.at(i));
@@ -837,7 +836,6 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 	//const string PROJECT_FILE = "./100Projects.csv";
 	const string PROJECT_FILE = file2;
 	const string STUDENT_FILE = "./newStudents.json";
-	const string CLASS_SECTION_FILE = "./SampleJsonFiles/4ClassSections.json";
 
 	//Change this value to change the number of top teams stored.
 	int tempNumTopTeams = 5;
@@ -862,17 +860,23 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 
 	// INITIALIZE POOLS
 	//util.initProjectPool(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
-	util.csvToProjectsVector(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
+	util.csvToProjectsVector(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS,
+			NUM_SKILLS);
 	util.initStudentPool(STUDENT_FILE, STUDENT_POOL, NUM_STUDENTS);
 	util.initClassSectionPool(CLASS_SECTION_FILE, CLASS_SECTION_POOL,
 			STUDENT_POOL, NUM_CLASS_SECTIONS, NUM_STUDENTS);
 	util.initProjectStudentSkills(PROJECT_POOL, STUDENT_POOL,
 			PROJECT_STUDENT_SKILLS, NUM_PROJECTS, NUM_STUDENTS, NUM_SKILLS);
+	//mtx.unlock();
 
+	//mtx.lock();
 	for (int j = 0; j < NUM_PROJECTS; j++) {
 		ResultWindow::project_pool[0][j] = PROJECT_POOL[j].ProjectID;
 		ResultWindow::project_pool[1][j] = PROJECT_POOL[j].Priority;
 	}
+
+	int size1 = NUM_CLASS_SECTIONS * 3;
+	//const int results_size = toConstInt(size1);
 
 	string results[NUM_CLASS_SECTIONS * 3];	//Stores the results the assignment of students to projects each class section
 	int studentsInSections[NUM_CLASS_SECTIONS]; //stores the number of students in each class section
@@ -882,6 +886,13 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 	for (int i = 0; i < NUM_CLASS_SECTIONS; i++) {
 		studentsInSections[i] = 0;
 		projectsInSections[i] = 0;
+		cout << "Class Section Data" << endl;
+		cout << CLASS_SECTION_POOL[i].OfficialClassID << endl;
+		cout << CLASS_SECTION_POOL[i].ClassID << endl;
+		cout << CLASS_SECTION_POOL[i].Course_Code << endl;
+		cout << CLASS_SECTION_POOL[i].Course_Name << endl;
+		cout << CLASS_SECTION_POOL[i].Type << endl;
+
 	}
 	//initialize results
 	for (int i = 0; i < NUM_CLASS_SECTIONS * 3; i++) {
@@ -897,6 +908,9 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 		}
 	}
 
+	//mtx.unlock();
+
+	//mtx.lock();
 	// PARTITION POOLS BY TYPE (ONLINE/GROUND/HYBRID)
 	util.projectTypePartition(PROJECT_POOL, NUM_PROJECTS, 'O', 'G', 'H');
 	util.classSectionTypePartition(CLASS_SECTION_POOL, NUM_CLASS_SECTIONS, 'O',
@@ -913,6 +927,7 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 	cout << to_string(getValuePhy() + getValueVirt())
 			<< " KB total memory usage" << endl;
 
+	//mtx.unlock();
 // BEGIN - STUDENTS TO PROJECTS ASSIGNMENT
 
 	//Threads for each class section will start here
@@ -932,15 +947,15 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 		}
 	}
 
-/*	cout << "ASUriteID|StudentID|ClassID: ";
+	/*	cout << "ASUriteID|StudentID|ClassID: ";
 
-	//Print out for testing
-	for (int i = 0; i < NUM_STUDENTS; i++) {
-		cout << STUDENT_POOL[i].ASUriteID << "|" << STUDENT_POOL[i].StudentID
-				<< "|" << STUDENT_POOL[i].ClassID << "  ";
-	}
+	 //Print out for testing
+	 for (int i = 0; i < NUM_STUDENTS; i++) {
+	 cout << STUDENT_POOL[i].ASUriteID << "|" << STUDENT_POOL[i].StudentID
+	 << "|" << STUDENT_POOL[i].ClassID << "  ";
+	 }
 
-	cout << endl;*/
+	 cout << endl;*/
 
 	//create a thread for each class section. store each thread in threads[]
 	thread threads[NUM_CLASS_SECTIONS];
@@ -985,8 +1000,9 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 		}
 
 		//cout << "Total: " + to_string(studentsInSections[i]) << endl;
-		//threadFunction(STUDENT_POOL_SECTION_X, PROJECT_POOL_SECTION_X, studentsInSections[i], projectsInSections[i], NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS, results, i);
-		//threads[i] = thread (threadFunction, STUDENT_POOL, PROJECT_POOL, NUM_STUDENTS, NUM_PROJECTS, NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS);
+
+		const int officialID = toConstInt(
+				CLASS_SECTION_POOL[i].OfficialClassID);
 
 		//call the thread (once for each class section)
 		threads[i] = thread(threadFunction, STUDENT_POOL_SECTION_X,
@@ -994,6 +1010,13 @@ int main::main_run2(int projects_input, int students_input, string filepath,
 				projectsInSections[i], NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS,
 				results, i, NUM_CLASS_SECTIONS,
 				CLASS_SECTION_POOL[i].OfficialClassID);
+
+		//uncomment this to use without threads.
+		/*	threadFunction( STUDENT_POOL_SECTION_X,
+		 PROJECT_POOL_SECTION_X, studentsInSections[i],
+		 projectsInSections[i], NUM_SKILLS, TEAM_SIZE, NUM_TOP_TEAMS,
+		 results, i, NUM_CLASS_SECTIONS,
+		 CLASS_SECTION_POOL[i].OfficialClassID);*/
 
 		//delete STUDENT_POOL_SECTION_X;
 		//delete PROJECT_POOL_SECTION_X;

@@ -51,4 +51,21 @@ ID# Name of defect (short description)
 - 04/01/2020
 - UX issue
 - Version: SteamPunk
+
+6. System would run into cases where no team combinations could be formed.
+- Branch: dev
+- Myles
+- 04/01/2020
+- LOGICAL ERROR
+- Version: SteamPunk / ASU
+- Cause: csv file reader and writer. Reader for the projects was not assigning the correct skill values.
+- Status: CLOSED
+
+7. Certain values need to be hardcoded, such as the number of class sections.
+- Branch: dev
+- Myles
+- 04/03/2020
+- Thread Issue
+- Cause: The threads do not allow arrays of dynamic size, so the threads cannot be used if the the 
+ value is not hardcoded. It does not work with the ToConstInt function either. 
 - Status: OPEN

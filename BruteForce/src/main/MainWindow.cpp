@@ -63,6 +63,7 @@ using namespace std;
 
 int MainWindow::num_projects = 0;
 int MainWindow::num_students = 0;
+int MainWindow::num_classes = 0;
 
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
@@ -480,9 +481,9 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 	//if you want to load cookies.
 	//threads[0] = thread (cookieLoad, progressWindow, imageBox, progressBar);
 
+	num_classes = mwCourses.size();
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
-
 	m.main_run(num_projects, num_students, mwProjfile, progressBar,
 			terminalBuffer, mwAllStudents, mwCourses, mwCookies);
 
@@ -575,6 +576,7 @@ bool Auth;
 typedef void *user_data;
 vector<SoupCookie> cookiedata;
 Fl_Window *backWindow2;
+WebKitWebView *webView;
 
 //callback when the window is closed via the close button
 static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
@@ -703,6 +705,7 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView,
 			usleep(500000);
 			//quit the mini-browser
 			 //gtk_main_quit();
+			gtk_widget_destroy(GTK_WIDGET(webView));
 			 gtk_widget_destroy(main_window);
 
 
@@ -802,7 +805,7 @@ void mini_browser() {
 	WebKitCookieManager *cookiejar = webkit_web_context_get_cookie_manager(
 			context);
 	// Create a browser instance
-	WebKitWebView *webView = WEBKIT_WEB_VIEW(
+	webView = WEBKIT_WEB_VIEW(
 			webkit_web_view_new_with_context(context));
 
 	//webkit_web_context_set_automation_allowed(context, 1);
