@@ -21,12 +21,19 @@
 #include "Utility.h"
 
 #include <iostream>
-#include <string>
-#include <cstdlib>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fstream>
 #include <vector>
+#include <thread>
+#include <array>
+#include <chrono>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <mutex>
+
+
+#include <bits/stdc++.h>
+#include "sys/types.h"
+#include "sys/sysinfo.h"
 
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
@@ -93,6 +100,7 @@ ResultWindow::ResultWindow() {
 
 	//uncomment this to activate the post teams button.
 	//buttonPostGroups->callback(static_postGroups, this);
+	buttonPostGroups->callback(static_recommender, this);
 
 	//Save BUTTON
 	buttonSave = new Fl_Button(1070, 20, 175, 50, "Save .csv Report");
@@ -504,31 +512,27 @@ void ResultWindow::postGroups(Fl_Widget *w) {
 
 }
 
-void ResultWindow::callbackRecommenderSystem() {
-
-	//opens a new window
-
-
-
-
-
-
-
+bool sortinrev(const pair<int,Team> &a,
+               const pair<int,Team> &b)
+{
+       return (a.first > b.first);
 }
 
+void ResultWindow::recommenderSystem(Fl_Widget *w)  {
 
-void ResultWindow::recommenderSystem() {
 
-
-	string asuriteIDX;
+	string asuriteIDX = "ASU50";
 	Student studentX;
 	Team teamX;
 	int classIDX;
+	int placeIDX;
 	int numSkills = 14;
+	int bestTeamScore = 0;
 
 	vector <Team> teamsOf4;
 	vector <Team> teamsOf5;
-	vector <Team> top5Teams;
+	Team BestTeamOf5, BestTeamOf4;
+	vector<pair<int, Team>> topTeams5, topTeams4;
 	bool isTeam4;
 	bool teamXis4 = false;
 
@@ -540,6 +544,7 @@ void ResultWindow::recommenderSystem() {
 				studentX = studentTeams[i].team[j];
 				teamX = studentTeams[i];
 				classIDX = studentTeams[i].ClassID;
+				placeIDX = j;
 				break;
 			}
 		}
@@ -574,39 +579,289 @@ void ResultWindow::recommenderSystem() {
 	}
 
 	StudentsToProjects stp;
-
-	//if the student is on a team of 5, find the best team of 4 that the student can be placed in
+	cout<<"TEAMS OF 4"<<endl;
+	//find the best team of 4 that the student can be placed in
 	for(int i = 0; i <teamsOf4.size(); i++){
 
 		for(int j = 0; j < 5; j++){
 				if(teamsOf4[i].team[j].StudentID == 99999){
-					teamsOf4[i].team[j] == studentX;
 
+					int OldTeamScore = teamsOf4[i].TeamScore;
+					Team currentTeam = teamsOf4[i];
+					currentTeam.team[j] = studentX;
+					//find each students skill sums
 					int studentSkillSums[5];
+					int studentProjectSkills[5];
+					int skillSum = 0;
 					for (int x = 0; x < 5; x++) {
 						studentSkillSums[x] = 0;
+						studentProjectSkills[x] = 0;
 						for (int y = 0; y < numSkills; y++) {
-							studentSkillSums[x] += teamsOf4[i].team[x].Skills[j];
+							studentSkillSums[x] += currentTeam.team[x].Skills[y];
+							studentProjectSkills[x] += currentTeam.team[x].Skills[y] * currentTeam.project.Skills[y];
+						}
+
+						skillSum += studentSkillSums[x];
+					}
+
+					//Calculate max skill score for the current project.
+					int maxProjectScore = 0;
+						for (int y = 0; y < numSkills; y++) {
+							maxProjectScore += currentTeam.project.Skills[y] * 4;
+						}
+						maxProjectScore = maxProjectScore * 5;
+
+						currentTeam.TeamScore = stp.ProjectCompareTeamScore(studentProjectSkills,
+							maxProjectScore)
+							+ stp.SkillCompareTeamScore(studentSkillSums)
+							+ stp.AvailabilityTeamScore(currentTeam.team);
+
+					if ((stp.NegativeAffinityCheck(currentTeam.team) == false)
+								&& (stp.NDA_IPRCheck(currentTeam.team, currentTeam.project) == true)) {
+
+
+							if(currentTeam.TeamScore >= OldTeamScore || bestTeamScore > (OldTeamScore - currentTeam.TeamScore) ){
+
+							bestTeamScore = OldTeamScore - currentTeam.TeamScore;
+							BestTeamOf4 = currentTeam;
+
+
+						}
+						cout<<"Old Team Score: "<<OldTeamScore<< "NewTeamScore: "<<currentTeam.TeamScore
+														<<endl;
+						if(OldTeamScore <= currentTeam.TeamScore && currentTeam.project.ProjectID != teamX.project.ProjectID){
+						pair<int, Team> temp;
+						temp.first = currentTeam.TeamScore;
+						temp.second = currentTeam;
+
+							topTeams4.push_back(temp);
 						}
 					}
 
-
-					teamsOf4[i].TeamScore = stp.ProjectCompareTeamScore(studentSkills,
-							maxProjectSkills[CurrentProject.PoolID])
-							+ stp.SkillCompareTeamScore(skillSums)
-							+ stp.AvailabilityTeamScore(teamsOf4[i].team);
-
+					}
 				}
-		}
 			}
+	bestTeamScore = 0;
+
+	cout<<"TEAMS OF 5"<<endl;
+
+	//find the best team of 5 that the student can be placed in,
+	//and the student to be swapped.
+	for(int i = 0; i <teamsOf5.size(); i++){
+
+		for(int k = 0; k <5; k++){
+		int oldTeamScore = teamsOf5[i].TeamScore;
+		int teamXScore = teamX.TeamScore;
+		Student replacedStudent = teamsOf5[i].team[k];
+		Team currentTeam = teamsOf5[i];
+		Team replacedTeam = teamX;
+		replacedTeam.team[placeIDX] = replacedStudent;
+
+
+		currentTeam.team[k] = studentX;
+
+					//find each students skill sums
+					int studentSkillSums[5];
+					int studentProjectSkills[5];
+					int skillSum = 0;
+					for (int x = 0; x < 5; x++) {
+						studentSkillSums[x] = 0;
+						studentProjectSkills[x] = 0;
+						for (int y = 0; y < numSkills; y++) {
+							studentSkillSums[x] += currentTeam.team[x].Skills[y];
+							studentProjectSkills[x] += currentTeam.team[x].Skills[y] * currentTeam.project.Skills[y];
+						}
+
+						skillSum += studentSkillSums[x];
+					}
+
+					//Calculate max skill score for the current project.
+					int maxProjectScore = 0;
+						for (int y = 0; y < numSkills; y++) {
+							maxProjectScore += currentTeam.project.Skills[y] * 4;
+						}
+						maxProjectScore = maxProjectScore * 5;
+
+						currentTeam.TeamScore = stp.ProjectCompareTeamScore(studentProjectSkills,
+							maxProjectScore)
+							+ stp.SkillCompareTeamScore(studentSkillSums)
+							+ stp.AvailabilityTeamScore(currentTeam.team);
+
+
+					//now for the team of the replacement student
+						//find each students skill sums
+						int studentSkillSums2[5];
+						int studentProjectSkills2[5];
+						int skillSum2 = 0;
+						for (int x = 0; x < 5; x++) {
+							studentSkillSums2[x] = 0;
+							studentProjectSkills2[x] = 0;
+							for (int y = 0; y < numSkills; y++) {
+								studentSkillSums2[x] += replacedTeam.team[x].Skills[y];
+								studentProjectSkills2[x] += replacedTeam.team[x].Skills[y] * replacedTeam.project.Skills[y];
+							}
+
+							skillSum2 += studentSkillSums2[x];
+						}
+
+						//Calculate max skill score for the current project.
+						int maxProjectScore2 = 0;
+							for (int y = 0; y < numSkills; y++) {
+								maxProjectScore2 += replacedTeam.project.Skills[y] * 4;
+							}
+							maxProjectScore2 = maxProjectScore * 5;
+
+							replacedTeam.TeamScore = stp.ProjectCompareTeamScore(studentProjectSkills2,
+								maxProjectScore2)
+								+ stp.SkillCompareTeamScore(studentSkillSums2)
+								+ stp.AvailabilityTeamScore(replacedTeam.team);
+
+
+							cout<<"Old Team Score: "<<oldTeamScore<< " NewTeamScore: "<<currentTeam.TeamScore
+									<<" oldTeamX: "<<teamXScore<<" ReplacedTeamScore: "<<replacedTeam.TeamScore<<endl;
+
+					if ((stp.NegativeAffinityCheck(currentTeam.team) == false)
+								&& (stp.NDA_IPRCheck(currentTeam.team, currentTeam.project) == true)) {
+
+						if ((stp.NegativeAffinityCheck(replacedTeam.team) == false)
+									&& (stp.NDA_IPRCheck(replacedTeam.team, replacedTeam.project) == true)) {
+
+						if(currentTeam.TeamScore > bestTeamScore && currentTeam.project.ProjectID != teamX.project.ProjectID){
+							bestTeamScore = currentTeam.TeamScore;
+							bestTeamScore = currentTeam.TeamScore;
+							BestTeamOf5 = currentTeam;
+						}
+
+						//cout<<"Old Team Score: "<<oldTeamScore<< "NewTeamScore: "<<currentTeam.TeamScore
+						//		<<"oldTeamX: "<<teamXScore<<" ReplacedTeamScore: "<<replacedTeam.TeamScore<<endl;
+						if(oldTeamScore <= currentTeam.TeamScore
+								&& currentTeam.project.ProjectID != teamX.project.ProjectID){
+						pair<int, Team> temp;
+						temp.first = currentTeam.TeamScore;
+						temp.second = currentTeam;
+							topTeams5.push_back(temp);}
+						//}
+						}
+
+					}
+				}
+
+
+
+			}
+
+
+	//now sort through the list of teams to get the top 5.
+	sort(topTeams4.begin(), topTeams4.end(), sortinrev);
+
+	sort(topTeams5.begin(), topTeams5.end(), sortinrev);
+
+	//Print out to the display all the following information
+
+		if(teamXis4 == false){
+		cout<<"Recommended replacement teams of 4 for student: "<<studentX.name<<"  ASUriteID:"<<studentX.ASUriteID<<endl;
+		cout<<endl;
+
+		cout<<"Best replacement Team of 4: ";
+		cout<<"Project #"<<BestTeamOf4.project.ProjectID<<"  New TeamScore: "<<BestTeamOf4.TeamScore<<endl;
+		cout<<"Students: ";
+		for(int j = 0; j < 5; j++){
+			cout<<" "<<BestTeamOf4.team[j].name<<", ";
+
+		}
+		cout<<"\n"<<endl;
+
+		cout<<"Full list in order of possible project teams of 4 to switch."<<endl;}
+	for(int i = 0; i <topTeams4.size(); i++){
+
+		cout<<"Project #"<<topTeams4[i].second.project.ProjectID<<"  New TeamScore: "<<topTeams4[i].first<<endl;
+
+		cout<<"Students: ";
+		for(int j = 0; j < 5; j++){
+			cout<<" "<<topTeams4[i].second.team[j].name<<", ";
+
+		}
+		cout<<"\n"<<endl;
+	}
+
+	cout<<"Recommended replacement teams of 5 for student: "<<studentX.name<<"  ASUriteID:"<<studentX.ASUriteID<<endl;
+	cout<<endl;
+
+	if(topTeams5.size() == 0){
+	cout<<"Best replacement Team of 5: ";
+	cout<<"Project #"<<BestTeamOf5.project.ProjectID<<"  New TeamScore: "<<BestTeamOf5.TeamScore<<endl;
+
+	for(int i = 0; i <teamsOf5.size(); i++){
+	if( BestTeamOf5.project.ProjectID== teamsOf5[i].project.ProjectID){
+		for(int j = 0; j< 5; j++){
+		if((studentX.name).compare(BestTeamOf5.team[j].name)==0){
+			cout<<"Student to be replaced -> ASUriteID:"<<teamsOf5[i].team[j].ASUriteID<<"  name: "<<teamsOf5[i].team[j].name<<endl;
+		}}
+	}}
+	cout<<"Students: ";
+	for(int j = 0; j < 5; j++){
+		cout<<" "<<BestTeamOf5.team[j].name<<", ";
+
+	}
+	cout<<"\n"<<endl;}
+
+	cout<<"Full list in order of possible project teams of 5 to switch."<<endl;
+for(int i = 0; i <topTeams5.size(); i++){
+
+	if(i == 0){
+		cout<<"Project #"<<topTeams5[i].second.project.ProjectID<<"  New TeamScore: "<<topTeams5[i].first<<endl;
+
+		//cout<<"Student to be replaced -> ASUriteID:"<<topTeams5[i].second.team[4].ASUriteID<<"  name: "<<topTeams5[i].second.team[4].name<<endl;
+		for(int x = 0; x <teamsOf5.size(); x++){
+
+				if( topTeams5[i].second.project.ProjectID== teamsOf5[x].project.ProjectID){
+					for(int j = 0; j< 5; j++){
+					if((studentX.name).compare(topTeams5[i].second.team[j].name)==0){
+						cout<<"Student to be replaced -> ASUriteID:"<<teamsOf5[x].team[j].ASUriteID<<"  name: "<<teamsOf5[x].team[j].name<<endl;
+					}}
+				}
+			}
+		cout<<"Students: ";
+		for(int j = 0; j < 5; j++){
+			cout<<" "<<topTeams5[i].second.team[j].name<<", ";
 		}
 
+		cout<<"\n"<<endl;
+	}
+	else if(topTeams5[i].second.project.ProjectID != topTeams5[i-1].second.project.ProjectID){
+	cout<<"Project #"<<topTeams5[i].second.project.ProjectID<<"  New TeamScore: "<<topTeams5[i].first<<endl;
 
+	//cout<<"Student to be replaced -> ASUriteID:"<<topTeams5[i].second.team[4].ASUriteID<<"  name: "<<topTeams5[i].second.team[4].name<<endl;
+	for(int x = 0; x <teamsOf5.size(); x++){
 
+		if( topTeams5[i].second.project.ProjectID== teamsOf5[x].project.ProjectID){
+			for(int j = 0; j< 5; j++){
+			if((studentX.name).compare(topTeams5[i].second.team[j].name)==0){
+				cout<<"Student to be replaced -> ASUriteID:"<<teamsOf5[x].team[j].ASUriteID<<"  name: "<<teamsOf5[x].team[j].name<<endl;
+			}}
+		}
+	}
+	cout<<"Students: ";
+	for(int j = 0; j < 5; j++){
+		cout<<" "<<topTeams5[i].second.team[j].name<<", ";
+	}
+
+	cout<<"\n"<<endl;
+}}
 
 
 
 }
+
+
+void callbackRecommenderSystem() {
+
+	//opens a new window
+
+	//recommenderSystem();
+
+}
+
 
 // DESTRUCTOR
 ResultWindow::~ResultWindow() {

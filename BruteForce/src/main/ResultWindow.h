@@ -44,7 +44,11 @@ class ResultWindow {
 		((ResultWindow*) data)->postGroups(w);
 	}
 
-	void postGroups(Fl_Widget *w);
+	static void static_recommender(Fl_Widget *w, void *data) {
+		((ResultWindow*) data)->recommenderSystem(w);
+	}
+
+
 
 	int teamScoreAvg, bestScore, badScore;
 	int bestTeam, worstTeam, percent, notAssign;
@@ -74,6 +78,8 @@ public:
 	~ResultWindow();
 	void addText();
 	void calculateStats();
+	void postGroups(Fl_Widget *w);
+	void recommenderSystem(Fl_Widget *w);
 
 };
 
