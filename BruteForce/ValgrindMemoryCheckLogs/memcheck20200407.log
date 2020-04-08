@@ -1,0 +1,2110 @@
+==22950== Memcheck, a memory error detector
+==22950== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==22950== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==22950== Command: ./build/main.exe
+==22950== Parent PID: 11247
+==22950== 
+--22950-- 
+--22950-- Valgrind options:
+--22950--    -v
+--22950--    --tool=memcheck
+--22950--    --leak-check=full
+--22950--    --log-file=memcheck20200407.log
+--22950-- Contents of /proc/version:
+--22950--   Linux version 5.3.0-45-generic (buildd@lcy01-amd64-027) (gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)) #37~18.04.1-Ubuntu SMP Fri Mar 27 15:58:10 UTC 2020
+--22950-- 
+--22950-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3
+--22950-- Page sizes: currently 4096, max supported 4096
+--22950-- Valgrind library directory: /usr/lib/valgrind
+--22950-- Reading syms from /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe
+--22950-- Reading syms from /lib/x86_64-linux-gnu/ld-2.27.so
+--22950--   Considering /lib/x86_64-linux-gnu/ld-2.27.so ..
+--22950--   .. CRC mismatch (computed 1b7c895e wanted 2943108a)
+--22950--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.27.so ..
+--22950--   .. CRC is valid
+--22950-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--22950--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--22950--   .. CRC mismatch (computed 41ddb025 wanted 9972f546)
+--22950--    object doesn't have a symbol table
+--22950--    object doesn't have a dynamic symbol table
+--22950-- Scheduler: using generic scheduler lock implementation.
+--22950-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==22950== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-22950-by-cristi-on-???
+==22950== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-22950-by-cristi-on-???
+==22950== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-22950-by-cristi-on-???
+==22950== 
+==22950== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==22950== don't want to do, unless you know exactly what you're doing,
+==22950== or are doing some strange experiment):
+==22950==   /usr/lib/valgrind/../../bin/vgdb --pid=22950 ...command...
+==22950== 
+==22950== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==22950==   /path/to/gdb ./build/main.exe
+==22950== and then give GDB the following command
+==22950==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=22950
+==22950== --pid is optional if only one valgrind process is running
+==22950== 
+--22950-- REDIR: 0x401f2f0 (ld-linux-x86-64.so.2:strlen) redirected to 0x580608c1 (???)
+--22950-- REDIR: 0x401f0d0 (ld-linux-x86-64.so.2:index) redirected to 0x580608db (???)
+--22950-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--22950--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--22950--   .. CRC mismatch (computed 50df1b30 wanted 4800a4cf)
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--22950--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--22950--   .. CRC mismatch (computed f893b962 wanted 95ee359e)
+--22950--    object doesn't have a symbol table
+==22950== WARNING: new redirection conflicts with existing -- ignoring it
+--22950--     old: 0x0401f2f0 (strlen              ) R-> (0000.0) 0x580608c1 ???
+--22950--     new: 0x0401f2f0 (strlen              ) R-> (2007.0) 0x04c32db0 strlen
+--22950-- REDIR: 0x401d360 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c33ee0 (strcmp)
+--22950-- REDIR: 0x401f830 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c374f0 (mempcpy)
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libm-2.27.so
+--22950--   Considering /lib/x86_64-linux-gnu/libm-2.27.so ..
+--22950--   .. CRC mismatch (computed 7feae033 wanted b29b2508)
+--22950--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.27.so ..
+--22950--   .. CRC is valid
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libfltk.so.1.3
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libfltk_images.so.1.3
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11.so.6.3.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.27.so
+--22950--   Considering /usr/lib/debug/.build-id/28/c6aade70b2d40d1f0f3d0a1a0cad1ab816448f.debug ..
+--22950--   .. build-id is valid
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libgcc_s.so.1
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libc-2.27.so
+--22950--   Considering /lib/x86_64-linux-gnu/libc-2.27.so ..
+--22950--   .. CRC mismatch (computed b1c74187 wanted 042cc048)
+--22950--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.27.so ..
+--22950--   .. CRC is valid
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libnghttp2.so.14.15.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libidn2.so.0.3.3
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/librtmp.so.1
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libpsl.so.5.2.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libssl.so.1.1
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libldap_r-2.4.so.2.10.8
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/liblber-2.4.so.2.10.8
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libz.so.1.2.11
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libXrender.so.1.3.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libXcursor.so.1.0.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libXfixes.so.3.1.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0
+--22950--   Considering /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0 ..
+--22950--   .. CRC mismatch (computed b483887a wanted 38c83e44)
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libXinerama.so.1.0.0
+--22950--   Considering /usr/lib/x86_64-linux-gnu/libXinerama.so.1.0.0 ..
+--22950--   .. CRC mismatch (computed 7bb99cdf wanted 61ad4d32)
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libdl-2.27.so
+--22950--   Considering /lib/x86_64-linux-gnu/libdl-2.27.so ..
+--22950--   .. CRC mismatch (computed bd82fa02 wanted d1fdccc9)
+--22950--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libdl-2.27.so ..
+--22950--   .. CRC is valid
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libpng16.so.16.34.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libjpeg.so.8.1.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2200.30
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.4000.14
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libatk-1.0.so.0.22810.1
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libcairo.so.2.11510.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0.3611.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libGL.so.1.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libEGL.so.1.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/librt-2.27.so
+--22950--   Considering /lib/x86_64-linux-gnu/librt-2.27.so ..
+--22950--   .. CRC mismatch (computed 16979484 wanted f9e041e3)
+--22950--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/librt-2.27.so ..
+--22950--   .. CRC is valid
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libnotify.so.4.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libsqlite3.so.0.8.6
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.4
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libxslt.so.1.1.29
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libicui18n.so.60.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libicuuc.so.60.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libwoff2dec.so.1.0.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libharfbuzz.so.0.10702.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.10702.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libfreetype.so.6.15.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libgcrypt.so.20.2.1
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgstapp-1.0.so.0.1405.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgstbase-1.0.so.0.1405.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgstreamer-1.0.so.0.1405.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgstpbutils-1.0.so.0.1405.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgstaudio-1.0.so.0.1405.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgsttag-1.0.so.0.1405.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgstvideo-1.0.so.0.1405.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgstgl-1.0.so.0.1405.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgstfft-1.0.so.0.1405.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libwebp.so.6.0.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libwebpdemux.so.2.0.3
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libsoup-2.4.so.1.8.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libenchant.so.1.6.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.5600.4
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libsecret-1.so.0.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libtasn1.so.6.5.5
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libXcomposite.so.1.0.0
+--22950--   Considering /usr/lib/x86_64-linux-gnu/libXcomposite.so.1.0.0 ..
+--22950--   .. CRC mismatch (computed ae298d34 wanted d365a3d0)
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libXdamage.so.1.1.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libwayland-server.so.0.1.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libwayland-egl.so.1.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libwayland-client.so.0.3.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0.4000.14
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libXi.so.6.1.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libcairo-gobject.so.2.11510.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libepoxy.so.0.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0.4000.14
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libffi.so.6.0.4
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libunistring.so.2.1.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgnutls.so.30.14.10
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libhogweed.so.4.4
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libnettle.so.6.4
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgmp.so.10.3.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libkrb5.so.3.3
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libcom_err.so.2.1
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libresolv-2.27.so
+--22950--   Considering /lib/x86_64-linux-gnu/libresolv-2.27.so ..
+--22950--   .. CRC mismatch (computed 4f654d8d wanted bb34a537)
+--22950--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libresolv-2.27.so ..
+--22950--   .. CRC is valid
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libsasl2.so.2.0.25
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgssapi.so.3.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libexpat.so.1.6.7
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
+--22950--   Considering /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0 ..
+--22950--   .. CRC mismatch (computed 256f5df8 wanted 5d40ac88)
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libXrandr.so.2.2.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libxkbcommon.so.0.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libthai.so.0.3.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libpixman-1.so.0.34.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-shm.so.0.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-render.so.0.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libselinux.so.1
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libmount.so.1.1.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libpcre.so.3.13.3
+--22950--   Considering /lib/x86_64-linux-gnu/libpcre.so.3.13.3 ..
+--22950--   .. CRC mismatch (computed 23718752 wanted 0e9b5133)
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libGLdispatch.so.0.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/liblzma.so.5.2.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libicudata.so.60.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libwoff2common.so.1.0.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libbrotlidec.so.1.0.4
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgraphite2.so.3.0.1
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libgpg-error.so.0.22.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/liborc-0.4.so.0.28.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgstallocators-1.0.so.0.1405.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11-xcb.so.1.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libdrm.so.2.4.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgbm.so.1.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libgudev-1.0.so.0.2.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libdbus-1.so.3.19.4
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libatspi.so.0.0.1
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libp11-kit.so.0.3.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libkeyutils.so.1.5
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libheimntlm.so.0.1.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libkrb5.so.26.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libasn1.so.8.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libhcrypto.so.4.1.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libroken.so.18.1.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libbsd.so.0.8.7
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libdatrie.so.1.3.3
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libblkid.so.1.1.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1.0.4
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libudev.so.1.6.9
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libsystemd.so.0.21.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libwind.so.0.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libheimbase.so.1.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libhx509.so.5.0.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libcrypt-2.27.so
+--22950--   Considering /lib/x86_64-linux-gnu/libcrypt-2.27.so ..
+--22950--   .. CRC mismatch (computed 8955bf71 wanted 17b36cbd)
+--22950--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libcrypt-2.27.so ..
+--22950--   .. CRC is valid
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libuuid.so.1.3.0
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/liblz4.so.1.7.1
+--22950--   Considering /usr/lib/x86_64-linux-gnu/liblz4.so.1.7.1 ..
+--22950--   .. CRC mismatch (computed 40fbd3a8 wanted 46df455d)
+--22950--    object doesn't have a symbol table
+--22950-- REDIR: 0xa0f3c70 (libc.so.6:memmove) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f2d40 (libc.so.6:strncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f3f50 (libc.so.6:strcasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f2790 (libc.so.6:strcat) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f2d70 (libc.so.6:rindex) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f57c0 (libc.so.6:rawmemchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f3de0 (libc.so.6:mempcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f3c10 (libc.so.6:bcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f2d00 (libc.so.6:strncmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f2800 (libc.so.6:strcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f3d40 (libc.so.6:memset) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa1110f0 (libc.so.6:wcschr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f2ca0 (libc.so.6:strnlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f2870 (libc.so.6:strcspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f3fa0 (libc.so.6:strncasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f2840 (libc.so.6:strcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f40e0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f2da0 (libc.so.6:strpbrk) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f27c0 (libc.so.6:index) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f2c70 (libc.so.6:strlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0fd6c0 (libc.so.6:memrchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f3ff0 (libc.so.6:strcasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f3be0 (libc.so.6:memchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa111eb0 (libc.so.6:wcslen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f3050 (libc.so.6:strspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f3f20 (libc.so.6:stpncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f3ef0 (libc.so.6:stpcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f57f0 (libc.so.6:strchrnul) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f4040 (libc.so.6:strncasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f3b20 (libc.so.6:strstr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa1868a0 (libc.so.6:__memcpy_chk) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa186970 (libc.so.6:__memmove_chk) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+==22950== WARNING: new redirection conflicts with existing -- ignoring it
+--22950--     old: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2030.0) 0x04c375e0 __memcpy_chk
+--22950--     new: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2024.0) 0x04c36fa0 __memmove_chk
+--22950-- REDIR: 0xa111df0 (libc.so.6:wcscpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--22950-- REDIR: 0xa0f2cd0 (libc.so.6:strncat) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+==22950== WARNING: new redirection conflicts with existing -- ignoring it
+--22950--     old: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2030.0) 0x04c375e0 __memcpy_chk
+--22950--     new: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2024.0) 0x04c36fa0 __memmove_chk
+==22950== WARNING: new redirection conflicts with existing -- ignoring it
+--22950--     old: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2030.0) 0x04c375e0 __memcpy_chk
+--22950--     new: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2024.0) 0x04c36fa0 __memmove_chk
+==22950== WARNING: new redirection conflicts with existing -- ignoring it
+--22950--     old: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2030.0) 0x04c375e0 __memcpy_chk
+--22950--     new: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2024.0) 0x04c36fa0 __memmove_chk
+==22950== WARNING: new redirection conflicts with existing -- ignoring it
+--22950--     old: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2030.0) 0x04c375e0 __memcpy_chk
+--22950--     new: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2024.0) 0x04c36fa0 __memmove_chk
+==22950== WARNING: new redirection conflicts with existing -- ignoring it
+--22950--     old: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2030.0) 0x04c375e0 __memcpy_chk
+--22950--     new: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2024.0) 0x04c36fa0 __memmove_chk
+==22950== WARNING: new redirection conflicts with existing -- ignoring it
+--22950--     old: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2030.0) 0x04c375e0 __memcpy_chk
+--22950--     new: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2024.0) 0x04c36fa0 __memmove_chk
+==22950== WARNING: new redirection conflicts with existing -- ignoring it
+--22950--     old: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2030.0) 0x04c375e0 __memcpy_chk
+--22950--     new: 0x0a110450 (__memcpy_chk_sse2_un) R-> (2024.0) 0x04c36fa0 __memmove_chk
+--22950-- REDIR: 0xa106330 (libc.so.6:__strrchr_sse2) redirected to 0x4c32790 (__strrchr_sse2)
+--22950-- REDIR: 0xa106620 (libc.so.6:__strlen_sse2) redirected to 0x4c32d30 (__strlen_sse2)
+--22950-- REDIR: 0xa0ec070 (libc.so.6:malloc) redirected to 0x4c2faa0 (malloc)
+--22950-- REDIR: 0xa110460 (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4c34060 (memcpy@GLIBC_2.2.5)
+--22950-- REDIR: 0xa0fee70 (libc.so.6:__strcmp_sse2_unaligned) redirected to 0x4c33da0 (strcmp)
+--22950-- REDIR: 0xa0ef030 (libc.so.6:calloc) redirected to 0x4c31a70 (calloc)
+--22950-- REDIR: 0xa0edc30 (libc.so.6:realloc) redirected to 0x4c31cb0 (realloc)
+--22950-- REDIR: 0xa105f00 (libc.so.6:__strchr_sse2) redirected to 0x4c328d0 (__strchr_sse2)
+--22950-- REDIR: 0xa10e530 (libc.so.6:__strcat_sse2_unaligned) redirected to 0x4c32990 (strcat)
+--22950-- REDIR: 0xa0ec950 (libc.so.6:free) redirected to 0x4c30cd0 (free)
+--22950-- REDIR: 0xa0f3590 (libc.so.6:__GI_strstr) redirected to 0x4c37760 (__strstr_sse2)
+--22950-- REDIR: 0xa100970 (libc.so.6:__memchr_sse2) redirected to 0x4c33f80 (memchr)
+--22950-- REDIR: 0xa10fdb0 (libc.so.6:__strstr_sse2_unaligned) redirected to 0x4c376e0 (strstr)
+--22950-- REDIR: 0xa1da510 (libc.so.6:__strncmp_sse42) redirected to 0x4c33570 (__strncmp_sse42)
+--22950-- REDIR: 0xa110450 (libc.so.6:__memcpy_chk_sse2_unaligned) redirected to 0x4c375e0 (__memcpy_chk)
+--22950-- REDIR: 0x4ecf280 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4c30110 (operator new(unsigned long))
+--22950-- REDIR: 0xa100ca0 (libc.so.6:__rawmemchr_sse2) redirected to 0x4c37050 (rawmemchr)
+--22950-- REDIR: 0xa106120 (libc.so.6:__strchrnul_sse2) redirected to 0x4c37020 (strchrnul)
+--22950-- REDIR: 0xa1e4fc0 (libc.so.6:__memcmp_sse4_1) redirected to 0x4c35d50 (__memcmp_sse4_1)
+--22950-- REDIR: 0x4ecf330 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x4c30830 (operator new[](unsigned long))
+--22950-- REDIR: 0xa110870 (libc.so.6:__memset_sse2_unaligned) redirected to 0x4c365d0 (memset)
+--22950-- REDIR: 0xa110440 (libc.so.6:__mempcpy_sse2_unaligned) redirected to 0x4c37130 (mempcpy)
+--22950-- REDIR: 0x4ecd3c0 (libstdc++.so.6:operator delete[](void*)) redirected to 0x4c316d0 (operator delete[](void*))
+--22950-- REDIR: 0xa10cb50 (libc.so.6:__stpcpy_sse2_unaligned) redirected to 0x4c36200 (__stpcpy_sse2_unaligned)
+--22950-- REDIR: 0xa10bb70 (libc.so.6:__strncpy_sse2_unaligned) redirected to 0x4c332e0 (__strncpy_sse2_unaligned)
+--22950-- REDIR: 0xa10b540 (libc.so.6:__strcpy_sse2_unaligned) redirected to 0x4c32dd0 (strcpy)
+--22950-- REDIR: 0xa186c70 (libc.so.6:__strcpy_chk) redirected to 0x4c37090 (__strcpy_chk)
+--22950-- REDIR: 0x4ecd390 (libstdc++.so.6:operator delete(void*)) redirected to 0x4c311d0 (operator delete(void*))
+--22950-- REDIR: 0xa1df070 (libc.so.6:__strcspn_sse42) redirected to 0x4c378d0 (strcspn)
+--22950-- REDIR: 0xa1db500 (libc.so.6:__strcasecmp_l_sse42) redirected to 0x4c33890 (strcasecmp_l)
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xE4C28F2: g_option_context_parse (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9510617: gtk_parse_args (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x9510685: gtk_init_check (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x95106C8: gtk_init (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x193886: mini_browser() (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x193D6E: MainWindow::StartButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x194509: MainWindow::static_StartButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5826F82: Fl::handle_(int, Fl_Window*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5883711: fl_handle(_XEvent const&) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xE4C2768: g_option_context_parse (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9510617: gtk_parse_args (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x9510685: gtk_init_check (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x95106C8: gtk_init (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x193886: mini_browser() (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x193D6E: MainWindow::StartButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x194509: MainWindow::static_StartButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5826F82: Fl::handle_(int, Fl_Window*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5883711: fl_handle(_XEvent const&) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xE4C2E8D: g_option_context_parse (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9510617: gtk_parse_args (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x9510685: gtk_init_check (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x95106C8: gtk_init (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x193886: mini_browser() (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x193D6E: MainWindow::StartButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x194509: MainWindow::static_StartButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5826F82: Fl::handle_(int, Fl_Window*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5883711: fl_handle(_XEvent const&) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/gio/modules/libgvfsdbus.so
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/gvfs/libgvfscommon.so
+--22950--    object doesn't have a symbol table
+--22950-- REDIR: 0xa1df300 (libc.so.6:__strspn_sse42) redirected to 0x4c37990 (strspn)
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/gtk-3.0/modules/libcanberra-gtk3-module.so
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libcanberra-gtk3.so.0.1.9
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libcanberra.so.0.2.5
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libvorbisfile.so.3.3.7
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libtdb.so.1.3.15
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libltdl.so.7.3.1
+--22950--   Considering /usr/lib/x86_64-linux-gnu/libltdl.so.7.3.1 ..
+--22950--   .. CRC mismatch (computed 8f3d44f0 wanted 7770f901)
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libvorbis.so.0.4.8
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libogg.so.0.8.2
+--22950--   Considering /usr/lib/x86_64-linux-gnu/libogg.so.0.8.2 ..
+--22950--   .. CRC mismatch (computed 79e45162 wanted f32912dd)
+--22950--    object doesn't have a symbol table
+==22950== Warning: set address range perms: large range [0x59e43000, 0x99e45000) (noaccess)
+--22950-- memcheck GC: 1000 nodes, 826 survivors (82.6%)
+--22950-- memcheck GC: 1414 new table size (stepup)
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/gtk-3.0/3.0.0/immodules/im-ibus.so
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/libibus-1.0.so.5.0.517
+--22950--    object doesn't have a symbol table
+==22950== Thread 8 ReceiveQueue:
+==22950== Syscall param sendmsg(msg.msg_iov[0]) points to uninitialised byte(s)
+==22950==    at 0x6064607: sendmsg (sendmsg.c:28)
+==22950==    by 0x6AE50BD: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6AE5A33: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6ACFA2E: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x10A7A6C4: WTF::RunLoop::performWork() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10ACB1D8: ??? (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0xE4B6284: g_main_context_dispatch (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4B664F: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4B6961: g_main_loop_run (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x10ACBC2F: WTF::RunLoop::run() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10A7BD9A: WTF::Thread::entryPoint(WTF::Thread::NewThreadContext*) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10ACD1D8: ??? (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==  Address 0x29a738d1 is on thread 8's stack
+==22950== 
+--22950-- REDIR: 0xa1df1b0 (libc.so.6:__strpbrk_sse42) redirected to 0x4c37860 (strpbrk)
+--22950-- memcheck GC: 1414 nodes, 1164 survivors (82.3%)
+--22950-- memcheck GC: 1999 new table size (stepup)
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/gio/modules/libgiognutls.so
+--22950--    object doesn't have a symbol table
+--22950-- Discarding syms at 0x2b452f50-0x2b4617c6 in /usr/lib/x86_64-linux-gnu/gio/modules/libgiognutls.so due to munmap()
+--22950-- Reading syms from /usr/lib/x86_64-linux-gnu/gio/modules/libgiognutls.so
+--22950--    object doesn't have a symbol table
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+==22950== Syscall param sendmsg(msg.msg_iov[1]) points to uninitialised byte(s)
+==22950==    at 0x6064607: sendmsg (sendmsg.c:28)
+==22950==    by 0x6AE50BD: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6AE5A33: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6ACFA2E: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x10A7A6FB: WTF::RunLoop::performWork() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10ACB1D8: ??? (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0xE4B6284: g_main_context_dispatch (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4B664F: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4B6961: g_main_loop_run (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x10ACBC2F: WTF::RunLoop::run() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10A7BD9A: WTF::Thread::entryPoint(WTF::Thread::NewThreadContext*) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10ACD1D8: ??? (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==  Address 0x25da8e30 is in a rw- anonymous segment
+==22950== 
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- memcheck GC: 1999 nodes, 1186 survivors (59.3%)
+--22950-- memcheck GC: 2827 new table size (stepup)
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- WARNING: Serious error when reading debug info
+--22950-- When reading debug info from /memfd:WebKitSharedMemory (deleted):
+--22950-- failed to stat64/stat this file
+--22950-- memcheck GC: 2827 nodes, 1186 survivors (42.0%)
+--22950-- memcheck GC: 2869 new table size (driftup)
+--22950-- REDIR: 0xa1dd0a0 (libc.so.6:__strncasecmp_sse42) redirected to 0x4c336d0 (strncasecmp)
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libnss_files-2.27.so
+--22950--   Considering /lib/x86_64-linux-gnu/libnss_files-2.27.so ..
+--22950--   .. CRC mismatch (computed 5cdb0f74 wanted 1b4e69e7)
+--22950--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libnss_files-2.27.so ..
+--22950--   .. CRC is valid
+--22950-- REDIR: 0xa1db4f0 (libc.so.6:__strcasecmp_sse42) redirected to 0x4c335f0 (strcasecmp)
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libnss_mdns4_minimal.so.2
+--22950--    object doesn't have a symbol table
+--22950-- Reading syms from /lib/x86_64-linux-gnu/libnss_dns-2.27.so
+--22950--   Considering /lib/x86_64-linux-gnu/libnss_dns-2.27.so ..
+--22950--   .. CRC mismatch (computed eb6c1db9 wanted a28abbc0)
+--22950--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libnss_dns-2.27.so ..
+--22950--   .. CRC is valid
+--22950-- memcheck GC: 2869 nodes, 1129 survivors (39.4%)
+--22950-- memcheck GC: 2912 new table size (driftup)
+--22950-- memcheck GC: 2912 nodes, 1523 survivors (52.3%)
+--22950-- memcheck GC: 4118 new table size (stepup)
+--22950-- memcheck GC: 4118 nodes, 1211 survivors (29.4%)
+--22950-- memcheck GC: 4179 new table size (driftup)
+--22950-- memcheck GC: 4179 nodes, 1221 survivors (29.2%)
+--22950-- memcheck GC: 4241 new table size (driftup)
+==22950== Thread 1:
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xA0B18DA: vfprintf (vfprintf.c:1642)
+==22950==    by 0xA0DD90F: vsnprintf (vsnprintf.c:114)
+==22950==    by 0x113F64: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x113986: std::__cxx11::to_string(int) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1375CA: Utility::makeStudentJSON(int, int, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x119242: main::main_run(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Fl_Progress*, Fl_Text_Buffer*, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >, std::vector<ClassSection, std::allocator<ClassSection> >, std::vector<_SoupCookie, std::allocator<_SoupCookie> >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x192E8E: MainWindow::ProgressTeamsButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1944BD: MainWindow::static_ProgressTeamsButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5826F82: Fl::handle_(int, Fl_Window*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== Use of uninitialised value of size 8
+==22950==    at 0xA0AD86B: _itoa_word (_itoa.c:179)
+==22950==    by 0xA0B0F0D: vfprintf (vfprintf.c:1642)
+==22950==    by 0xA0DD90F: vsnprintf (vsnprintf.c:114)
+==22950==    by 0x113F64: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x113986: std::__cxx11::to_string(int) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1375CA: Utility::makeStudentJSON(int, int, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x119242: main::main_run(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Fl_Progress*, Fl_Text_Buffer*, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >, std::vector<ClassSection, std::allocator<ClassSection> >, std::vector<_SoupCookie, std::allocator<_SoupCookie> >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x192E8E: MainWindow::ProgressTeamsButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1944BD: MainWindow::static_ProgressTeamsButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xA0AD875: _itoa_word (_itoa.c:179)
+==22950==    by 0xA0B0F0D: vfprintf (vfprintf.c:1642)
+==22950==    by 0xA0DD90F: vsnprintf (vsnprintf.c:114)
+==22950==    by 0x113F64: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x113986: std::__cxx11::to_string(int) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1375CA: Utility::makeStudentJSON(int, int, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x119242: main::main_run(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Fl_Progress*, Fl_Text_Buffer*, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >, std::vector<ClassSection, std::allocator<ClassSection> >, std::vector<_SoupCookie, std::allocator<_SoupCookie> >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x192E8E: MainWindow::ProgressTeamsButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1944BD: MainWindow::static_ProgressTeamsButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xA0B1014: vfprintf (vfprintf.c:1642)
+==22950==    by 0xA0DD90F: vsnprintf (vsnprintf.c:114)
+==22950==    by 0x113F64: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x113986: std::__cxx11::to_string(int) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1375CA: Utility::makeStudentJSON(int, int, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x119242: main::main_run(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Fl_Progress*, Fl_Text_Buffer*, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >, std::vector<ClassSection, std::allocator<ClassSection> >, std::vector<_SoupCookie, std::allocator<_SoupCookie> >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x192E8E: MainWindow::ProgressTeamsButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1944BD: MainWindow::static_ProgressTeamsButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5826F82: Fl::handle_(int, Fl_Window*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xA0B1B4C: vfprintf (vfprintf.c:1642)
+==22950==    by 0xA0DD90F: vsnprintf (vsnprintf.c:114)
+==22950==    by 0x113F64: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x113986: std::__cxx11::to_string(int) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1375CA: Utility::makeStudentJSON(int, int, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x119242: main::main_run(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Fl_Progress*, Fl_Text_Buffer*, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >, std::vector<ClassSection, std::allocator<ClassSection> >, std::vector<_SoupCookie, std::allocator<_SoupCookie> >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x192E8E: MainWindow::ProgressTeamsButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1944BD: MainWindow::static_ProgressTeamsButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5826F82: Fl::handle_(int, Fl_Window*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 
+==22950== Process terminating with default action of signal 6 (SIGABRT)
+==22950==    at 0xA093E97: raise (raise.c:51)
+==22950==    by 0xA095800: abort (abort.c:79)
+==22950==    by 0x4EC8956: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==22950==    by 0x4ECEAE5: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==22950==    by 0x4ECEB20: std::terminate() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==22950==    by 0x4ECED53: __cxa_throw (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==22950==    by 0x4ECA85C: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==22950==    by 0x14B9ED: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_range_check(unsigned long) const (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x14A19A: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::at(unsigned long) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x13ADF6: Utility::csvToProjectsVector(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Project*, int, int) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1198CE: main::main_run(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Fl_Progress*, Fl_Text_Buffer*, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >, std::vector<ClassSection, std::allocator<ClassSection> >, std::vector<_SoupCookie, std::allocator<_SoupCookie> >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x192E8E: MainWindow::ProgressTeamsButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+--22950-- Discarding syms at 0x2c002350-0x2c008d7f in /lib/x86_64-linux-gnu/libnss_files-2.27.so due to munmap()
+--22950-- Discarding syms at 0x2c212b50-0x2c2135b4 in /lib/x86_64-linux-gnu/libnss_mdns4_minimal.so.2 due to munmap()
+--22950-- Discarding syms at 0x2c415f80-0x2c41979b in /lib/x86_64-linux-gnu/libnss_dns-2.27.so due to munmap()
+==22950== 
+==22950== HEAP SUMMARY:
+==22950==     in use at exit: 12,824,375 bytes in 35,950 blocks
+==22950==   total heap usage: 474,366 allocs, 438,416 frees, 57,545,389 bytes allocated
+==22950== 
+==22950== Searching for pointers to 34,852 not-freed blocks
+==22950== Checked 115,726,488 bytes
+==22950== 
+==22950== 16 bytes in 1 blocks are possibly lost in loss record 2,132 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C1731E: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C510: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFA40E: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42C7: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 16 bytes in 1 blocks are possibly lost in loss record 2,133 of 11,232
+==22950==    at 0x4C2FA3F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x4C31D84: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB6F: g_realloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C171F8: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C510: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFA40E: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42C7: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 16 bytes in 1 blocks are possibly lost in loss record 2,134 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C1731E: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C510: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFA471: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42C7: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 16 bytes in 1 blocks are possibly lost in loss record 2,135 of 11,232
+==22950==    at 0x4C2FA3F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x4C31D84: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB6F: g_realloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C171F8: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C510: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFA471: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42C7: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 16 bytes in 1 blocks are possibly lost in loss record 2,136 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C1731E: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C510: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C0420B: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42D1: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 16 bytes in 1 blocks are possibly lost in loss record 2,137 of 11,232
+==22950==    at 0x4C2FA3F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x4C31D84: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB6F: g_realloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C171F8: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C510: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C0420B: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42D1: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 16 bytes in 1 blocks are possibly lost in loss record 2,138 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C1731E: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C510: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFF00B: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42D6: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 16 bytes in 1 blocks are possibly lost in loss record 2,139 of 11,232
+==22950==    at 0x4C2FA3F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x4C31D84: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB6F: g_realloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C171F8: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C510: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFF00B: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42D6: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 16 bytes in 1 blocks are possibly lost in loss record 2,140 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBAB8: g_malloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4D3955: g_slice_alloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9BF443A: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF44E5: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1633B: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C165F4: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C199A8: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1DEB4: g_type_add_interface_static (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x940E7D2: gtk_button_get_type (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x9607C2B: gtk_toggle_button_get_type (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x243E606F: gtk_module_init (in /usr/lib/x86_64-linux-gnu/gtk-3.0/modules/libcanberra-gtk3-module.so)
+==22950== 
+==22950== 16 bytes in 1 blocks are possibly lost in loss record 2,141 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBAB8: g_malloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4D3955: g_slice_alloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9BF443A: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF44E5: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1633B: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C16703: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C199A8: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1DEB4: g_type_add_interface_static (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x94E3881: gtk_icon_view_get_type (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x243E6112: gtk_module_init (in /usr/lib/x86_64-linux-gnu/gtk-3.0/modules/libcanberra-gtk3-module.so)
+==22950==    by 0x9538986: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950== 
+==22950== 16 bytes in 1 blocks are possibly lost in loss record 2,142 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBAB8: g_malloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4D3955: g_slice_alloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9BF443A: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF44E5: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1633B: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C165F4: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C199A8: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1DEB4: g_type_add_interface_static (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x94E38E0: gtk_icon_view_get_type (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x243E6112: gtk_module_init (in /usr/lib/x86_64-linux-gnu/gtk-3.0/modules/libcanberra-gtk3-module.so)
+==22950==    by 0x9538986: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950== 
+==22950== 24 bytes in 1 blocks are possibly lost in loss record 3,530 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C1A92C: g_type_class_ref (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1A754: g_type_class_ref (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C08817: g_param_spec_flags (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0xD44FF72: ??? (in /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2200.30)
+==22950==    by 0x9C1A418: g_type_class_ref (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1A754: g_type_class_ref (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00777: g_object_new_valist (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00938: g_object_new (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0xD47B93C: ??? (in /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2200.30)
+==22950==    by 0xD47E1B1: ??? (in /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2200.30)
+==22950== 
+==22950== 32 bytes in 1 blocks are possibly lost in loss record 5,310 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C1A92C: g_type_class_ref (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1A754: g_type_class_ref (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C08727: g_param_spec_enum (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0xD45EEF4: ??? (in /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2200.30)
+==22950==    by 0x9C1A418: g_type_class_ref (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1A754: g_type_class_ref (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00777: g_object_new_valist (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00938: g_object_new (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0xD490D89: ??? (in /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2200.30)
+==22950==    by 0xD491C9D: ??? (in /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2200.30)
+==22950== 
+==22950== 36 bytes in 1 blocks are possibly lost in loss record 5,371 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xD73413D: pango_language_from_string (in /usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.4000.14)
+==22950==    by 0xD734230: pango_language_get_default (in /usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.4000.14)
+==22950==    by 0xD72E2C3: ??? (in /usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.4000.14)
+==22950==    by 0x9C1D9C4: g_type_create_instance (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFE747: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFFEE4: g_object_new_with_properties (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00960: g_object_new (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0xD731D02: pango_font_map_create_context (in /usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.4000.14)
+==22950==    by 0xD46224B: gdk_pango_context_get_for_screen (in /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2200.30)
+==22950==    by 0x966999E: gtk_widget_create_pango_context (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950== 
+==22950== 48 bytes in 3 blocks are possibly lost in loss record 6,548 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBAB8: g_malloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4D3955: g_slice_alloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9BF443A: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF44E5: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1633B: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C16703: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C199A8: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1DEB4: g_type_add_interface_static (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x940E7A1: gtk_button_get_type (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x9607C2B: gtk_toggle_button_get_type (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x243E606F: gtk_module_init (in /usr/lib/x86_64-linux-gnu/gtk-3.0/modules/libcanberra-gtk3-module.so)
+==22950== 
+==22950== 80 bytes in 1 blocks are possibly lost in loss record 7,948 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x19FCBD36: ??? (in /usr/lib/x86_64-linux-gnu/libGLdispatch.so.0.0.0)
+==22950==    by 0x19FCBF6A: __glDispatchInit (in /usr/lib/x86_64-linux-gnu/libGLdispatch.so.0.0.0)
+==22950==    by 0x19D5F018: ??? (in /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 80 bytes in 1 blocks are possibly lost in loss record 7,949 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x19FCBD36: ??? (in /usr/lib/x86_64-linux-gnu/libGLdispatch.so.0.0.0)
+==22950==    by 0x19FCC13B: __glDispatchRegisterStubCallbacks (in /usr/lib/x86_64-linux-gnu/libGLdispatch.so.0.0.0)
+==22950==    by 0xE7C140A: ??? (in /usr/lib/x86_64-linux-gnu/libGL.so.1.0.0)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 80 bytes in 1 blocks are possibly lost in loss record 7,950 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C1A92C: g_type_class_ref (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1A754: g_type_class_ref (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1D898: g_type_create_instance (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C047D2: g_param_spec_internal (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C08D41: g_param_spec_object (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0xD456921: ??? (in /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2200.30)
+==22950==    by 0x9C1A418: g_type_class_ref (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFFEF7: g_object_new_with_properties (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00960: g_object_new (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0xD456A14: gdk_display_manager_get (in /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2200.30)
+==22950== 
+==22950== 88 bytes in 1 blocks are possibly lost in loss record 8,426 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB6F: g_realloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C16860: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1CA71: g_type_register_static (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFA627: g_flags_register_static (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0xE16A1C6: g_subprocess_flags_get_type (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0xE153643: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0x9C1A418: g_type_class_ref (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00777: g_object_new_valist (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00938: g_object_new (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x6CDD1BA: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6B6EBCF: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950== 
+==22950== 96 bytes in 1 blocks are possibly lost in loss record 9,481 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C168E1: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C16A7A: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF41EA: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 96 bytes in 1 blocks are possibly lost in loss record 9,482 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C168E1: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C16A7A: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C502: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFA40E: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42C7: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 96 bytes in 1 blocks are possibly lost in loss record 9,483 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C168E1: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C16A7A: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C502: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFA471: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42C7: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 96 bytes in 1 blocks are possibly lost in loss record 9,484 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C168E1: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C16A7A: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C502: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C0420B: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42D1: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 96 bytes in 1 blocks are possibly lost in loss record 9,485 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C168E1: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C16A7A: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C502: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFF00B: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42D6: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 132 bytes in 1 blocks are possibly lost in loss record 9,990 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C1790F: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C560: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFA40E: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42C7: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 132 bytes in 1 blocks are possibly lost in loss record 9,991 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C1790F: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C560: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFA471: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42C7: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 144 bytes in 1 blocks are possibly lost in loss record 10,063 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x4ECD8FF: __cxa_allocate_exception (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==22950==    by 0x4EF72BA: std::__throw_out_of_range_fmt(char const*, ...) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==22950==    by 0x14B9ED: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_range_check(unsigned long) const (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x14A19A: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::at(unsigned long) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x13ADF6: Utility::csvToProjectsVector(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Project*, int, int) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1198CE: main::main_run(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Fl_Progress*, Fl_Text_Buffer*, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >, std::vector<ClassSection, std::allocator<ClassSection> >, std::vector<_SoupCookie, std::allocator<_SoupCookie> >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x192E8E: MainWindow::ProgressTeamsButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1944BD: MainWindow::static_ProgressTeamsButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 148 bytes in 1 blocks are possibly lost in loss record 10,064 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C17728: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C560: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C0420B: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42D1: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 148 bytes in 1 blocks are possibly lost in loss record 10,065 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB10: g_malloc0 (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C17728: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1C560: g_type_register_fundamental (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFF00B: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42D6: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 184 bytes in 1 blocks are possibly lost in loss record 10,210 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB6F: g_realloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C16860: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1CA71: g_type_register_static (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C05EAB: g_param_type_register_static (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C081CA: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BF42DB: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x4010732: call_init (dl-init.c:72)
+==22950==    by 0x4010732: _dl_init (dl-init.c:119)
+==22950==    by 0x40010C9: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==22950== 
+==22950== 208 bytes in 4 blocks are possibly lost in loss record 10,302 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBAB8: g_malloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x94635FD: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x94638F9: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x94623FC: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x93B14F6: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x93B2E44: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x93B307D: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x9BFE8FF: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C005BF: g_object_new_valist (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00938: g_object_new (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x93B1AD7: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950== 
+==22950== 224 bytes in 4 blocks are possibly lost in loss record 10,335 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBAB8: g_malloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x94635FD: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x94638F9: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x94623FC: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x93B14F6: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x93B2E16: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x93B307D: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x9BFE8FF: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C005BF: g_object_new_valist (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00938: g_object_new (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x93B1AD7: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950== 
+==22950== 240 bytes in 5 blocks are possibly lost in loss record 10,377 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBAB8: g_malloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4D545B: g_memdup (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9463549: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x9463837: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x94623BC: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x95C02BE: gtk_style_context_set_state (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x93B2D3D: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x93B307D: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x9BFE8FF: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C005BF: g_object_new_valist (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00938: g_object_new (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950== 
+==22950== 260 bytes in 5 blocks are possibly lost in loss record 10,430 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBAB8: g_malloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x94635FD: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x94638F9: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x94623FC: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x93B2E03: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x93B307D: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x9BFE8FF: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C005BF: g_object_new_valist (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00938: g_object_new (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x93B1AD7: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x93B1B1D: gtk_style_new (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950== 
+==22950== 288 (256 direct, 32 indirect) bytes in 1 blocks are definitely lost in loss record 10,485 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xC7308ED: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC731096: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC732377: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC7379C3: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0x1812CE27: ??? (in /lib/x86_64-linux-gnu/libexpat.so.1.6.7)
+==22950==    by 0x1812DBFB: ??? (in /lib/x86_64-linux-gnu/libexpat.so.1.6.7)
+==22950==    by 0x1812B822: ??? (in /lib/x86_64-linux-gnu/libexpat.so.1.6.7)
+==22950==    by 0x1812C50A: ??? (in /lib/x86_64-linux-gnu/libexpat.so.1.6.7)
+==22950==    by 0x181300EC: XML_ParseBuffer (in /lib/x86_64-linux-gnu/libexpat.so.1.6.7)
+==22950==    by 0xC736B42: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC736F75: FcConfigParseAndLoad (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950== 
+==22950== 416 (256 direct, 160 indirect) bytes in 1 blocks are definitely lost in loss record 10,619 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xC7308ED: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC731096: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC505050: ??? (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0xC50588C: ??? (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0xC50525E: ??? (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0xC5053A4: ??? (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0xC5057AD: XftDefaultHasRender (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0xC505C8F: XftDefaultSubstitute (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0xC508344: XftFontMatch (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0x5890C8D: Fl_Font_Descriptor::Fl_Font_Descriptor(char const*, int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5890EFC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 432 bytes in 1 blocks are possibly lost in loss record 10,630 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x40134A6: allocate_dtv (dl-tls.c:286)
+==22950==    by 0x40134A6: _dl_allocate_tls (dl-tls.c:530)
+==22950==    by 0x605A227: allocate_stack (allocatestack.c:627)
+==22950==    by 0x605A227: pthread_create@@GLIBC_2.2.5 (pthread_create.c:644)
+==22950==    by 0xE4FC40F: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4DE47E: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4DE527: g_thread_new (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4B74D3: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE158546: g_task_get_type (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0xE19B110: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0xE18F010: g_bus_get_sync (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0x21F8BE3A: ??? (in /usr/lib/x86_64-linux-gnu/gio/modules/libgvfsdbus.so)
+==22950==    by 0x9C1D9C4: g_type_create_instance (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950== 
+==22950== 432 bytes in 1 blocks are possibly lost in loss record 10,631 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x40134A6: allocate_dtv (dl-tls.c:286)
+==22950==    by 0x40134A6: _dl_allocate_tls (dl-tls.c:530)
+==22950==    by 0x605A227: allocate_stack (allocatestack.c:627)
+==22950==    by 0x605A227: pthread_create@@GLIBC_2.2.5 (pthread_create.c:644)
+==22950==    by 0xE4FC40F: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4DE47E: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4DE527: g_thread_new (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE19ACB3: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0xE18E9EC: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0xE18F062: g_bus_get_sync (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0x21F8BE3A: ??? (in /usr/lib/x86_64-linux-gnu/gio/modules/libgvfsdbus.so)
+==22950==    by 0x9C1D9C4: g_type_create_instance (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFE747: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950== 
+==22950== 432 bytes in 1 blocks are possibly lost in loss record 10,632 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x40134A6: allocate_dtv (dl-tls.c:286)
+==22950==    by 0x40134A6: _dl_allocate_tls (dl-tls.c:530)
+==22950==    by 0x605A227: allocate_stack (allocatestack.c:627)
+==22950==    by 0x605A227: pthread_create@@GLIBC_2.2.5 (pthread_create.c:644)
+==22950==    by 0x4EF9994: std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==22950==    by 0x10ADC917: bmalloc::Scavenger::Scavenger(std::lock_guard<bmalloc::Mutex> const&) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10ADA821: bmalloc::StaticPerProcess<bmalloc::Scavenger>::getSlowCase() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10AD5F2E: bmalloc::Heap::Heap(bmalloc::HeapKind, std::lock_guard<bmalloc::Mutex>&) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10AD3BE9: bmalloc::PerProcess<bmalloc::PerHeapKind<bmalloc::Heap> >::getSlowCase() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10AD3273: bmalloc::Cache::Cache(bmalloc::HeapKind) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10AD3D20: bmalloc::PerThread<bmalloc::PerHeapKind<bmalloc::Cache> >::getSlowCase() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10AD3448: bmalloc::Cache::allocateSlowCaseNullCache(bmalloc::HeapKind, unsigned long) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x104673AD: JSC::ExecutableAllocator::initialize() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950== 
+==22950== 432 bytes in 1 blocks are possibly lost in loss record 10,633 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x40134A6: allocate_dtv (dl-tls.c:286)
+==22950==    by 0x40134A6: _dl_allocate_tls (dl-tls.c:530)
+==22950==    by 0x605A227: allocate_stack (allocatestack.c:627)
+==22950==    by 0x605A227: pthread_create@@GLIBC_2.2.5 (pthread_create.c:644)
+==22950==    by 0x10ACD7E1: WTF::Thread::establishHandle(WTF::Thread::NewThreadContext*) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10A7C1B7: WTF::Thread::create(char const*, WTF::Function<void ()>&&) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x6D28429: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6BE1A3D: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6BE1C46: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6C81970: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x9BFE8FF: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C005BF: g_object_new_valist (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00938: g_object_new (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950== 
+==22950== 432 bytes in 1 blocks are possibly lost in loss record 10,634 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x40134A6: allocate_dtv (dl-tls.c:286)
+==22950==    by 0x40134A6: _dl_allocate_tls (dl-tls.c:530)
+==22950==    by 0x605A227: allocate_stack (allocatestack.c:627)
+==22950==    by 0x605A227: pthread_create@@GLIBC_2.2.5 (pthread_create.c:644)
+==22950==    by 0x10ACD7E1: WTF::Thread::establishHandle(WTF::Thread::NewThreadContext*) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10A7C1B7: WTF::Thread::create(char const*, WTF::Function<void ()>&&) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10AC8BB7: WTF::WorkQueue::platformInitialize(char const*, WTF::WorkQueue::Type, WTF::WorkQueue::QOS) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10AA6DD1: WTF::WorkQueue::create(char const*, WTF::WorkQueue::Type, WTF::WorkQueue::QOS) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x6B7175B: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6B71881: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6D0BFA6: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6D0C12D: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6C96837: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950== 
+==22950== 432 bytes in 1 blocks are possibly lost in loss record 10,635 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x40134A6: allocate_dtv (dl-tls.c:286)
+==22950==    by 0x40134A6: _dl_allocate_tls (dl-tls.c:530)
+==22950==    by 0x605A227: allocate_stack (allocatestack.c:627)
+==22950==    by 0x605A227: pthread_create@@GLIBC_2.2.5 (pthread_create.c:644)
+==22950==    by 0x10ACD7E1: WTF::Thread::establishHandle(WTF::Thread::NewThreadContext*) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10A7C1B7: WTF::Thread::create(char const*, WTF::Function<void ()>&&) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10AC8BB7: WTF::WorkQueue::platformInitialize(char const*, WTF::WorkQueue::Type, WTF::WorkQueue::QOS) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10AA6DD1: WTF::WorkQueue::create(char const*, WTF::WorkQueue::Type, WTF::WorkQueue::QOS) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x6D0BFDB: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6D0C12D: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6C96837: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6C819BB: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x9BFE8FF: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950== 
+==22950== 432 bytes in 1 blocks are possibly lost in loss record 10,636 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x40134A6: allocate_dtv (dl-tls.c:286)
+==22950==    by 0x40134A6: _dl_allocate_tls (dl-tls.c:530)
+==22950==    by 0x605A227: allocate_stack (allocatestack.c:627)
+==22950==    by 0x605A227: pthread_create@@GLIBC_2.2.5 (pthread_create.c:644)
+==22950==    by 0xE4FC40F: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4DE47E: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4DE7FC: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4DEE42: g_thread_pool_push (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE1590E4: g_task_run_in_thread (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0xE104BF7: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0xE1898FE: g_bus_get (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0xE195CED: g_bus_watch_name (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0x27E077B7: ??? (in /usr/lib/x86_64-linux-gnu/gtk-3.0/3.0.0/immodules/im-ibus.so)
+==22950== 
+==22950== 432 bytes in 1 blocks are possibly lost in loss record 10,637 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x40134A6: allocate_dtv (dl-tls.c:286)
+==22950==    by 0x40134A6: _dl_allocate_tls (dl-tls.c:530)
+==22950==    by 0x605A227: allocate_stack (allocatestack.c:627)
+==22950==    by 0x605A227: pthread_create@@GLIBC_2.2.5 (pthread_create.c:644)
+==22950==    by 0xE4FC40F: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4DE47E: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4DE7FC: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4DEE42: g_thread_pool_push (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE1590E4: g_task_run_in_thread (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0x94EF47A: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x94F2089: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x94F22BF: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x94F2664: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950== 
+==22950== 432 bytes in 1 blocks are possibly lost in loss record 10,638 of 11,232
+==22950==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0x40134A6: allocate_dtv (dl-tls.c:286)
+==22950==    by 0x40134A6: _dl_allocate_tls (dl-tls.c:530)
+==22950==    by 0x605A227: allocate_stack (allocatestack.c:627)
+==22950==    by 0x605A227: pthread_create@@GLIBC_2.2.5 (pthread_create.c:644)
+==22950==    by 0xE4FC40F: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4DE47E: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4DE7FC: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4DEE42: g_thread_pool_push (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE1590E4: g_task_run_in_thread (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0x94EF47A: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x6CA3F1A: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x9BF910C: g_closure_invoke (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C0C12D: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950== 
+==22950== 544 bytes in 1 blocks are possibly lost in loss record 10,726 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB6F: g_realloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C16860: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1CA71: g_type_register_static (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFA537: g_enum_register_static (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x689B1E2: webkit_navigation_type_get_type (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6C65D3B: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x9C1A418: g_type_class_ref (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9BFFEF7: g_object_new_with_properties (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C00960: g_object_new (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x6C663B2: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6C6579F: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950== 
+==22950== 992 bytes in 1 blocks are possibly lost in loss record 10,847 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBB6F: g_realloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9C16860: ??? (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C1ED2F: g_type_register_dynamic (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x9C20E1E: g_type_module_register_type (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0x2B453783: ??? (in /usr/lib/x86_64-linux-gnu/gio/modules/libgiognutls.so)
+==22950==    by 0x2B453038: g_io_gnutls_load (in /usr/lib/x86_64-linux-gnu/gio/modules/libgiognutls.so)
+==22950==    by 0xE12FD61: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0x9C20C82: g_type_module_use (in /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.4)
+==22950==    by 0xE12FE32: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0xE130A21: g_io_extension_point_get_extensions (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950==    by 0xE130FE1: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.5600.4)
+==22950== 
+==22950== 1,331 (96 direct, 1,235 indirect) bytes in 4 blocks are definitely lost in loss record 10,930 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBAB8: g_malloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4D3955: g_slice_alloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4B1D05: g_list_prepend (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x6C56E3E: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6B90525: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x689CCD8: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6B90648: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6AD3080: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6AD4354: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6AD4AEA: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x10A7A6C4: WTF::RunLoop::performWork() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950== 
+==22950== 2,138 (768 direct, 1,370 indirect) bytes in 1 blocks are definitely lost in loss record 11,029 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xC730998: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC730EAD: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72DEB3: FcFontRenderPrepare (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72E1A3: FcFontMatch (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0x15FB1C55: ??? (in /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0.4000.14)
+==22950==    by 0x15FB1E0C: ??? (in /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0.4000.14)
+==22950==    by 0x15FB0148: ??? (in /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0.4000.14)
+==22950==    by 0xD7359C7: ??? (in /usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.4000.14)
+==22950==    by 0xD73833B: pango_layout_line_get_extents (in /usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.4000.14)
+==22950==    by 0xD73A8A7: ??? (in /usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.4000.14)
+==22950==    by 0x95ED2C7: gtk_text_layout_get_line_display (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950== 
+==22950== 2,309 (768 direct, 1,541 indirect) bytes in 1 blocks are definitely lost in loss record 11,039 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xC730998: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC730EAD: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72DEB3: FcFontRenderPrepare (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72E1A3: FcFontMatch (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC50835A: XftFontMatch (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0x5890C8D: Fl_Font_Descriptor::Fl_Font_Descriptor(char const*, int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5890EFC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58938B9: fl_normal_label(Fl_Label const*, int, int, int, int, unsigned int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5893A87: Fl_Widget::draw_label(int, int, int, int, unsigned int) const (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x583D5F4: Fl_Group::draw_children() (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x583D3FC: Fl_Group::draw_child(Fl_Widget&) const (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 2,606 (768 direct, 1,838 indirect) bytes in 1 blocks are definitely lost in loss record 11,050 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xC730998: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC730EAD: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72DEB3: FcFontRenderPrepare (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72E1A3: FcFontMatch (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC50835A: XftFontMatch (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0x5890C8D: Fl_Font_Descriptor::Fl_Font_Descriptor(char const*, int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5890EFC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x588DAEE: fl_height(int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5872037: Fl_Text_Display::resize(int, int, int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5871A79: Fl_Text_Display::buffer_modified_cb(int, int, int, int, char const*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5871DDA: Fl_Text_Display::buffer(Fl_Text_Buffer*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 2,606 (768 direct, 1,838 indirect) bytes in 1 blocks are definitely lost in loss record 11,051 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xC730998: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC730EAD: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72DEB3: FcFontRenderPrepare (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72E1A3: FcFontMatch (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC50835A: XftFontMatch (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0x5890C8D: Fl_Font_Descriptor::Fl_Font_Descriptor(char const*, int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5890EFC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x588DAEE: fl_height(int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5872037: Fl_Text_Display::resize(int, int, int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5871A79: Fl_Text_Display::buffer_modified_cb(int, int, int, int, char const*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x586A90F: Fl_Text_Buffer::call_modify_callbacks(int, int, int, int, char const*) const (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 2,606 (768 direct, 1,838 indirect) bytes in 1 blocks are definitely lost in loss record 11,052 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xC730998: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC730EAD: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72DEB3: FcFontRenderPrepare (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72E1A3: FcFontMatch (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC50835A: XftFontMatch (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0x5890C8D: Fl_Font_Descriptor::Fl_Font_Descriptor(char const*, int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5890EFC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5893925: fl_normal_measure(Fl_Label const*, int&, int&) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58263DD: Fl_Widget::redraw_label() (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5839450: Fl_File_Chooser::update_preview() (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58397D1: Fl_File_Chooser::rescan() (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 2,633 (768 direct, 1,865 indirect) bytes in 1 blocks are definitely lost in loss record 11,054 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xC730998: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC730EAD: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72DEB3: FcFontRenderPrepare (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72E1A3: FcFontMatch (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC50835A: XftFontMatch (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0x5890C8D: Fl_Font_Descriptor::Fl_Font_Descriptor(char const*, int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5890EFC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582F284: Fl_Check_Browser::item_draw(void*, int, int, int, int) const (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582AB77: Fl_Browser_::draw() (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x583D3A0: Fl_Group::update_child(Fl_Widget&) const (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5861A17: Fl_Scroll::draw() (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 5,272 (1,536 direct, 3,736 indirect) bytes in 2 blocks are definitely lost in loss record 11,120 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xC730998: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC730EAD: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72DEB3: FcFontRenderPrepare (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72E1A3: FcFontMatch (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC50835A: XftFontMatch (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0x5890C8D: Fl_Font_Descriptor::Fl_Font_Descriptor(char const*, int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5890EFC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58938B9: fl_normal_label(Fl_Label const*, int, int, int, int, unsigned int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5893A87: Fl_Widget::draw_label(int, int, int, int, unsigned int) const (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x583D3FC: Fl_Group::draw_child(Fl_Widget&) const (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x586110A: Fl_Scroll::draw_clip(void*, int, int, int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 5,916 (96 direct, 5,820 indirect) bytes in 4 blocks are definitely lost in loss record 11,129 of 11,232
+==22950==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xE4BBAB8: g_malloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4D3955: g_slice_alloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4B1D05: g_list_prepend (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x6C56E3E: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6B90525: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x689CCD8: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6B90648: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6AD3080: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6AD4354: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6AD4AEA: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x10A7A6FB: WTF::RunLoop::performWork() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950== 
+==22950== 6,463 (512 direct, 5,951 indirect) bytes in 1 blocks are definitely lost in loss record 11,134 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xC730998: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC731096: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xDC44C37: ??? (in /usr/lib/x86_64-linux-gnu/libcairo.so.2.11510.0)
+==22950==    by 0x1545872F: ??? (in /usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0.4000.14)
+==22950==    by 0x15FB1551: ??? (in /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0.4000.14)
+==22950==    by 0x15FB012C: ??? (in /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0.4000.14)
+==22950==    by 0xD7359C7: ??? (in /usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.4000.14)
+==22950==    by 0xD73833B: pango_layout_line_get_extents (in /usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.4000.14)
+==22950==    by 0xD73A8A7: ??? (in /usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.4000.14)
+==22950==    by 0x95ED2C7: gtk_text_layout_get_line_display (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x95EE2A1: ??? (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950== 
+==22950== 10,454 (3,072 direct, 7,382 indirect) bytes in 4 blocks are definitely lost in loss record 11,160 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xC730998: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC730EAD: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72DEB3: FcFontRenderPrepare (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72E1A3: FcFontMatch (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC50835A: XftFontMatch (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0x5890C8D: Fl_Font_Descriptor::Fl_Font_Descriptor(char const*, int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5890EFC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58938B9: fl_normal_label(Fl_Label const*, int, int, int, int, unsigned int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5893A87: Fl_Widget::draw_label(int, int, int, int, unsigned int) const (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x583D3FC: Fl_Group::draw_child(Fl_Widget&) const (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x583D5E9: Fl_Group::draw_children() (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 15,526 (4,608 direct, 10,918 indirect) bytes in 6 blocks are definitely lost in loss record 11,173 of 11,232
+==22950==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22950==    by 0xC730998: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC730EAD: ??? (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72DEB3: FcFontRenderPrepare (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC72E1A3: FcFontMatch (in /usr/lib/x86_64-linux-gnu/libfontconfig.so.1.10.1)
+==22950==    by 0xC50835A: XftFontMatch (in /usr/lib/x86_64-linux-gnu/libXft.so.2.3.2)
+==22950==    by 0x5890C8D: Fl_Font_Descriptor::Fl_Font_Descriptor(char const*, int, int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5890EFC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58938B9: fl_normal_label(Fl_Label const*, int, int, int, int, unsigned int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5893A87: Fl_Widget::draw_label(int, int, int, int, unsigned int) const (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582CD3C: Fl_Button::draw() (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x583D3FC: Fl_Group::draw_child(Fl_Widget&) const (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== LEAK SUMMARY:
+==22950==    definitely lost: 15,040 bytes in 29 blocks
+==22950==    indirectly lost: 45,524 bytes in 1,559 blocks
+==22950==      possibly lost: 8,368 bytes in 61 blocks
+==22950==    still reachable: 12,618,643 bytes in 33,203 blocks
+==22950==                       of which reachable via heuristic:
+==22950==                         stdstring          : 95 bytes in 1 blocks
+==22950==                         length64           : 6,696 bytes in 108 blocks
+==22950==                         newarray           : 2,192 bytes in 57 blocks
+==22950==         suppressed: 0 bytes in 0 blocks
+==22950== Reachable blocks (those to which a pointer was found) are not shown.
+==22950== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==22950== 
+==22950== Use --track-origins=yes to see where uninitialised values come from
+==22950== ERROR SUMMARY: 327 errors from 69 contexts (suppressed: 25 from 1)
+==22950== 
+==22950== 1 errors in context 1 of 69:
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xA0B1B4C: vfprintf (vfprintf.c:1642)
+==22950==    by 0xA0DD90F: vsnprintf (vsnprintf.c:114)
+==22950==    by 0x113F64: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x113986: std::__cxx11::to_string(int) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1375CA: Utility::makeStudentJSON(int, int, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x119242: main::main_run(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Fl_Progress*, Fl_Text_Buffer*, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >, std::vector<ClassSection, std::allocator<ClassSection> >, std::vector<_SoupCookie, std::allocator<_SoupCookie> >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x192E8E: MainWindow::ProgressTeamsButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1944BD: MainWindow::static_ProgressTeamsButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5826F82: Fl::handle_(int, Fl_Window*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 
+==22950== 1 errors in context 2 of 69:
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xA0B1014: vfprintf (vfprintf.c:1642)
+==22950==    by 0xA0DD90F: vsnprintf (vsnprintf.c:114)
+==22950==    by 0x113F64: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x113986: std::__cxx11::to_string(int) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1375CA: Utility::makeStudentJSON(int, int, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x119242: main::main_run(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Fl_Progress*, Fl_Text_Buffer*, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >, std::vector<ClassSection, std::allocator<ClassSection> >, std::vector<_SoupCookie, std::allocator<_SoupCookie> >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x192E8E: MainWindow::ProgressTeamsButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1944BD: MainWindow::static_ProgressTeamsButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5826F82: Fl::handle_(int, Fl_Window*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 
+==22950== 1 errors in context 3 of 69:
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xA0AD875: _itoa_word (_itoa.c:179)
+==22950==    by 0xA0B0F0D: vfprintf (vfprintf.c:1642)
+==22950==    by 0xA0DD90F: vsnprintf (vsnprintf.c:114)
+==22950==    by 0x113F64: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x113986: std::__cxx11::to_string(int) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1375CA: Utility::makeStudentJSON(int, int, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x119242: main::main_run(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Fl_Progress*, Fl_Text_Buffer*, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >, std::vector<ClassSection, std::allocator<ClassSection> >, std::vector<_SoupCookie, std::allocator<_SoupCookie> >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x192E8E: MainWindow::ProgressTeamsButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1944BD: MainWindow::static_ProgressTeamsButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 
+==22950== 1 errors in context 4 of 69:
+==22950== Use of uninitialised value of size 8
+==22950==    at 0xA0AD86B: _itoa_word (_itoa.c:179)
+==22950==    by 0xA0B0F0D: vfprintf (vfprintf.c:1642)
+==22950==    by 0xA0DD90F: vsnprintf (vsnprintf.c:114)
+==22950==    by 0x113F64: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x113986: std::__cxx11::to_string(int) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1375CA: Utility::makeStudentJSON(int, int, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x119242: main::main_run(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Fl_Progress*, Fl_Text_Buffer*, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >, std::vector<ClassSection, std::allocator<ClassSection> >, std::vector<_SoupCookie, std::allocator<_SoupCookie> >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x192E8E: MainWindow::ProgressTeamsButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1944BD: MainWindow::static_ProgressTeamsButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 
+==22950== 1 errors in context 5 of 69:
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xA0B18DA: vfprintf (vfprintf.c:1642)
+==22950==    by 0xA0DD90F: vsnprintf (vsnprintf.c:114)
+==22950==    by 0x113F64: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x113986: std::__cxx11::to_string(int) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1375CA: Utility::makeStudentJSON(int, int, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x119242: main::main_run(int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Fl_Progress*, Fl_Text_Buffer*, std::vector<std::vector<Student, std::allocator<Student> >, std::allocator<std::vector<Student, std::allocator<Student> > > >, std::vector<ClassSection, std::allocator<ClassSection> >, std::vector<_SoupCookie, std::allocator<_SoupCookie> >) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x192E8E: MainWindow::ProgressTeamsButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x1944BD: MainWindow::static_ProgressTeamsButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5826F82: Fl::handle_(int, Fl_Window*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 
+==22950== 1 errors in context 6 of 69:
+==22950== Thread 8 ReceiveQueue:
+==22950== Syscall param sendmsg(msg.msg_iov[1]) points to uninitialised byte(s)
+==22950==    at 0x6064607: sendmsg (sendmsg.c:28)
+==22950==    by 0x6AE50BD: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6AE5A33: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6ACFA2E: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x10A7A6FB: WTF::RunLoop::performWork() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10ACB1D8: ??? (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0xE4B6284: g_main_context_dispatch (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4B664F: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4B6961: g_main_loop_run (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x10ACBC2F: WTF::RunLoop::run() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10A7BD9A: WTF::Thread::entryPoint(WTF::Thread::NewThreadContext*) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10ACD1D8: ??? (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==  Address 0x25da8e30 is in a rw- anonymous segment
+==22950== 
+==22950== 
+==22950== 1 errors in context 7 of 69:
+==22950== Thread 1:
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xE4C2E8D: g_option_context_parse (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9510617: gtk_parse_args (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x9510685: gtk_init_check (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x95106C8: gtk_init (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x193886: mini_browser() (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x193D6E: MainWindow::StartButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x194509: MainWindow::static_StartButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5826F82: Fl::handle_(int, Fl_Window*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5883711: fl_handle(_XEvent const&) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 
+==22950== 1 errors in context 8 of 69:
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xE4C2768: g_option_context_parse (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9510617: gtk_parse_args (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x9510685: gtk_init_check (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x95106C8: gtk_init (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x193886: mini_browser() (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x193D6E: MainWindow::StartButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x194509: MainWindow::static_StartButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5826F82: Fl::handle_(int, Fl_Window*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5883711: fl_handle(_XEvent const&) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 
+==22950== 1 errors in context 9 of 69:
+==22950== Conditional jump or move depends on uninitialised value(s)
+==22950==    at 0xE4C28F2: g_option_context_parse (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x9510617: gtk_parse_args (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x9510685: gtk_init_check (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x95106C8: gtk_init (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.30)
+==22950==    by 0x193886: mini_browser() (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x193D6E: MainWindow::StartButtonClick(Fl_Widget*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x194509: MainWindow::static_StartButtonClick(Fl_Widget*, void*) (in /home/cristi/SER401-FALL-19-Project35/BruteForce/build/main.exe)
+==22950==    by 0x587C760: Fl_Widget::do_callback(Fl_Widget*, void*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x582D0D9: Fl_Button::handle(int) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x58250CC: ??? (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5826F82: Fl::handle_(int, Fl_Window*) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950==    by 0x5883711: fl_handle(_XEvent const&) (in /usr/lib/x86_64-linux-gnu/libfltk.so.1.3)
+==22950== 
+==22950== 
+==22950== 259 errors in context 10 of 69:
+==22950== Thread 8 ReceiveQueue:
+==22950== Syscall param sendmsg(msg.msg_iov[0]) points to uninitialised byte(s)
+==22950==    at 0x6064607: sendmsg (sendmsg.c:28)
+==22950==    by 0x6AE50BD: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6AE5A33: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x6ACFA2E: ??? (in /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37.44.2)
+==22950==    by 0x10A7A6C4: WTF::RunLoop::performWork() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10ACB1D8: ??? (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0xE4B6284: g_main_context_dispatch (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4B664F: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0xE4B6961: g_main_loop_run (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.5600.4)
+==22950==    by 0x10ACBC2F: WTF::RunLoop::run() (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10A7BD9A: WTF::Thread::entryPoint(WTF::Thread::NewThreadContext*) (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==    by 0x10ACD1D8: ??? (in /usr/lib/x86_64-linux-gnu/libjavascriptcoregtk-4.0.so.18.16.3)
+==22950==  Address 0x29a738d1 is on thread 8's stack
+==22950== 
+--22950-- 
+--22950-- used_suppression:     25 X on SUSE11 writev uninit padding /usr/lib/valgrind/default.supp:397
+==22950== 
+==22950== ERROR SUMMARY: 327 errors from 69 contexts (suppressed: 25 from 1)

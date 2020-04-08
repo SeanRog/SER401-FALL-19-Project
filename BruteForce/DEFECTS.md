@@ -45,7 +45,14 @@ ID# Name of defect (short description)
 - Version: SteamPunk
 - Status: OPEN
 
-5. System would run into cases where no team combinations could be formed.
+5. Text for "POST" and "SAVE" buttons after completion run over button boundaries (wrap-text needed)
+- Branch: dev
+- Cristi
+- 04/01/2020
+- UX issue
+- Version: SteamPunk
+
+6. System would run into cases where no team combinations could be formed.
 - Branch: dev
 - Myles
 - 04/01/2020
@@ -54,7 +61,7 @@ ID# Name of defect (short description)
 - Cause: csv file reader and writer. Reader for the projects was not assigning the correct skill values.
 - Status: CLOSED
 
-6. Certain values need to be hardcoded, such as the number of class sections.
+7. Certain values need to be hardcoded, such as the number of class sections.
 - Branch: dev
 - Myles
 - 04/03/2020

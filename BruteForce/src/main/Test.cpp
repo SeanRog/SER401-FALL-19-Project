@@ -295,3 +295,28 @@ void Test::StructTest() {
 	cout << "----------------------------------------------------------";
 	// end testing for Task#97
 }
+
+// AUTHOR: CRISTI DELEO
+// DATE: 04/02/2020
+/*
+void Test::ThreadFunction() {
+
+	cout << endl;
+	cout << "----------------------------------------------------------"
+			<< endl;
+	cout << "BEGIN: Test::ThreadFunction" << endl << endl;
+
+	for (int i = 0; i < numProjects; i++) {
+		for (int j = 0; j < numClassSections; j++) {
+			cout << "[" << i << "][" << j << "] ";
+			cout << *(percentMatrix + (i * numClassSections) + j);
+		}
+		cout << endl;
+	}
+
+	cout << endl;
+	cout << "END: Test::ThreadFunction" << endl;
+	cout << "----------------------------------------------------------";
+	cout << endl << endl;
+}
+*/

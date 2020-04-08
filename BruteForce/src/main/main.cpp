@@ -195,18 +195,24 @@ void threadFunction(Student studentPool[], Project projectPool[],
 		const int teamSize, const int numTopTeams, string results[],
 		int classSection, int numClasses, int officialClassID) {
 
-	//Progress Bar window- calculate the percentage to increment the bar by
+	// Progress Bar window- calculate the percentage to increment the bar by
 	int progressIncrement = (110 / numClasses) / 3;
 
-	//Find the number of teams of 5 and number of teams of 4 needed for this class section.
+	// Find the number of teams of 5 and number of teams of 4 needed for 
+        // this class section.
 	Utility util;
+
 	int numTeamsOf4 = util.NumOfTeamsOf4(numStudents, teamSize);
 	int numTeamsOf5 = abs(numTeamsOf4 * 4 - numStudents) / 5;
 	int count4T = 0;
 	int count5T = 0;
-	vector<int> TeamsNeeded;
 
-	for (int i = 0; i < numProjects; i++) {
+	//vector<int> TeamsNeeded;
+        
+        int TeamsNeeded[numProjects];
+        
+/*
+        for (int i = 0; i < numProjects; i++) {
 
 		if (count5T < numTeamsOf5) {
 			TeamsNeeded.push_back(5);
@@ -214,6 +220,19 @@ void threadFunction(Student studentPool[], Project projectPool[],
 
 		} else if (count4T < numTeamsOf4) {
 			TeamsNeeded.push_back(4);
+			count4T++;
+		}
+	}
+*/
+
+	for (int i = 0; i < numProjects; i++) {
+
+		if (count5T < numTeamsOf5) {
+			TeamsNeeded[i] = 5;
+			count5T++;
+
+		} else if (count4T < numTeamsOf4) {
+			TeamsNeeded[i] = 4;
 			count4T++;
 		}
 	}
@@ -258,6 +277,7 @@ void threadFunction(Student studentPool[], Project projectPool[],
 
 	//make sure each priority section does not have 1 project.
 	//(should have 0, or 3 or more. (P2 can have 2))
+
 	if (count2 == 1) {
 		if (count1 > 2) {
 			count1--;
@@ -330,7 +350,6 @@ void threadFunction(Student studentPool[], Project projectPool[],
 
 	//make sure each priority has no more than 10 projects each,
 	//(if the number of projects is 30 or less).
-
 	if (numProjects <= 30) {
 
 		while (count2 > 10) {
@@ -421,6 +440,7 @@ void threadFunction(Student studentPool[], Project projectPool[],
 			}
 		}
 	}
+
 	//If there are more than 30 projects, evenly distribute the projects by priority
 	if (numProjects > 30) {
 		bool A = true;
@@ -701,7 +721,6 @@ int main() {
  *Returns:
  *	int value 0.
  */
-
 int main::main_run(int projects_input, int students_input, string filepath,
 		Fl_Progress *pb, Fl_Text_Buffer *tb,
 		vector<vector<Student>> allStudents,
@@ -830,8 +849,14 @@ int main::main_run(int projects_input, int students_input, string filepath,
 
 	// INITIALIZE POOLS
 	//util.initProjectPool(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
-	util.csvToProjectsVector(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS,
-			NUM_SKILLS);
+
+	// !!! The following line calls a function that returns a vector
+	// !!! without assigning it to a vector variable
+	//util.csvToProjectsVector(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS,
+	//		NUM_SKILLS);
+
+	util.csvToProjectsArray(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS,
+				NUM_SKILLS);
 	util.initStudentPool(STUDENT_FILE, STUDENT_POOL, NUM_STUDENTS);
 	util.initClassSectionPool(CLASS_SECTION_FILE, CLASS_SECTION_POOL,
 			STUDENT_POOL, NUM_CLASS_SECTIONS, NUM_STUDENTS);
