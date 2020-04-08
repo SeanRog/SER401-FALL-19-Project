@@ -2950,6 +2950,227 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 }
 
 /*********************************************************
+ * csvToProjectsArray
+ *
+ * Author: Cristi DeLeo / Sean Rogers
+ *
+ * Description:
+ * 	Just like the previous method, takes in a CSV file, puts the projects in the CSV file into
+ * 	project objects, then places each project object into a vector, then returns that vector.
+ *
+ *Arguments:
+ *	string filename
+ *
+ *Returns:
+ *  vector<Project> containing the project objects obtained from the projects in the CSV file.
+ */
+/*
+void Utility::csvToProjectsArray(string filename,
+		Project projectPool[], const int numProjects, const int numSkills) {
+
+	string skills1[numSkills] =
+			{ "ArtificialIntelligence", "WebApplicationProgramming",
+					"IOSMobileApplicationProgramming",
+					"AndroidMobileApplicationProgramming",
+					"Sensing/Control/Embedded", "DesktopApplicationProgramming",
+					"DatabaseProgramming", "NetworkSecurity", "C", "C++", "C#",
+					"Java", "JavaScript", "Python" };
+
+	string currentSkill = "";
+	vector<vector<string>> dataList;
+	ifstream file(filename);
+	string line = "";
+	int bracketCount = 0;
+
+	while (getline(file, line)) {
+		vector<string> vec;
+		string element = "";
+		for (int i = 0; i < line.length(); i++) {
+			if (line.at(i) == '[') {
+				bracketCount++;
+			}
+			if (line.at(i) == ']') {
+				bracketCount--;
+			}
+			if (line.at(i) == ',' && bracketCount == 0) {
+				vec.push_back(element);
+				element = "";
+			} else {
+				if (line.at(i) != '[' && line.at(i) != ']') {
+					element.push_back(line.at(i));
+				}
+			}
+
+			if (i + 1 == line.length()) {
+				vec.push_back(element);
+			}
+		}
+		dataList.push_back(vec);
+	}
+	file.close();
+	if (numProjects > dataList.size()) {
+		cout << "numProjects can't be bigger than " << dataList.size() << endl;
+		throw numProjects;
+	}
+	//put csv data into a project object, add that project object to vector<Project> projects,
+	//repeat for all project data in CSV, return projects
+	for (int i = 1; i < numProjects; i++) {
+		Project p = Project();
+		for (int j = 0; j < numSkills; j++) {
+			p.Skills[j] = 0;
+		}
+
+		p.ProjectID = i;
+		p.NDA = atoi((dataList.at(i).at(dataList.at(i).size() - 6)).c_str());
+		p.IPR = atoi((dataList.at(i).at(dataList.at(i).size() - 5)).c_str());
+		p.sharedHardware = atoi(
+				(dataList.at(i).at(dataList.at(i).size() - 4)).c_str());
+		p.Type = (dataList.at(i).at(dataList.at(i).size() - 3)).at(0);
+
+		//a value of 100 lets us know this class section has not been assigned
+		p.ClassID = 100;
+		//p.ClassID = atoi(
+		//		(dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
+		p.Priority = atoi(
+				(dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
+
+		cout << p.ProjectID << endl;
+		currentSkill = "";
+		for (int j = 0; j < dataList.at(i).at(12).size(); j++) {
+
+			if (dataList.at(i).at(12).at(j) == ',') {
+
+				cout << currentSkill << endl;
+				for (int k = 0; k < 8; k++) {
+					if (currentSkill.compare(skills1[k]) == 0) {
+						p.Skills[k] = 1;
+					}
+				}
+				currentSkill = "";
+			} else {
+				if (dataList.at(i).at(12).at(j) != '\"') {
+					currentSkill.push_back(dataList.at(i).at(12).at(j));
+
+				}
+
+			}
+		}
+
+		currentSkill = "";
+		for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
+
+			if (dataList.at(i).at(13).at(j) == ',') {
+				cout << currentSkill << endl;
+				for (int k = 8; k < 14; k++) {
+					if (currentSkill.compare(skills1[k]) == 0) {
+						p.Skills[k] = 1;
+					}
+				}
+				currentSkill = "";
+			} else {
+				if (dataList.at(i).at(13).at(j) != '\"') {
+					currentSkill.push_back(dataList.at(i).at(13).at(j));
+				}
+
+			}
+
+		}
+
+
+
+		//projects.push_back(p);
+		//cout<<p.ProjectID<<"  priority:"<<p.Priority<<endl;
+
+		projectPool[i - 1] = p;
+
+		//last project
+
+		if (i == numProjects - 1) {
+			i = numProjects;
+			Project p1 = Project();
+			for (int j = 0; j < numSkills; j++) {
+				p1.Skills[j] = 0;
+			}
+
+			p1.ProjectID = numProjects;
+
+			p1.NDA = atoi(
+					(dataList.at(i).at(dataList.at(i).size() - 6)).c_str());
+			p1.IPR = atoi(
+					(dataList.at(i).at(dataList.at(i).size() - 5)).c_str());
+			p1.sharedHardware = atoi(
+					(dataList.at(i).at(dataList.at(i).size() - 4)).c_str());
+			p1.Type = (dataList.at(i).at(dataList.at(i).size() - 3)).at(0);
+
+			//a value of 100 lets us know this class section has not been assigned
+			p1.ClassID = 100;
+			//p.ClassID = atoi(
+			//		(dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
+			p1.Priority = atoi(
+					(dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
+
+			cout << p1.ProjectID << endl;
+			currentSkill = "";
+			for (int j = 0; j < dataList.at(i).at(12).size(); j++) {
+
+				if (dataList.at(i).at(12).at(j) == ',') {
+
+					cout << currentSkill << endl;
+					for (int k = 0; k < 8; k++) {
+						if (currentSkill.compare(skills1[k]) == 0) {
+							p1.Skills[k] = 1;
+						}
+					}
+					currentSkill = "";
+				} else {
+					if (dataList.at(i).at(12).at(j) != '\"') {
+						currentSkill.push_back(dataList.at(i).at(12).at(j));
+
+					}
+
+				}
+			}
+
+			currentSkill = "";
+			for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
+
+				if (dataList.at(i).at(13).at(j) == ',') {
+					cout << currentSkill << endl;
+					for (int k = 8; k < 14; k++) {
+						if (currentSkill.compare(skills1[k]) == 0) {
+							p1.Skills[k] = 1;
+						}
+					}
+					currentSkill = "";
+				} else {
+					if (dataList.at(i).at(13).at(j) != '\"') {
+						currentSkill.push_back(dataList.at(i).at(13).at(j));
+					}
+
+				}
+
+			}
+
+			projectPool[numProjects - 1] = p1;
+			i = numProjects - 1;
+
+		}
+	}
+
+	for (int i = 0; i < numProjects; i++) {
+
+		cout << "Project#: " << projectPool[i].ProjectID << "  priority:"
+				<< projectPool[i].Priority << endl;
+		for (int d = 0; d < numSkills; d++) {
+			cout << projectPool[i].Skills[d] << " ";
+		}
+		cout << endl;
+	}
+
+	return;
+}
+*/
+/*********************************************************
  * getQuizID
  *
  * Author: Myles Colina

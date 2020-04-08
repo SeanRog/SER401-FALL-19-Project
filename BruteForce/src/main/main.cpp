@@ -275,13 +275,9 @@ void threadFunction(Student studentPool[], Project projectPool[],
 
 	int count0 = abs(numProjects - count2 - count1);
 
-<<<<<<< HEAD
-	// make sure each priority section does not have 1 project
-        // (should have 0, or 3 or more. (P2 can have 2))
-=======
 	//make sure each priority section does not have 1 project.
 	//(should have 0, or 3 or more. (P2 can have 2))
->>>>>>> p35/dev
+
 	if (count2 == 1) {
 		if (count1 > 2) {
 			count1--;
@@ -352,14 +348,8 @@ void threadFunction(Student studentPool[], Project projectPool[],
 		count2++;
 	}
 
-<<<<<<< HEAD
-	// make sure each priority has no more than 10 projects each,
-	// if there are 30 or less projects.
-=======
 	//make sure each priority has no more than 10 projects each,
 	//(if the number of projects is 30 or less).
-
->>>>>>> p35/dev
 	if (numProjects <= 30) {
 
 		while (count2 > 10) {
@@ -731,7 +721,6 @@ int main() {
  *Returns:
  *	int value 0.
  */
-
 int main::main_run(int projects_input, int students_input, string filepath,
 		Fl_Progress *pb, Fl_Text_Buffer *tb,
 		vector<vector<Student>> allStudents,
@@ -860,8 +849,14 @@ int main::main_run(int projects_input, int students_input, string filepath,
 
 	// INITIALIZE POOLS
 	//util.initProjectPool(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS);
-	util.csvToProjectsVector(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS,
-			NUM_SKILLS);
+
+	// !!! The following line calls a function that returns a vector
+	// !!! without assigning it to a vector variable
+	//util.csvToProjectsVector(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS,
+	//		NUM_SKILLS);
+
+	util.csvToProjectsArray(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS,
+				NUM_SKILLS);
 	util.initStudentPool(STUDENT_FILE, STUDENT_POOL, NUM_STUDENTS);
 	util.initClassSectionPool(CLASS_SECTION_FILE, CLASS_SECTION_POOL,
 			STUDENT_POOL, NUM_CLASS_SECTIONS, NUM_STUDENTS);
