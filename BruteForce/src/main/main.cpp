@@ -855,8 +855,6 @@ int main::main_run(int projects_input, int students_input, string filepath,
 	//util.csvToProjectsVector(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS,
 	//		NUM_SKILLS);
 
-	util.csvToProjectsArray(PROJECT_FILE, PROJECT_POOL, NUM_PROJECTS,
-				NUM_SKILLS);
 	util.initStudentPool(STUDENT_FILE, STUDENT_POOL, NUM_STUDENTS);
 	util.initClassSectionPool(CLASS_SECTION_FILE, CLASS_SECTION_POOL,
 			STUDENT_POOL, NUM_CLASS_SECTIONS, NUM_STUDENTS);
