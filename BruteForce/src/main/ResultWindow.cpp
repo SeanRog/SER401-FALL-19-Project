@@ -17,6 +17,7 @@
 #include "GUIStyles.h"
 #include "Project.h"
 #include "CookieManager.h"
+#include "StudentsToProjects.h"
 #include "Utility.h"
 
 #include <iostream>
@@ -500,6 +501,110 @@ void ResultWindow::postGroups(Fl_Widget *w) {
 
 		}
 	}
+
+}
+
+void ResultWindow::callbackRecommenderSystem() {
+
+	//opens a new window
+
+
+
+
+
+
+
+}
+
+
+void ResultWindow::recommenderSystem() {
+
+
+	string asuriteIDX;
+	Student studentX;
+	Team teamX;
+	int classIDX;
+	int numSkills = 14;
+
+	vector <Team> teamsOf4;
+	vector <Team> teamsOf5;
+	vector <Team> top5Teams;
+	bool isTeam4;
+	bool teamXis4 = false;
+
+	//find the team, and class section the student belongs to.
+	for(int i = 0; i <studentTeams.size(); i++){
+		for(int j = 0; j < 5; j++){
+			if(studentTeams[i].team[j].ASUriteID.compare(asuriteIDX) == 0){
+
+				studentX = studentTeams[i].team[j];
+				teamX = studentTeams[i];
+				classIDX = studentTeams[i].ClassID;
+				break;
+			}
+		}
+	}
+
+	//find all the teams of 4 and 5 that are in the same class section
+	for(int i = 0; i <studentTeams.size(); i++){
+
+			if(studentTeams[i].ClassID == classIDX){
+				isTeam4 = false;
+				for(int j = 0; j < 5; j++){
+
+					if(studentTeams[i].team[j].StudentID == 99999){
+
+						isTeam4 = true;
+					}
+				}
+				if(isTeam4 == true){
+					teamsOf4.push_back(studentTeams[i]);
+				}else{
+					teamsOf5.push_back(studentTeams[i]);
+				}
+
+			}
+	}
+
+	//find out if the student's team is a team of 4 or not.
+	for(int i = 0; i < 5 ; i++){
+		if(teamX.team[i].StudentID == 99999){
+			teamXis4 = true;
+		}
+	}
+
+	StudentsToProjects stp;
+
+	//if the student is on a team of 5, find the best team of 4 that the student can be placed in
+	for(int i = 0; i <teamsOf4.size(); i++){
+
+		for(int j = 0; j < 5; j++){
+				if(teamsOf4[i].team[j].StudentID == 99999){
+					teamsOf4[i].team[j] == studentX;
+
+					int studentSkillSums[5];
+					for (int x = 0; x < 5; x++) {
+						studentSkillSums[x] = 0;
+						for (int y = 0; y < numSkills; y++) {
+							studentSkillSums[x] += teamsOf4[i].team[x].Skills[j];
+						}
+					}
+
+
+					teamsOf4[i].TeamScore = stp.ProjectCompareTeamScore(studentSkills,
+							maxProjectSkills[CurrentProject.PoolID])
+							+ stp.SkillCompareTeamScore(skillSums)
+							+ stp.AvailabilityTeamScore(teamsOf4[i].team);
+
+				}
+		}
+			}
+		}
+
+
+
+
+
 
 }
 
