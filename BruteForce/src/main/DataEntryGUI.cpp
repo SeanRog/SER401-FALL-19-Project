@@ -444,7 +444,7 @@ void DataEntryGUI::ConfirmClick(Fl_Widget *w) {
 
 	//course selection values
 	vector <string> selections;
-	int course_count = 0;
+	course_count = 0;
 
 	//project file values
 	string projectFilePath = fileInput_Project->value();
@@ -642,9 +642,11 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 /*<<<<<<< HEAD
 	mainWin.studentsFromCanvas = allStudents;
 =======*/
+
 	mainWin.mwCourses = selectedcourses;
 	mainWin.mwAllStudents = allStudents;
 	mainWin.mwCookies = cookiedataDE;
+	mainWin.mwNumCourses = course_count;
 
 //>>>>>>> dev
 	mainWin.callTeams(w);

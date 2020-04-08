@@ -59,6 +59,7 @@
 using namespace std;
 int SteamPunkGUI1::num_projects = 0;
 int SteamPunkGUI1::num_students = 0;
+int SteamPunkGUI1::num_classes = 0;
 
 //Function to convert integers into constant expressions.
 constexpr int toConstInt(int constInt) {
@@ -619,6 +620,9 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	//call to main.cpp function main_run, to run the team assignment system.
 	main m;
+
+	 num_classes = spNumCourses;
+
 	m.main_run(num_projects, num_students, SPGprojfile, progressBar,
 			terminalBuffer,spAllStudents, spCourses, spCookies);
 
@@ -715,6 +719,7 @@ bool Auth1;
 typedef void *user_data;
 vector<SoupCookie> cookiedata1;
 GtkWidget *main_windowSP;
+WebKitWebView *webViewSP;
 
 //callback when the window is closed via the close button
 static void destroyWindowCb1(GtkWidget *widget, GtkWidget *window) {
@@ -824,6 +829,7 @@ static gboolean load_changedWebViewCb1(WebKitWebView *webView,
 			Auth1 = true;
 			//quit the mini-browser
 			usleep(50000);
+			gtk_widget_destroy(GTK_WIDGET(webViewSP));
 			gtk_widget_destroy(main_windowSP);
 			//usleep(50000);
 			//gtk_main_quit();
@@ -874,7 +880,7 @@ void mini_browserSP() {
 	WebKitCookieManager *cookiejar = webkit_web_context_get_cookie_manager(
 			context);
 	// Create a browser instance
-	WebKitWebView *webView = WEBKIT_WEB_VIEW(
+	webViewSP = WEBKIT_WEB_VIEW(
 			webkit_web_view_new_with_context(context));
 
 	webkit_web_context_set_automation_allowed(context, 1);
@@ -885,27 +891,27 @@ void mini_browserSP() {
 	TRUE, NULL);
 
 	// Apply the result
-	webkit_web_view_set_settings(webView, settings);
+	webkit_web_view_set_settings(webViewSP, settings);
 
 	// Put the browser area into the main window
-	gtk_container_add(GTK_CONTAINER(main_windowSP), GTK_WIDGET(webView));
+	gtk_container_add(GTK_CONTAINER(main_windowSP), GTK_WIDGET(webViewSP));
 
 	// Set up callbacks so that if either the main window or the browser instance is
 	// closed, the program will exit
 	g_signal_connect(main_windowSP, "destroy", G_CALLBACK(destroyWindowCb1),
 			NULL);
-	g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb1),
+	g_signal_connect(webViewSP, "close", G_CALLBACK(closeWebViewCb1),
 			main_windowSP);
 
-	g_signal_connect(webView, "load-changed",
+	g_signal_connect(webViewSP, "load-changed",
 			G_CALLBACK(load_changedWebViewCb1), main_windowSP);
 
 	// Load a web page into the browser instance
-	webkit_web_view_load_uri(webView, "https://canvas.asu.edu/login");
+	webkit_web_view_load_uri(webViewSP, "https://canvas.asu.edu/login");
 
 	// Make sure that when the browser area becomes visible, it will get mouse
 	// and keyboard events
-	gtk_widget_grab_focus(GTK_WIDGET(webView));
+	gtk_widget_grab_focus(GTK_WIDGET(webViewSP));
 
 	// Make sure the main window and all its contents are visible
 	gtk_widget_show_all(main_windowSP);
@@ -974,23 +980,6 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 
 		if (error == false) {
 
-/*<<<<<<< HEAD
-			cout<<"Working"<<endl;
-			//if the user is not authenticated yet,
-			//open the mini-browser for canvas authentication
-			if (Authenticated != true) {
-				Auth1 = false;
-				mini_browserSP();
-			}
-			Authenticated = Auth1;
-
-			windowMain->hide();
-			//call to get the course information
-			CookieManager cookieMonster;
-			cookieMonster.getCourses(cookiedata1);
-			SPDataGUI dataGUI(windowMain, cookiedata1);
-=======*/
-
 			cout<<"Working"<<endl;
 	//if the user is not authenticated yet,
 	//open the mini-browser for canvas authentication
@@ -1006,7 +995,6 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 	cookieMonster.getCourses(cookiedata1);
 
 	SPDataGUI dataGUI(windowMain, cookiedata1);
-//>>>>>>> dev
 
 		}
 }

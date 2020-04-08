@@ -391,17 +391,60 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 				for (int k = 0; k < TOP_TEAMS; k++) {
 					if (k == 0) {
 						if (currentTeam.TeamScore > topscores[k]) {
+
+							for(int h = (TOP_TEAMS-1); h > k; h--){
+								currentTopTeams[h] = currentTopTeams[h-1];
+								topscores[h] = currentTopTeams[h].TeamScore;
+							}
 							topscores[k] = currentTeam.TeamScore;
 							currentTopTeams[k] = currentTeam;
 							break;
 
 						}
 					} else {
+						if(k != TOP_TEAMS-1){
 						if (currentTeam.TeamScore == topscores[k - 1]
-								| currentTeam.TeamScore > topscores[k]) {
+								|| currentTeam.TeamScore > topscores[k]) {
+
+							for(int h = (TOP_TEAMS-1); h > k; h--){
+								currentTopTeams[h] = currentTopTeams[h-1];
+								topscores[h] = currentTopTeams[h].TeamScore;
+							}
 							topscores[k] = currentTeam.TeamScore;
 							currentTopTeams[k] = currentTeam;
 							break;
+						}
+						}else{
+							if (currentTeam.TeamScore == topscores[k - 1]
+								|| currentTeam.TeamScore > topscores[k]) {
+
+								if(currentTeam.TeamScore == topscores[k] && currentTopTeams[k].TeamScore !=0){
+									if(PositiveAffinityCheck(currentTeam.team) > PositiveAffinityCheck(currentTopTeams[k].team)){
+
+										for(int h = (TOP_TEAMS-1); h > k; h--){
+											currentTopTeams[h] = currentTopTeams[h-1];
+											topscores[h] = currentTopTeams[h].TeamScore;
+										}
+
+								topscores[k] = currentTeam.TeamScore;
+								currentTopTeams[k] = currentTeam;
+								break;
+									}else{
+										break;
+									}
+
+								} else{
+									for(int h = (TOP_TEAMS-1); h > k; h--){
+										currentTopTeams[h] = currentTopTeams[h-1];
+										topscores[h] = currentTopTeams[h].TeamScore;
+									}
+
+									topscores[k] = currentTeam.TeamScore;
+									currentTopTeams[k] = currentTeam;
+									break;
+								}
+
+							}
 						}
 
 					}
@@ -476,6 +519,19 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		for (int proj = 0;proj <numProjects ; proj++ ){
 			for (int f = 0; f < TOP_TEAMS; f++) {
 		cout<<topTeams[proj][f].TeamScore<<endl;
+
+		cout<<"Project ID from project= "<<topTeams[proj][f].project.ProjectID<<" ID from ID: "<<topTeams[proj][f].projectID<<endl;
+		cout<<"Students for this team:"<<endl;
+		for (int h = 0; h < 5; h++) {
+		cout<<topTeams[proj][f].team[h].StID<<" "<<topTeams[proj][f].team[h].ClassID<<
+				" "<<topTeams[proj][f].team[h].name<<endl;
+		cout<<"Skills:"<<endl;
+		for (int d = 0; d < numSkills; d++) {
+
+			cout<<topTeams[proj][f].team[h].Skills[d]<<" ";
+
+		}
+		}
 			}
 			cout<<" "<<endl;}
 
@@ -839,6 +895,8 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 						for (int x = 0; x < replacements.size(); x++) {
 							//replace the duplicate with the highest scoring student
 							//for the current project, who is not already assigned.
+						//	int bestTeamScore = 0;
+						//	int bestStudentNum = 0;
 
 							//check if fake student is needed.
 							if (fakeSTNeeded == true) {
@@ -857,8 +915,35 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 								}
 							}
 
+						/*	//find the best student, that gives this team the highest score.
+							for (int z = 0; z < replacements.size(); z++) {
+								bestSet[i].team[j] =
+										studentPool[replacements[z].second];
+
+								int newTeamScore = ProjectCompareTeamScore(studentSkills,
+										maxProjectSkills[CurrentProject.PoolID])
+										+ SkillCompareTeamScore(skillSums)
+										+ AvailabilityTeamScore(bestSet[i].team);
+
+								if (newTeamScore > bestTeamScore &&
+										NegativeAffinityCheck(bestSet[i].team) == false){
+									bestTeamScore = newTeamScore;
+									bestStudentNum = z;
+								}
+
+							}
+
+							if(bestTeamScore != 0){
+								bestSet[i].team[j] =
+										studentPool[replacements[bestStudentNum].second];
+								x = bestStudentNum;
+
+							}else{*/
+
 							bestSet[i].team[j] =
 									studentPool[replacements[x].second];
+						//}
+
 
 							//make sure this replacement does not have any negative affinity
 							//with the team.
@@ -874,6 +959,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 								}
 								//remove added student from the replacement pool
 								replacements.erase(replacements.begin() + x);
+								mtx.lock();
+								ResultWindow::swaps++;
+								mtx.unlock();
 								break;
 							}
 
@@ -892,9 +980,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 					}
 				}
 				isduplicate = false;
-				mtx.lock();
-				ResultWindow::swaps++;
-				mtx.unlock();
+
 			}	             	                    	 //end j loop
 
 			//recalculate team score, now that all the duplicate
@@ -911,10 +997,26 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 					skillSums[x] = 0;
 				}
 			}
+
 			bestSet[i].TeamScore = ProjectCompareTeamScore(studentSkills,
 					maxProjectSkills[CurrentProject.PoolID])
 					+ SkillCompareTeamScore(skillSums)
 					+ AvailabilityTeamScore(bestSet[i].team);
+
+			//if the team is a team of 4, calculate the team score differently.
+			for (int x = 0; x < TEAM_SIZE; x++) {
+
+				if (bestSet[i].team[x].StudentID == 99999) {
+
+					int maxProjectScore = ((maxProjectSkills[CurrentProject.PoolID]*0.20)*4);
+
+					bestSet[i].TeamScore = ProjectCompareTeamScore(studentSkills,
+							maxProjectScore)
+							+ SkillCompareTeamScore4(skillSums, numSkills)
+							+ AvailabilityTeamScore4(bestSet[i].team);
+				}
+			}
+
 
 			if (DuplicateFound == false) {
 				if (minTeamCount < numPlaceholderStudents) {
@@ -1114,7 +1216,63 @@ int StudentsToProjects::AvailabilityTeamScore(Student team[5]) {
 	//return the score 0-20
 	return percent;
 }
+/*********************************************************
+ * AvailabilityTeamScore4
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * (For teams of 4)
+ * 	This function returns a score of 0-20 determining
+ * 	the quality of the team by comparing the Availability of students
+ * 	on a team to each other.
+ *
+ *Arguments:
+ *	Student team[]
+ *
+ *Returns:
+ *  integer value from 0 to 20.
+ */
+int StudentsToProjects::AvailabilityTeamScore4(Student team4[5]) {
 
+	int timeCompareScore = 0;
+
+	Student team[4];
+	vector <Student> tempteam;
+	for(int i = 0; i < 5; i++){
+		if(team4[i].StudentID != 99999){
+			tempteam.push_back(team4[i]);
+		}
+	}
+
+	for(int i = 0; i < 4; i++){
+
+		team[i] = tempteam[i];
+	}
+
+
+
+	// 6 calls to StudentToStudentAvailibility. One for each possible combination
+	// of every student in the team to each-other.
+	timeCompareScore += StudentToStudentAvailibility(team[0], team[1]);
+	timeCompareScore += StudentToStudentAvailibility(team[0], team[2]);
+	timeCompareScore += StudentToStudentAvailibility(team[0], team[3]);
+	timeCompareScore += StudentToStudentAvailibility(team[1], team[2]);
+	timeCompareScore += StudentToStudentAvailibility(team[1], team[3]);
+	timeCompareScore += StudentToStudentAvailibility(team[2], team[3]);
+
+	//timeCompareScore contains a score 0-24
+	//configure the score from 0-24 to 0-20
+	float percent = 0;
+	float max = 24;
+	percent = timeCompareScore / max;
+	percent = percent * 20;
+	percent = (int) percent;
+
+	//cout<<"Team of 4 availability score: "<<percent<<"  +++++++++"<<endl;
+	//return the score 0-20
+	return percent;
+}
 /*********************************************************
  * StudentToStudentAvailibility
  *
@@ -1193,6 +1351,74 @@ int StudentsToProjects::SkillCompareTeamScore(int studentSkills[5]) {
 			studentSkills[4]);
 	teamCompareScore += StudentToStudentSkill(studentSkills[3],
 			studentSkills[4]);
+
+	return teamCompareScore;
+
+}
+
+/*********************************************************
+ * SkillCompareTeamScore4
+ *
+ * Author: Myles Colina
+ *
+ * Description:
+ * (For teams of 4)
+ * 	This function returns a score of 0-40 determining
+ * 	the quality of the team by comparing the student's skills to each other
+ *
+ *Arguments:
+ *	Student team[]
+ *	int NUM_SKILLS
+ *
+ *Returns:
+ *  integer value from 0 to 40.
+ */
+int StudentsToProjects::SkillCompareTeamScore4(int studentSkills4[5], int NUM_SKILLS) {
+
+	int teamCompareScore = 0;
+
+	int studentSkills[4];
+	vector <int> tempskills;
+
+	int noSkillStudent;
+	for(int i = 0; i < 5; i++){
+
+		if(studentSkills4[i] != 0){
+
+		tempskills.push_back(studentSkills4[i]);
+	}
+
+	}
+
+	for(int i = 0; i < 4; i++){
+		studentSkills[i] = tempskills[i];
+	}
+
+	teamCompareScore += StudentToStudentSkill(studentSkills[0],
+			studentSkills[1]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[0],
+			studentSkills[2]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[0],
+			studentSkills[3]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[1],
+			studentSkills[2]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[1],
+			studentSkills[3]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[2],
+			studentSkills[3]);
+
+
+	//Score contains a score 0-24
+	//configure the score from 0-24 to 0-40
+	float percent = 0;
+	float max = 24;
+	percent = teamCompareScore / max;
+	percent = percent * 40;
+	percent = (int) percent;
+
+	//cout<<"Team of 4 skill to skill score: "<<percent<<"  ++++++++++++++++++"<<endl;
+	//return the score 0-40
+	return percent;
 
 	return teamCompareScore;
 
@@ -1287,6 +1513,8 @@ int StudentsToProjects::ProjectCompareTeamScore(int studentSkills[5],
 	return percent;
 
 }
+
+
 
 /*********************************************************
  * getDuplicatesOfStudents
@@ -1437,6 +1665,71 @@ bool StudentsToProjects::NegativeAffinityCheck(Student team[5]) {
 		}
 	} // end studentTeamCounter loop
 	return negativeAffinity;
+}
+
+/*********************************************************
+ * NegativeAffinityCheck
+ *
+ * Author: Matthew Cilibraise, Myles Colina
+ *
+ * Description:
+ * function checks to see how many students (if any) have positive affinity toward one another.
+ * This function returns the number of positive matches, for use as a tie-breaker when finding
+ * team combinations.
+ *
+ *Arguments:
+ *	Student team[5] (the team of students to check)
+ *
+ *Returns:
+ *  int value depicting how many positive affinity matches there are.
+ */
+int StudentsToProjects::PositiveAffinityCheck(Student team[5]) {
+
+	//the number of positive affinity matches on this team
+	int positiveAffinityCount = 0;
+
+	// We begin with an outer loop of that will examine each student in the team
+	for (int studentTeamCounter = 0; studentTeamCounter < 5;
+			studentTeamCounter++) {
+
+		// if the current student's affinity list is empty - we don't need about comparing any other students - so on to the next iteration
+		if (team[studentTeamCounter].StudentAffinity.empty()) {
+			continue;
+		} else {
+			// lets take a look at the current student's affinity list
+			for (int currentStudentAffinityCounter = 0;
+					currentStudentAffinityCounter
+							< team[studentTeamCounter].StudentAffinity.size();
+					currentStudentAffinityCounter++) {
+				// next we will loop through all other students comparing the current students affinity to other students, checking for negative affinity.
+				for (int otherStudentsCounter = 0; otherStudentsCounter < 5;
+						otherStudentsCounter++) {
+
+					// because we are looping, if the current student happens to be the other student, lets continue to the next iteration.
+					if (team[studentTeamCounter].StudentID
+							== team[otherStudentsCounter].StudentID) {
+						continue;
+						// next for each student id in the current students affinity list, lets see if the other student has the same Student ID
+						// and if the affinity boolean value is true, meaning positive affinity. The current student wants to work with
+						// the other student. In this case we will increment the positive affinity counter.
+					} else {
+						if (((team[studentTeamCounter].StudentAffinity.at(
+								currentStudentAffinityCounter).first).compare(team[otherStudentsCounter].ASUriteID)==0)
+								&& (team[studentTeamCounter].StudentAffinity.at(
+										currentStudentAffinityCounter).second
+										== true)) {
+						  positiveAffinityCount = positiveAffinityCount+1;
+						}
+					} // end otherStudentsCounter loop
+				}
+
+			} // end currentStudentAffinityCounter loop
+		}
+
+	} // end studentTeamCounter loop
+
+	//cout<<"Team for Project#"<<team->ProjectID<<"   Positive Affinity Matches: "<<positiveAffinityCount<<endl;
+	return positiveAffinityCount;
 }
 
 /*********************************************************

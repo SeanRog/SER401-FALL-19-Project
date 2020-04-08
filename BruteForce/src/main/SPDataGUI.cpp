@@ -557,7 +557,7 @@ void SPDataGUI::ConfirmClick(Fl_Widget *w) {
 	confirmWindow = new Fl_Window(850, 220, "Confirmation Window");
 	//course selection values
 	vector <string> selections;
-	int course_count = 0;
+	course_count = 0;
 
 	//project file values
 	string proj = fileInput_Project->value();
@@ -784,6 +784,7 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 	mainWin.spCourses = selectedcourses;
 	mainWin.spAllStudents = allStudents;
 	mainWin.spCookies = cookiedataSP;
+	mainWin.spNumCourses = course_count;
 //>>>>>>> dev
 	mainWin.callTeams(w);
 
