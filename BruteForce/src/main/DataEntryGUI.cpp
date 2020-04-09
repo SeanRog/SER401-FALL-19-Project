@@ -488,7 +488,7 @@ void DataEntryGUI::GobackClick(Fl_Widget *w) {
 
 
 /*************************************************************************************
- * Title: ConfirmClick
+ * Title: Yeslick
  *
  * Description: Callback for the Confirm button that opens the next GUI window.
  *
@@ -774,7 +774,7 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 
 
 /*************************************************************************************
- * Tile: GenerateTeamsClick
+ * Tile: chooseProjectFile_cb
  *
  * Description: event handler for the user to select the project file
  *

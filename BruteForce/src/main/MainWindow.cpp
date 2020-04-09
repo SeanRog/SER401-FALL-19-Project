@@ -280,7 +280,7 @@ void MainWindow::MainWindow2() {
 	tabs->selection_color(ASU_GOLD);
 	windowMain->resizable(tabs);
 
-	/***** Adding first tab, HOME to main window *****/ {
+		/***** Adding first tab, HOME to main window *****/ {
 		Fl_Group *homeTab = new Fl_Group(10, 40, 720, 300, "   Home   ");
 		homeTab->labelsize(15);
 		homeTab->labelfont(FL_HELVETICA_BOLD);
@@ -320,13 +320,12 @@ void MainWindow::MainWindow2() {
 		Fl_Group *aboutTab = new Fl_Group(40, 50, 750, 360, "   About   ");
 
 
-		/***** Setting up all items on tab, "ABOUT"*****/ {
-		aboutTab->color(ASU_WHITE);
-		aboutTab->selection_color(ASU_BLACK);
-		aboutTab->labelcolor(ASU_WHITE);
-		aboutTab->labelsize(15);
-		aboutTab->labelfont(FL_HELVETICA_BOLD);
-
+			/***** Setting up all items on tab, "ABOUT"*****/ {
+			aboutTab->color(ASU_WHITE);
+			aboutTab->selection_color(ASU_BLACK);
+			aboutTab->labelcolor(ASU_WHITE);
+			aboutTab->labelsize(15);
+			aboutTab->labelfont(FL_HELVETICA_BOLD);
 
 			/***** Variable declarations *****/
 			Fl_Box *aboutBox1;
@@ -498,6 +497,7 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 
 
 	/***** Buttons and progress bar at bottom of window *****/
+	//Teams
 	TeamsButton = new Fl_Button(25, 360, 200, 50, "Generate Teams");
 	TeamsButton->color(ASU_GOLD);
 	TeamsButton->selection_color(ASU_MAROON);
@@ -985,7 +985,7 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView, GtkWidget *window)
 
 
 /*****************************************************************************
- * Title: mini_browserSP
+ * Title: mini_browser
  *
  * Description: This function creates a mini-browser session so the user can login
  *		and create an authenticated session. The cookies from this session will
