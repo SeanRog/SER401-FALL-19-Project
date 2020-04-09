@@ -164,7 +164,7 @@ bool Auth;
 typedef void *user_data;
 vector<SoupCookie> cookiedata;
 Fl_Window *backWindow2;
-
+WebKitWebView *webView;
 
 /***** Declaring GUI logos variables for use *****/
 /* ASU logos */
@@ -922,8 +922,9 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView, GtkWidget *window)
 			Auth = true;
 
 			usleep(500000);
-			gtk_widget_destroy(main_window);
 
+			gtk_widget_destroy(GTK_WIDGET(webView));
+			gtk_widget_destroy(main_window);
 
 			//gtk_widget_destroy(GTK_WIDGET(webView));
 			//gtk_widget_destroy(window);
@@ -1027,7 +1028,7 @@ void mini_browser() {
 
 
 	// Create a browser instance
-	WebKitWebView *webView = WEBKIT_WEB_VIEW(
+	webView = WEBKIT_WEB_VIEW(
 			webkit_web_view_new_with_context(context));
 	WebKitSettings *settings = webkit_settings_new();
 
