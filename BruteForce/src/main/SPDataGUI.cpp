@@ -956,7 +956,7 @@ void SPDataGUI::chooseProjectFile_cb(Fl_Widget*) {
 	}
 
 	XInitThreads();
-	thread threads[1]
+	thread threads[1];
 	threads[0] = thread(SteamAnimate, masterWindow, steamBox1, steamBox2, 2);
 
 	//join threads

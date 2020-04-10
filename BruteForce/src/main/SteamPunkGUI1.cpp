@@ -1037,8 +1037,6 @@ void mini_browserSP() {
 	webViewSP = WEBKIT_WEB_VIEW(
 			webkit_web_view_new_with_context(context));
 
-	// Create a browser instance
-	WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new_with_context(context));
 	webkit_web_context_set_automation_allowed(context, 1);
 	WebKitSettings *settings = webkit_settings_new();
 	g_object_set(G_OBJECT(settings), "enable-offline-web-application-cache",
@@ -1060,7 +1058,7 @@ void mini_browserSP() {
 	g_signal_connect(webViewSP, "close", G_CALLBACK(closeWebViewCb1),
 			main_windowSP);
 
-	g_signal_connect(webView, "load-changed",
+	g_signal_connect(webViewSP, "load-changed",
 			G_CALLBACK(load_changedWebViewCb1), main_windowSP);
 
 
