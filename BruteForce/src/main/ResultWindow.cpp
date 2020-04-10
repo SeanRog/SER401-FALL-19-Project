@@ -79,19 +79,19 @@ ResultWindow::ResultWindow() {
 	borderBox->box(FL_FLAT_BOX);
 	borderBox->color(ASU_BLACK);
 
-	borderBox2 = new Fl_Box(850, 10, 640, 70);
+	borderBox2 = new Fl_Box(850, 10, 640, 130);
 	borderBox2->box(FL_FLAT_BOX);
 	borderBox2->color(ASU_GREY);
 
 	//Text Display
-	textDisplay = new Fl_Text_Display(850, 80, 640, 710);
+	textDisplay = new Fl_Text_Display(850, 140, 640, 650);
 	textDisplay->buffer(buffer);
 	textDisplay->textfont(FL_HELVETICA);
 	textDisplay->textsize(15);
 	textDisplay->selection_color(ASU_GOLD);
 
 	//Post Teams BUTTON
-	buttonPostGroups = new Fl_Button(870, 20, 175, 50, "Post Groups");
+	buttonPostGroups = new Fl_Button(875, 20, 175, 50, "Post Groups");
 	buttonPostGroups->color(ASU_GOLD);
 	buttonPostGroups->labelfont(FL_HELVETICA);
 	buttonPostGroups->labelcolor(ASU_BLACK);
@@ -100,10 +100,10 @@ ResultWindow::ResultWindow() {
 
 	//uncomment this to activate the post teams button.
 	//buttonPostGroups->callback(static_postGroups, this);
-	buttonPostGroups->callback(static_recommender, this);
+	buttonPostGroups->callback(static_recommenderWindow, this);
 
 	//Save BUTTON
-	buttonSave = new Fl_Button(1070, 20, 175, 50, "Save .csv Report");
+	buttonSave = new Fl_Button(1075, 20, 175, 50, "Save .csv Report");
 	buttonSave->color(ASU_GOLD);
 	buttonSave->labelfont(FL_HELVETICA);
 	buttonSave->labelcolor(ASU_BLACK);
@@ -112,13 +112,23 @@ ResultWindow::ResultWindow() {
 	buttonSave->callback(static_saveClicked, this);
 
 	//Exit BUTTON
-	buttonExit = new Fl_Button(1270, 20, 175, 50, "Exit");
+	buttonExit = new Fl_Button(1275, 20, 175, 50, "Exit");
 	buttonExit->color(ASU_GOLD);
 	buttonExit->labelfont(FL_HELVETICA);
 	buttonExit->labelcolor(ASU_BLACK);
 	buttonExit->labelsize(15);
 	buttonExit->selection_color(ASU_BLACK);
 	buttonExit->callback(static_exitClicked, this);
+
+
+	//Recommender System BUTTON
+	buttonRecommender = new Fl_Button(875, 80, 300, 50, "Replacement Team Recommender");
+	buttonRecommender->color(ASU_GOLD);
+	buttonRecommender->labelfont(FL_HELVETICA);
+	buttonRecommender->labelcolor(ASU_BLACK);
+	buttonRecommender->labelsize(15);
+	buttonRecommender->selection_color(ASU_BLACK);
+	buttonRecommender->callback(static_recommenderWindow, this);
 
 	permBox = new Fl_Box(410, 90, 5, 20, "");
 	permBox->box(FL_FLAT_BOX);
@@ -512,16 +522,110 @@ void ResultWindow::postGroups(Fl_Widget *w) {
 
 }
 
+
+void ResultWindow::recommenderSystemWindow(Fl_Widget *w)  {
+
+	// MAIN WINDOW
+	windowRecommender = new Fl_Window(840, 640, "Student Team Replacement Recommendation System");
+
+	Fl_Box *titleBox = new Fl_Box(140, 10, 690, 30, "REPLACEMENT TEAM RECOMMENDER");
+	titleBox->box(FL_NO_BOX);
+	titleBox->labelcolor(ASU_GOLD);
+	titleBox->labelfont(FL_HELVETICA_BOLD);
+	titleBox->labelsize(25);
+	//titleBox->color(ASU_BLACK);
+
+	Fl_Box *backBox1 = new Fl_Box(140, 40, 690, 30, "Finds the best replacement project and team for a certain student.");
+	backBox1->box(FL_NO_BOX);
+	backBox1->labelcolor(ASU_WHITE);
+	backBox1->labelfont(FL_HELVETICA);
+	backBox1->labelsize(15);
+	backBox1->color(ASU_BLACK);
+
+	Fl_Box *backBox2 = new Fl_Box(140, 70, 690, 30, "Gives the top choices for (teams of 4) and top choices for (teams of 5).");
+	backBox2->box(FL_NO_BOX);
+	backBox2->labelcolor(ASU_WHITE);
+	backBox2->labelfont(FL_HELVETICA);
+	backBox2->labelsize(15);
+	backBox2->color(ASU_BLACK);
+
+	Fl_Box *backBox3 = new Fl_Box(140, 100, 690, 30, "For teams of 5, the system recommends which student would be best to swap out.");
+	backBox3->box(FL_NO_BOX);
+	backBox3->labelcolor(ASU_WHITE);
+	backBox3->labelfont(FL_HELVETICA);
+	backBox3->labelsize(15);
+	backBox3->color(ASU_BLACK);
+
+
+	Fl_PNG_Image logo("./Images/CapstoneTeams120by120.png");
+	Fl_Box *imageBox = new Fl_Box(20, 10, 120, 120);
+	imageBox->box(FL_NO_BOX);
+	imageBox->image(logo);
+	//imageBox->color(ASU_WHITE);
+
+
+	/*Fl_Box *backBox2 = new Fl_Box(0, 0, 1500, 10);
+	backBox2->box(FL_FLAT_BOX);
+	backBox2->color(ASU_BLACK);
+
+	Fl_Box *backBox3 = new Fl_Box(0, 790, 1000, 10);
+	backBox3->box(FL_FLAT_BOX);
+	backBox3->color(ASU_BLACK);*/
+
+	//text input
+	inputStudent = new Fl_Input(300, 160, 150, 50, "Enter the student's asuriteID  ");
+	inputStudent->labelfont(FL_HELVETICA_BOLD);
+	inputStudent->labelcolor(ASU_WHITE);
+	inputStudent->textfont(FL_HELVETICA);
+	inputStudent->labelsize(15);
+
+	// Buffer
+	buffer2 = new Fl_Text_Buffer();
+	/*borderBox = new Fl_Box(840, 0, 660, 800);
+	borderBox->box(FL_FLAT_BOX);
+	borderBox->color(ASU_BLACK);
+
+	borderBox2 = new Fl_Box(850, 10, 640, 70);
+	borderBox2->box(FL_FLAT_BOX);
+	borderBox2->color(ASU_GREY);*/
+
+	//Text Display
+	textDisplay2 = new Fl_Text_Display(20, 220, 800, 400);
+	textDisplay2->buffer(buffer2);
+	textDisplay2->textfont(FL_HELVETICA);
+	textDisplay2->textsize(15);
+	textDisplay2->selection_color(ASU_GOLD);
+
+	//Post Teams BUTTON
+	FindReplacements = new Fl_Button(560, 160, 250, 50, "Find Replacement Teams");
+	FindReplacements->color(ASU_GOLD);
+	FindReplacements->labelfont(FL_HELVETICA);
+	FindReplacements->labelcolor(ASU_BLACK);
+	FindReplacements->labelsize(15);
+	FindReplacements->selection_color(ASU_BLACK);
+
+
+	FindReplacements->callback(static_recommender, this);
+
+	windowRecommender->color(ASU_GREY);
+	windowRecommender->show();
+	windowRecommender->end();
+	Fl::run();
+
+}
+
 bool sortinrev(const pair<int,Team> &a,
                const pair<int,Team> &b)
 {
        return (a.first > b.first);
 }
 
+
+
 void ResultWindow::recommenderSystem(Fl_Widget *w)  {
 
 
-	string asuriteIDX = "ASU50";
+	string asuriteIDX = inputStudent->value();
 	Student studentX;
 	Team teamX;
 	int classIDX;
@@ -535,6 +639,10 @@ void ResultWindow::recommenderSystem(Fl_Widget *w)  {
 	vector<pair<int, Team>> topTeams5, topTeams4;
 	bool isTeam4;
 	bool teamXis4 = false;
+	studentX.name = "null";
+
+	BestTeamOf4.projectID = 99999;
+	BestTeamOf5.projectID = 99999;
 
 	//find the team, and class section the student belongs to.
 	for(int i = 0; i <studentTeams.size(); i++){
@@ -620,7 +728,7 @@ void ResultWindow::recommenderSystem(Fl_Widget *w)  {
 								&& (stp.NDA_IPRCheck(currentTeam.team, currentTeam.project) == true)) {
 
 
-							if(currentTeam.TeamScore >= OldTeamScore || bestTeamScore > (OldTeamScore - currentTeam.TeamScore) ){
+							if(currentTeam.TeamScore >= OldTeamScore || bestTeamScore < (OldTeamScore - currentTeam.TeamScore) ){
 
 							bestTeamScore = OldTeamScore - currentTeam.TeamScore;
 							BestTeamOf4 = currentTeam;
@@ -717,8 +825,7 @@ void ResultWindow::recommenderSystem(Fl_Widget *w)  {
 								+ stp.AvailabilityTeamScore(replacedTeam.team);
 
 
-							cout<<"Old Team Score: "<<oldTeamScore<< " NewTeamScore: "<<currentTeam.TeamScore
-									<<" oldTeamX: "<<teamXScore<<" ReplacedTeamScore: "<<replacedTeam.TeamScore<<endl;
+
 
 					if ((stp.NegativeAffinityCheck(currentTeam.team) == false)
 								&& (stp.NDA_IPRCheck(currentTeam.team, currentTeam.project) == true)) {
@@ -726,11 +833,14 @@ void ResultWindow::recommenderSystem(Fl_Widget *w)  {
 						if ((stp.NegativeAffinityCheck(replacedTeam.team) == false)
 									&& (stp.NDA_IPRCheck(replacedTeam.team, replacedTeam.project) == true)) {
 
-						if(currentTeam.TeamScore > bestTeamScore && currentTeam.project.ProjectID != teamX.project.ProjectID){
-							bestTeamScore = currentTeam.TeamScore;
+							cout<<"Old Team Score: "<<oldTeamScore<< " NewTeamScore: "<<currentTeam.TeamScore<<" oldTeamX: "<<teamXScore<<" ReplacedTeamScore: "<<replacedTeam.TeamScore<<endl;
+
+						if(currentTeam.TeamScore >= bestTeamScore && currentTeam.project.ProjectID != teamX.project.ProjectID){
 							bestTeamScore = currentTeam.TeamScore;
 							BestTeamOf5 = currentTeam;
 						}
+
+
 
 						//cout<<"Old Team Score: "<<oldTeamScore<< "NewTeamScore: "<<currentTeam.TeamScore
 						//		<<"oldTeamX: "<<teamXScore<<" ReplacedTeamScore: "<<replacedTeam.TeamScore<<endl;
@@ -750,17 +860,41 @@ void ResultWindow::recommenderSystem(Fl_Widget *w)  {
 
 			}
 
-
+if(studentX.name.compare("null") != 0){
 	//now sort through the list of teams to get the top 5.
 	sort(topTeams4.begin(), topTeams4.end(), sortinrev);
 
 	sort(topTeams5.begin(), topTeams5.end(), sortinrev);
 
 	//Print out to the display all the following information
+	string output = "";
+		output += "STUDENT:   "+studentX.name + "\n";
+		output += "ASUriteID:  "+studentX.ASUriteID +"\n";
+		output += "CLASS ID:   "+to_string(studentX.ClassID) +"\n";
+		output += "CURRENT PROJECT: #"+to_string(studentX.ProjectID)+"\n";
+		if(teamXis4 == false ){
+			output += "CURRENT TEAM SIZE: 5\n";
+		}else{
+			output += "CURRENT TEAM SIZE: 4\n";
 
-		if(teamXis4 == false){
+		}
+
+		if(teamXis4 == false || topTeams5.size() == 0 ){
+
+		output += "\n     Recommended replacement teams of 4 \n";
+		output += "======================================================\n";
 		cout<<"Recommended replacement teams of 4 for student: "<<studentX.name<<"  ASUriteID:"<<studentX.ASUriteID<<endl;
 		cout<<endl;
+
+		if(BestTeamOf4.projectID != 99999 || topTeams5.size() == 0 ){
+		output += "Best replacement Team of 4: ";
+		output += "Project #" + to_string(BestTeamOf4.project.ProjectID) + "  New TeamScore: " + to_string(BestTeamOf4.TeamScore) + "\n";
+		output += "Students: ";
+		for(int j = 0; j < 5; j++){
+			output += " " + BestTeamOf4.team[j].name + ", ";
+
+		}
+		output += "\n\n";
 
 		cout<<"Best replacement Team of 4: ";
 		cout<<"Project #"<<BestTeamOf4.project.ProjectID<<"  New TeamScore: "<<BestTeamOf4.TeamScore<<endl;
@@ -770,9 +904,20 @@ void ResultWindow::recommenderSystem(Fl_Widget *w)  {
 
 		}
 		cout<<"\n"<<endl;
+		}
+		cout<<"Full list in order (possible teams of 4)"<<endl;
 
-		cout<<"Full list in order of possible project teams of 4 to switch."<<endl;}
+
+
 	for(int i = 0; i <topTeams4.size(); i++){
+
+		output += "*Project #" + to_string(topTeams4[i].second.project.ProjectID) + "  New TeamScore: " + to_string(topTeams4[i].first) + "\n";
+		output += "Students: ";
+		for(int j = 0; j < 5; j++){
+			output +=" " + topTeams4[i].second.team[j].name + ", ";
+
+		}
+		output += "\n\n";
 
 		cout<<"Project #"<<topTeams4[i].second.project.ProjectID<<"  New TeamScore: "<<topTeams4[i].first<<endl;
 
@@ -782,41 +927,55 @@ void ResultWindow::recommenderSystem(Fl_Widget *w)  {
 
 		}
 		cout<<"\n"<<endl;
-	}
+	}}
 
+	output +="\n     Recommended replacement teams of 5 \n";
+	output += "======================================================\n";
+	output += "\n";
 	cout<<"Recommended replacement teams of 5 for student: "<<studentX.name<<"  ASUriteID:"<<studentX.ASUriteID<<endl;
 	cout<<endl;
 
-	if(topTeams5.size() == 0){
+	if(BestTeamOf5.projectID != 99999 && topTeams5.size() == 0){
 		Student replacedStudent;
+		output +="Best replacement Team of 5: ";
+		output+="Project #" + to_string(BestTeamOf5.project.ProjectID) + "  New TeamScore: " + to_string(BestTeamOf5.TeamScore) + "\n";
+
 	cout<<"Best replacement Team of 5: ";
-	cout<<"Project #"<<BestTeamOf5.project.ProjectID<<"  New TeamScore: "<<BestTeamOf5.TeamScore<<endl;
+	cout<<"*Project #"<<BestTeamOf5.project.ProjectID<<"  New TeamScore: "<<BestTeamOf5.TeamScore<<endl;
 
 	for(int i = 0; i <teamsOf5.size(); i++){
 	if( BestTeamOf5.project.ProjectID== teamsOf5[i].project.ProjectID){
 		for(int j = 0; j< 5; j++){
 		if((studentX.name).compare(BestTeamOf5.team[j].name)==0){
 			replacedStudent = teamsOf5[i].team[j];
+			output += "Student to be replaced -> ASUriteID:" + teamsOf5[i].team[j].ASUriteID + "  name: " + teamsOf5[i].team[j].name+ "\n";
 			cout<<"Student to be replaced -> ASUriteID:"<<teamsOf5[i].team[j].ASUriteID<<"  name: "<<teamsOf5[i].team[j].name<<endl;
 		}}
 	}}
 	cout<<"Students: ";
 	for(int j = 0; j < 5; j++){
+		output += " " + BestTeamOf5.team[j].name + ", ";
 		cout<<" "<<BestTeamOf5.team[j].name<<", ";
 
 	}
+	output+= "\n";
 	cout<<endl;
 
+	output += "New Team for Project #" + to_string(teamX.project.ProjectID)+"\n";
+	output += "Student Team: ";
 	cout<<"New Team for Project #"<<teamX.project.ProjectID<<endl;
 	cout<<"Student Team: ";
 	for(int j = 0; j< 5; j++){
 	if((studentX.name).compare(teamX.team[j].name)==0){
+		output += replacedStudent.name + ", ";
 		cout<<replacedStudent.name<<", ";
 	}else{
+		output += teamX.team[j].name + ", ";
 		cout<<teamX.team[j].name<<", ";
 
 	}
 	}
+	output += "\n";
 	cout<<endl;
 
 	}
@@ -826,6 +985,7 @@ for(int i = 0; i <topTeams5.size(); i++){
 
 	Student replacedStudent;
 	if(i == 0){
+		output += "*Project #" + to_string(topTeams5[i].second.project.ProjectID) + "  New TeamScore: " + to_string(topTeams5[i].first) + "\n";
 		cout<<"Project #"<<topTeams5[i].second.project.ProjectID<<"  New TeamScore: "<<topTeams5[i].first<<endl;
 
 		//cout<<"Student to be replaced -> ASUriteID:"<<topTeams5[i].second.team[4].ASUriteID<<"  name: "<<topTeams5[i].second.team[4].name<<endl;
@@ -835,80 +995,99 @@ for(int i = 0; i <topTeams5.size(); i++){
 					for(int j = 0; j< 5; j++){
 					if((studentX.name).compare(topTeams5[i].second.team[j].name)==0){
 						replacedStudent = teamsOf5[x].team[j];
+						output += "Student to be replaced -> ASUriteID:" + teamsOf5[x].team[j].ASUriteID +"  name: " + teamsOf5[x].team[j].name+"\n";
 						cout<<"Student to be replaced -> ASUriteID:"<<teamsOf5[x].team[j].ASUriteID<<"  name: "<<teamsOf5[x].team[j].name<<endl;
 					}}
 				}
 			}
+		output += "Students: ";
 		cout<<"Students: ";
 		for(int j = 0; j < 5; j++){
+			output += " " + topTeams5[i].second.team[j].name + ", ";
 			cout<<" "<<topTeams5[i].second.team[j].name<<", ";
 		}
+		output += "\n";
 		cout<<endl;
 
+		output += "New Team for Project #" + to_string(teamX.project.ProjectID) + "\n";
+		output += "Student Team: ";
 		cout<<"New Team for Project #"<<teamX.project.ProjectID<<endl;
 		cout<<"Student Team: ";
 		for(int j = 0; j< 5; j++){
 		if((studentX.name).compare(teamX.team[j].name)==0){
+			output += replacedStudent.name+", ";
 			cout<<replacedStudent.name<<", ";
 		}else{
+			output+= teamX.team[j].name + ", ";
 			cout<<teamX.team[j].name<<", ";
 
 		}
 		}
 
 
-
-
+		output += "\n\n";
 		cout<<"\n"<<endl;
 	}
 	else if(topTeams5[i].second.project.ProjectID != topTeams5[i-1].second.project.ProjectID){
-	cout<<"Project #"<<topTeams5[i].second.project.ProjectID<<"  New TeamScore: "<<topTeams5[i].first<<endl;
+		output += "*Project #" + to_string(topTeams5[i].second.project.ProjectID) + "  New TeamScore: " + to_string(topTeams5[i].first) + "\n";
+		cout<<"Project #"<<topTeams5[i].second.project.ProjectID<<"  New TeamScore: "<<topTeams5[i].first<<endl;
 
-	//cout<<"Student to be replaced -> ASUriteID:"<<topTeams5[i].second.team[4].ASUriteID<<"  name: "<<topTeams5[i].second.team[4].name<<endl;
-	for(int x = 0; x <teamsOf5.size(); x++){
+		//cout<<"Student to be replaced -> ASUriteID:"<<topTeams5[i].second.team[4].ASUriteID<<"  name: "<<topTeams5[i].second.team[4].name<<endl;
+		for(int x = 0; x <teamsOf5.size(); x++){
 
-		if( topTeams5[i].second.project.ProjectID== teamsOf5[x].project.ProjectID){
-			for(int j = 0; j< 5; j++){
-			if((studentX.name).compare(topTeams5[i].second.team[j].name)==0){
-
-				replacedStudent = teamsOf5[x].team[j];
-				cout<<"Student to be replaced -> ASUriteID:"<<teamsOf5[x].team[j].ASUriteID<<"  name: "<<teamsOf5[x].team[j].name<<endl;
-			}}
+				if( topTeams5[i].second.project.ProjectID== teamsOf5[x].project.ProjectID){
+					for(int j = 0; j< 5; j++){
+					if((studentX.name).compare(topTeams5[i].second.team[j].name)==0){
+						replacedStudent = teamsOf5[x].team[j];
+						output += "Student to be replaced -> ASUriteID:" + teamsOf5[x].team[j].ASUriteID +"  name: " + teamsOf5[x].team[j].name+"\n";
+						cout<<"Student to be replaced -> ASUriteID:"<<teamsOf5[x].team[j].ASUriteID<<"  name: "<<teamsOf5[x].team[j].name<<endl;
+					}}
+				}
+			}
+		output += "Students: ";
+		cout<<"Students: ";
+		for(int j = 0; j < 5; j++){
+			output += " " + topTeams5[i].second.team[j].name + ", ";
+			cout<<" "<<topTeams5[i].second.team[j].name<<", ";
 		}
-	}
-	cout<<"Students: ";
-	for(int j = 0; j < 5; j++){
-		cout<<" "<<topTeams5[i].second.team[j].name<<", ";
-	}
+		output += "\n";
+		cout<<endl;
 
-	cout<<endl;
+		output += "New Team for Project #" + to_string(teamX.project.ProjectID) + "\n";
+		output += "Student Team: ";
+		cout<<"New Team for Project #"<<teamX.project.ProjectID<<endl;
+		cout<<"Student Team: ";
+		for(int j = 0; j< 5; j++){
+		if((studentX.name).compare(teamX.team[j].name)==0){
+			output += replacedStudent.name+", ";
+			cout<<replacedStudent.name<<", ";
+		}else{
+			output+= teamX.team[j].name + ", ";
+			cout<<teamX.team[j].name<<", ";
 
-	cout<<"New Team for Project #"<<teamX.project.ProjectID<<endl;
-	cout<<"Student Team: ";
-	for(int j = 0; j< 5; j++){
-	if((studentX.name).compare(teamX.team[j].name)==0){
-		cout<<replacedStudent.name<<", ";
-	}else{
-		cout<<teamX.team[j].name<<", ";
-
-	}
-	}
-
+		}
+		}
 
 
-	cout<<"\n"<<endl;
+		output += "\n\n";
+		cout<<"\n"<<endl;
 }}
 
 
 
+int length = output.length();
+char output_char[length + 1];
+strcpy(output_char, output.c_str());
+//terminal->append(output_char);
+//char* text = buffer2->text();
+buffer2->text("");
+buffer2->append(output_char);
+//buffer->append(text);
+}
+else{
+	buffer2->text("\n\tNo Student found.");
 }
 
-
-void callbackRecommenderSystem() {
-
-	//opens a new window
-
-	//recommenderSystem();
 
 }
 

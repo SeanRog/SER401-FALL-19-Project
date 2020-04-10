@@ -44,9 +44,14 @@ class ResultWindow {
 		((ResultWindow*) data)->postGroups(w);
 	}
 
+	static void static_recommenderWindow(Fl_Widget *w, void *data) {
+		((ResultWindow*) data)->recommenderSystemWindow(w);
+	}
+
 	static void static_recommender(Fl_Widget *w, void *data) {
 		((ResultWindow*) data)->recommenderSystem(w);
 	}
+
 
 
 
@@ -66,7 +71,7 @@ public:
 	Fl_Window *windowResult;
 	Fl_Text_Display *textDisplay;
 	Fl_Text_Buffer *buffer;
-	Fl_Button *buttonSave, *buttonExit, *buttonPostGroups;
+	Fl_Button *buttonSave, *buttonExit, *buttonPostGroups, *buttonRecommender;
 	Fl_Box *permBox, *swapBox;
 	Fl_Box *teamBox, *bestBox, *badBox;
 	Fl_Box *spacer, *borderBox, *borderBox2;
@@ -74,12 +79,22 @@ public:
 	Fl_Box *labelBox1, *labelBox2;
 	Fl_Chart *pieChart, *barChart, *classChart;
 
+	//Recommender window
+	Fl_Window *windowRecommender;
+	Fl_Text_Display *textDisplay2;
+	Fl_Text_Buffer *buffer2;
+	Fl_Button *FindReplacements;
+	Fl_Input *inputStudent;
+	Fl_Box *backBox;
+
+
 	ResultWindow();
 	~ResultWindow();
 	void addText();
 	void calculateStats();
 	void postGroups(Fl_Widget *w);
 	void recommenderSystem(Fl_Widget *w);
+	void recommenderSystemWindow(Fl_Widget *w);
 
 };
 
