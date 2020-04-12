@@ -978,11 +978,15 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 
 	}
 
+	cout << "All projects to be assigned" << endl;
+
 	for (int i = 0; i < numProjects; i++) {
 
 		project = *(projectPool + i);
 		highestScore = 0;
 		highestClassSection = 0;
+
+		cout << project.ProjectID << endl;
 
 //Assign the Online projects
 		if (projectPool[i].Type == 'O') {
@@ -991,7 +995,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 			if (OnlineClassSections.empty()) {
 				for (int k = 0; k < numClassSections; k++) {
 					classSection = *(classSectionPool + k);
-					if (classSection.Type == 'G') {
+					if (classSection.Type == 'O') {
 						OnlineClassSections.push_back(*(classSectionPool + k));
 
 					}
@@ -1185,6 +1189,30 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 
 	}		  // end i num projects loop
 
+	//Final check to make sure that all class sections have the minimum number of porjects needed.
+	for (int j = 0; j < ClassSections.size(); j++) {
+		if (ProjectsToClassCount[ClassSections[j].ClassID]
+				< MinProjectsPerClassSection[ClassSections[j].ClassID]) {
+
+			for (int k = 0; k < numProjects; k++) {
+				//Project projectX = *(projectPool + k);
+
+				if (projectPool[k].ClassID == 100) {
+					//if (ProjectsToClassCount[ClassSections[j].ClassID]
+					//		< MinProjectsPerClassSection[ClassSections[j].ClassID]) {
+					//assign this project to the class section that needs it.
+					projectPool[k].ClassID = ClassSections[j].ClassID;
+					ProjectsToClassCount[ClassSections[j].ClassID]++;
+					cout
+							<< "Assigned a project to class section. Class section# "
+							<< ClassSections[j].ClassID << " Project# "
+							<< projectPool[k].ProjectID << endl;
+				}
+			}
+
+		}
+	}
+
 	for (int k = 0; k < numClassSections; k++) {
 		cout << "Class section #" << k << " Number of Projects assigned: "
 				<< ProjectsToClassCount[k] << endl;
@@ -1306,12 +1334,12 @@ void Utility::makeProjectJSON(int numProj, int numSkill) {
  */
 void Utility::makeProjectCSV(int numProj, int numSkill) {
 	string skills[14] =
-		{ "ArtificialIntelligence", "WebApplicationProgramming",
-				"IOSMobileApplicationProgramming",
-				"AndroidMobileApplicationProgramming",
-				"Sensing/Control/Embedded", "DesktopApplicationProgramming",
-				"DatabaseProgramming", "NetworkSecurity", "C", "C++", "C#",
-				"Java", "JavaScript", "Python" };
+			{ "ArtificialIntelligence", "WebApplicationProgramming",
+					"IOSMobileApplicationProgramming",
+					"AndroidMobileApplicationProgramming",
+					"Sensing/Control/Embedded", "DesktopApplicationProgramming",
+					"DatabaseProgramming", "NetworkSecurity", "C", "C++", "C#",
+					"Java", "JavaScript", "Python" };
 	// Variables
 	ofstream file;
 	int numProjects = numProj;
@@ -1322,7 +1350,8 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 	file.open("newProjects.csv", ios::out);
 
 	//Start of CSV file
-	file << "Company,Submitter Name,Submitter Title,Submitter Email,Submitter Contact Phone #,Technical Contact Name,Technical Contact Title,Technical Contact E-mail,Technical Contact Phone Number,Project Motivation,Project Description,Project Deliverables,Technology Areas,PreferredLanguageSkills,RequiresNDA,RequiresIPR,RequiresSharedHardware,Type,Section,Priority";
+	file
+			<< "Company,Submitter Name,Submitter Title,Submitter Email,Submitter Contact Phone #,Technical Contact Name,Technical Contact Title,Technical Contact E-mail,Technical Contact Phone Number,Project Motivation,Project Description,Project Deliverables,Technology Areas,PreferredLanguageSkills,RequiresNDA,RequiresIPR,RequiresSharedHardware,Type,Section,Priority\n";
 
 	//Loops through projectID to print
 	for (int projectID = 1; projectID < (numProjects + 1); projectID++) {
@@ -1344,29 +1373,31 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 		file << "Project Description" << projectID << ",";
 		file << "Project Deliverables" << projectID << ",";
 		/*file << "Technology Areas" << projectID << ",";
-		file << "Preferred Language Skills" << projectID << ",";
-		file << "Requires NDA" << projectID << ",";
-		file << "Requires IPR" << projectID << ",";
-		file << "Requires Shared Hardware" << projectID << ",";
-		file << "Type" << projectID << ",";
-		file << "Section" << projectID << ",";
-		file << "Priority" << projectID;*/
+		 file << "Preferred Language Skills" << projectID << ",";
+		 file << "Requires NDA" << projectID << ",";
+		 file << "Requires IPR" << projectID << ",";
+		 file << "Requires Shared Hardware" << projectID << ",";
+		 file << "Type" << projectID << ",";
+		 file << "Section" << projectID << ",";
+		 file << "Priority" << projectID;*/
 
 		/*Prints out schema: "Skills": [(skills)], generates Skills from
 		 * numSkills. Randomizes values between 0-4 for each skill.      */
 		try {
-			if(numSkills != 14) {
-				cout << "WARNING: numSkills does not equal the number of skills specified in the project schema" << endl;
+			if (numSkills != 14) {
+				cout
+						<< "WARNING: numSkills does not equal the number of skills specified in the project schema"
+						<< endl;
 			}
 			file << "\"[";
 			for (int i = 0; i < (8); i++) {
 				if (i < (8 - 1)) {
-					if((rand() % (2 + 1)) == 0) {
+					if ((rand() % (2 + 1)) == 0) {
 						file << skills[i] << ",";
 					}
 				} else {
-					if((rand() % (2 + 1)) == 0) {
-						file << skills[i];
+					if ((rand() % (2 + 1)) == 0) {
+						file << skills[i] << ",";
 					}
 					file << "]\",";
 				}
@@ -1374,18 +1405,18 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 			file << "\"[";
 			for (int i = 8; i < (14); i++) {
 				if (i < (14 - 1)) {
-					if((rand() % (2 + 1)) == 0) {
+					if ((rand() % (2 + 1)) == 0) {
 						file << skills[i] << ",";
 					}
 				} else {
-					if((rand() % (2 + 1)) == 0) {
-						file << skills[i];
+					if ((rand() % (2 + 1)) == 0) {
+						file << skills[i] << ",";
 					}
 					file << "]\",";
 				}
 			}
-		} catch(range_error& e) {
-					cout << "Index out of range" << endl;
+		} catch (range_error &e) {
+			cout << "Index out of range" << endl;
 		}
 		/*Prints out schema: {"NDA": bool, */
 		/*Prints out schema: {"IPR": bool, */
@@ -1425,14 +1456,265 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 		file << (projectID % 4) << ",";
 
 		/*Prints out schema: "Priority": (Priority), priority can be
-				 * 0,1, or 2. This file randomizes it between the three options.  */
+		 * 0,1, or 2. This file randomizes it between the three options.  */
 		file << rand() % (2 + 1) << "\n";
 
 	}
 
 	file.close();
 
-}//end makeProjectsCSV
+}	//end makeProjectsCSV
+
+/*************************************************
+ * generateTestStudents
+ *
+ * Description:
+ *   This function creates a Json file of test students
+ *   for a given class section. It makes a new Json file
+ *    with random data for a specified number of students.
+ *
+ * Arguments:
+ * int numStud, - number of students to create in the Json file
+ * int numSkill
+ *
+ * Returns:
+ *    nothing
+ */
+void Utility::generateTestStudents(int numStud, int numSkill,
+		vector<vector<Student>> studentsFromCanvas, ClassSection course) {
+
+	// Variables
+	ofstream file;
+	int numStudent = numStud - studentsFromCanvas.size();
+	int numSkills = numSkill;
+	//int student_25 = (int) (numStudent * 0.25);
+	//int student_50 = (int) (numStudent * 0.50);
+	//int student_75 = (int) (numStudent * 0.75);
+
+	// opening file in write mode
+	file.open("newStudents.json", ios::out);
+
+	//Start of JSON file
+	file << "{ \n\"students\":[\n";
+
+	//Loops through studentIDs to print
+	for (int studentID = 1; studentID <= numStudent; studentID++) {
+
+		string asuID = "ASU" + to_string(studentID);
+		/*Prints out schema: {"StudentID": (studentID#), */
+		file << "{\"ASUriteID\": \"" << asuID << "\",\n";
+
+		/*Prints out schema: {"StudentID": (studentID#), */
+		file << "\"StudentID\": " << studentID << ",\n";
+
+		/*Prints out schema: {"StudentID": (studentID#), */
+		file << "\"name\": \"" << names[studentID] << "\",\n";
+
+		/*Prints out schema: {"ClassID": (studentID#), */
+		file << " \"ClassID\": " << course.ClassID << ",\n";
+
+		/*Prints out schema: {"NDA": bool, */
+		/*Prints out schema: {"IPR": bool, */
+		//5 percent of students will not want to sign the agreements.
+		int percent = (int) numStudent * (0.05);
+		if (studentID < (percent + 1)) {
+			file << "\"NDA\": false,\n";
+			file << "\"IPR\": false,\n";
+		} else {
+			file << "\"NDA\": true,\n";
+			file << "\"IPR\": true,\n";
+		}
+
+		/*Prints out schema: "Skills": [(skills)],  ramdomly generates skills
+		 * with values 0-4, total skills given as a parameter         */
+		file << " \"Skills\": [";
+		for (int i = 0; i < numSkills; i++) {
+			if (i < (numSkills - 1)) {
+				file << rand() % (4 + 1) << ",";
+			} else {
+				file << rand() % (4 + 1) << "],\n";
+			}
+		}
+
+		/*Prints out schema: "StudentAffinity": null OR [(studentID), T/F]
+		 * negative affinity: every 1/3 of students gets a randomized negative
+		 *                  affinity for another Student
+		 * positive affinity: every 1/4 of students gets a randomized positive
+		 *                  affinity for another Student
+		 *
+		 * It can fall where 1 student has a positive & negative affinity (1/12)
+		 * Else it will print "null"
+		 */
+		file << " \"StudentAffinity\": ";
+		if (studentID % 3 == 0 || studentID % 4 == 0) {
+
+			//Negative affinity matches
+			int rand_1 = rand() % (numStud);
+			while (rand_1 == studentID) {
+				rand_1 = rand() % (numStud);
+			}
+
+			//Positive affinity matches
+			int rand_2 = rand() % (numStud);
+			while (rand_2 == studentID || rand_2 == rand_1) {
+				rand_2 = rand() % (numStud);
+			}
+
+			//printing out affinity
+			file << "[";
+			if (studentID % 3 == 0) {
+				if (studentID < numStud) {
+					file << "\"ASU" << rand_1 << "\", false";
+
+				}
+			}
+			if (studentID % 4 == 0) {
+				if (studentID % 3 != 0) {
+					if (studentID < numStud) {
+						file << "\"ASU" << rand_2 << "\", true";
+					}
+				}
+			}
+			if (studentID % 3 == 0) {
+				if (studentID < numStud) {
+					file << ", " << "\"ASU" << rand_2 << "\", true";
+				}
+
+			}
+
+			file << "],\n";
+		} else {
+			file << "null,\n";
+		}
+
+		/*Prints out schema: "Availability": [(Availability)] }
+		 * ramdomly generates 4 times with values 0-5
+		 */
+		file << " \"Availability\": [";
+		for (int i = 0; i < 4; i++) {
+			if (i < 3) {
+				file << rand() % (5 + 1) << ",";
+			} else {
+				file << rand() % (5 + 1);
+			}
+		}
+
+		if (studentID < numStudent || studentsFromCanvas.size() > 0) {
+			file << "] },\n\n";
+		} else if (studentID == numStudent) {
+			file << "] }\n\n";
+		}
+	}
+
+	for (int i = 0; i < studentsFromCanvas.size(); i++) {
+		for (int j = 0; j < studentsFromCanvas.at(i).size(); j++) {
+			string asuID = studentsFromCanvas.at(i).at(j).ASUriteID;
+
+			asuID = "ASU";
+			asuID += to_string(numStud);
+			/*Prints out schema: {"StudentID": (studentID#), */
+			file << "{\"ASUriteID\": \"" << asuID << "\",\n";
+
+			string studentID = to_string(studentsFromCanvas.at(i).at(j).StID);
+			studentID = to_string(numStud);
+			/*Prints out schema: {"StudentID": (studentID#), */
+			file << "\"StudentID\": " << studentID << ",\n";
+
+			/*Prints out schema: {"name": studentName, */
+			file << "\"name\": \"" << studentsFromCanvas.at(i).at(j).name
+					<< "\",\n";
+
+			/*Prints out schema: "ClassID": (classID),*/
+			//file << " \"ClassID\": " << studentsFromCanvas.at(i).at(j).ClassID << ",\n";
+			file << " \"ClassID\": " << course.ClassID << ",\n";
+
+			/*Prints out schema: {"NDA": bool, */
+			/*Prints out schema: {"IPR": bool, */
+			if (studentsFromCanvas.at(i).at(j).NDA) {
+				file << "\"NDA\": " << "true" << ",\n";
+			} else {
+				file << "\"NDA\": " << "false" << ",\n";
+			}
+			if (studentsFromCanvas.at(i).at(j).IPR) {
+				file << "\"IPR\": " << "true" << ",\n";
+			} else {
+				file << "\"IPR\": " << "false" << ",\n";
+			}
+			/*file << "\"NDA\": " << to_string(studentsFromCanvas.at(i).at(j).NDA) << ",\n";
+			 file << "\"IPR\": " << to_string(studentsFromCanvas.at(i).at(j).IPR) << ",\n";*/
+
+			/*Prints out schema: "Skills": [(skills)],*/
+			file << " \"Skills\": [";
+			for (int k = 0; k < numSkills; k++) {
+				if (k < (numSkills - 1)) {
+					file << studentsFromCanvas.at(i).at(j).Skills[k] << ",";
+				} else {
+					file << studentsFromCanvas.at(i).at(j).Skills[k] << "],\n";
+				}
+			}
+
+			/*Prints out schema: "StudentAffinity": null OR [(studentID), T/F]*/
+			file << " \"StudentAffinity\": ";
+			if (studentsFromCanvas.at(i).at(j).StudentAffinity.size() == 0) {
+				file << "null,\n";
+			} else {
+				file << "[";
+				for (int k = 0;
+						k
+								< studentsFromCanvas.at(i).at(j).StudentAffinity.size();
+						k++) {
+					file << "\""
+							<< studentsFromCanvas.at(i).at(j).StudentAffinity.at(
+									k).first << "\", ";
+					if (studentsFromCanvas.at(i).at(j).StudentAffinity.at(k).second) {
+						if (k
+								== studentsFromCanvas.at(i).at(j).StudentAffinity.size()
+										- 1) {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/
+									<< "true";
+						} else {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/
+									<< "true, ";
+						}
+					} else {
+						if (k
+								== studentsFromCanvas.at(i).at(j).StudentAffinity.size()
+										- 1) {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/
+									<< "false";
+						} else {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/
+									<< "false, ";
+						}
+					}
+
+				}
+				file << "],\n";
+			}
+
+			/*Prints out schema: "Availability": [(Availability)] }*/
+			file << " \"Availability\": [";
+			for (int k = 0; k < 4; k++) {
+				if (k < 3) {
+					file << studentsFromCanvas.at(i).at(j).Availability[k]
+							<< ",";
+				} else {
+					file << studentsFromCanvas.at(i).at(j).Availability[k];
+				}
+			}
+			if (j < studentsFromCanvas.at(i).size()) {
+				file << "] }\n\n";
+			} else if (j == studentsFromCanvas.at(i).size()) {
+				file << "] }\n\n";
+			}
+		}
+	}
+
+	file << "]\n}";
+
+	file.close();
+
+}
 
 /*************************************************
  * makeStudentJSON
@@ -1448,11 +1730,12 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
  * Returns:
  *    nothing
  */
-void Utility::makeStudentJSON(int numStud, int numSkill) {
+void Utility::makeStudentJSON(int numStud, int numSkill,
+		vector<vector<Student>> studentsFromCanvas) {
 
 	// Variables
 	ofstream file;
-	int numStudent = numStud;
+	int numStudent = numStud - studentsFromCanvas.size();
 	int numSkills = numSkill;
 	int student_25 = (int) (numStudent * 0.25);
 	int student_50 = (int) (numStudent * 0.50);
@@ -1635,18 +1918,122 @@ void Utility::makeStudentJSON(int numStud, int numSkill) {
 				file << rand() % (5 + 1);
 			}
 		}
-		if (studentID < numStudent) {
+
+		if (studentID < numStudent || studentsFromCanvas.size() > 0) {
 			file << "] },\n\n";
 		} else if (studentID == numStudent) {
 			file << "] }\n\n";
 		}
 	}
+	for (int i = 0; i < studentsFromCanvas.size(); i++) {
+		for (int j = 0; j < studentsFromCanvas.at(i).size(); j++) {
+			string asuID = studentsFromCanvas.at(i).at(j).ASUriteID;
+
+			asuID = "ASU";
+			asuID += to_string(numStud);
+			/*Prints out schema: {"StudentID": (studentID#), */
+			file << "{\"ASUriteID\": \"" << asuID << "\",\n";
+
+			string studentID = to_string(studentsFromCanvas.at(i).at(j).StID);
+			studentID = to_string(numStud);
+			/*Prints out schema: {"StudentID": (studentID#), */
+			file << "\"StudentID\": " << studentID << ",\n";
+
+			/*Prints out schema: {"name": studentName, */
+			file << "\"name\": \"" << studentsFromCanvas.at(i).at(j).name
+					<< "\",\n";
+
+			/*Prints out schema: "ClassID": (classID),*/
+			//file << " \"ClassID\": " << studentsFromCanvas.at(i).at(j).ClassID << ",\n";
+			file << " \"ClassID\": " << to_string(0) << ",\n";
+
+			/*Prints out schema: {"NDA": bool, */
+			/*Prints out schema: {"IPR": bool, */
+			if (studentsFromCanvas.at(i).at(j).NDA) {
+				file << "\"NDA\": " << "true" << ",\n";
+			} else {
+				file << "\"NDA\": " << "false" << ",\n";
+			}
+			if (studentsFromCanvas.at(i).at(j).IPR) {
+				file << "\"IPR\": " << "true" << ",\n";
+			} else {
+				file << "\"IPR\": " << "false" << ",\n";
+			}
+			/*file << "\"NDA\": " << to_string(studentsFromCanvas.at(i).at(j).NDA) << ",\n";
+			 file << "\"IPR\": " << to_string(studentsFromCanvas.at(i).at(j).IPR) << ",\n";*/
+
+			/*Prints out schema: "Skills": [(skills)],*/
+			file << " \"Skills\": [";
+			for (int k = 0; k < numSkills; k++) {
+				if (k < (numSkills - 1)) {
+					file << studentsFromCanvas.at(i).at(j).Skills[k] << ",";
+				} else {
+					file << studentsFromCanvas.at(i).at(j).Skills[k] << "],\n";
+				}
+			}
+
+			/*Prints out schema: "StudentAffinity": null OR [(studentID), T/F]*/
+			file << " \"StudentAffinity\": ";
+			if (studentsFromCanvas.at(i).at(j).StudentAffinity.size() == 0) {
+				file << "null,\n";
+			} else {
+				file << "[";
+				for (int k = 0;
+						k
+								< studentsFromCanvas.at(i).at(j).StudentAffinity.size();
+						k++) {
+					file << "\""
+							<< studentsFromCanvas.at(i).at(j).StudentAffinity.at(
+									k).first << "\", ";
+					if (studentsFromCanvas.at(i).at(j).StudentAffinity.at(k).second) {
+						if (k
+								== studentsFromCanvas.at(i).at(j).StudentAffinity.size()
+										- 1) {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/
+									<< "true";
+						} else {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/
+									<< "true, ";
+						}
+					} else {
+						if (k
+								== studentsFromCanvas.at(i).at(j).StudentAffinity.size()
+										- 1) {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/
+									<< "false";
+						} else {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/
+									<< "false, ";
+						}
+					}
+
+				}
+				file << "],\n";
+			}
+
+			/*Prints out schema: "Availability": [(Availability)] }*/
+			file << " \"Availability\": [";
+			for (int k = 0; k < 4; k++) {
+				if (k < 3) {
+					file << studentsFromCanvas.at(i).at(j).Availability[k]
+							<< ",";
+				} else {
+					file << studentsFromCanvas.at(i).at(j).Availability[k];
+				}
+			}
+			if (j < studentsFromCanvas.at(i).size()) {
+				file << "] },\n\n";
+			} else if (j == studentsFromCanvas.at(i).size()) {
+				file << "] }\n\n";
+			}
+		}
+	}
+
 	file << "]\n}";
 
 	file.close();
 
 }
-
 
 /*************************************************
  * makeStudentCSV
@@ -1678,7 +2065,8 @@ void Utility::makeStudentCSV(int numStud, int numSkill) {
 
 	//Start of CSV file
 	//file << "{ \n\"students\":[\n";
-	file << "ASUriteID,StudentID,name,ClassID,NDA,IPR,Skills,StudentAffinity,Availability\n";
+	file
+			<< "ASUriteID,StudentID,name,ClassID,NDA,IPR,Skills,StudentAffinity,Availability\n";
 	//Loops through studentIDs to print
 	for (int studentID = 1; studentID <= numStudent; studentID++) {
 
@@ -1698,20 +2086,20 @@ void Utility::makeStudentCSV(int numStud, int numSkill) {
 		/*Prints out schema: "ClassID": (classID), classID is divided
 		 * equally into 4 sections   */
 		/*if (studentID <= student_25) {
-			file << " \"ClassID\": 0,\n";
-		}
-		if (studentID > student_25 && studentID <= student_50) {
-			file << " \"ClassID\": 1,\n";
-		}
-		if (studentID > student_50 && studentID <= student_75) {
-			file << " \"ClassID\": 2,\n";
-		}
-		if (studentID > student_75 && studentID <= numStudent) {
-			file << " \"ClassID\": 3,\n";
-		}*/
+		 file << " \"ClassID\": 0,\n";
+		 }
+		 if (studentID > student_25 && studentID <= student_50) {
+		 file << " \"ClassID\": 1,\n";
+		 }
+		 if (studentID > student_50 && studentID <= student_75) {
+		 file << " \"ClassID\": 2,\n";
+		 }
+		 if (studentID > student_75 && studentID <= numStudent) {
+		 file << " \"ClassID\": 3,\n";
+		 }*/
 		if (studentID <= student_25) {
 			file << "0,";
-			}
+		}
 		if (studentID > student_25 && studentID <= student_50) {
 			file << "1,";
 		}
@@ -1727,12 +2115,12 @@ void Utility::makeStudentCSV(int numStud, int numSkill) {
 		//5 percent of students will not want to sign the agreements.
 		int percent = (int) numStudent * (0.05);
 		/*if (studentID < (percent + 1)) {
-			file << "\"NDA\": false,\n";
-			file << "\"IPR\": false,\n";
-		} else {
-			file << "\"NDA\": true,\n";
-			file << "\"IPR\": true,\n";
-		}*/
+		 file << "\"NDA\": false,\n";
+		 file << "\"IPR\": false,\n";
+		 } else {
+		 file << "\"NDA\": true,\n";
+		 file << "\"IPR\": true,\n";
+		 }*/
 
 		if (studentID < (percent + 1)) {
 			file << "0,";
@@ -1880,21 +2268,21 @@ void Utility::makeStudentCSV(int numStud, int numSkill) {
 		 * ramdomly generates 4 times with values 0-5
 		 */
 		/*file << " \"Availability\": [";
-		for (int i = 0; i < 4; i++) {
-			if (i < 3) {
-				file << rand() % (5 + 1) << ",";
-			} else {
-				file << rand() % (5 + 1);
-			}
-		}
-		if (studentID < numStudent) {
-			file << "] },\n\n";
-		} else if (studentID == numStudent) {
-			file << "] }\n\n";
-		}
-	}
-	file << "]\n}";*/
-	file << "\"[";
+		 for (int i = 0; i < 4; i++) {
+		 if (i < 3) {
+		 file << rand() % (5 + 1) << ",";
+		 } else {
+		 file << rand() % (5 + 1);
+		 }
+		 }
+		 if (studentID < numStudent) {
+		 file << "] },\n\n";
+		 } else if (studentID == numStudent) {
+		 file << "] }\n\n";
+		 }
+		 }
+		 file << "]\n}";*/
+		file << "\"[";
 		for (int i = 0; i < 4; i++) {
 			if (i < 3) {
 				file << rand() % (5 + 1) << ",";
@@ -1909,6 +2297,218 @@ void Utility::makeStudentCSV(int numStud, int numSkill) {
 		}
 	}
 	//file << "]\n";
+
+	file.close();
+
+}
+
+/*************************************************
+ * makeStudentJSON
+ *
+ * Description:
+ *   This function creates a new Json file with random data for
+ *   a specified number of students.
+ *
+ * Arguments:
+ * int numStud, - number of students to create in the Json file
+ * int numSkill
+ *
+ * Returns:
+ *    nothing
+ */
+void Utility::makeCanvasStudentRosterJSON(int numStud, int numSkill,
+		vector<vector<Student>> studentsFromCanvas,
+		vector<ClassSection> allClassSections) {
+
+	// Variables
+	ofstream file;
+	int numStudent = numStud - studentsFromCanvas.size();
+	int numSkills = numSkill;
+	int student_25 = (int) (numStudent * 0.25);
+	int student_50 = (int) (numStudent * 0.50);
+	int student_75 = (int) (numStudent * 0.75);
+
+	// opening file in write mode
+	file.open("newStudents.json", ios::out);
+
+	//Start of JSON file
+	file << "{ \n\"students\":[\n";
+
+	for (int i = 0; i < studentsFromCanvas.size(); i++) {
+		for (int j = 0; j < studentsFromCanvas.at(i).size(); j++) {
+
+			string asuID = studentsFromCanvas.at(i).at(j).ASUriteID;
+			/*Prints out schema: {"StudentID": (studentID#), */
+			file << "{\"ASUriteID\": \"" << asuID << "\",\n";
+
+			string studentID = to_string(studentsFromCanvas.at(i).at(j).StID);
+			/*Prints out schema: {"StudentID": (studentID#), */
+			file << "\"StudentID\": " << studentID << ",\n";
+
+			/*Prints out schema: {"name": studentName, */
+			file << "\"name\": \"" << studentsFromCanvas.at(i).at(j).name
+					<< "\",\n";
+
+			/*Prints out schema: "ClassID": (classID),*/
+			for (int k = 0; k < allClassSections.size(); k++) {
+
+				if (studentsFromCanvas.at(i).at(j).ClassID
+						== allClassSections[k].OfficialClassID) {
+
+					file << " \"ClassID\": " << allClassSections[k].ClassID
+							<< ",\n";
+				}
+			}
+
+			//file << " \"ClassID\": " << to_string(0) << ",\n";
+
+			/*Prints out schema: {"NDA": bool, */
+			/*Prints out schema: {"IPR": bool, */
+			if (studentsFromCanvas.at(i).at(j).NDA) {
+				file << "\"NDA\": " << "true" << ",\n";
+			} else {
+				file << "\"NDA\": " << "false" << ",\n";
+			}
+			if (studentsFromCanvas.at(i).at(j).IPR) {
+				file << "\"IPR\": " << "true" << ",\n";
+			} else {
+				file << "\"IPR\": " << "false" << ",\n";
+			}
+			/*file << "\"NDA\": " << to_string(studentsFromCanvas.at(i).at(j).NDA) << ",\n";
+			 file << "\"IPR\": " << to_string(studentsFromCanvas.at(i).at(j).IPR) << ",\n";*/
+
+			/*Prints out schema: "Skills": [(skills)],*/
+			file << " \"Skills\": [";
+			for (int k = 0; k < numSkills; k++) {
+				if (k < (numSkills - 1)) {
+					file << studentsFromCanvas.at(i).at(j).Skills[k] << ",";
+				} else {
+					file << studentsFromCanvas.at(i).at(j).Skills[k] << "],\n";
+				}
+			}
+
+			/*Prints out schema: "StudentAffinity": null OR [(studentID), T/F]*/
+			file << " \"StudentAffinity\": ";
+			if (studentsFromCanvas.at(i).at(j).StudentAffinity.size() == 0) {
+				file << "null,\n";
+			} else {
+				file << "[";
+				for (int k = 0;
+						k
+								< studentsFromCanvas.at(i).at(j).StudentAffinity.size();
+						k++) {
+					file << "\""
+							<< studentsFromCanvas.at(i).at(j).StudentAffinity.at(
+									k).first << "\", ";
+					if (studentsFromCanvas.at(i).at(j).StudentAffinity.at(k).second) {
+						if (k
+								== studentsFromCanvas.at(i).at(j).StudentAffinity.size()
+										- 1) {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/
+									<< "true";
+						} else {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/
+									<< "true, ";
+						}
+					} else {
+						if (k
+								== studentsFromCanvas.at(i).at(j).StudentAffinity.size()
+										- 1) {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/
+									<< "false";
+						} else {
+							file /*<< studentsFromCanvas.at(i).at(j).StudentAffinity[k].first*/
+									<< "false, ";
+						}
+					}
+
+				}
+				file << "],\n";
+			}
+
+			/*Prints out schema: "Availability": [(Availability)] }*/
+			file << " \"Availability\": [";
+			for (int k = 0; k < 4; k++) {
+				if (k < 3) {
+					file << studentsFromCanvas.at(i).at(j).Availability[k]
+							<< ",";
+				} else {
+					file << studentsFromCanvas.at(i).at(j).Availability[k];
+				}
+			}
+			if (j < studentsFromCanvas.at(i).size() - 1) {
+				file << "] },\n\n";
+			} else if (j == studentsFromCanvas.at(i).size() - 1) {
+				file << "] }\n\n";
+			}
+		}
+	}
+
+	file << "]\n}";
+
+	file.close();
+
+}
+
+/*************************************************
+ * makeClassSectionJSON
+ *
+ * Description:
+ *   This function creates a new Json file that contains all
+ *   the selected class sections that the user wants to make
+ *   team assignments for.
+ *
+ * Arguments:
+ * vector<ClassSection> allClassSections
+ *
+ * Returns:
+ *    nothing
+ */
+void Utility::makeClassSectionJSON(vector<ClassSection> allClassSections) {
+
+	// Variables
+	ofstream file;
+	int numClassSections = allClassSections.size();
+
+	// opening file in write mode
+	file.open("ClassSections.json", ios::out);
+
+	//Start of JSON file
+	file << "{ \n\"courses\":[\n";
+
+	//Loops through all Class sections to print the Json file
+	for (int ClassID = 0; ClassID < numClassSections; ClassID++) {
+
+		/*Prints out schema: {"id": (Officail class ID#), */
+		file << "{\"id\": " << allClassSections[ClassID].OfficialClassID
+				<< ",\n";
+
+		/*Prints out schema: {"name": (ex SER 401 Capstone), */
+		file << "\"name\": \"" << allClassSections[ClassID].Course_Name
+				<< "\",\n";
+
+		/*Prints out schema: {"course_code": (Couse_Code), */
+		file << "\"course_code\": \"" << allClassSections[ClassID].Course_Code
+				<< "\",\n";
+
+		/*Prints out schema: {"course_code": (Couse_Code), */
+		if (allClassSections[ClassID].Type == 'O') {
+			file << "\"course_format\": \"online\",\n";
+		} else if (allClassSections[ClassID].Type == 'G') {
+			file << "\"course_format\": \"on_campus\",\n";
+		}
+
+		/*Prints out schema: {"ClassID": (The class ID (integer from 0-on), */
+		file << "\"ClassID\": " << ClassID << "\n";
+
+		if (ClassID < numClassSections - 1) {
+			file << " },\n\n";
+		} else if (ClassID == numClassSections - 1) {
+			file << " }\n\n";
+		}
+	}
+
+	file << "]\n}";
 
 	file.close();
 
@@ -2113,8 +2713,8 @@ vector<vector<string>> Utility::toCSVcse(string filename) {
  *  vector<Project> containing the project objects obtained from the projects in the CSV file.
  */
 vector<Project> Utility::csvToProjectsVector(string filename,
-		Project projectPool[], int numProjects) {
-	string skills1[14] =
+		Project projectPool[], int numProjects, int numSkills) {
+	string skills1[numSkills] =
 			{ "ArtificialIntelligence", "WebApplicationProgramming",
 					"IOSMobileApplicationProgramming",
 					"AndroidMobileApplicationProgramming",
@@ -2166,53 +2766,410 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 	//repeat for all project data in CSV, return projects
 	for (int i = 1; i < numProjects; i++) {
 		Project p = Project();
-		for (int j = 0; j < 15; j++) {
+		for (int j = 0; j < numSkills; j++) {
 			p.Skills[j] = 0;
 		}
+
 		p.ProjectID = i;
 		p.NDA = atoi((dataList.at(i).at(dataList.at(i).size() - 6)).c_str());
 		p.IPR = atoi((dataList.at(i).at(dataList.at(i).size() - 5)).c_str());
 		p.sharedHardware = atoi(
 				(dataList.at(i).at(dataList.at(i).size() - 4)).c_str());
 		p.Type = (dataList.at(i).at(dataList.at(i).size() - 3)).at(0);
-		p.ClassID = atoi(
-				(dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
+
+		//a value of 100 lets us know this class section has not been assigned
+		p.ClassID = 100;
+		//p.ClassID = atoi(
+		//		(dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
 		p.Priority = atoi(
 				(dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
 
+		cout << p.ProjectID << endl;
 		currentSkill = "";
 		for (int j = 0; j < dataList.at(i).at(12).size(); j++) {
+
 			if (dataList.at(i).at(12).at(j) == ',') {
-				currentSkill = "";
-			} else {
-				currentSkill.push_back(dataList.at(i).at(12).at(j));
+
+				cout << currentSkill << endl;
 				for (int k = 0; k < 8; k++) {
 					if (currentSkill.compare(skills1[k]) == 0) {
 						p.Skills[k] = 1;
 					}
 				}
-			}
-		}
-		currentSkill = "";
-		for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
-			if (dataList.at(i).at(13).at(j) == ',') {
 				currentSkill = "";
 			} else {
-				currentSkill.push_back(dataList.at(i).at(13).at(j));
+				if (dataList.at(i).at(12).at(j) != '\"') {
+					currentSkill.push_back(dataList.at(i).at(12).at(j));
+
+				}
+
+			}
+		}
+
+		currentSkill = "";
+		for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
+
+			if (dataList.at(i).at(13).at(j) == ',') {
+				cout << currentSkill << endl;
 				for (int k = 8; k < 14; k++) {
 					if (currentSkill.compare(skills1[k]) == 0) {
 						p.Skills[k] = 1;
 					}
 				}
+				currentSkill = "";
+			} else {
+				if (dataList.at(i).at(13).at(j) != '\"') {
+					currentSkill.push_back(dataList.at(i).at(13).at(j));
+				}
+
 			}
+
 		}
 
+		/*		if (dataList.at(i).at(12).at(j) == ',') {
+		 currentSkill = "";
+		 } else {
+		 currentSkill.push_back(dataList.at(i).at(12).at(j));
+		 cout<<currentSkill<<endl;
+		 for (int k = 0; k < 8; k++) {
+		 //if (currentSkill.compare(skills1[k]) == 0) {
+		 //	p.Skills[k] = 1;
+		 //}
+		 if (currentSkill.find(skills1[k]) != string::npos) {
+		 p.Skills[k] = 1;
+		 }
+		 }
+		 }
+		 }
+
+		 currentSkill = "";
+		 for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
+
+		 if (dataList.at(i).at(13).at(j) == ',') {
+		 currentSkill = "";
+		 } else {
+		 currentSkill.push_back(dataList.at(i).at(13).at(j));
+		 cout<<currentSkill<<endl;
+		 for (int k = 8; k < 14; k++) {
+		 if (currentSkill.find(skills1[k]) != string::npos) {
+		 p.Skills[k] = 1;
+		 }
+		 }
+		 }
+		 }*/
+
 		projects.push_back(p);
-		projectPool[i] = p;
+		//cout<<p.ProjectID<<"  priority:"<<p.Priority<<endl;
+
+		projectPool[i - 1] = p;
+
+		//last project
+
+		if (i == numProjects - 1) {
+			i = numProjects;
+			Project p1 = Project();
+			for (int j = 0; j < numSkills; j++) {
+				p1.Skills[j] = 0;
+			}
+
+			p1.ProjectID = numProjects;
+
+			p1.NDA = atoi(
+					(dataList.at(i).at(dataList.at(i).size() - 6)).c_str());
+			p1.IPR = atoi(
+					(dataList.at(i).at(dataList.at(i).size() - 5)).c_str());
+			p1.sharedHardware = atoi(
+					(dataList.at(i).at(dataList.at(i).size() - 4)).c_str());
+			p1.Type = (dataList.at(i).at(dataList.at(i).size() - 3)).at(0);
+
+			//a value of 100 lets us know this class section has not been assigned
+			p1.ClassID = 100;
+			//p.ClassID = atoi(
+			//		(dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
+			p1.Priority = atoi(
+					(dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
+
+			cout << p1.ProjectID << endl;
+			currentSkill = "";
+			for (int j = 0; j < dataList.at(i).at(12).size(); j++) {
+
+				if (dataList.at(i).at(12).at(j) == ',') {
+
+					cout << currentSkill << endl;
+					for (int k = 0; k < 8; k++) {
+						if (currentSkill.compare(skills1[k]) == 0) {
+							p1.Skills[k] = 1;
+						}
+					}
+					currentSkill = "";
+				} else {
+					if (dataList.at(i).at(12).at(j) != '\"') {
+						currentSkill.push_back(dataList.at(i).at(12).at(j));
+
+					}
+
+				}
+			}
+
+			currentSkill = "";
+			for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
+
+				if (dataList.at(i).at(13).at(j) == ',') {
+					cout << currentSkill << endl;
+					for (int k = 8; k < 14; k++) {
+						if (currentSkill.compare(skills1[k]) == 0) {
+							p1.Skills[k] = 1;
+						}
+					}
+					currentSkill = "";
+				} else {
+					if (dataList.at(i).at(13).at(j) != '\"') {
+						currentSkill.push_back(dataList.at(i).at(13).at(j));
+					}
+
+				}
+
+			}
+
+			projectPool[numProjects - 1] = p1;
+			i = numProjects - 1;
+
+		}
 	}
+	for (int i = 0; i < numProjects; i++) {
+
+		cout << "Project#: " << projectPool[i].ProjectID << "  priority:"
+				<< projectPool[i].Priority << endl;
+		for (int d = 0; d < numSkills; d++) {
+			cout << projectPool[i].Skills[d] << " ";
+		}
+		cout << endl;
+	}
+
 	return projects;
 }
 
+/*********************************************************
+ * csvToProjectsArray
+ *
+ * Author: Cristi DeLeo / Sean Rogers
+ *
+ * Description:
+ * 	Just like the previous method, takes in a CSV file, puts the projects in the CSV file into
+ * 	project objects, then places each project object into a vector, then returns that vector.
+ *
+ *Arguments:
+ *	string filename
+ *
+ *Returns:
+ *  vector<Project> containing the project objects obtained from the projects in the CSV file.
+ */
+/*
+void Utility::csvToProjectsArray(string filename,
+		Project projectPool[], const int numProjects, const int numSkills) {
+
+	string skills1[numSkills] =
+			{ "ArtificialIntelligence", "WebApplicationProgramming",
+					"IOSMobileApplicationProgramming",
+					"AndroidMobileApplicationProgramming",
+					"Sensing/Control/Embedded", "DesktopApplicationProgramming",
+					"DatabaseProgramming", "NetworkSecurity", "C", "C++", "C#",
+					"Java", "JavaScript", "Python" };
+
+	string currentSkill = "";
+	vector<vector<string>> dataList;
+	ifstream file(filename);
+	string line = "";
+	int bracketCount = 0;
+
+	while (getline(file, line)) {
+		vector<string> vec;
+		string element = "";
+		for (int i = 0; i < line.length(); i++) {
+			if (line.at(i) == '[') {
+				bracketCount++;
+			}
+			if (line.at(i) == ']') {
+				bracketCount--;
+			}
+			if (line.at(i) == ',' && bracketCount == 0) {
+				vec.push_back(element);
+				element = "";
+			} else {
+				if (line.at(i) != '[' && line.at(i) != ']') {
+					element.push_back(line.at(i));
+				}
+			}
+
+			if (i + 1 == line.length()) {
+				vec.push_back(element);
+			}
+		}
+		dataList.push_back(vec);
+	}
+	file.close();
+	if (numProjects > dataList.size()) {
+		cout << "numProjects can't be bigger than " << dataList.size() << endl;
+		throw numProjects;
+	}
+	//put csv data into a project object, add that project object to vector<Project> projects,
+	//repeat for all project data in CSV, return projects
+	for (int i = 1; i < numProjects; i++) {
+		Project p = Project();
+		for (int j = 0; j < numSkills; j++) {
+			p.Skills[j] = 0;
+		}
+
+		p.ProjectID = i;
+		p.NDA = atoi((dataList.at(i).at(dataList.at(i).size() - 6)).c_str());
+		p.IPR = atoi((dataList.at(i).at(dataList.at(i).size() - 5)).c_str());
+		p.sharedHardware = atoi(
+				(dataList.at(i).at(dataList.at(i).size() - 4)).c_str());
+		p.Type = (dataList.at(i).at(dataList.at(i).size() - 3)).at(0);
+
+		//a value of 100 lets us know this class section has not been assigned
+		p.ClassID = 100;
+		//p.ClassID = atoi(
+		//		(dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
+		p.Priority = atoi(
+				(dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
+
+		cout << p.ProjectID << endl;
+		currentSkill = "";
+		for (int j = 0; j < dataList.at(i).at(12).size(); j++) {
+
+			if (dataList.at(i).at(12).at(j) == ',') {
+
+				cout << currentSkill << endl;
+				for (int k = 0; k < 8; k++) {
+					if (currentSkill.compare(skills1[k]) == 0) {
+						p.Skills[k] = 1;
+					}
+				}
+				currentSkill = "";
+			} else {
+				if (dataList.at(i).at(12).at(j) != '\"') {
+					currentSkill.push_back(dataList.at(i).at(12).at(j));
+
+				}
+
+			}
+		}
+
+		currentSkill = "";
+		for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
+
+			if (dataList.at(i).at(13).at(j) == ',') {
+				cout << currentSkill << endl;
+				for (int k = 8; k < 14; k++) {
+					if (currentSkill.compare(skills1[k]) == 0) {
+						p.Skills[k] = 1;
+					}
+				}
+				currentSkill = "";
+			} else {
+				if (dataList.at(i).at(13).at(j) != '\"') {
+					currentSkill.push_back(dataList.at(i).at(13).at(j));
+				}
+
+			}
+
+		}
+
+
+
+		//projects.push_back(p);
+		//cout<<p.ProjectID<<"  priority:"<<p.Priority<<endl;
+
+		projectPool[i - 1] = p;
+
+		//last project
+
+		if (i == numProjects - 1) {
+			i = numProjects;
+			Project p1 = Project();
+			for (int j = 0; j < numSkills; j++) {
+				p1.Skills[j] = 0;
+			}
+
+			p1.ProjectID = numProjects;
+
+			p1.NDA = atoi(
+					(dataList.at(i).at(dataList.at(i).size() - 6)).c_str());
+			p1.IPR = atoi(
+					(dataList.at(i).at(dataList.at(i).size() - 5)).c_str());
+			p1.sharedHardware = atoi(
+					(dataList.at(i).at(dataList.at(i).size() - 4)).c_str());
+			p1.Type = (dataList.at(i).at(dataList.at(i).size() - 3)).at(0);
+
+			//a value of 100 lets us know this class section has not been assigned
+			p1.ClassID = 100;
+			//p.ClassID = atoi(
+			//		(dataList.at(i).at(dataList.at(i).size() - 2)).c_str());
+			p1.Priority = atoi(
+					(dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
+
+			cout << p1.ProjectID << endl;
+			currentSkill = "";
+			for (int j = 0; j < dataList.at(i).at(12).size(); j++) {
+
+				if (dataList.at(i).at(12).at(j) == ',') {
+
+					cout << currentSkill << endl;
+					for (int k = 0; k < 8; k++) {
+						if (currentSkill.compare(skills1[k]) == 0) {
+							p1.Skills[k] = 1;
+						}
+					}
+					currentSkill = "";
+				} else {
+					if (dataList.at(i).at(12).at(j) != '\"') {
+						currentSkill.push_back(dataList.at(i).at(12).at(j));
+
+					}
+
+				}
+			}
+
+			currentSkill = "";
+			for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
+
+				if (dataList.at(i).at(13).at(j) == ',') {
+					cout << currentSkill << endl;
+					for (int k = 8; k < 14; k++) {
+						if (currentSkill.compare(skills1[k]) == 0) {
+							p1.Skills[k] = 1;
+						}
+					}
+					currentSkill = "";
+				} else {
+					if (dataList.at(i).at(13).at(j) != '\"') {
+						currentSkill.push_back(dataList.at(i).at(13).at(j));
+					}
+
+				}
+
+			}
+
+			projectPool[numProjects - 1] = p1;
+			i = numProjects - 1;
+
+		}
+	}
+
+	for (int i = 0; i < numProjects; i++) {
+
+		cout << "Project#: " << projectPool[i].ProjectID << "  priority:"
+				<< projectPool[i].Priority << endl;
+		for (int d = 0; d < numSkills; d++) {
+			cout << projectPool[i].Skills[d] << " ";
+		}
+		cout << endl;
+	}
+
+	return;
+}
+*/
 /*********************************************************
  * getQuizID
  *
@@ -2322,14 +3279,15 @@ int Utility::getCategoryID(int courseID, string filename) {
 
 	const int numberOfCategories = obj["categories"].size();
 
-
 	for (int i = 0; i < numberOfCategories; i++) {
 
 		//make sure that the course ids match
-				if (courseID == obj["categories"].get((int) i, "")["course_id"].asInt()) {
-		group_category_ID = obj["categories"].get((int) i, "")["id"].asInt();
+		if (courseID
+				== obj["categories"].get((int) i, "")["course_id"].asInt()) {
+			group_category_ID =
+					obj["categories"].get((int) i, "")["id"].asInt();
 
-				}
+		}
 	}
 
 	return group_category_ID;
@@ -2350,7 +3308,7 @@ int Utility::getCategoryID(int courseID, string filename) {
  *Returns:
  *  int value of the assignment ID
  */
-int Utility::getGroupID(int course_ID ,string filename) {
+int Utility::getGroupID(int course_ID, string filename) {
 
 	ifstream ifs(filename);
 	Json::Reader reader;
@@ -2361,19 +3319,17 @@ int Utility::getGroupID(int course_ID ,string filename) {
 
 	const int numberOfCategories = obj["groups"].size();
 
-
 	for (int i = 0; i < numberOfCategories; i++) {
 
 		//make sure that the course ids match
-				if (course_ID == obj["groups"].get((int) i, "")["course_id"].asInt()) {
-					group_ID = obj["groups"].get((int) i, "")["id"].asInt();
+		if (course_ID == obj["groups"].get((int) i, "")["course_id"].asInt()) {
+			group_ID = obj["groups"].get((int) i, "")["id"].asInt();
 
-				}
+		}
 	}
 
 	return group_ID;
 }
-
 
 vector<Student> Utility::getStudentsFromJson(string filename) {
 	ifstream ifs(filename);
@@ -2388,10 +3344,14 @@ vector<Student> Utility::getStudentsFromJson(string filename) {
 	string desiredRole = "StudentEnrollment";
 
 	for (int i = 0; i < numberOfStudents; i++) {
-		if (desiredRole.compare(obj["students"].get((int) i, "")["role"].asString()) == 0) {
-			student.StudentID = obj["students"].get((int)i, "")["user_id"].asInt();
-			student.ASUriteID = obj["students"].get((int)i, "")["user"]["login_id"].asString();
-			student.ClassID = obj["students"].get((int)i, "")["course_id"].asInt();
+		if (desiredRole.compare(
+				obj["students"].get((int) i, "")["role"].asString()) == 0) {
+			student.StudentID =
+					obj["students"].get((int) i, "")["user_id"].asInt();
+			student.ASUriteID =
+					obj["students"].get((int) i, "")["user"]["login_id"].asString();
+			student.ClassID =
+					obj["students"].get((int) i, "")["course_id"].asInt();
 			students.push_back(student);
 		}
 	}
@@ -2399,7 +3359,6 @@ vector<Student> Utility::getStudentsFromJson(string filename) {
 	return students;
 
 }
-
 
 /*********************************************************
  * getSurveyAnswers
@@ -2446,12 +3405,10 @@ vector<Student> Utility::getSurveyAnswers(vector<Student> students,
 					auto submissionHistoryArray = obj["submissions"].get(
 							(int) i, "")["submission_history"];
 
-
 					auto data = submissionHistoryArray[0];
 
 					auto submissionData = data["submission_data"];
 					auto currentQuestion = submissionData[0];
-
 
 					//#1-#2 get the students first and last name, space separated.
 					students[j].name = currentQuestion["text"].asString();

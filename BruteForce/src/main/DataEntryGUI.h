@@ -1,24 +1,77 @@
 /*
- * DataEntryGUI.h
+ * DataEntryGUI.cpp
  *
- *  Created on: Feb 6, 2020
- *      Author: myles
+ * Description:
+ *	This class creates the data entry window for the GUI, including:
+ *	- a project file input selector
+ *	- a entry for course survey questionnaire
+ *	- entry for semester and year to narrow down course selection *
+ *
+ * Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
+ *
+ *
+ * List of functions:
+ * 	DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies)
+ * 		- Constructor function for the class section selector GUI window.
+ *
+ * 	~DataEntryGUI
+ * 		- class destructor. Properly removes all GUI framework
+ *
+ * 	FindCoursesClick(Fl_Widget *w)
+ * 		- updates the Browser based on the year and the semester selected
+ *		It searches the course sections for the relevant courses, and displays
+ *
+ *	GobackClick(Fl_Widget *w)
+ *		- event handler to return to last window
+ *
+ *	YesClick(Fl_Widget *w)
+ *		- event handler for yes button
+ *
+ *	CancelClick1(Fl_Widget *w)
+ *		- event handler to cancel
+ *
+ *	CancelClick2(Fl_Widget *w)
+ *		- event handler to cancel
+ *
+ *	ConfirmClick(Fl_Widget *w)
+ *		- event handler for confirmation button click
+ *
+ *	GenerateTeamsClick(Fl_Widget *w)
+ *		- event handler for generate teams button
+ *
+ *	chooseProjectFile_cb(Fl_Widget*)
+ *		- event handler for the user to select the project file
+ *
+ *	quit_cb(Fl_Widget*, void*)
+ *		- Callback: when user picks 'Quit'
  */
-
 #ifndef SRC_MAIN_DATAENTRYGUI_H_
 #define SRC_MAIN_DATAENTRYGUI_H_
+
+
+/********* BEGINNING OF INCLUSIONS **********/
+
+
+/* Class Inclusions */
 #include "MainWindow.h"
 #include "GUIStyles.h"
 #include "ClassSectionJson.h"
 #include "ClassSection.h"
 #include "main.h"
 
+
+/* Library Inclusions */
 #include <libsoup/soup.h>
 #include <vector>
 #include <iostream>
 #include <string>
 #include <cstdlib>
 #include <stdio.h>
+
+
+/* FLTK Inclusions */
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
@@ -28,15 +81,23 @@
 #include <FL/Fl_Input_Choice.H>
 #include <FL/Fl_RGB_Image.H>
 #include <FL/Fl_Output.H>
+#include <FL/Fl_Scroll.H>
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_File_Chooser.H>
 #include <FL/Fl_Native_File_Chooser.H>
 
+
 using namespace std;
+
+
+/********* BEGINNING OF PROGRAM CODE **********/
+
 
 class DataEntryGUI {
 public:
-	//string array of courses for use in testing.
+
+
+	//Variables
 	string courses[17] = { "2020Fall-X-SER401-90586", "2019Fall-X-SER401-80888",
 			"2020Fall-X-SER401-84566", "2019Fall-X-SER401-91286",
 			"2020Fall-X-SER401-70346", "2018Fall-X-SER401-65686",
@@ -49,17 +110,17 @@ public:
 
 	string *AllCourseNames;
 	string *SelectedCourseNames;
-
 	ClassSection *AllCourses;
 	ClassSection *SelectedCourses;
-
 	int num_of_all_courses;
 	int num_of_selected_courses;
+	int course_count;
 
+
+	/***** FLTK window declarations *****/
+	//Class Section Selector Components
 	Fl_Window *masterWindow;
 	Fl_Window *prevWindow;
-
-	//Class Section Selector Components
 	Fl_Box *boxHeader;
 	Fl_Box *boxHeader2;
 	Fl_Check_Browser *classBrowser;
@@ -69,6 +130,7 @@ public:
 	Fl_Input *inputYear;
 	Fl_Input_Choice *inputSemester;
 	Fl_Box *classSectionInstructionsBox;
+	Fl_Scroll *scroll;
 
 	//Go Back window Components
 	Fl_Window *backWindow;
@@ -93,10 +155,9 @@ public:
 	Fl_Box *goBackorConfirmInstructionsBox;
 
 
+	//callback functions
 	DataEntryGUI(Fl_Window *win,vector<SoupCookie> cookiedata);
 	virtual ~DataEntryGUI();
-
-	//callback functions
 	void BrowserSelection(Fl_Widget *w);
 	void FindCoursesClick(Fl_Widget *w);
 	void GobackClick(Fl_Widget *w);
