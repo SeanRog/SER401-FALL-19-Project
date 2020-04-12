@@ -1060,6 +1060,28 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	}
 // END -------------------Duplicate Student Swapping
 
+
+	//make sure that each student has been assigned.
+/*	for (int i = 0; i < numProjects; i++) {
+		for (int j = 0; j < TEAM_SIZE; j++) {
+			if (studentPool[bestSet[i].team[j].PoolID].StID == bestSet[i].team[j].StID){
+			studentPool[bestSet[i].team[j].PoolID] = bestSet[i].team[j];}
+		}
+	}
+	mtx.lock();
+	 vector <Student> unassignedStudents;
+		for (int i = 0; i < numStudents; i++) {
+
+		if(studentPool[i].Assigned == false){
+
+			cout<<"Student: "<<studentPool[i].name <<"is unassinged!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+			unassignedStudents.push_back(studentPool[i]);
+		}}
+mtx.unlock();
+*/
+
+
+
 	int newProjectSetScore = 0;
 	for (int i = 0; i < numProjects; i++) {
 		newProjectSetScore += bestSet[i].TeamScore;
