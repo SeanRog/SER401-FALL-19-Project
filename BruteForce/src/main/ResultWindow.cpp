@@ -127,6 +127,15 @@ ResultWindow::ResultWindow() {
 	/***** Creates the main window frame *****/
 	windowResult = new Fl_Window(1500, 800, "Capstone Team Assignment Results");
 
+
+	/***** Creates the Title Box *****/
+	Fl_Box *titleBox = new Fl_Box(450, 10, 300, 50,
+			"FINAL RESULTS");
+	titleBox->box(FL_NO_BOX);
+	titleBox->labelcolor(ASU_GOLD);
+	titleBox->labelfont(FL_HELVETICA_BOLD_ITALIC);
+	titleBox->labelsize(30);
+
 	/***** Creates the black border frame boxes around GUI *****/
 	Fl_Box *backBox1 = new Fl_Box(0, 0, 10, 800);
 	backBox1->box(FL_FLAT_BOX);
@@ -192,7 +201,7 @@ ResultWindow::ResultWindow() {
 	buttonExit->callback(static_exitClicked, this);
 
 	/* "Recommender System" BUTTON, this opens up the replacment team recommender window */
-	buttonRecommender = new Fl_Button(875, 80, 300, 50,
+	buttonRecommender = new Fl_Button(1005, 80, 300, 50,
 			"Replacement Team Recommender");
 	buttonRecommender->color(ASU_GOLD);
 	buttonRecommender->labelfont(FL_HELVETICA);
@@ -705,6 +714,8 @@ void ResultWindow::postGroups(Fl_Widget *w) {
  * and a text display showing the output, once the 'Find Replacement Teams'
  * button is clicked.
  *
+ * Author: Myles
+ *
  * Arguments: results window widget
  *
  * Returns: nothing
@@ -808,6 +819,8 @@ bool reverseSort(const pair<int, Team> &a, const pair<int, Team> &b) {
  *  team score for every possible combination for possible new project teams for this student.
  *  The only choices that are shown, are teams that have no negative affinity, and are listed
  *  in order from the best scoring team, to the lowest scoring.
+ *
+ *	Author: Myles
  *
  * Arguments: recommender window widget
  *
@@ -1290,4 +1303,10 @@ ResultWindow::~ResultWindow() {
 	delete pieChart;
 	delete barChart;
 	delete classChart;
+	delete windowRecommender;
+	delete textDisplay2;
+	delete buffer2;
+	delete FindReplacements;
+	delete inputStudent;
+	delete backBox;
 }

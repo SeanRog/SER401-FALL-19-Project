@@ -44,6 +44,7 @@ public:
 	bool NegativeAffinityCheck(Student team[5]); //checks a student team to see if their is any negative affinity.
 	int PositiveAffinityCheck(Student team[5]); //checks a student team and counts the number if positive affinity matches.
 	int getDuplicatesOfStudents(Team currentSet[], int size); //finds the number of duplicate students in a set of teams.
+	Student replaceDuplicateStudent(Team currentSet[], int size);
 
 	//Team scoring functions
 	int AvailabilityTeamScore(Student team[5]); //compares the availability of students on a team, returns a score 0-20
