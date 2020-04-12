@@ -55,9 +55,7 @@
  *		- Destructor, properly removes all GUI framework
  */
 
-
 /********* BEGINNING OF INCLUSIONS **********/
-
 
 /* Class Inclusions */
 #include "ResultWindow.h"
@@ -65,18 +63,23 @@
 #include "GUIStyles.h"
 #include "Project.h"
 #include "CookieManager.h"
+#include "StudentsToProjects.h"
 #include "Utility.h"
-
 
 /* Library inclusions */
 #include <iostream>
-#include <string>
-#include <cstdlib>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fstream>
 #include <vector>
+#include <thread>
+#include <array>
+#include <chrono>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <mutex>
 
+#include <bits/stdc++.h>
+#include "sys/types.h"
+#include "sys/sysinfo.h"
 
 /* FLTK Inclusions */
 #include <FL/Fl.H>
@@ -92,12 +95,9 @@
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Chart.H>
 
-
 using namespace std;
 
-
 /********* BEGINNING OF PROGRAM CODE **********/
-
 
 /*********************************************************
  * Title: constexpr int toConstInt(int)
@@ -112,12 +112,11 @@ constexpr int toConstInt(int constInt) {
 	return constInt;
 }
 
-
 /*********************************************************
  * Title: void ResultWindow(void)
  *
  * Description: class constructor. Preps the results window GUI, boxes,
- 		labels, graphs, text display and text buffer
+ labels, graphs, text display and text buffer
  *
  * Arguments: none
  *
@@ -125,10 +124,17 @@ constexpr int toConstInt(int constInt) {
  */
 ResultWindow::ResultWindow() {
 
-
 	/***** Creates the main window frame *****/
 	windowResult = new Fl_Window(1500, 800, "Capstone Team Assignment Results");
 
+
+	/***** Creates the Title Box *****/
+	Fl_Box *titleBox = new Fl_Box(450, 10, 300, 50,
+			"FINAL RESULTS");
+	titleBox->box(FL_NO_BOX);
+	titleBox->labelcolor(ASU_GOLD);
+	titleBox->labelfont(FL_HELVETICA_BOLD_ITALIC);
+	titleBox->labelsize(30);
 
 	/***** Creates the black border frame boxes around GUI *****/
 	Fl_Box *backBox1 = new Fl_Box(0, 0, 10, 800);
@@ -147,10 +153,9 @@ ResultWindow::ResultWindow() {
 	borderBox->box(FL_FLAT_BOX);
 	borderBox->color(ASU_BLACK);
 
-	borderBox2 = new Fl_Box(850, 10, 640, 70);
+	borderBox2 = new Fl_Box(850, 10, 640, 130);
 	borderBox2->box(FL_FLAT_BOX);
 	borderBox2->color(ASU_GREY);
-
 
 	/***** Creates the text Buffer and text display to be filled
 	 * by program output and styles it accordingly *****/
@@ -159,12 +164,11 @@ ResultWindow::ResultWindow() {
 	buffer = new Fl_Text_Buffer();
 
 	//Text Display
-	textDisplay = new Fl_Text_Display(850, 80, 640, 710);
+	textDisplay = new Fl_Text_Display(850, 140, 640, 650);
 	textDisplay->buffer(buffer);
 	textDisplay->textfont(FL_HELVETICA);
 	textDisplay->textsize(15);
 	textDisplay->selection_color(ASU_GOLD);
-
 
 	/***** Create the 3 buttons above the text display and styles it accordingly *****/
 
@@ -196,6 +200,15 @@ ResultWindow::ResultWindow() {
 	buttonExit->selection_color(ASU_BLACK);
 	buttonExit->callback(static_exitClicked, this);
 
+	/* "Recommender System" BUTTON, this opens up the replacment team recommender window */
+	buttonRecommender = new Fl_Button(1005, 80, 300, 50,
+			"Replacement Team Recommender");
+	buttonRecommender->color(ASU_GOLD);
+	buttonRecommender->labelfont(FL_HELVETICA);
+	buttonRecommender->labelcolor(ASU_BLACK);
+	buttonRecommender->labelsize(15);
+	buttonRecommender->selection_color(ASU_BLACK);
+	buttonRecommender->callback(static_recommenderWindow, this);
 
 	/***** This section creates the text boxes to display program
 	 * calculations/results and then styles the boxes accordingly.
@@ -248,7 +261,6 @@ ResultWindow::ResultWindow() {
 	badBox->labelsize(15);
 	badBox->labelcolor(ASU_WHITE);
 
-
 	/***** This section contains labels for the project priority graph *****/
 
 	/* Creates the "low" level in blue to correspond with graph */
@@ -277,7 +289,6 @@ ResultWindow::ResultWindow() {
 	labelBox5->labelfont(FL_HELVETICA_BOLD);
 	labelBox5->labelsize(12);
 	labelBox5->labelcolor(ASU_GOLD);
-
 
 	/***** This section creates the 3 graphs for the GUI window and styles accordingly *****/
 
@@ -322,7 +333,6 @@ ResultWindow::ResultWindow() {
 
 }
 
-
 /*********************************************************
  * Title: void saveClicked(Fl_Widget *w)
  *
@@ -336,7 +346,6 @@ void ResultWindow::saveClicked(Fl_Widget *w) {
 	buffer->savefile("results.csv", 1000000);
 }
 
-
 /*********************************************************
  * Title: void exitClicked(Fl_Widget *w)
  *
@@ -349,7 +358,6 @@ void ResultWindow::saveClicked(Fl_Widget *w) {
 void ResultWindow::exitClicked(Fl_Widget *w) {
 	exit(0);
 }
-
 
 /*********************************************************
  * Title: void addText(void)
@@ -365,9 +373,8 @@ void ResultWindow::addText() {
 	/***** Calls another function to calculate the data *****/
 	calculateStats();
 
-
 	/***** Fills in text boxes with data by copying data into a char array and
-	* then copying from a char array into a const char*, for FLTK parameters*****/
+	 * then copying from a char array into a const char*, for FLTK parameters*****/
 
 	/* fills permutation box label with data results */
 	char permNum[70];
@@ -402,12 +409,11 @@ void ResultWindow::addText() {
 	const char *badNum1 = badNum;
 	badBox->label(badNum1);
 
-
 	/***** Fills in pie chart graph with data by copying data into a char array and
-	* then copying from a char array into a const char*, for FLTK parameters. The pie
-	* chart is divided into 6 sections: lowest, second lowest, low average, high average,
-	* second highest scores and then highest scores. These ranges are calculated out from
-	* the range max to min score, divided into 6 section ranges *****/
+	 * then copying from a char array into a const char*, for FLTK parameters. The pie
+	 * chart is divided into 6 sections: lowest, second lowest, low average, high average,
+	 * second highest scores and then highest scores. These ranges are calculated out from
+	 * the range max to min score, divided into 6 section ranges *****/
 
 	/* fills lowest section pie charts with data results */
 	char low1a[50];
@@ -450,12 +456,11 @@ void ResultWindow::addText() {
 	const char *high2b = high2a;
 	pieChart->add(high2, high2b, ASU_MAROON);
 
-
 	/***** Fills in project priority spike chart graph with data by copying data into a
-	* char array and then copying from a char array into a const char*, for FLTK parameters.
-	* The project priority chart loops through all team assignment array 3 times. First, it
-	* looks for low priority and adds to the graph, then medium priority and then high
-	* priority. For each different priority it has a corresponding color to distinguish*****/
+	 * char array and then copying from a char array into a const char*, for FLTK parameters.
+	 * The project priority chart loops through all team assignment array 3 times. First, it
+	 * looks for low priority and adds to the graph, then medium priority and then high
+	 * priority. For each different priority it has a corresponding color to distinguish*****/
 
 	/* Filling in low project priority chart  - blue */
 	for (int i = 0; i < count; i++) {
@@ -486,7 +491,6 @@ void ResultWindow::addText() {
 			barChart->add(project_pool[2][i], prioa, ASU_GOLD);
 		}
 	}
-
 
 	/***** Fills in class section spike chart graph with data by copying data
 	 * into a char array and then copying from a char array into a const char*,
@@ -526,13 +530,13 @@ void ResultWindow::addText() {
 					classChart->add(0, "", ASU_MAROON);
 
 					/* copying from a char array into a const char*, for
-					* FLTK parameters, displaying new section # for user */
+					 * FLTK parameters, displaying new section # for user */
 
 					buff = sprintf(priob, "S#%d-  %d", project_pool[3][i],
 							project_pool[2][i]);
 					changed = 0;
 
-				/* else if it is in the same section add on */
+					/* else if it is in the same section add on */
 				} else {
 					buff = sprintf(priob, "%d", project_pool[2][i]);
 				}
@@ -550,11 +554,9 @@ void ResultWindow::addText() {
 		}
 	}
 
-
 	/* gives space at end of chart to match spacing throughout entire chart */
 	classChart->add(0, "", ASU_MAROON);
 	classChart->add(0, "", ASU_MAROON);
-
 
 	/* Show  and run the result window */
 	windowResult->resizable(textDisplay);
@@ -563,7 +565,6 @@ void ResultWindow::addText() {
 	windowResult->end();
 	Fl::run();
 }
-
 
 /*********************************************************
  * Title: void calculateStats(void)
@@ -582,7 +583,6 @@ void ResultWindow::calculateStats() {
 	low1 = 0, low2 = 0, avg1 = 0, avg2 = 0, high1 = 0, high2 = 0;
 	string line;
 
-
 	//calculating average team score
 	for (int i = 0; i < count; i++) {
 		if (project_pool[2][i] != 0) {
@@ -594,7 +594,6 @@ void ResultWindow::calculateStats() {
 
 	teamScoreAvg = teamScoreAvg / (count - notAssign);
 
-
 	//calculating best team score
 	for (int i = 0; i < count; i++) {
 		if (project_pool[2][i] > bestScore) {
@@ -603,7 +602,6 @@ void ResultWindow::calculateStats() {
 		}
 	}
 
-
 	//calculating worst team score
 	for (int i = 0; i < count; i++) {
 		if ((project_pool[2][i] < badScore) && (project_pool[2][i] != 0)) {
@@ -611,7 +609,6 @@ void ResultWindow::calculateStats() {
 			worstTeam = i;
 		}
 	}
-
 
 	/* subtracts max - mine score and divides it into 6 for pie
 	 * chart, so each time the program is run, it will divide the
@@ -646,7 +643,6 @@ void ResultWindow::calculateStats() {
 	}
 }
 
-
 /*********************************************************
  * Title: void postGroups(Fl_Widget *w)
  *
@@ -663,10 +659,8 @@ void ResultWindow::postGroups(Fl_Widget *w) {
 	/* Initializing canvas connection */
 	CookieManager canvas;
 
-
 	/* vector pair to store the courseID and the Group_CategoryID */
 	vector<pair<int, int>> course_group;
-
 
 	/* loops through courses to match section to class*/
 	for (int i = 0; i < courses.size(); i++) {
@@ -680,7 +674,6 @@ void ResultWindow::postGroups(Fl_Widget *w) {
 				make_pair(courses[i].OfficialClassID, groupCategory_ID));
 
 	}
-
 
 	/* Loops through student teams to match to class section courses */
 	for (int i = 0; i < studentTeams.size(); i++) {
@@ -712,7 +705,575 @@ void ResultWindow::postGroups(Fl_Widget *w) {
 	}
 }
 
+/*********************************************************
+ * Title: recommenderSystemWindow(Fl_Widget *w)
+ *
+ * Description: event handler for the recommender System button.
+ * Opens a new GUI window for searching for replacment team
+ * options for any student. Input both for the student's ASUtriteID,
+ * and a text display showing the output, once the 'Find Replacement Teams'
+ * button is clicked.
+ *
+ * Author: Myles
+ *
+ * Arguments: results window widget
+ *
+ * Returns: nothing
+ */
+void ResultWindow::recommenderSystemWindow(Fl_Widget *w) {
 
+	// MAIN WINDOW
+	windowRecommender = new Fl_Window(840, 640,
+			"Student Team Replacement Recommendation System");
+
+	//Title box
+	Fl_Box *titleBox = new Fl_Box(140, 10, 690, 30,
+			"REPLACEMENT TEAM RECOMMENDER");
+	titleBox->box(FL_NO_BOX);
+	titleBox->labelcolor(ASU_GOLD);
+	titleBox->labelfont(FL_HELVETICA_BOLD);
+	titleBox->labelsize(25);
+
+	Fl_Box *backBox1 =
+			new Fl_Box(140, 40, 690, 30,
+					"Finds the best replacement project and team for a certain student.");
+	backBox1->box(FL_NO_BOX);
+	backBox1->labelcolor(ASU_WHITE);
+	backBox1->labelfont(FL_HELVETICA);
+	backBox1->labelsize(15);
+	backBox1->color(ASU_BLACK);
+
+	Fl_Box *backBox2 =
+			new Fl_Box(140, 70, 690, 30,
+					"Gives the top choices for (teams of 4) and top choices for (teams of 5).");
+	backBox2->box(FL_NO_BOX);
+	backBox2->labelcolor(ASU_WHITE);
+	backBox2->labelfont(FL_HELVETICA);
+	backBox2->labelsize(15);
+	backBox2->color(ASU_BLACK);
+
+	Fl_Box *backBox3 =
+			new Fl_Box(140, 100, 690, 30,
+					"For teams of 5, the system recommends which student would be best to swap out.");
+	backBox3->box(FL_NO_BOX);
+	backBox3->labelcolor(ASU_WHITE);
+	backBox3->labelfont(FL_HELVETICA);
+	backBox3->labelsize(15);
+	backBox3->color(ASU_BLACK);
+
+	//image box
+	Fl_PNG_Image logo("./Images/CapstoneTeams120by120.png");
+	Fl_Box *imageBox = new Fl_Box(20, 10, 120, 120);
+	imageBox->box(FL_NO_BOX);
+	imageBox->image(logo);
+
+	//text input
+	inputStudent = new Fl_Input(300, 160, 150, 50,
+			"Enter the student's asuriteID  ");
+	inputStudent->labelfont(FL_HELVETICA_BOLD);
+	inputStudent->labelcolor(ASU_WHITE);
+	inputStudent->textfont(FL_HELVETICA);
+	inputStudent->labelsize(15);
+
+	// Buffer
+	buffer2 = new Fl_Text_Buffer();
+
+	//Text Display
+	textDisplay2 = new Fl_Text_Display(20, 220, 800, 400);
+	textDisplay2->buffer(buffer2);
+	textDisplay2->textfont(FL_HELVETICA);
+	textDisplay2->textsize(15);
+	textDisplay2->selection_color(ASU_GOLD);
+
+	//Post Teams BUTTON
+	FindReplacements = new Fl_Button(560, 160, 250, 50,
+			"Find Replacement Teams");
+	FindReplacements->color(ASU_GOLD);
+	FindReplacements->labelfont(FL_HELVETICA);
+	FindReplacements->labelcolor(ASU_BLACK);
+	FindReplacements->labelsize(15);
+	FindReplacements->selection_color(ASU_BLACK);
+	//button callback
+	FindReplacements->callback(static_recommender, this);
+
+	windowRecommender->color(ASU_GREY);
+	windowRecommender->show();
+	windowRecommender->end();
+	Fl::run();
+
+}
+
+//function to sort in descending order.
+bool reverseSort(const pair<int, Team> &a, const pair<int, Team> &b) {
+	return (a.first > b.first);
+}
+
+/*********************************************************
+ * Title: recommenderSystem(Fl_Widget *w)
+ *
+ * Description: event handler for the Find Replacement Teams button.
+ * This function finds the best replacement project and team for a certain student.
+ *  Gives the top choices for (teams of 4) and top choices for (teams of 5).
+ *  For teams of 5, the system also recommends which student would be best to swap out.
+ *  This function takes into account the negative affinity, NDA/IPR, and configures a new
+ *  team score for every possible combination for possible new project teams for this student.
+ *  The only choices that are shown, are teams that have no negative affinity, and are listed
+ *  in order from the best scoring team, to the lowest scoring.
+ *
+ *	Author: Myles
+ *
+ * Arguments: recommender window widget
+ *
+ * Returns: nothing
+ */
+void ResultWindow::recommenderSystem(Fl_Widget *w) {
+
+	//Needed Variables
+	string asuriteIDX = inputStudent->value();
+	Student studentX;
+	Team teamX;
+	int classIDX;
+	int placeIDX;
+	int numSkills = 14;
+	int bestTeamScore = 0;
+
+	vector<Team> teamsOf4;
+	vector<Team> teamsOf5;
+	Team BestTeamOf5, BestTeamOf4;
+	vector<pair<int, Team>> topTeams5, topTeams4;
+	bool isTeam4;
+	bool teamXis4 = false;
+	studentX.name = "null";
+
+	BestTeamOf4.projectID = 99999;
+	BestTeamOf5.projectID = 99999;
+
+	//find the team, and class section the student belongs to.
+	for (int i = 0; i < studentTeams.size(); i++) {
+		for (int j = 0; j < 5; j++) {
+			if (studentTeams[i].team[j].ASUriteID.compare(asuriteIDX) == 0) {
+
+				studentX = studentTeams[i].team[j];
+				teamX = studentTeams[i];
+				classIDX = studentTeams[i].ClassID;
+				placeIDX = j;
+				break;
+			}
+		}
+	}
+
+	//find all the teams of 4 and 5 that are in the same class section
+	for (int i = 0; i < studentTeams.size(); i++) {
+
+		if (studentTeams[i].ClassID == classIDX) {
+			isTeam4 = false;
+			for (int j = 0; j < 5; j++) {
+
+				if (studentTeams[i].team[j].StudentID == 99999) {
+
+					isTeam4 = true;
+				}
+			}
+			if (isTeam4 == true) {
+				teamsOf4.push_back(studentTeams[i]);
+			} else {
+				teamsOf5.push_back(studentTeams[i]);
+			}
+
+		}
+	}
+
+	//find out if the student's team is a team of 4 or not.
+	for (int i = 0; i < 5; i++) {
+		if (teamX.team[i].StudentID == 99999) {
+			teamXis4 = true;
+		}
+	}
+
+	StudentsToProjects stp;
+
+	/*TEAMS OF 4 */
+	//find the best team of 4 that the student can be placed in
+	for (int i = 0; i < teamsOf4.size(); i++) {
+
+		for (int j = 0; j < 5; j++) {
+			if (teamsOf4[i].team[j].StudentID == 99999) {
+
+				int OldTeamScore = teamsOf4[i].TeamScore;
+				Team currentTeam = teamsOf4[i];
+				currentTeam.team[j] = studentX;
+				//find each students skill sums
+				int studentSkillSums[5];
+				int studentProjectSkills[5];
+				int skillSum = 0;
+				for (int x = 0; x < 5; x++) {
+					studentSkillSums[x] = 0;
+					studentProjectSkills[x] = 0;
+					for (int y = 0; y < numSkills; y++) {
+						studentSkillSums[x] += currentTeam.team[x].Skills[y];
+						studentProjectSkills[x] += currentTeam.team[x].Skills[y]
+								* currentTeam.project.Skills[y];
+					}
+
+					skillSum += studentSkillSums[x];
+				}
+
+				//Calculate max skill score for the current project.
+				int maxProjectScore = 0;
+				for (int y = 0; y < numSkills; y++) {
+					maxProjectScore += currentTeam.project.Skills[y] * 4;
+				}
+				maxProjectScore = maxProjectScore * 5;
+
+				currentTeam.TeamScore = stp.ProjectCompareTeamScore(
+						studentProjectSkills, maxProjectScore)
+						+ stp.SkillCompareTeamScore(studentSkillSums)
+						+ stp.AvailabilityTeamScore(currentTeam.team);
+
+				if ((stp.NegativeAffinityCheck(currentTeam.team) == false)
+						&& (stp.NDA_IPRCheck(currentTeam.team,
+								currentTeam.project) == true)) {
+
+					if (currentTeam.TeamScore >= OldTeamScore
+							|| bestTeamScore
+									< (OldTeamScore - currentTeam.TeamScore)) {
+
+						bestTeamScore = OldTeamScore - currentTeam.TeamScore;
+						BestTeamOf4 = currentTeam;
+
+					}
+
+					if (OldTeamScore <= currentTeam.TeamScore
+							&& currentTeam.project.ProjectID
+									!= teamX.project.ProjectID) {
+						pair<int, Team> temp;
+						temp.first = currentTeam.TeamScore;
+						temp.second = currentTeam;
+
+						topTeams4.push_back(temp);
+					}
+				}
+
+			}
+		}
+	}
+	bestTeamScore = 0;
+
+	/*TEAMS OF 5*/
+	//find the best team of 5 that the student can be placed in,
+	//and the student to be swapped.
+	for (int i = 0; i < teamsOf5.size(); i++) {
+
+		for (int k = 0; k < 5; k++) {
+			int oldTeamScore = teamsOf5[i].TeamScore;
+			int teamXScore = teamX.TeamScore;
+			Student replacedStudent = teamsOf5[i].team[k];
+			Team currentTeam = teamsOf5[i];
+			Team replacedTeam = teamX;
+			replacedTeam.team[placeIDX] = replacedStudent;
+
+			currentTeam.team[k] = studentX;
+
+			//find each students skill sums
+			int studentSkillSums[5];
+			int studentProjectSkills[5];
+			int skillSum = 0;
+			for (int x = 0; x < 5; x++) {
+				studentSkillSums[x] = 0;
+				studentProjectSkills[x] = 0;
+				for (int y = 0; y < numSkills; y++) {
+					studentSkillSums[x] += currentTeam.team[x].Skills[y];
+					studentProjectSkills[x] += currentTeam.team[x].Skills[y]
+							* currentTeam.project.Skills[y];
+				}
+
+				skillSum += studentSkillSums[x];
+			}
+
+			//Calculate max skill score for the current project.
+			int maxProjectScore = 0;
+			for (int y = 0; y < numSkills; y++) {
+				maxProjectScore += currentTeam.project.Skills[y] * 4;
+			}
+			maxProjectScore = maxProjectScore * 5;
+
+			currentTeam.TeamScore = stp.ProjectCompareTeamScore(
+					studentProjectSkills, maxProjectScore)
+					+ stp.SkillCompareTeamScore(studentSkillSums)
+					+ stp.AvailabilityTeamScore(currentTeam.team);
+
+			//now for the team of the replacement student
+			//find each students skill sums
+			int studentSkillSums2[5];
+			int studentProjectSkills2[5];
+			int skillSum2 = 0;
+			for (int x = 0; x < 5; x++) {
+				studentSkillSums2[x] = 0;
+				studentProjectSkills2[x] = 0;
+				for (int y = 0; y < numSkills; y++) {
+					studentSkillSums2[x] += replacedTeam.team[x].Skills[y];
+					studentProjectSkills2[x] += replacedTeam.team[x].Skills[y]
+							* replacedTeam.project.Skills[y];
+				}
+
+				skillSum2 += studentSkillSums2[x];
+			}
+
+			//Calculate max skill score for the current project.
+			int maxProjectScore2 = 0;
+			for (int y = 0; y < numSkills; y++) {
+				maxProjectScore2 += replacedTeam.project.Skills[y] * 4;
+			}
+			maxProjectScore2 = maxProjectScore * 5;
+
+			replacedTeam.TeamScore = stp.ProjectCompareTeamScore(
+					studentProjectSkills2, maxProjectScore2)
+					+ stp.SkillCompareTeamScore(studentSkillSums2)
+					+ stp.AvailabilityTeamScore(replacedTeam.team);
+
+			if ((stp.NegativeAffinityCheck(currentTeam.team) == false)
+					&& (stp.NDA_IPRCheck(currentTeam.team, currentTeam.project)
+							== true)) {
+
+				if ((stp.NegativeAffinityCheck(replacedTeam.team) == false)
+						&& (stp.NDA_IPRCheck(replacedTeam.team,
+								replacedTeam.project) == true)) {
+
+					if (currentTeam.TeamScore >= bestTeamScore
+							&& currentTeam.project.ProjectID
+									!= teamX.project.ProjectID) {
+						bestTeamScore = currentTeam.TeamScore;
+						BestTeamOf5 = currentTeam;
+					}
+
+					if (oldTeamScore <= currentTeam.TeamScore
+							&& currentTeam.project.ProjectID
+									!= teamX.project.ProjectID) {
+						pair<int, Team> temp;
+						temp.first = currentTeam.TeamScore;
+						temp.second = currentTeam;
+						topTeams5.push_back(temp);
+					}
+
+				}
+
+			}
+		}
+
+	}
+
+	//If the student is an actual student find and display all the possible replacment
+	//project teams.
+	if (studentX.name.compare("null") != 0) {
+		//now sort through the list of teams to get the top 5.
+		sort(topTeams4.begin(), topTeams4.end(), reverseSort);
+
+		sort(topTeams5.begin(), topTeams5.end(), reverseSort);
+
+		//Print out to the display all the following information
+		string output = "";
+		output += "STUDENT:   " + studentX.name + "\n";
+		output += "ASUriteID:  " + studentX.ASUriteID + "\n";
+		output += "CLASS ID:   " + to_string(studentX.ClassID) + "\n";
+		output += "CURRENT PROJECT: #" + to_string(studentX.ProjectID) + "\n";
+		if (teamXis4 == false) {
+			output += "CURRENT TEAM SIZE: 5\n";
+		} else {
+			output += "CURRENT TEAM SIZE: 4\n";
+
+		}
+
+		if (teamXis4 == false || topTeams5.size() == 0) {
+
+			output += "\n     Recommended replacement teams of 4 \n";
+			output +=
+					"======================================================\n";
+
+			if (BestTeamOf4.projectID != 99999 || topTeams5.size() == 0) {
+				output += "Best replacement Team of 4: ";
+				output += "Project #" + to_string(BestTeamOf4.project.ProjectID)
+						+ "  New TeamScore: " + to_string(BestTeamOf4.TeamScore)
+						+ "\n";
+				output += "Students: ";
+				for (int j = 0; j < 5; j++) {
+					output += " " + BestTeamOf4.team[j].name + ", ";
+
+				}
+				output += "\n\n";
+
+			}
+
+			for (int i = 0; i < topTeams4.size(); i++) {
+
+				output += "*Project #"
+						+ to_string(topTeams4[i].second.project.ProjectID)
+						+ "  New TeamScore: " + to_string(topTeams4[i].first)
+						+ "\n";
+				output += "Students: ";
+				for (int j = 0; j < 5; j++) {
+					output += " " + topTeams4[i].second.team[j].name + ", ";
+
+				}
+				output += "\n\n";
+
+			}
+		}
+
+		output += "\n     Recommended replacement teams of 5 \n";
+		output += "======================================================\n";
+		output += "\n";
+
+		if (BestTeamOf5.projectID != 99999 && topTeams5.size() == 0) {
+			Student replacedStudent;
+			output += "Best replacement Team of 5: ";
+			output += "Project #" + to_string(BestTeamOf5.project.ProjectID)
+					+ "  New TeamScore: " + to_string(BestTeamOf5.TeamScore)
+					+ "\n";
+
+			for (int i = 0; i < teamsOf5.size(); i++) {
+				if (BestTeamOf5.project.ProjectID
+						== teamsOf5[i].project.ProjectID) {
+					for (int j = 0; j < 5; j++) {
+						if ((studentX.name).compare(BestTeamOf5.team[j].name)
+								== 0) {
+							replacedStudent = teamsOf5[i].team[j];
+							output += "Student to be replaced -> ASUriteID:"
+									+ teamsOf5[i].team[j].ASUriteID + "  name: "
+									+ teamsOf5[i].team[j].name + "\n";
+
+						}
+					}
+				}
+			}
+			output += "Students: ";
+			for (int j = 0; j < 5; j++) {
+				output += " " + BestTeamOf5.team[j].name + ", ";
+
+			}
+			output += "\n";
+
+			output += "New Team for Project #"
+					+ to_string(teamX.project.ProjectID) + "\n";
+			output += "Student Team: ";
+			for (int j = 0; j < 5; j++) {
+				if ((studentX.name).compare(teamX.team[j].name) == 0) {
+					output += replacedStudent.name + ", ";
+				} else {
+					output += teamX.team[j].name + ", ";
+
+				}
+			}
+			output += "\n";
+
+		}
+
+		for (int i = 0; i < topTeams5.size(); i++) {
+
+			Student replacedStudent;
+			if (i == 0) {
+				output += "*Project #"
+						+ to_string(topTeams5[i].second.project.ProjectID)
+						+ "  New TeamScore: " + to_string(topTeams5[i].first)
+						+ "\n";
+
+				for (int x = 0; x < teamsOf5.size(); x++) {
+
+					if (topTeams5[i].second.project.ProjectID
+							== teamsOf5[x].project.ProjectID) {
+						for (int j = 0; j < 5; j++) {
+							if ((studentX.name).compare(
+									topTeams5[i].second.team[j].name) == 0) {
+								replacedStudent = teamsOf5[x].team[j];
+								output += "Student to be replaced -> ASUriteID:"
+										+ teamsOf5[x].team[j].ASUriteID
+										+ "  name: " + teamsOf5[x].team[j].name
+										+ "\n";
+							}
+						}
+					}
+				}
+				output += "Students: ";
+				for (int j = 0; j < 5; j++) {
+					output += " " + topTeams5[i].second.team[j].name + ", ";
+				}
+				output += "\n";
+
+				output += "New Team for Project #"
+						+ to_string(teamX.project.ProjectID) + "\n";
+				output += "Student Team: ";
+				for (int j = 0; j < 5; j++) {
+					if ((studentX.name).compare(teamX.team[j].name) == 0) {
+						output += replacedStudent.name + ", ";
+
+					} else {
+						output += teamX.team[j].name + ", ";
+
+					}
+				}
+
+				output += "\n\n";
+			} else if (topTeams5[i].second.project.ProjectID
+					!= topTeams5[i - 1].second.project.ProjectID) {
+				output += "*Project #"
+						+ to_string(topTeams5[i].second.project.ProjectID)
+						+ "  New TeamScore: " + to_string(topTeams5[i].first)
+						+ "\n";
+
+				for (int x = 0; x < teamsOf5.size(); x++) {
+
+					if (topTeams5[i].second.project.ProjectID
+							== teamsOf5[x].project.ProjectID) {
+						for (int j = 0; j < 5; j++) {
+							if ((studentX.name).compare(
+									topTeams5[i].second.team[j].name) == 0) {
+								replacedStudent = teamsOf5[x].team[j];
+								output += "Student to be replaced -> ASUriteID:"
+										+ teamsOf5[x].team[j].ASUriteID
+										+ "  name: " + teamsOf5[x].team[j].name
+										+ "\n";
+
+							}
+						}
+					}
+				}
+				output += "Students: ";
+				for (int j = 0; j < 5; j++) {
+					output += " " + topTeams5[i].second.team[j].name + ", ";
+
+				}
+				output += "\n";
+
+				output += "New Team for Project #"
+						+ to_string(teamX.project.ProjectID) + "\n";
+				output += "Student Team: ";
+
+				for (int j = 0; j < 5; j++) {
+					if ((studentX.name).compare(teamX.team[j].name) == 0) {
+						output += replacedStudent.name + ", ";
+
+					} else {
+						output += teamX.team[j].name + ", ";
+
+					}
+				}
+				output += "\n\n";
+
+			}
+		}
+
+		int length = output.length();
+		char output_char[length + 1];
+		strcpy(output_char, output.c_str());
+		buffer2->text("");
+		buffer2->append(output_char);
+
+	} else {
+		buffer2->text("\nNo Student found.");
+	}
+
+}
+
+// DESTRUCTOR
 /*********************************************************
  * Title: void ~ResultWindow(void)
  *
@@ -742,4 +1303,10 @@ ResultWindow::~ResultWindow() {
 	delete pieChart;
 	delete barChart;
 	delete classChart;
+	delete windowRecommender;
+	delete textDisplay2;
+	delete buffer2;
+	delete FindReplacements;
+	delete inputStudent;
+	delete backBox;
 }

@@ -26,7 +26,7 @@
  *
  * Copyright (C) 2020 ASU
  *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
-*	initial idea contributed by Douglas Sandy, All rights reserved
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  *
  *
  * List of functions:
@@ -58,25 +58,21 @@
 #ifndef RESULTWINDOW_H_
 #define RESULTWINDOW_H_
 
-
 /********* BEGINNING OF INCLUSIONS **********/
 
-
- /* Class Inclusions */
+/* Class Inclusions */
 #include "Project.h"
 #include "ClassSection.h"
 #include "Team.h"
 
-
- /* Library Inclusions */
+/* Library Inclusions */
 #include <iostream>
 #include <string>
 #include <cstdlib>
 #include <stdio.h>
 #include <libsoup/soup.h>
 
-
- /* FLTK Inclusions */
+/* FLTK Inclusions */
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
@@ -89,15 +85,11 @@
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Chart.H>
 
-
 using namespace std;
 
-
- /********* BEGINNING OF PROGRAM CODE **********/
-
+/********* BEGINNING OF PROGRAM CODE **********/
 
 class ResultWindow {
-
 
 	/***** Static event handler functions for buttons *****/
 	static void static_saveClicked(Fl_Widget *w, void *data) {
@@ -113,17 +105,21 @@ class ResultWindow {
 	static void static_postGroups(Fl_Widget *w, void *data) {
 		((ResultWindow*) data)->postGroups(w);
 	}
-	void postGroups(Fl_Widget *w);
 
+	static void static_recommenderWindow(Fl_Widget *w, void *data) {
+		((ResultWindow*) data)->recommenderSystemWindow(w);
+	}
+
+	static void static_recommender(Fl_Widget *w, void *data) {
+		((ResultWindow*) data)->recommenderSystem(w);
+	}
 
 	/***** private variables for data calculations *****/
 	int teamScoreAvg, bestScore, badScore;
 	int bestTeam, worstTeam, percent, notAssign;
 	int low1, low2, avg1, avg2, high1, high2;
 
-
 public:
-
 
 	/***** public static variables *****/
 	static int permutations;
@@ -134,12 +130,11 @@ public:
 	static vector<ClassSection> courses;
 	static vector<SoupCookie> cookies;
 
-
 	/***** FLTK GUI frames and text boxes *****/
 	Fl_Window *windowResult;
 	Fl_Text_Display *textDisplay;
 	Fl_Text_Buffer *buffer;
-	Fl_Button *buttonSave, *buttonExit, *buttonPostGroups;
+	Fl_Button *buttonSave, *buttonExit, *buttonPostGroups, *buttonRecommender;
 	Fl_Box *permBox, *swapBox;
 	Fl_Box *teamBox, *bestBox, *badBox;
 	Fl_Box *spacer, *borderBox, *borderBox2;
@@ -147,12 +142,22 @@ public:
 	Fl_Box *labelBox1, *labelBox2;
 	Fl_Chart *pieChart, *barChart, *classChart;
 
+	//Recommender window
+	Fl_Window *windowRecommender;
+	Fl_Text_Display *textDisplay2;
+	Fl_Text_Buffer *buffer2;
+	Fl_Button *FindReplacements;
+	Fl_Input *inputStudent;
+	Fl_Box *backBox;
 
 	/***** functions for class *****/
 	ResultWindow();
 	~ResultWindow();
 	void addText();
 	void calculateStats();
+	void postGroups(Fl_Widget *w);
+	void recommenderSystem(Fl_Widget *w);
+	void recommenderSystemWindow(Fl_Widget *w);
 
 };
 
