@@ -2714,6 +2714,7 @@ vector<vector<string>> Utility::toCSVcse(string filename) {
  */
 vector<Project> Utility::csvToProjectsVector(string filename,
 		Project projectPool[], int numProjects, int numSkills) {
+	//Change this to reflect the skills (in order) in the student survey
 	string skills1[numSkills] =
 			{ "ArtificialIntelligence", "WebApplicationProgramming",
 					"IOSMobileApplicationProgramming",
@@ -2722,12 +2723,14 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 					"DatabaseProgramming", "NetworkSecurity", "C", "C++", "C#",
 					"Java", "JavaScript", "Python" };
 
+	//Change this to reflect the number of technology areas, (not programming languages)
+	//in the list of skills.
+	int numTechAreas = 8;
+
+
 	string currentSkill = "";
-
 	vector<Project> projects;
-
 	vector<vector<string>> dataList;
-
 	ifstream file(filename);
 
 	string line = "";
@@ -2791,7 +2794,7 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 			if (dataList.at(i).at(12).at(j) == ',') {
 
 				cout << currentSkill << endl;
-				for (int k = 0; k < 8; k++) {
+				for (int k = 0; k < numTechAreas; k++) {
 					if (currentSkill.compare(skills1[k]) == 0) {
 						p.Skills[k] = 1;
 					}
@@ -2811,7 +2814,7 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 
 			if (dataList.at(i).at(13).at(j) == ',') {
 				cout << currentSkill << endl;
-				for (int k = 8; k < 14; k++) {
+				for (int k = numTechAreas; k < numSkills; k++) {
 					if (currentSkill.compare(skills1[k]) == 0) {
 						p.Skills[k] = 1;
 					}
@@ -2825,38 +2828,6 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 			}
 
 		}
-
-		/*		if (dataList.at(i).at(12).at(j) == ',') {
-		 currentSkill = "";
-		 } else {
-		 currentSkill.push_back(dataList.at(i).at(12).at(j));
-		 cout<<currentSkill<<endl;
-		 for (int k = 0; k < 8; k++) {
-		 //if (currentSkill.compare(skills1[k]) == 0) {
-		 //	p.Skills[k] = 1;
-		 //}
-		 if (currentSkill.find(skills1[k]) != string::npos) {
-		 p.Skills[k] = 1;
-		 }
-		 }
-		 }
-		 }
-
-		 currentSkill = "";
-		 for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
-
-		 if (dataList.at(i).at(13).at(j) == ',') {
-		 currentSkill = "";
-		 } else {
-		 currentSkill.push_back(dataList.at(i).at(13).at(j));
-		 cout<<currentSkill<<endl;
-		 for (int k = 8; k < 14; k++) {
-		 if (currentSkill.find(skills1[k]) != string::npos) {
-		 p.Skills[k] = 1;
-		 }
-		 }
-		 }
-		 }*/
 
 		projects.push_back(p);
 		//cout<<p.ProjectID<<"  priority:"<<p.Priority<<endl;
@@ -2896,7 +2867,7 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 				if (dataList.at(i).at(12).at(j) == ',') {
 
 					cout << currentSkill << endl;
-					for (int k = 0; k < 8; k++) {
+					for (int k = 0; k < numTechAreas; k++) {
 						if (currentSkill.compare(skills1[k]) == 0) {
 							p1.Skills[k] = 1;
 						}
@@ -2916,7 +2887,7 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 
 				if (dataList.at(i).at(13).at(j) == ',') {
 					cout << currentSkill << endl;
-					for (int k = 8; k < 14; k++) {
+					for (int k = numTechAreas; k < numSkills; k++) {
 						if (currentSkill.compare(skills1[k]) == 0) {
 							p1.Skills[k] = 1;
 						}
