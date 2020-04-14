@@ -1,7 +1,6 @@
 /****************
  * ProjectJson.h
  *
- *Author(s) Myles, Cristi, Sean
  *
  *Description:
  *A class to store all the functions for Project Json data.
@@ -20,6 +19,9 @@
  * gets the information of each project, stores each project in a c++ Project instance,
  * then pushes that into vector<Project> allProjects.
  *
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  *
  */
 

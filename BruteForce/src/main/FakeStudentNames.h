@@ -1,8 +1,12 @@
 /*
  * FakeStudentNames.h
  *
- *  Created on: Feb 11, 2020
- *      Author: myles
+ * Description: A list of fake student names for use when making the random student data
+ * 				used in testing.
+ *
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  */
 
 #include <string>

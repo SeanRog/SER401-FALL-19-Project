@@ -15,6 +15,9 @@
  * List of function:
  *  (see header file Utility.h)
  *
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  */
 
 #include "Utility.h"

@@ -1,11 +1,6 @@
 /*
  * StudentsToProjects.cpp
  *
- *  Created on: Oct 30, 2019
- *  Created on: Oct 30, 2019
- *      Created by: Sean, Myles, Cristi, Matthew, Elizabeth
- *
- *
  * Description:
  *		This class is for the assignment of students to projects. It contains various scoring, helper and check
  *		functions to assist the main function StudentsToProjectsAssignment(). The main function finds all the possible
@@ -47,6 +42,10 @@
  *		int getValueVirt() - a function to monitor system memory usage
  *
  *		constexpr int toConstInt(int constInt) - a function to convert an int to a constant
+ *
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  *
  */
 

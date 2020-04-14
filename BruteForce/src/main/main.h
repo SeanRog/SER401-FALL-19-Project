@@ -1,8 +1,12 @@
 /*
  * main.h
  *
- *  Created on: Jan 28, 2020
- *      Author: myles
+ * Description: Header class for main.cpp. Used for allowing main_run to be executed
+ * 				from other classes, such as the GUI classes.
+ *
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  */
 
 #ifndef SRC_MAIN_MAIN_H_
@@ -28,18 +32,10 @@ class main {
 public:
 	string csvProjectFileName;
 	static int numClasses;
-/*<<<<<<< HEAD
-	int main_run(int projects_input, int students_input, string filepath, Fl_Progress *pb, Fl_Text_Buffer *terminal, vector<Student> studentsFromCanvas);
-=======*/
+
 	int main_run(int projects_input, int students_input, string filepath, Fl_Progress *pb,
 			Fl_Text_Buffer *terminal, vector<vector<Student>> allStudents,
 			vector <ClassSection> allClassSections, vector<SoupCookie> cookies);
-//>>>>>>> dev
-
-	//REMOVE AFTER TESTING!!!
-	int main_run2(int projects_input, int students_input, string filepath,
-			Fl_Progress *pb, Fl_Text_Buffer *tb, vector<Student> studentsFromCanvas);
-
 
 };
 

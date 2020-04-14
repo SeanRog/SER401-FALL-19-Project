@@ -1,11 +1,8 @@
 /****************
  * StudentJson.h
  *
- *Author(s) Myles, Cristi, Sean
- *
  *Description:
- *A class to store all the functions for Student Json data.
- *Includes reading in Student Json Files.
+ *	Header file for StudentJson.cpp.
  *
  *
  * StudentJson() - Constructor
@@ -20,6 +17,9 @@
  * gets the information of each Student, stores each Student in a c++ Student instance,
  * then pushes that into vector<Student> allStudents.
  *
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  *
  */
 

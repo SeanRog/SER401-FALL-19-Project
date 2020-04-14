@@ -19,10 +19,9 @@
  *		-int getValueVirt() - a function to monitor system memory usage
  *		-constexpr int toConstInt(int constInt) - a function to convert an int to a constant
  *
- * @author(s) Elizabeth Marquise, Myles Colina, Sean Rogers, Cristi Deleo, Matthew Cilibraise
- *
- * Copyright (C) 2020, ASU Capstone Project
- * All Rights Reserved
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  *
  */
 #include "Student.h"
