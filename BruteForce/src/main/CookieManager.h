@@ -3,9 +3,9 @@
  *
  * Description:
  *
- *  Created on: 
- *      Author: Team 35
- * 
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  */
 
 #ifndef COOKIEMANAGER_H_

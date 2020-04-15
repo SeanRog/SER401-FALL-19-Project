@@ -10,10 +10,9 @@
  * to each instance of a student. Each instance of a student represents
  * a real student seeking to matched up with the best project possible allowed.
  *
- * Created on: Oct 27, 2019
- * Author: Myles Colina & Fall 2019 SER401 Team35
- *
- *
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  */
 
 #ifndef STUDENT_H_

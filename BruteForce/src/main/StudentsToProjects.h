@@ -1,11 +1,12 @@
 /*
  * StudentsToProjects.h
  *
- *  Created on: Oct 30, 2019
- *      Created by: Sean, Myles, Cristi, Matthew
- *
  *Description:
  *		This header file stores function declarations for StudentsToProjects.cpp.
+ *
+ *	Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  */
 
 #ifndef STUDENTSTOPROJECTS_H_

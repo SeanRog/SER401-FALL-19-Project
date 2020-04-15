@@ -3,18 +3,10 @@
  *
  * Description:
  *
- *  Created on: 
- *      Authors: Fall 2019 Team 35 (Matthew, Cristi, Myles, Elizabeth, Sean)
- *
- * List of function:
- *  (see header file Utility.h)
  * 
- * To test, add the following code to int main() in main.cpp before other calls:
- *        
- *  CookieManager cookieMgr;
- *  const char* hostURL = "https://weblogin.asu.edu/";
- *  cookieMgr.newHttpsSession(hostURL);
- * 
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  *
  */
 #include "CookieManager.h"
