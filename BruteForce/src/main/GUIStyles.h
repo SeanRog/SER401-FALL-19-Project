@@ -1,12 +1,12 @@
 /*
- * Stlyes.h
+ * GUIStlyes.h
  *
  * Description:  Contains global variables such as colors for use throughout the
  * 				program when creating GUI frames.
  *
- * Created on:   02/05/2020
- *
- * Authors:   M. Cilibra, M. Colina, C. DeLeo, E. Marquise, S. Rogers
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  */
 
 #include <FL/Fl.H>
@@ -44,10 +44,5 @@ const Fl_Color GREY_BLUE = fl_rgb_color(92, 103, 119);
 const Fl_Color RUST = fl_rgb_color(143, 67, 43);
 const Fl_Color DARK = fl_rgb_color(56, 47, 39);
 
-
-
-class Styles {
-
-};
 
 #endif /* SRC_MAIN_GUISTLYES_H_ */

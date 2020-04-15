@@ -1,8 +1,6 @@
 /****************
  * ClassSectionJson.cpp
  *
- *Author(s) Myles Colina
- *
  *Description: (what the class does) - A class to store all the functions for student Json data.
  *      Includes reading in Student Json Files.
  *
@@ -12,6 +10,10 @@
  * Retrieves the class section in the json file at index int i.
  * Stores that information into a ClassSection instance.
  * Returns that instance.
+ *
+ * Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  *
  */
 

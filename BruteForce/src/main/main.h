@@ -1,6 +1,7 @@
 /*
  * main.h
  *
+<<<<<<< HEAD
  * Description:
  *	 This class is the main driver for the skills based assignment of
  *   capstone project teams. The main method of this class starts the
@@ -45,6 +46,14 @@
  *		-The main driver for the skills based assignment of Capstone project teams.
  *
  *
+=======
+ * Description: Header class for main.cpp. Used for allowing main_run to be executed
+ * 				from other classes, such as the GUI classes.
+ *
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
+>>>>>>> dev2
  */
 #ifndef SRC_MAIN_MAIN_H_
 #define SRC_MAIN_MAIN_H_
@@ -80,23 +89,15 @@ extern mutex mtx;
 
 class main {
 
-public:
+	public:
 
 	// Variables
 	string csvProjectFileName;
 	static int numClasses;
 
-
-	// Public functions
 	int main_run(int projects_input, int students_input, string filepath, Fl_Progress *pb,
 			Fl_Text_Buffer *terminal, vector<vector<Student>> allStudents,
 			vector <ClassSection> allClassSections, vector<SoupCookie> cookies);
-
-
-	//REMOVE AFTER TESTING!!!
-	int main_run2(int projects_input, int students_input, string filepath,
-			Fl_Progress *pb, Fl_Text_Buffer *tb, vector<Student> studentsFromCanvas);
-
 
 };
 

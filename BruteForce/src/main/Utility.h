@@ -8,11 +8,9 @@
  * an incoming data file, and performing matrix multiplication to extract
  * weighted values.
  *
- *
- *  Created on: Oct. 29, 2019
- *      Author: Matt Cilibraise
- *      		Cristi Deleo
- *      		Fall 2019 Team 35
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  */
 
 #ifndef UTILITY_H_

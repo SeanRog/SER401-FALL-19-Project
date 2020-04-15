@@ -1,9 +1,6 @@
 /*
  * Test.cpp
  *
- *  Created on: Oct 27, 2019
- *      Author: Myles Colina
- *
  *     Description:
  *
  *     Class to hold all our test cases.
@@ -11,6 +8,10 @@
  *     (also add function name to the header file)
  *     write the test code into that function, and
  *     call it in main.
+ *
+ *  Copyright (C) 2020 ASU
+ *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
+ *	initial idea contributed by Douglas Sandy, All rights reserved
  *
  */
 #include "Test.h"
