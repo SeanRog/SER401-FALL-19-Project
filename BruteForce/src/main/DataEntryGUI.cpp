@@ -133,7 +133,7 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 	num_of_selected_courses = 0;
 	ClassSection Courses[NUM_CLASS_SECTIONS];
 	CSJson.getAllClassSectionJsonObjects(CLASS_SECTION_FILE, Courses);
-	cout<<"Read in all courses!"<<endl;
+	//cout<<"Read in all courses!"<<endl;
 	string courses[NUM_CLASS_SECTIONS];
 	AllCourseNames = courses;
 	AllCourses = Courses;
@@ -141,11 +141,11 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 	for (int i = 0; i < NUM_CLASS_SECTIONS; i++) {
 
 		AllCourseNames[i] = AllCourses[i].Course_Code;
-		cout<<AllCourseNames[i]<<endl;
+		//cout<<AllCourseNames[i]<<endl;
 
 	}
 	remove("allCourses.json");
-
+	cout<<"\n\n\n\n\n\n\n"<<endl;
 
 	// Initialize components in scope, but not on main data entry gui
 	GenerateTeamsButton = NULL;
@@ -705,7 +705,7 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 	vector <ClassSection> selectedcourses;
 
 	for (int j = 0; j < num_of_selected_courses; j++) {
-		cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
+		//cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
 		selectedcourses.push_back(classes[j]);
 	}
 
@@ -730,7 +730,7 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 
 
 	// debug students
-	cout << endl << "Debugging Students" << endl;
+/*	cout << endl << "Debugging Students" << endl;
 	for (int j = 0; j < allStudents.size(); j++){
 		for (int k = 0; k < allStudents.at(j).size(); k++){
 
@@ -756,7 +756,7 @@ void DataEntryGUI::GenerateTeamsClick(Fl_Widget *w) {
 				cout<<allStudents.at(j).at(k).Availability[x]<<endl;
 			}
 		}
-	}
+	}*/
 
 
 	/* sending over variables, running main window */

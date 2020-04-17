@@ -155,8 +155,8 @@ void ClassSectionJson::getAllClassSectionJsonObjects(string filename, ClassSecti
 	 classSection.ClassID =
 	 (char)obj["class sections"].get((int)i, "")["ClassID"].asInt();*/
 
-	cout<<classSection[i].Course_Code<<endl;
-	cout<<classSection[i].OfficialClassID<<endl;
+	//cout<<classSection[i].Course_Code<<endl;
+	//cout<<classSection[i].OfficialClassID<<endl;
 
 
 	*(courses + i-1) = classSection[i];

@@ -266,7 +266,7 @@ vector<vector<int>> Utility::calcProjectXStudentMatrix(vector<Student> students,
 	for (int i = 0; i < numStudents; i++) {
 		//cout << "st" << students.at(i).StudentID << "\t";
 	}
-	cout << endl;
+	//cout << endl;
 	int projectXstudent[numProjects][numStudents];
 	for (int rows = 0; rows < numProjects; rows++) {
 		// print project name to projectxstudent matrix
@@ -613,12 +613,12 @@ void Utility::classSectionTypePartition(ClassSection classSectionPool[],
  *    nothing
  */
 void Utility::printIntMatrix(vector<vector<int>> a) {
-	cout << endl;
+	//cout << endl;
 	for (int i = 0; i < a.size(); i++) {
 		for (int j = 0; j < a.at(i).size(); j++) {
-			cout << a.at(i).at(j) << "\t";
+			//cout << a.at(i).at(j) << "\t";
 		}
-		cout << endl;
+		//cout << endl;
 	}
 }
 
@@ -941,9 +941,9 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 		int minNumProjects = calc_projects(studentsInSections[i], 5, 4);
 		MinProjectsPerClassSection.push_back(minNumProjects);
 
-		cout << "Class section: " << i << " Number of students:"
-				<< studentsInSections[i] << " MinNumofProjects Required: "
-				<< minNumProjects << endl;
+		//cout << "Class section: " << i << " Number of students:"
+		//		<< studentsInSections[i] << " MinNumofProjects Required: "
+		//		<< minNumProjects << endl;
 	}
 
 	//increment vector to store the number of projects that have been assigned to a class section.
@@ -981,7 +981,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 
 	}
 
-	cout << "All projects to be assigned" << endl;
+	//cout << "All projects to be assigned" << endl;
 
 	for (int i = 0; i < numProjects; i++) {
 
@@ -989,7 +989,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 		highestScore = 0;
 		highestClassSection = 0;
 
-		cout << project.ProjectID << endl;
+		//cout << project.ProjectID << endl;
 
 //Assign the Online projects
 		if (projectPool[i].Type == 'O') {
@@ -1206,21 +1206,21 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 					//assign this project to the class section that needs it.
 					projectPool[k].ClassID = ClassSections[j].ClassID;
 					ProjectsToClassCount[ClassSections[j].ClassID]++;
-					cout
+					/*cout
 							<< "Assigned a project to class section. Class section# "
 							<< ClassSections[j].ClassID << " Project# "
-							<< projectPool[k].ProjectID << endl;
+							<< projectPool[k].ProjectID << endl;*/
 				}
 			}
 
 		}
 	}
 
-	for (int k = 0; k < numClassSections; k++) {
-		cout << "Class section #" << k << " Number of Projects assigned: "
-				<< ProjectsToClassCount[k] << endl;
+	/*for (int k = 0; k < numClassSections; k++) {
+	//	cout << "Class section #" << k << " Number of Projects assigned: "
+	//			<< ProjectsToClassCount[k] << endl;
 
-	}
+	}*/
 
 }		  //end ProjectToSectionPercentages
 
@@ -2790,13 +2790,13 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 		p.Priority = atoi(
 				(dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
 
-		cout << p.ProjectID << endl;
+		//cout << p.ProjectID << endl;
 		currentSkill = "";
 		for (int j = 0; j < dataList.at(i).at(12).size(); j++) {
 
 			if (dataList.at(i).at(12).at(j) == ',') {
 
-				cout << currentSkill << endl;
+				//cout << currentSkill << endl;
 				for (int k = 0; k < numTechAreas; k++) {
 					if (currentSkill.compare(skills1[k]) == 0) {
 						p.Skills[k] = 1;
@@ -2816,7 +2816,7 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 		for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
 
 			if (dataList.at(i).at(13).at(j) == ',') {
-				cout << currentSkill << endl;
+				//cout << currentSkill << endl;
 				for (int k = numTechAreas; k < numSkills; k++) {
 					if (currentSkill.compare(skills1[k]) == 0) {
 						p.Skills[k] = 1;
@@ -2863,13 +2863,13 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 			p1.Priority = atoi(
 					(dataList.at(i).at(dataList.at(i).size() - 1)).c_str());
 
-			cout << p1.ProjectID << endl;
+			//cout << p1.ProjectID << endl;
 			currentSkill = "";
 			for (int j = 0; j < dataList.at(i).at(12).size(); j++) {
 
 				if (dataList.at(i).at(12).at(j) == ',') {
 
-					cout << currentSkill << endl;
+					//cout << currentSkill << endl;
 					for (int k = 0; k < numTechAreas; k++) {
 						if (currentSkill.compare(skills1[k]) == 0) {
 							p1.Skills[k] = 1;
@@ -2889,7 +2889,7 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 			for (int j = 0; j < dataList.at(i).at(13).size(); j++) {
 
 				if (dataList.at(i).at(13).at(j) == ',') {
-					cout << currentSkill << endl;
+					//cout << currentSkill << endl;
 					for (int k = numTechAreas; k < numSkills; k++) {
 						if (currentSkill.compare(skills1[k]) == 0) {
 							p1.Skills[k] = 1;
@@ -2910,15 +2910,15 @@ vector<Project> Utility::csvToProjectsVector(string filename,
 
 		}
 	}
-	for (int i = 0; i < numProjects; i++) {
+	/*for (int i = 0; i < numProjects; i++) {
 
-		cout << "Project#: " << projectPool[i].ProjectID << "  priority:"
-				<< projectPool[i].Priority << endl;
+		//cout << "Project#: " << projectPool[i].ProjectID << "  priority:"
+			//	<< projectPool[i].Priority << endl;
 		for (int d = 0; d < numSkills; d++) {
-			cout << projectPool[i].Skills[d] << " ";
+			//cout << projectPool[i].Skills[d] << " ";
 		}
-		cout << endl;
-	}
+		//cout << endl;
+	} */
 
 	return projects;
 }

@@ -648,7 +648,7 @@ void threadFunction(Student studentPool[], Project projectPool[],
 
 	//print out information to the console for debugging purposes
 	mtx.lock();
-	cout << "Class section # " << classSection << endl;
+/*	cout << "Class section # " << classSection << endl;
 	cout << "numProjects: " << numProjects << endl;
 	cout << "P2: " << PCOUNT_2 << endl;
 	cout << "P1: " << PCOUNT_1 << endl;
@@ -656,7 +656,7 @@ void threadFunction(Student studentPool[], Project projectPool[],
 	cout << "numStudents: " << numStudents << endl;
 	cout << "S2: " << COUNT_2 << endl;
 	cout << "S1: " << COUNT_1 << endl;
-	cout << "S0: " << COUNT_0 << endl;
+	cout << "S0: " << COUNT_0 << endl;*/
 	mtx.unlock();
 
 
@@ -893,7 +893,7 @@ int main::main_run(int projects_input, int students_input, string filepath,
 	const string CLASS_SECTION_FILE = "./SampleJsonFiles/4ClassSections.json";
 
 
-	cout << "main " << filepath << endl;
+	//cout << "main " << filepath << endl;
 	for (int i = filepath.length() - 1; i >= 0; i--) {
 
 		file.push_back(filepath.at(i));
@@ -911,12 +911,12 @@ int main::main_run(int projects_input, int students_input, string filepath,
 	}
 
 	for (int i = 0; i < file.length(); i++) {
-		cout << file2.at(i) << ',';
+		//cout << file2.at(i) << ',';
 	}
 
 
-	cout << endl;
-	cout << filepath << endl;
+	//cout << endl;
+	//cout << filepath << endl;
 	const string PROJECT_FILE = file2;
 	const string STUDENT_FILE = "./newStudents.json";
 
@@ -973,12 +973,12 @@ int main::main_run(int projects_input, int students_input, string filepath,
 
 		studentsInSections[i] = 0;
 		projectsInSections[i] = 0;
-		cout << "Class Section Data" << endl;
+	/*	cout << "Class Section Data" << endl;
 		cout << CLASS_SECTION_POOL[i].OfficialClassID << endl;
 		cout << CLASS_SECTION_POOL[i].ClassID << endl;
 		cout << CLASS_SECTION_POOL[i].Course_Code << endl;
 		cout << CLASS_SECTION_POOL[i].Course_Name << endl;
-		cout << CLASS_SECTION_POOL[i].Type << endl;
+		cout << CLASS_SECTION_POOL[i].Type << endl;*/
 
 	}
 
@@ -1009,11 +1009,11 @@ int main::main_run(int projects_input, int students_input, string filepath,
 			CLASS_SECTION_POOL, NUM_PROJECTS, NUM_STUDENTS, NUM_CLASS_SECTIONS,
 			NUM_SKILLS, studentsInSections);
 
-	cout << endl << "After Project to Class Section Assignment: " << endl;
-	t.PrintProjectPool(PROJECT_POOL, NUM_PROJECTS, NUM_SKILLS);
+	//cout << endl << "After Project to Class Section Assignment: " << endl;
+	//t.PrintProjectPool(PROJECT_POOL, NUM_PROJECTS, NUM_SKILLS);
 
-	cout << to_string(getValuePhy() + getValueVirt())
-			<< " KB total memory usage" << endl;
+	//cout << to_string(getValuePhy() + getValueVirt())
+	//		<< " KB total memory usage" << endl;
 
 
 	/* BEGIN - STUDENTS TO PROJECTS ASSIGNMENT
@@ -1037,10 +1037,10 @@ int main::main_run(int projects_input, int students_input, string filepath,
 
 	 //Print out for testing
 	 for (int i = 0; i < NUM_STUDENTS; i++) {
-		 cout << STUDENT_POOL[i].ASUriteID << "|" << STUDENT_POOL[i].StudentID
-		 << "|" << STUDENT_POOL[i].ClassID << "  ";
+	//	 cout << STUDENT_POOL[i].ASUriteID << "|" << STUDENT_POOL[i].StudentID
+	//	 << "|" << STUDENT_POOL[i].ClassID << "  ";
 	 }
-	 cout << endl;
+	// cout << endl;
 
 
 	//create a thread for each class section. store each thread in threads[]

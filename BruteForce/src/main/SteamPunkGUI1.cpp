@@ -878,7 +878,7 @@ void errorMessageSP() {
  */
 static void destroyWindowCb1(GtkWidget *widget, GtkWidget *window) {
 
-	cout << "Exiting mini-browser" << endl;
+	cout << "Mini-Browser Exited" << endl;
 	gtk_main_quit();
 
 	if (Auth1 != true) {
@@ -958,8 +958,8 @@ static void getCookiesCB1(WebKitCookieManager *manager,
  */
 static gboolean load_changedWebViewCb1(WebKitWebView *webView,GtkWidget *window) {
 
-	cout << "listening" << endl;
-	cout << webkit_web_view_get_uri(webView) << endl;
+	//cout << "listening" << endl;
+	//cout << webkit_web_view_get_uri(webView) << endl;
 	void *data;
 
 
@@ -977,7 +977,7 @@ static gboolean load_changedWebViewCb1(WebKitWebView *webView,GtkWidget *window)
 		//check to see if the login success page is done loading.
 		if (webkit_web_view_is_loading(webView) == false) {
 
-			cout << "Canvas reached! authentication complete!" << endl;
+			//cout << "Canvas reached! authentication complete!" << endl;
 
 			Auth1 = true;
 			usleep(50000);
@@ -1077,8 +1077,6 @@ void mini_browserSP() {
 	// Run the main GTK+ event loop
 	gtk_main();
 
-	//terminate the window
-	cout << "Website running" << endl;
 
 }
 
@@ -1137,12 +1135,13 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 
 	if (error == false) {
 
-		cout<<"Working"<<endl;
-
 		/* if the user is not authenticated yet,
 		* open the mini-browser for canvas authentication */
 		if (Authenticated != true) {
 			Auth1 = false;
+			//DO NOT REMOVE THIS COUT STATEMENT!!!!
+			cout<<"Mini-Browser Opened"<<endl;
+
 			mini_browserSP();
 		}
 
@@ -1175,7 +1174,7 @@ int SteamPunkGUI1::handle(int event) {
 	switch (event) {
 	case FL_PUSH:
 
-		cout << "FL_PUSH" << endl;
+		//cout << "FL_PUSH" << endl;
 		Fl_PNG_Image TeamLogo2("./Images/button2.png");
 		generateTeams->image(TeamLogo2);
 		return 1;

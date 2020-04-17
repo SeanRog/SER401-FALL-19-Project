@@ -791,7 +791,7 @@ void MainWindow::DoneButtonClick(Fl_Widget *w) {
  */
 static void destroyWindowCb(GtkWidget *widget, GtkWidget *window) {
 
-	cout << "Exiting mini-browser" << endl;
+	cout << "Mini-Browser Exited" << endl;
 	gtk_main_quit();
 
 	if (Auth != true) {
@@ -899,8 +899,8 @@ void OkClick2(Fl_Widget *w) {
  */
 static gboolean load_changedWebViewCb(WebKitWebView *webView, GtkWidget *window) {
 
-	cout << "listening" << endl;
-	cout << webkit_web_view_get_uri(webView) << endl;
+	//cout << "listening" << endl;
+	//cout << webkit_web_view_get_uri(webView) << endl;
 	void *data;
 
 
@@ -918,7 +918,7 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView, GtkWidget *window)
 		//check to see if the login success page is done loading.
 		if (webkit_web_view_is_loading(webView) == false) {
 
-			cout << "Canvas reached! authentication complete!" << endl;
+			//cout << "Canvas reached! authentication complete!" << endl;
 			Auth = true;
 
 			usleep(500000);
@@ -1123,10 +1123,14 @@ void MainWindow::StartButtonClick(Fl_Widget *w) {
 	 * open the mini-browser for canvas authentication */
 	if (error == false) {
 
-		cout<<"working"<<endl;
+		//cout<<"working"<<endl;
 
 		if (Authenticated != true) {
 			Auth = false;
+
+			//DO NOT REMOVE THIS COUT STATEMENT!!!!
+			cout<<"Mini-Browser Opened"<<endl;
+
 			mini_browser();
 		}
 
@@ -1158,7 +1162,7 @@ int MainWindow::handle(int event) {
 	switch (event) {
 
 		case FL_PUSH:
-			cout << "FL_PUSH" << endl;
+			//cout << "FL_PUSH" << endl;
 			Fl_PNG_Image TeamLogo2("./Images/button2.png");
 			generateTeams->image(TeamLogo2);
 
