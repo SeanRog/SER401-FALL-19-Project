@@ -125,7 +125,7 @@ constexpr int toConstInt(int constInt) {
 ResultWindow::ResultWindow() {
 
 	/***** Creates the main window frame *****/
-	windowResult = new Fl_Window(1500, 800, "Capstone Team Assignment Results");
+	windowResult = new Fl_Window(1500, 800, "CLIQUE - Results");
 
 
 	/***** Creates the Title Box *****/
@@ -724,7 +724,7 @@ void ResultWindow::recommenderSystemWindow(Fl_Widget *w) {
 
 	// MAIN WINDOW
 	windowRecommender = new Fl_Window(840, 640,
-			"Student Team Replacement Recommendation System");
+			"CLIQUE - Team Replacement Recommendation System");
 
 	//Title box
 	Fl_Box *titleBox = new Fl_Box(140, 10, 690, 30,

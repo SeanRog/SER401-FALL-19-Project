@@ -114,7 +114,7 @@ DataEntryGUI::DataEntryGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 	prevWindow = win;
 
 	/* Setting up mainwindow and accessories */
-	masterWindow = new Fl_Window(750, 760, "Capstone Team Assignment System");
+	masterWindow = new Fl_Window(750, 760, "CLIQUE");
 	scroll =  new Fl_Scroll(0,0,750,760);
 	scroll->color(ASU_WHITE);//background color
 	cookiedataDE = cookies;
@@ -428,7 +428,7 @@ void DataEntryGUI::FindCoursesClick(Fl_Widget *w) {
 void DataEntryGUI::GobackClick(Fl_Widget *w) {
 
 	/* Sets up GUI window */
-	backWindow = new Fl_Window(650, 220, "Capstone Team Assignment System");
+	backWindow = new Fl_Window(650, 220, "CLIQUE");
 	backWindow->begin();
 
 
@@ -549,7 +549,7 @@ void DataEntryGUI::CancelClick2(Fl_Widget *w) {
 void DataEntryGUI::ConfirmClick(Fl_Widget *w) {
 
 	/* Sets up GUI window */
-	confirmWindow = new Fl_Window(850, 220, "Confirmation Window");
+	confirmWindow = new Fl_Window(850, 220, "CLIQUE - Confirmation Window");
 
 
 	//course selection values

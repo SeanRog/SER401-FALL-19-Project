@@ -761,7 +761,7 @@ int main() {
 
 
 	// Setting up GUI chooser window
-	optionWindow = new Fl_Window(650, 320, "Capstone Team Assignment System");
+	optionWindow = new Fl_Window(650, 320, "CLIQUE");
 	optionWindow->begin();
 	optionWindow->color(ASU_WHITE);
 

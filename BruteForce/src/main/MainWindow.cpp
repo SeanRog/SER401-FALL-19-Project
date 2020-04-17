@@ -271,7 +271,7 @@ void MainWindow::MainWindow2() {
 	/***** Declaring GUI window  *****/
 	const char windowMainStr[] =
 			"_______________________________________________\nCAPSTONE TEAM ASSIGNMENT SYSTEM";
-	windowMain = new Fl_Window(750, 450, "Capstone Team Assignment System");
+	windowMain = new Fl_Window(750, 450, "CLIQUE");
 	windowMain->color(ASU_WHITE);
 
 
@@ -335,7 +335,7 @@ void MainWindow::MainWindow2() {
 			Fl_Text_Display *aboutTextDisplay;
 			Fl_Text_Buffer *aboutBuffer;
 			const char AboutStr[] =
-					"\nThe Capstone Team Assignment System\n was developed "
+					"\nCLIQUE\n[the Capstone Team Assignment System]\n was developed "
 							"by five senior software \n engineering students during the \n Fall 2019 and Spring 2020 semesters.\n "
 							"\n SOFTWARE TEAM ";
 			const char TeamStr[] =
@@ -368,7 +368,7 @@ void MainWindow::MainWindow2() {
 
 
 			/***** The  "Why" for the application on right side *****/
-			aboutBox2 = new Fl_Box(375, 55, 355, 30, "About The Software");
+			aboutBox2 = new Fl_Box(375, 55, 355, 30, "About Clique");
 			aboutBox2->box(FL_FLAT_BOX);
 			aboutBox2->color(ASU_MAROON);
 			aboutBox2->labelcolor(ASU_WHITE);
@@ -462,7 +462,7 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 
 
 	/***** Sets up new GUI window for program progress *****/
-	progressWindow = new Fl_Window(570, 500, "Team Assignment Progress");
+	progressWindow = new Fl_Window(570, 500, "CLIQUE - Progress Window");
 	progressWindow->begin();
 
 
@@ -647,7 +647,7 @@ void MainWindow::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	/* Loads up progress window */
 	TeamsButton->deactivate();
-	progressBox->label("Team Assignment System Running...");
+	progressBox->label("Clique Team Assignment Running...");
 	progressBox->labelfont(FL_HELVETICA_BOLD);
 	progressBox->labelsize(18);
 	progressBox->labelcolor(ASU_GREY);
@@ -719,7 +719,7 @@ void okClick(Fl_Widget *w) {
 void errorMessage() {
 
 	/* Setting up GUI window */
-	backWindow = new Fl_Window(650, 220, "Capstone Team Assignment System");
+	backWindow = new Fl_Window(650, 220, "CLIQUE");
 	backWindow->begin();
 
 

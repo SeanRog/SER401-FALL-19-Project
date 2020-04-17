@@ -270,7 +270,7 @@ void SteamPunkGUI1::MainWindow2() {
 	// Setting up S.P. GUI window
 	const char windowMainStr[] =
 			"_______________________________________________\nCAPSTONE TEAM ASSIGNMENT SYSTEM";
-	windowMain = new Fl_Window(750, 450, "Capstone Team Assignment System");
+	windowMain = new Fl_Window(750, 450, "CLIQUE - Steampunk");
 	windowMain->color(DARK_TAUPE);
 
 
@@ -343,7 +343,7 @@ void SteamPunkGUI1::MainWindow2() {
 			Fl_Text_Display *aboutTextDisplay;
 			Fl_Text_Buffer *aboutBuffer;
 			const char AboutStr[] =
-					"\nThe Capstone Team Assignment System\n was developed "
+					"\nCLIQUE, [Team Assignment System]\n was developed "
 							"by five senior software \n engineering students during the \n Fall 2019 and Spring 2020 semesters.\n "
 							"\n SOFTWARE TEAM ";
 			const char TeamStr[] =
@@ -377,7 +377,7 @@ void SteamPunkGUI1::MainWindow2() {
 
 
 			/***** The  "Why" for the application on right side *****/
-			aboutBox2 = new Fl_Box(375, 55, 355, 30, "About The Software");
+			aboutBox2 = new Fl_Box(375, 55, 355, 30, "About Clique");
 			aboutBox2->box(FL_FLAT_BOX);
 			aboutBox2->color(DARK_TAUPE);
 			aboutBox2->labelcolor(LIGHT_CREAM);
@@ -512,7 +512,7 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 
 
 	/***** Sets up new GUI window for program progress *****/
-	progressWindow = new Fl_Window(870, 800, "Team Assignment Progress");
+	progressWindow = new Fl_Window(870, 800, "CLIQUE - Progress Window");
 	progressWindow->begin();
 
 
@@ -732,7 +732,7 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	/* Loads up progress window */
 	TeamsButton->deactivate();
-	progressBox->label("Team Assignment System Running...");
+	progressBox->label("Clique Team Assignment Running...");
 	progressBox->labelfont(FL_HELVETICA);
 	progressBox->labelsize(15);
 	progressBox->labelcolor(LIGHT_CREAM);
@@ -822,7 +822,7 @@ void okClickSP(Fl_Widget *w) {
 void errorMessageSP() {
 
 	/* Setting up GUI window */
-	backWindowSP = new Fl_Window(650, 220, "Capstone Team Assignment System");
+	backWindowSP = new Fl_Window(650, 220, "CLIQUE");
 	backWindowSP->begin();
 
 

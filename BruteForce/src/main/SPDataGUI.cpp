@@ -242,7 +242,7 @@ SPDataGUI::SPDataGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 
 
 	// Set up Class Selector Window
-	masterWindow = new Fl_Window(750, 800, "Capstone Team Assignment System");
+	masterWindow = new Fl_Window(750, 800, "CLIQUE - Steampunk");
 	scroll =  new Fl_Scroll(0,0,750,800);
 	scroll->color(DARK_TAUPE);
 
@@ -560,7 +560,7 @@ void SPDataGUI::FindCoursesClick(Fl_Widget *w) {
 void SPDataGUI::GobackClick(Fl_Widget *w) {
 
 	/* Sets up GUI window */
-	backWindow = new Fl_Window(650, 220, "Capstone Team Assignment System");
+	backWindow = new Fl_Window(650, 220, "CLIQUE");
 	backWindow->begin();
 
 
@@ -687,7 +687,7 @@ void SPDataGUI::ConfirmClick(Fl_Widget *w) {
 
 
 	/* Sets up GUI window */
-	confirmWindow = new Fl_Window(850, 220, "Confirmation Window");
+	confirmWindow = new Fl_Window(850, 220, "CLIQUE - Confirmation Window");
 
 
 	//course selection values
