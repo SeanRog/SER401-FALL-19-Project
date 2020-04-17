@@ -1,54 +1,35 @@
-/*
- * StudentsToProjects.cpp
+/*	StudentsToProjects.cpp
  *
- * Description:
+ * 	Description:
  *		This class is for the assignment of students to projects. It contains various scoring, helper and check
  *		functions to assist the main function StudentsToProjectsAssignment(). The main function finds all the possible
  *		team combinations for each project, stores a certain number of top teams, finds the horizontal mapping of those
  *		teams to projects with the least amount of duplicates, and then swaps the duplicates with the best replacement student.
  *
  *
- * List of Functions:
- *
- *		StudentsToProjects() - constructor
- *
- *		~StudentsToProjects() - destructor
- *
- *		void StudentsToProjectsAssignment(Student studentPool[],
- *				Project projectPool[],const int numStudents,const int numProjects, const int numSkills,
- *				const int teamSize,const int numTopTeams)  -  a function to assign the students to projects.
- *
- *		void updateProgressBar(int value, Fl_Progress* pW); - a function to update the progress bar.
- *
- *		bool NegativeAffinityCheck(Student team[5]) - a function to check a student team to see if their is any negative affinity.
- *
- *		int getDuplicatesOfStudents(Team currentSet[], int size) - a function to find the number of duplicate students in a set of teams.
- *
- *		int AvailabilityTeamScore(Student team[5]) - a function to compare the availability of students on a team, returns a score 0-20.
- *
- *		int SkillCompareTeamScore(int studentSkills[5]) - a function to compare the skills of students on a team, returns a score 0-40.
- *
- *	    int ProjectCompareTeamScore( int studentSkills[5], int maxProjectScore)- a function to compare the student's skills to the project,
- *	    																		returns a score 0-40.
- *
- *		int StudentToStudentSkill( int skillsum1, int skillsum2)  - a helper function for SkillCompareTeamScore.
- *
- *		int StudentToStudentAvailibility(Student s1, Student s2)  - a helper function for AvailabilityTeamScore.
- *
- *		int parseLine(char* line) - a function to monitor system memory usage
- *
- *		int getValuePhy() - a function to monitor system memory usage
- *
- *		int getValueVirt() - a function to monitor system memory usage
- *
- *		constexpr int toConstInt(int constInt) - a function to convert an int to a constant
- *
  *  Copyright (C) 2020 ASU
  *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
  *	initial idea contributed by Douglas Sandy, All rights reserved
- *
  */
 
+#include <FL/Fl.H>
+#include <FL/Fl_Progress.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Widget.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Text_Buffer.H>
+#include <iostream>
+#include <vector>
+#include <thread>
+#include <array>
+#include <chrono>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <mutex>
+#include <bits/stdc++.h>
+#include "sys/types.h"
+#include "sys/sysinfo.h"
 #include "StudentsToProjects.h"
 #include "Project.h"
 #include "Student.h"
@@ -60,58 +41,28 @@
 #include "GUIStyles.h"
 #include "main.h"
 
-#include <FL/Fl.H>
-#include <FL/Fl_Progress.H>
-#include <FL/Fl_Window.H>
-#include <FL/Fl_Widget.H>
-#include <FL/Fl_Box.H>
-#include <FL/Fl_Text_Buffer.H>
-
-#include <iostream>
-#include <vector>
-#include <thread>
-#include <array>
-#include <chrono>
-#include <algorithm>
-#include <fstream>
-#include <string>
-#include <mutex>
-
-#include <bits/stdc++.h>
-#include "sys/types.h"
-#include "sys/sysinfo.h"
-
 using namespace std;
 using namespace std::chrono;
+
 int ResultWindow::permutations = 0;
 int ResultWindow::swaps = 0;
 int ResultWindow::project_pool[5][200] = { };
+int progressBarValue = 0;
 vector<Team> ResultWindow::studentTeams;
-//mutex mtx;
+Fl_Window *backWindow3;
 
-//Constructor
-StudentsToProjects::StudentsToProjects() {
-}
-//Destructor
-StudentsToProjects::~StudentsToProjects() {
-}
-
+StudentsToProjects::StudentsToProjects() {}
+StudentsToProjects::~StudentsToProjects() {}
 //Function to convert integers into constant expressions.
-constexpr int StudentsToProjects::toConstInt(int constInt) {
-	return constInt;
-}
+constexpr int StudentsToProjects::toConstInt(int constInt) {return constInt;}
+void OkClick3(Fl_Widget *w) {exit(1);}
 
 /*********************************************************
- * parseLine
- *
- * Author: Sean Rogers
- *
- * Description:
- *
- *Arguments:
- *	char* line
- *Returns:
- *  integer value.
+ *	parseLine(char *line)
+ * 	Author: Sean Rogers
+ * 	Description: Used to measure system memory usage
+ *	Arguments: char* line
+ *	Returns: integer value.
  */
 int StudentsToProjects::parseLine(char *line) {
 	// This assumes that a digit will be found and the line ends in " Kb".
@@ -125,23 +76,16 @@ int StudentsToProjects::parseLine(char *line) {
 }
 
 /*********************************************************
- * getValuePhy
- *
- * Author: Sean Rogers
- *
- * Description:
- *    Gets the physical memory usage of the program
- *
- *Arguments:
- *	nothing
- *Returns:
- *  integer value.
+ * 	getValuePhy()
+ * 	Author: Sean Rogers
+ * 	Description: Gets the physical memory usage of the program
+ *	Arguments: nothing
+ *	Returns: integer value.
  */
 int StudentsToProjects::getValuePhy() { //Note: this value is in KB!
 	FILE *file = fopen("/proc/self/status", "r");
 	int result = -1;
 	char line[128];
-
 	while (fgets(line, 128, file) != NULL) {
 		if (strncmp(line, "VmRSS:", 6) == 0) {
 			result = parseLine(line);
@@ -153,23 +97,16 @@ int StudentsToProjects::getValuePhy() { //Note: this value is in KB!
 }
 
 /*********************************************************
- * getValueVirt
- *
- * Author: Sean Rogers
- *
- * Description:
- *   Gets the virtual memory usage of the program
- *
- *Arguments:
- *	nothing
- *Returns:
- *  integer value.
+ * 	getValueVirt()
+ * 	Author: Sean Rogers
+ * 	Description: Gets the virtual memory usage of the program
+ *	Arguments: nothing
+ *	Returns: integer value.
  */
 int StudentsToProjects::getValueVirt() { //Note: this value is in KB!
 	FILE *file = fopen("/proc/self/status", "r");
 	int result = -1;
 	char line[128];
-
 	while (fgets(line, 128, file) != NULL) {
 		if (strncmp(line, "VmSize:", 7) == 0) {
 			result = parseLine(line);
@@ -180,23 +117,14 @@ int StudentsToProjects::getValueVirt() { //Note: this value is in KB!
 	return result;
 }
 
-int progressBarValue = 0;
-
 /*********************************************************
- * updateProgressBar
- *
- * Author: Sean Rogers
- *
- * Description:
- *   updates the progress bar in the GUI window.
- *
- *Arguments:
- *	int num, Fl_Progress* pb
- *Returns:
- *  integer value.
+ * 	updateProgressBar(int num, Fl_Progress *pb)
+ * 	Author: Sean Rogers
+ * 	Description: Updates the progress bar in the GUI window.
+ *	Arguments: int num, Fl_Progress* pb
+ *	Returns:integer value.
  */
 void StudentsToProjects::updateProgressBar(int num, Fl_Progress *pb) {
-
 	progressBarValue += pb->value() + num;
 	pb->value(progressBarValue / 100.0);
 	char percent[10];
@@ -204,193 +132,159 @@ void StudentsToProjects::updateProgressBar(int num, Fl_Progress *pb) {
 	pb->label(percent);
 	pb->redraw();
 	Fl::check();
-
-}
-
-Fl_Window *backWindow3;
-void OkClick3(Fl_Widget *w) {
-
-	exit(1);
-	//backWindow3->hide();
-
-	//gtk_main_quit();
 }
 
 /*********************************************************
- * StudentsToProjectsAssignment
+ * 	StudentsToProjectsAssignment
  *
- *Authors: Sean, Myles, Matthew, Cristi
+ *	Authors: Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers
+ *	Description:
+ *		This function assigns the students taken in, to the projects taken in.
+ *  	It finds all the possible team combinations for all the students, for each project.
+ *  	It stores the top number of teams (user specified) for all the combinations for each project.
+ *  	Then, based on those top teams it finds the combination of combinations of the horizontal mapping
+ *  	of teams to the projects. It stores the highest scoring teams to projects set, that has no duplicate
+ *  	students. If this can not be found, it stores the highest scoring teams to projects set, with the least
+ *  	amount of duplicate students. It then swaps out the duplicate students, with the highest scoring replacement
+ *  	student for that project, making sure that there is no negative affinity on the team.
  *
- *Description:
- *  This function assigns the students taken in, to the projects taken in.
- *  It finds all the possible team combinations for all the students, for each project.
- *  It stores the top number of teams (user specified) for all the combinations for each project.
- *  Then, based on those top teams it finds the combination of combinations of the horizontal mapping
- *  of teams to the projects. It stores the highest scoring teams to projects set, that has no duplicate
- *  students. If this can not be found, it stores the highest scoring teams to projects set, with the least
- *  amount of duplicate students. It then swaps out the duplicate students, with the highest scoring replacement
- *  student for that project, making sure that there is no negative affinity on the team.
+ *	Arguments:
+ *		Student studentPool[],
+ *		Project projectPool[],
+ *		const int numStudents,
+ *		const int numProjects,
+ *		const int numSkills,
+ *		const int teamSize,
+ *		const int numTopTeams,
+ *		Fl_Progress *progressBar,
+ *		int progressIncrement,
+ *		Fl_Text_Buffer *terminal,
+ *		int officialClassID)
  *
- *Arguments:
- *	Student studentPool[], Project projectPool[], const int numStudents,const int numProjects,
- *	const int numSkills, const int teamSize,const int numTopTeams
- *
- *Returns:
- *	void
+ *	Returns: void
  *
  *	NOTES:
  *		For the combination of combinations of the horizontal mapping of student teams to projects,
  *		research code was found here:https://www.geeksforgeeks.org/combinations-from-n-arrays-picking-one-element-from-each-array/
  *		This was used as a reference when completing this portion of the function.
- *
  */
-string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
-		Project projectPool[], const int numStudents, const int numProjects,
-		const int numSkills, const int teamSize, const int numTopTeams,
-		Fl_Progress *progressBar, int progressIncrement,
-		Fl_Text_Buffer *terminal, int officialClassID) {
-
+string StudentsToProjects::StudentsToProjectsAssignment(
+		Student studentPool[],
+		Project projectPool[],
+		const int numStudents,
+		const int numProjects,
+		const int numSkills,
+		const int teamSize,
+		const int numTopTeams,
+		Fl_Progress *progressBar,
+		int progressIncrement,
+		Fl_Text_Buffer *terminal,
+		int officialClassID)
+	{
 	string result = "";
-
-	//timer to keep track of program runtime
 	auto start = high_resolution_clock::now();
 	srand(time(NULL));
-
-	//constants
 	const int TOP_TEAMS = toConstInt(numTopTeams);
 	const int TEAM_SIZE = toConstInt(5);
 	int PxSskill_size = numStudents * numProjects;
 	const int PROJECTXSTUDETNSKILL_SIZE = toConstInt(PxSskill_size);
-
-	//used to store the current team combinaniton.
+	Utility util;
+	//	currentTeam and temp used to store the current team combination.
 	Team currentTeam;
 	Team temp;
-	//temp.TeamScore = 0;
-
-	//used to store the top teams for every project.
+	//	currentTopTeams used to store the top teams for every project.
 	Team currentTopTeams[TOP_TEAMS];
-
-	//array to store checks for the top scores.
+	//	topscores array to store checks for the top scores.
 	int topscores[TOP_TEAMS];
-
-	//initialize arrays to 0,
+	//	initialize arrays to 0,
 	for (int j = 0; j < TOP_TEAMS; j++) {
 		currentTopTeams[j] = temp;
 		topscores[j] = 0;
 	}
-
-	//2d array to store the top teams for every project
+	//	topTeams - 2d array to store the top teams for every project
 	Team topTeams[numProjects][TOP_TEAMS];
-
-	//variable to store the team's skill score
+	//	teamskillscore variable to store the team's skill score
 	int teamskillscore = 0;
-	//counter to keep track of students on a team
+	//	num counter to keep track of students on a team
 	int num = 0;
-
-	//------------------Do skill calculations for the student pool and the project pool.
-
-	//give each student a PoolID.
-	//and fill in skill sum score
+	//	Do skill calculations for the student pool and the project pool.
+	//	give each student a PoolID and fill in skill sum score
 	int studentSkillSums[numStudents];
 	for (int i = 0; i < numStudents; i++) {
 		studentPool[i].PoolID = i;
 		studentPool[i].Assigned = false;
-		//studentPool[i] = *(studentPool+i);
+		//	studentPool[i] = *(studentPool+i);
 		studentSkillSums[i] = 0;
 		for (int j = 0; j < numSkills; j++) {
 			studentSkillSums[i] += studentPool[i].Skills[j];
 		}
 	}
-
-	//give each project a PoolID
-	//Calculate max skill score for each project.
+	//	give each project a PoolID
+	//	Calculate max skill score for each project.
 	int maxProjectSkills[numProjects];
 	int maxProjectScore = 0;
 	for (int i = 0; i < numProjects; i++) {
 		projectPool[i].PoolID = i;
 		maxProjectSkills[i] = 0;
-
 		for (int j = 0; j < numSkills; j++) {
 			maxProjectScore += projectPool[i].Skills[j] * 4;
 		}
 		maxProjectSkills[i] = maxProjectScore * TEAM_SIZE;
 		maxProjectScore = 0;
 	}
-
-	//get project skill X student skill matrix
+	//	get project skill X student skill matrix
 	int ProjectXStudentSkills[PROJECTXSTUDETNSKILL_SIZE];
-
-	Utility util;
-	util.initProjectStudentSkills(projectPool, studentPool,
-			ProjectXStudentSkills, numProjects, numStudents, numSkills);
-
-	//skillSums stores the sum of each students skills(based on a project) on a given team.
+	util.initProjectStudentSkills(projectPool, studentPool, ProjectXStudentSkills, numProjects, numStudents, numSkills);
+	//	skillSums stores the sum of each students skills(based on a project) on a given team.
 	int skillSums[TEAM_SIZE];
-	//studentSkills stores the sum of each students skills(of all thier skills) on a given team.
+	//	studentSkills stores the sum of each students skills(of all thier skills) on a given team.
 	int studentSkills[TEAM_SIZE];
 	for (int i = 0; i < TEAM_SIZE; i++) {
 		studentSkills[i] = 0;
 		skillSums[i] = 0;
 	}
-//------------------------end skill calculations
-
-	//START--------------Team Combination process to find every student team combination for each project
-//	cout << "STUDENTS TO PROJECTS ASSIGNMENT RUNNING..." << endl;
-//	cout << getValueVirt() + getValuePhy()
-//			<< " KB of memory usage: Start of Assignment" << endl;
-
+	//	end skill calculations
+	//	START Team Combination process to find every student team combination for each project
 	for (int i = 0; i < numProjects; i++) {
-
-		//new combination process
+		//	new combination process
 		int studentIndexes[teamSize];
 		for (int i = 0; i < teamSize; i++) {
 			studentIndexes[i] = i + 1;
 		}
 		int indexToIncrement = teamSize - 1;
 		bool permuting = true;
-
-		//creates the combination of student teams
+		// creates the combination of student teams
 		while (permuting) {
 			for (int j = 0; j < teamSize; j++) {
-				//adds the student to the team for each combination
+				//	adds the student to the team for each combination
 				currentTeam.team[num] = studentPool[studentIndexes[j] - 1];
-				studentSkills[num] = *(ProjectXStudentSkills + (i * numStudents)
-						+ currentTeam.team[num].PoolID);
+				studentSkills[num] = *(ProjectXStudentSkills + (i * numStudents) + currentTeam.team[num].PoolID);
 				skillSums[num] = studentSkillSums[currentTeam.team[num].PoolID];
 				num++;
-				//following commented out portion is for debugging purposes,
-				//for(int k = 0; k < numSkills; k++) {
+				//	following commented out portion is for debugging purposes,
+				//	for(int k = 0; k < numSkills; k++) {
 				//	teamskillscore += studentPool[studentIndexes[j] - 1].Skills[k] * projectPool[i].Skills[k];
-				//}
 				mtx.lock();
 				ResultWindow::permutations++;
 				mtx.unlock();
 			}
-			//----Now the team for this combination is formed.-----
-
-			//Negative Affinity Check and NDA/IPR agreement check
-			//
-			//Continues if there is no negative affinity between any of the members, AND
-			//all the students agree to sign an NDA or IPR if the project requires it.
-			//otherwise, the current team combination is skipped.
-
-			if ((NegativeAffinityCheck(currentTeam.team) == false)
-					&& (NDA_IPRCheck(currentTeam.team, projectPool[i]) == true)) {
-
-				//call to 3 team score functions
-				//TeamScore = func1() + func2() + func3()
+			//	Now the team for this combination is formed.
+			//	Negative Affinity Check and NDA/IPR agreement check
+			//	Continues if there is no negative affinity between any of the members, AND
+			//	all the students agree to sign an NDA or IPR if the project requires it.
+			//	otherwise, the current team combination is skipped.
+			if ((NegativeAffinityCheck(currentTeam.team) == false) && (NDA_IPRCheck(currentTeam.team, projectPool[i]) == true)) {
+				//	call to 3 team score functions
+				//	TeamScore = func1() + func2() + func3()
 				teamskillscore = ProjectCompareTeamScore(studentSkills,
 						maxProjectSkills[i]) + SkillCompareTeamScore(skillSums)
 						+ AvailabilityTeamScore(currentTeam.team);
-
 				currentTeam.TeamScore = teamskillscore;
 				currentTeam.projectID = projectPool[i].ProjectID;
-
-				//loop to compare the new team's score to the top scores.
+				// loop to compare the new team's score to the top scores.
 				for (int k = 0; k < TOP_TEAMS; k++) {
 					if (k == 0) {
 						if (currentTeam.TeamScore > topscores[k]) {
-
 							for (int h = (TOP_TEAMS - 1); h > k; h--) {
 								currentTopTeams[h] = currentTopTeams[h - 1];
 								topscores[h] = currentTopTeams[h].TeamScore;
@@ -398,13 +292,10 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 							topscores[k] = currentTeam.TeamScore;
 							currentTopTeams[k] = currentTeam;
 							break;
-
 						}
 					} else {
 						if (k != TOP_TEAMS - 1) {
-							if (currentTeam.TeamScore == topscores[k - 1]
-									|| currentTeam.TeamScore > topscores[k]) {
-
+							if (currentTeam.TeamScore == topscores[k - 1] || currentTeam.TeamScore > topscores[k]) {
 								for (int h = (TOP_TEAMS - 1); h > k; h--) {
 									currentTopTeams[h] = currentTopTeams[h - 1];
 									topscores[h] = currentTopTeams[h].TeamScore;
@@ -416,57 +307,40 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 						} else {
 							if (currentTeam.TeamScore == topscores[k - 1]
 									|| currentTeam.TeamScore > topscores[k]) {
-
 								if (currentTeam.TeamScore == topscores[k]
 										&& currentTopTeams[k].TeamScore != 0) {
-									if (PositiveAffinityCheck(currentTeam.team)
-											> PositiveAffinityCheck(
-													currentTopTeams[k].team)) {
-
-										for (int h = (TOP_TEAMS - 1); h > k;
-												h--) {
-											currentTopTeams[h] =
-													currentTopTeams[h - 1];
-											topscores[h] =
-													currentTopTeams[h].TeamScore;
+									if (PositiveAffinityCheck(currentTeam.team)> PositiveAffinityCheck(currentTopTeams[k].team)) {
+										for (int h = (TOP_TEAMS - 1); h > k; h--) {
+											currentTopTeams[h] = currentTopTeams[h - 1];
+											topscores[h] = currentTopTeams[h].TeamScore;
 										}
-
 										topscores[k] = currentTeam.TeamScore;
 										currentTopTeams[k] = currentTeam;
 										break;
 									} else {
 										break;
 									}
-
 								} else {
 									for (int h = (TOP_TEAMS - 1); h > k; h--) {
-										currentTopTeams[h] = currentTopTeams[h
-												- 1];
-										topscores[h] =
-												currentTopTeams[h].TeamScore;
+										currentTopTeams[h] = currentTopTeams[h-1];
+										topscores[h] =currentTopTeams[h].TeamScore;
 									}
-
 									topscores[k] = currentTeam.TeamScore;
 									currentTopTeams[k] = currentTeam;
 									break;
 								}
-
 							}
 						}
-
 					}
 				}
-
-			}        				//end affinity check
-
-			//reset these values for the next team combination
+			}
+			// end affinity check
+			// reset these values for the next team combination
 			num = 0;
 			teamskillscore = 0;
 			currentTeam.TeamScore = 0;
-
 			studentIndexes[indexToIncrement]++;
-			while (studentIndexes[indexToIncrement]
-					== numStudents - ((teamSize - 1) - (indexToIncrement + 1))) {
+			while (studentIndexes[indexToIncrement] == numStudents - ((teamSize - 1) - (indexToIncrement + 1))) {
 				indexToIncrement--;
 				if (indexToIncrement < 0) {
 					permuting = false;
@@ -477,59 +351,48 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 			}
 			while (indexToIncrement < teamSize - 1 && permuting) {
 				indexToIncrement++;
-				studentIndexes[indexToIncrement] =
-						studentIndexes[indexToIncrement - 1] + 1;
+				studentIndexes[indexToIncrement] = studentIndexes[indexToIncrement - 1] + 1;
 			}
-		}        				//return to create the next team combination
-
-		//for each iteration over the number of projects, add in the top teams for that project into
-		//the top teams 2d array.
+		}
+		//	return to create the next team combination
+		//	for each iteration over the number of projects, add in the top teams for that project into
+		//	the top teams 2d array.
 		for (int j = 0; j < TOP_TEAMS; j++) {
-			//currentTopTeams[j].projectID = projectPool[i].ProjectID;
 			topTeams[i][j] = currentTopTeams[j];
 			topTeams[i][j].project = projectPool[i];
 			topscores[j] = 0;
 		}
 		mtx.lock();
-		cout
-				<< "Project # " + to_string(projectPool[i].ProjectID)
-						+ "  team combinations complete. " << endl;
-
-		//output to the GUI
-		string output = +"Top 5 team combinations found for Project #"
-				+ to_string(projectPool[i].ProjectID) + "\n";
+		cout << "Project # " + to_string(projectPool[i].ProjectID) + "  team combinations complete. " << endl;
+		//	output to the GUI
+		string output = +"Top 5 team combinations found for Project #" + to_string(projectPool[i].ProjectID) + "\n";
 		int length = output.length();
 		char output_char[length + 1];
 		strcpy(output_char, output.c_str());
-		//terminal->append(output_char);
 		char *text = terminal->text();
 		terminal->text("");
 		terminal->append(output_char);
 		terminal->append(text);
 		mtx.unlock();
+	}
+	// end i loop (for each project)
 
-	} // end i loop (for each project)
+	//	END Team Combination process
 
-	//END---------------------Team Combination process
-
-	//update the progress bar
+	//	update the progress bar
 	mtx.lock();
 	updateProgressBar(progressIncrement * (0.35), progressBar);
 	mtx.unlock();
-	//CHECK TO SEE IF THERE ARE NO TEAMS IN THE TopTeams ARRAY.
-	//if there are no teams, that means that there was most likely negative affinity
-	//in every possible combination of student teams for these projects.
+	//	CHECK TO SEE IF THERE ARE NO TEAMS IN THE TopTeams ARRAY.
+	//	if there are no teams, that means that there was most likely negative affinity
+	//	in every possible combination of student teams for these projects.
 	for (int i2 = 0; i2 < numProjects; i2++) {
 		if (topTeams[i2][0].TeamScore == 0) {
 			mtx.lock();
-			cout
-					<< "ERROR: NO TEAMS COULD BE FORMED---------------!!!!!!!!!!!!!!!!!!!"
-					<< endl;
-			//exit(1);
+			cout << "ERROR: NO TEAMS COULD BE FORMED---------------!!!!!!!!!!!!!!!!!!!" << endl;
 			for (int proj = 0; proj < numProjects; proj++) {
 				for (int f = 0; f < TOP_TEAMS; f++) {
 					cout << topTeams[proj][f].TeamScore << endl;
-
 					cout << "Project ID from project= "
 							<< topTeams[proj][f].project.ProjectID
 							<< " ID from ID: " << topTeams[proj][f].projectID
@@ -541,39 +404,29 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 								<< topTeams[proj][f].team[h].name << endl;
 						cout << "Skills:" << endl;
 						for (int d = 0; d < numSkills; d++) {
-
 							cout << topTeams[proj][f].team[h].Skills[d] << " ";
-
 						}
 					}
 				}
 				cout << " " << endl;
 			}
-
-			backWindow3 = new Fl_Window(650, 220,
-					"Capstone Team Assignment System");
+			backWindow3 = new Fl_Window(650, 220,"Capstone Team Assignment System");
 			backWindow3->begin();
-
 			Fl_Box promptBox1(0, 10, 650, 50, "ATTENTION!");
 			promptBox1.align(FL_ALIGN_CENTER);
 			promptBox1.labelsize(40);
-
 			Fl_Box promptBox2(50, 70, 550, 20, "No teams could be formed!");
 			promptBox2.align(FL_ALIGN_CENTER);
 			promptBox2.labelsize(20);
 			promptBox2.labelfont(FL_HELVETICA_BOLD_ITALIC);
-
-			Fl_Box promptBox3(50, 90, 550, 20,
-					"Could not find any team combinations for 1 or more projects.");
+			Fl_Box promptBox3(50, 90, 550, 20, "Could not find any team combinations for 1 or more projects.");
 			promptBox3.align(FL_ALIGN_CENTER);
 			promptBox3.labelsize(20);
 			promptBox3.labelfont(FL_HELVETICA);
-
 			Fl_Box promptBox4(50, 110, 550, 20, "The system will now exit.");
 			promptBox4.align(FL_ALIGN_CENTER);
 			promptBox4.labelsize(20);
 			promptBox4.labelfont(FL_HELVETICA);
-
 			Fl_Button OkButton(225, 150, 175, 50, "OK");
 			OkButton.color(ASU_WHITE);
 			OkButton.labelfont(FL_HELVETICA);
@@ -581,104 +434,79 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 			OkButton.labelsize(15);
 			OkButton.selection_color(ASU_MAROON);
 			OkButton.callback(OkClick3);
-
 			backWindow3->color(ASU_GOLD);
 			backWindow3->box(FL_BORDER_BOX);
 			backWindow3->resizable(promptBox1);
 			backWindow3->end();
 			backWindow3->show();
-
 			Fl::run();
-
 			mtx.unlock();
-
 		}
 	}
 
-	// START--------------------Project Set combinations
-
-	// START -Project Set combinations here
-	//cout << "TOP TEAMS TO PROJECTS SET RUNNING..." << endl;
-
-	//Needed variables
-	//holds the current set of teams.
+	// 	START Project Set combinations
+	//	Needed variables holds the current set of teams.
 	Team currentSet[numProjects];
-	//holds the current best set(with the least duplicates)
+	//	holds the current best set(with the least duplicates)
 	Team bestSet[numProjects];
-
 	Team temp2;
-
 	int teamNum = 0;
 	int topscore = 0;
-	//stores the score for currentSet[]
+	//	stores the score for currentSet[]
 	int ProjectSetScore = 0;
-	//holds the score for bestSet[]
+	//	holds the score for bestSet[]
 	int BestProjectSetScore = 0;
-
-	//this stores the number of duplicates in the
-	//first set, and is used as the threshold value.
+	//	this stores the number of duplicates in the
+	//	first set, and is used as the threshold value.
 	int threshold = 0;
-	//stores the number of duplicate students in the current set.
+	//	stores the number of duplicate students in the current set.
 	int duplicateCount = 0;
-	//flag to indicate if the current set has less duplicates than the threshold.
+	//	flag to indicate if the current set has less duplicates than the threshold.
 	bool flag = false;
-
-	//populate arrays with temp team values
+	//	populate arrays with temp team values
 	for (int i = 0; i < numProjects; i++) {
 		currentSet[i] = temp2;
 		bestSet[i] = temp2;
 	}
-
-	// to keep track of next element in each of
-	// the n arrays
-	//int* indices = new int[numProjects];
+	// 	to keep track of next element in each of
+	// 	the n arrays
+	//	int* indices = new int[numProjects];
 	int indices[numProjects];
-	// initialize with first element's index
+	// 	initialize with first element's index
 	for (int i = 0; i < numProjects; i++) {
 		indices[i] = 0;
 	}
-
-	//Find the duplicate student threshold (the number of duplicates in the first set)
+	//	Find the duplicate student threshold (the number of duplicates in the first set)
 	for (int i = 0; i < numProjects; i++) {
 		currentSet[teamNum] = topTeams[i][indices[i]];
 		threshold = getDuplicatesOfStudents(currentSet, i + 1);
 		ProjectSetScore += topTeams[i][indices[i]].TeamScore;
 		teamNum++;
 	}
-
-	//cout << "Number of duplicates Threshold : " << threshold << endl;
-	//reset values
+	//	reset values
 	topscore = ProjectSetScore;
 	ProjectSetScore = 0;
 	teamNum = 0;
-
 	while (1) {
-		//adds a team from each top team array to the project Set.
+		//	adds a team from each top team array to the project Set.
 		for (int i = 0; i < numProjects; i++) {
-
 			currentSet[teamNum] = topTeams[i][indices[i]];
-
 			ProjectSetScore += topTeams[i][indices[i]].TeamScore;
 			teamNum++;
-
 		}
 		// return number of duplicates in currentSet
 		duplicateCount = getDuplicatesOfStudents(currentSet, numProjects);
-		//if the current set has more duplicates than the threshold,
-		//end the loop.
+		//	if the current set has more duplicates than the threshold,
+		//	end the loop.
 		if (duplicateCount > threshold) {
 			flag = true;
-
 		}
-
 		if (flag == false) {
-			//Project teams combination formed,
-
-			//if duplicate student check == 0.
-			//check value against topUnique score
+			//	Project teams combination formed,
+			//	if duplicate student check == 0.
+			//	check value against topUnique score
 			if (duplicateCount == threshold) {
 				if (ProjectSetScore >= topscore) {
-
 					for (int i = 0; i < numProjects; i++) {
 						bestSet[i] = currentSet[i];
 						BestProjectSetScore = ProjectSetScore;
@@ -686,7 +514,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 					}
 				}
 			} else {
-				//new threshold
+				//	new threshold
 				threshold = duplicateCount;
 				for (int i = 0; i < numProjects; i++) {
 					bestSet[i] = currentSet[i];
@@ -694,60 +522,46 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 					topscore = BestProjectSetScore;
 				}
 			}
-		}        	    //end if flag
-
-		//reset values
+		}
+		//	end if flag
+		//	reset values
 		teamNum = 0;
 		ProjectSetScore = 0;
 		duplicateCount = 0;
 		flag = false;
-
 		int next = numProjects - 1;
 		while (next >= 0 && (indices[next] + 1 >= TOP_TEAMS))
 			next--;
-
 		// no such array is found so no more
 		// combinations left
 		if (next < 0) {
 			break;
 		}
-
 		indices[next]++;
-
 		for (int i = next + 1; i < numProjects; i++) {
 			indices[i] = 0;
 		}
 	}
+	// 	END -Project Set combinations
 
-	// END -Project Set combinations
-
-// END -------------------Project Set combinations
-
-	//update the progress bar
+	//	update the progress bar
 	mtx.lock();
 	updateProgressBar(progressIncrement * (0.65), progressBar);
-
-	//Print out all the top teams with team scores for each project.
+	//	Print out all the top teams with team scores for each project.
 	cout << "Top " << TOP_TEAMS << " teams for each project" << endl;
-
 	for (int i = 0; i < numProjects; i++) {
 		Project project = *(projectPool + i);
-		cout << "Projects #" + to_string(project.ProjectID) + " Student Teams:"
-				<< endl;
+		cout << "Projects #" + to_string(project.ProjectID) + " Student Teams:" << endl;
 		for (int j = 0; j < TOP_TEAMS; j++) {
-
 			cout << "Team #" + to_string(j) + " ";
 			for (int k = 0; k < teamSize; k++) {
-
 				cout << to_string(topTeams[i][j].team[k].StudentID) + " ";
-
 			}
 			cout << endl;
 			cout << "TeamScore: " + to_string(topTeams[i][j].TeamScore) << endl;
 		}
 		cout << endl;
 	}
-
 	//Prints out the best project set found.
 	cout << endl;
 	cout << "Best Project Set with duplicates " << endl;
@@ -762,57 +576,45 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	}
 	cout << "Best Project Set score: " << BestProjectSetScore << endl;
 	cout << "Number of Duplicate Students: " << threshold << endl;
-
 	mtx.unlock();
-// START -------------------Duplicate Student Swapping
-
-	//set the assigned attribute for all the students on the bestSet to true.
+	// 	START Duplicate Student Swapping
+	//	set the assigned attribute for all the students on the bestSet to true.
 	for (int i = 0; i < numProjects; i++) {
 		for (int j = 0; j < TEAM_SIZE; j++) {
 			bestSet[i].team[j].Assigned = true;
 			studentPool[bestSet[i].team[j].PoolID] = bestSet[i].team[j];
 		}
 	}
-
-	//find all the students who have not been assigned.
-	//get the number of unassigned students.
+	//	find all the students who have not been assigned.
+	//	get the number of unassigned students.
 	int count = 0;
 	for (int i = 0; i < numStudents; i++) {
 		if (studentPool[i].Assigned == false) {
 			count++;
 		}
 	}
-
 	int num_assigned = numStudents - count;
 	const int NUM_UNASSIGNED = toConstInt(count);
-
-	//cout << "Assigned Students : " << num_assigned << endl;
-	//cout << "UnAssigned Students : " << count << endl;
-
-	//Find the number of placeholder students that we will need
+	//	Find the number of placeholder students that we will need
 	int numPlaceholderStudents = util.NumOfTeamsOf4(numStudents, teamSize);
-
-	//reserve pool of students
+	//	reserve pool of students
 	vector<Student> reserveStudents;
-
 	for (int i = 0; i < numStudents; i++) {
 		if (studentPool[i].Assigned == false) {
 			//(array version) reservePool[element] = studentPool[i];
 			reserveStudents.push_back(studentPool[i]);
 		}
 	}
-
-	//add in fake students.
+	//	add in fake students.
 	vector<Student> fakeStudents;
 	for (int i = 0; i < numPlaceholderStudents; i++) {
 		Student fakeStudent;
 		fakeStudent.StudentID = 99999;
 		fakeStudent.StID = 99999;
 		fakeStudent.PoolID = numStudents + i;
-		//reserveStudents.push_back(fakeStudent);
+		//	reserveStudents.push_back(fakeStudent);
 		fakeStudents.push_back(fakeStudent);
 	}
-
 	//if number of teams of 4 needed is the same as the number of projects,
 	//swap a fake student into the first team
 	int minTeamCount = 0;
@@ -826,20 +628,16 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	}
 	if (numProjects == 1) {
 	} else {
-
-		///-------swapping mechanism------
-
+		// swapping mechanism
 		int numDuplicates = 0;
 		int toptempscore = 0;
 		int tempBestStudent;
-
-		//array to store all the unique student IDs in bestSet
+		//	array to store all the unique student IDs in bestSet
 		int uniqueStudents[num_assigned];
-
 		for (int k = 0; k < num_assigned; k++) {
 			uniqueStudents[k] = -1;
 		}
-		//fill unique students with the students in the first team.
+		//	fill unique students with the students in the first team.
 		if (minTeamCount == 1) {
 			for (int i = 0; i < 4; i++) {
 				uniqueStudents[i] = bestSet[0].team[i].StudentID;
@@ -848,41 +646,33 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 			for (int i = 0; i < 5; i++) {
 				uniqueStudents[i] = bestSet[0].team[i].StudentID;
 			}
-
 		}
-
 		int num1 = TEAM_SIZE;
 		int num2 = 0;
 		bool isduplicate = false;
 		bool fakeST = false;
 		bool fakeSTNeeded = true;
 		bool DuplicateFound = false;
-
 		for (int i = 1; i < numProjects; i++) {
-
 			fakeST = false;
 			if (minTeamCount == numPlaceholderStudents) {
 				fakeSTNeeded = false;
 			} else {
 				fakeSTNeeded = true;
 			}
-
-			//Get the project that the current team is assigned to.
+			//	Get the project that the current team is assigned to.
 			Project CurrentProject;
 			for (int x = 0; x < numProjects; x++) {
 				if (bestSet[x].projectID == projectPool[x].ProjectID) {
 					CurrentProject = projectPool[x];
-					//assign a class ID to this team.
+					//	assign a class ID to this team.
 					bestSet[x].ClassID = projectPool[x].ClassID;
 					bestSet[x].project = CurrentProject;
-
 				}
 			}
-
-			//Get a list of the reserve students, along with their skill score for that project.
+			//	Get a list of the reserve students, along with their skill score for that project.
 			vector<pair<int, int>> replacements;
 			for (int x = 0; x < reserveStudents.size(); x++) {
-
 				pair<int, int> temp =
 						{ *(ProjectXStudentSkills
 								+ (CurrentProject.PoolID * numStudents)
@@ -890,103 +680,56 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 								reserveStudents[x].PoolID };
 				replacements.push_back(temp);
 			}
-
-			//sort based on the first pair element, (the reserve students skill score for that project.)
+			//	sort based on the first pair element, (the reserve students skill score for that project.)
 			sort(replacements.begin(), replacements.end(), greater<>());
-
-			//J loop for each student in the current team.
+			//	J loop for each student in the current team.
 			for (int j = 0; j < 5; j++) {
-
-				//K loop to check each J student against all the unique students to find a duplicate.
+				//	K loop to check each J student against all the unique students to find a duplicate.
 				for (int k = 0; k < num1; k++) {
-
-					//If a duplicate is found, find the best replacement student,
-					//and swap that student into the team.
+					//	If a duplicate is found, find the best replacement student,
+					//	and swap that student into the team.
 					if (uniqueStudents[k] == bestSet[i].team[j].StudentID) {
 						numDuplicates++;
 						isduplicate = true;
 						DuplicateFound = true;
-
 						for (int x = 0; x < replacements.size(); x++) {
-							//replace the duplicate with the highest scoring student
-							//for the current project, who is not already assigned.
+							//	replace the duplicate with the highest scoring student
+							//	for the current project, who is not already assigned.
 							//	int bestTeamScore = 0;
 							//	int bestStudentNum = 0;
-
-							//check if fake student is needed.
+							//	check if fake student is needed.
 							if (fakeSTNeeded == true) {
 								if (minTeamCount < numPlaceholderStudents) {
-
-									bestSet[i].team[j] =
-											fakeStudents[minTeamCount];
-									fakeStudents.erase(
-											fakeStudents.begin()
-													+ minTeamCount);
-									bestSet[i].team[j].ProjectID =
-											CurrentProject.ProjectID;
+									bestSet[i].team[j] = fakeStudents[minTeamCount];
+									fakeStudents.erase(fakeStudents.begin() + minTeamCount);
+									bestSet[i].team[j].ProjectID = CurrentProject.ProjectID;
 									minTeamCount++;
 									fakeSTNeeded = false;
 									break;
 								}
 							}
-
-							/*	//find the best student, that gives this team the highest score.
-							 for (int z = 0; z < replacements.size(); z++) {
-							 bestSet[i].team[j] =
-							 studentPool[replacements[z].second];
-
-							 int newTeamScore = ProjectCompareTeamScore(studentSkills,
-							 maxProjectSkills[CurrentProject.PoolID])
-							 + SkillCompareTeamScore(skillSums)
-							 + AvailabilityTeamScore(bestSet[i].team);
-
-							 if (newTeamScore > bestTeamScore &&
-							 NegativeAffinityCheck(bestSet[i].team) == false){
-							 bestTeamScore = newTeamScore;
-							 bestStudentNum = z;
-							 }
-
-							 }
-
-							 if(bestTeamScore != 0){
-							 bestSet[i].team[j] =
-							 studentPool[replacements[bestStudentNum].second];
-							 x = bestStudentNum;
-
-							 }else{*/
-
-							bestSet[i].team[j] =
-									studentPool[replacements[x].second];
-							//}
-
-							//make sure this replacement does not have any negative affinity
-							//with the team.
-							if (NegativeAffinityCheck(bestSet[i].team) == false
-									&& (NDA_IPRCheck(bestSet[i].team,
-											CurrentProject)) == true) {
-								for (int y = 0; y < reserveStudents.size();
-										y++) {
-									if (reserveStudents[y].StudentID
-											== studentPool[replacements[x].second].StudentID)
+							bestSet[i].team[j] = studentPool[replacements[x].second];
+							//	make sure this replacement does not have any negative affinity
+							//	with the team.
+							if (NegativeAffinityCheck(bestSet[i].team) == false && (NDA_IPRCheck(bestSet[i].team,CurrentProject)) == true) {
+								for (int y = 0; y < reserveStudents.size();y++) {
+									if (reserveStudents[y].StudentID == studentPool[replacements[x].second].StudentID)
 										//remove added student from the reserve pool
-										reserveStudents.erase(
-												reserveStudents.begin() + y);
+										reserveStudents.erase(reserveStudents.begin() + y);
 								}
-								//remove added student from the replacement pool
+								//	remove added student from the replacement pool
 								replacements.erase(replacements.begin() + x);
 								mtx.lock();
 								ResultWindow::swaps++;
 								mtx.unlock();
 								break;
 							}
-
 						}
 					}
-				}//end k loop
-
+				}
+				//	end k loop
 				if (isduplicate == false) {
 					for (int k = 0; k < num_assigned; k++) {
-
 						if (uniqueStudents[k] == -1) {
 							uniqueStudents[k] = bestSet[i].team[j].StudentID;
 							num2 = 1;
@@ -994,17 +737,14 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 						}
 					}
 				}
-
 				isduplicate = false;
 				num1 += num2;
 				num2 = 0;
-
-			}//end j loop
-
-			//recalculate team score, now that all the duplicate
-			//students have been swapped out.
+			}
+			//	end j loop
+			//	recalculate team score, now that all the duplicate
+			//	students have been swapped out.
 			for (int x = 0; x < TEAM_SIZE; x++) {
-
 				if (bestSet[i].team[x].StudentID != 99999) {
 					studentSkills[x] = *(ProjectXStudentSkills
 							+ (CurrentProject.PoolID * numStudents)
@@ -1015,71 +755,52 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 					skillSums[x] = 0;
 				}
 			}
-
 			bestSet[i].TeamScore = ProjectCompareTeamScore(studentSkills,
 					maxProjectSkills[CurrentProject.PoolID])
 					+ SkillCompareTeamScore(skillSums)
 					+ AvailabilityTeamScore(bestSet[i].team);
-
-			//if the team is a team of 4, calculate the team score differently.
+			//	if the team is a team of 4, calculate the team score differently.
 			for (int x = 0; x < TEAM_SIZE; x++) {
-
 				if (bestSet[i].team[x].StudentID == 99999) {
-
-					int maxProjectScore =
-							((maxProjectSkills[CurrentProject.PoolID] * 0.20)
-									* 4);
-
+					int maxProjectScore = ((maxProjectSkills[CurrentProject.PoolID] * 0.20) * 4);
 					bestSet[i].TeamScore = ProjectCompareTeamScore(
 							studentSkills, maxProjectScore)
 							+ SkillCompareTeamScore4(skillSums, numSkills)
 							+ AvailabilityTeamScore4(bestSet[i].team);
 				}
 			}
-
 			if (DuplicateFound == false) {
 				if (minTeamCount < numPlaceholderStudents) {
-
 					reserveStudents.push_back(bestSet[i].team[4]);
-
 					for (int k = 0; k < num1; k++) {
 						if (uniqueStudents[k] == bestSet[i].team[4].StudentID) {
 							uniqueStudents[k] = 88888;
-
 						}
 					}
-
 					bestSet[i].team[4] = fakeStudents[minTeamCount];
 					fakeStudents.erase(fakeStudents.begin() + minTeamCount);
 					bestSet[i].team[4].ProjectID = bestSet[i].team[3].ProjectID;
 					minTeamCount++;
-
 				}
 			}
-
 			DuplicateFound = false;
-
-		}//end i loop
-
-		//set all the students in the best set to assigned.
+		}
+		//	end i loop
+		//	set all the students in the best set to assigned.
 		for (int i = 0; i < numProjects; i++) {
 			for (int j = 0; j < TEAM_SIZE; j++) {
 				bestSet[i].team[j].Assigned = true;
 				bestSet[i].team[j].ProjectID = bestSet[i].projectID;
 				if (bestSet[i].team[j].StudentID != 99999) {
 					studentPool[bestSet[i].team[j].PoolID] = bestSet[i].team[j];
-
-					*(studentPool + (bestSet[i].team[j].PoolID)) =
-							bestSet[i].team[j];
+					*(studentPool + (bestSet[i].team[j].PoolID)) = bestSet[i].team[j];
 				}
 			}
 		}
 	}
-// END -------------------Duplicate Student Swapping
-
+	// END Duplicate Student Swapping
 	/*-------Make sure that each student has been assigned.-----*/
 	mtx.lock();
-
 	for (int i = 0; i < numProjects; i++) {
 		for (int j = 0; j < TEAM_SIZE; j++) {
 			if (studentPool[bestSet[i].team[j].PoolID].StID
@@ -1088,63 +809,45 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 			}
 		}
 	}
-
 	vector<Student> unassignedStudents;
 	for (int i = 0; i < numStudents; i++) {
-
 		if (studentPool[i].Assigned == false) {
-
 			cout << "Student: " << studentPool[i].name
 					<< " is unassinged!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 					<< endl;
 			unassignedStudents.push_back(studentPool[i]);
 		}
 	}
-
 	int numDuplicates = getDuplicatesOfStudents(bestSet, numProjects);
 	while (numDuplicates >= 1) {
-
 		for (int k = 0; k < unassignedStudents.size(); k++) {
-
-			Student duplicateStudent = replaceDuplicateStudent(bestSet,
-					numProjects);
-
+			Student duplicateStudent = replaceDuplicateStudent(bestSet, numProjects);
 			cout << "Duplicate student ID: " << duplicateStudent.StudentID
 					<< " name: " << duplicateStudent.name
 					<< "  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-
 			Student fakeStudent;
 			fakeStudent.StudentID = 99999;
 			fakeStudent.StID = 99999;
-
 			for (int i = 0; i < numProjects; i++) {
 				for (int j = 0; j < TEAM_SIZE; j++) {
-
 					if (bestSet[i].team[j].StudentID
 							== duplicateStudent.StudentID
 							&& duplicateStudent.StudentID != 99999) {
 						bestSet[i].team[j] = unassignedStudents[k];
 						bestSet[i].team[j].Assigned = true;
-						unassignedStudents.erase(
-								unassignedStudents.begin() + k);
+						unassignedStudents.erase(unassignedStudents.begin() + k);
 						duplicateStudent = fakeStudent;
 					}
 				}
 			}
 		}
-
-		if (unassignedStudents.size() == 0
-				&& getDuplicatesOfStudents(bestSet, numProjects) >= 1) {
-
-			Student duplicateStudent = replaceDuplicateStudent(bestSet,
-					numProjects);
+		if (unassignedStudents.size() == 0 && getDuplicatesOfStudents(bestSet, numProjects) >= 1) {
+			Student duplicateStudent = replaceDuplicateStudent(bestSet, numProjects);
 			Student fakeStudent;
 			fakeStudent.StudentID = 99999;
 			fakeStudent.StID = 99999;
-
 			for (int i = 0; i < numProjects; i++) {
 				for (int j = 0; j < TEAM_SIZE; j++) {
-
 					if (bestSet[i].team[j].StudentID
 							== duplicateStudent.StudentID
 							&& duplicateStudent.StudentID != 99999) {
@@ -1153,94 +856,67 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 					}
 				}
 			}
-
 		}
-
 		numDuplicates = getDuplicatesOfStudents(bestSet, numProjects);
-
-	}//end while loop
+	}
+	//	end while loop
 	mtx.unlock();
 	/*------All students have now been assigned.-----*/
-
-
 	int newProjectSetScore = 0;
 	for (int i = 0; i < numProjects; i++) {
 		newProjectSetScore += bestSet[i].TeamScore;
 	}
-
-	//Now that the teams have been assigned,
-	//compute the teams results score- which is the student to student skill
-	//comparison score added with the team availability score.
+	//	Now that the teams have been assigned,
+	//	compute the teams results score- which is the student to student skill
+	//	comparison score added with the team availability score.
 	for (int i = 0; i < numProjects; i++) {
-
 		for (int j = 0; j < 5; j++) {
 			studentSkills[j] = *(ProjectXStudentSkills
 					+ (bestSet[i].project.PoolID * numStudents)
 					+ bestSet[i].team[j].PoolID);
 			skillSums[j] = studentSkillSums[bestSet[i].team[j].PoolID];
 		}
-
-		bestSet[i].ResultScore = SkillCompareTeamScore(skillSums)
-				+ AvailabilityTeamScore(bestSet[i].team);
+		bestSet[i].ResultScore = SkillCompareTeamScore(skillSums) + AvailabilityTeamScore(bestSet[i].team);
 		float percent = 0;
 		float max = 60;
 		percent = bestSet[i].ResultScore / max;
 		percent = percent * 100;
 		bestSet[i].ResultScore = (int) percent;
-		//cout<<"Team skill score: "<< SkillCompareTeamScore(skillSums)<<" Avail score: "<<AvailabilityTeamScore(bestSet[i].team)<<endl;
-
 	}
-
-	//Prints out the best project set found, without duplicates.
+	//	Prints out the best project set found, without duplicates.
 	mtx.lock();
 	cout << endl;
 	cout << "All duplicates Swapped out " << endl;
 	cout << "===============================================" << endl;
-	result.append(
-			"RESULT FOR SECTION " + to_string(studentPool[0].ClassID) + ":\n"
-					+ "\n");
+	result.append("RESULT FOR SECTION " + to_string(studentPool[0].ClassID) + ":\n" + "\n");
 	cout << "RESULT FOR SECTION " + to_string(studentPool[0].ClassID) << endl;
-
 	for (int i = 0; i < numProjects; i++) {
-
 		for (int j = 0; j < ResultWindow::count; j++) {
 			if (bestSet[i].projectID == ResultWindow::project_pool[0][j]) {
 				ResultWindow::project_pool[2][j] = bestSet[i].TeamScore;
 			}
 		}
-
 		bestSet[i].OfficialClassID = officialClassID;
-
-		//adding the teams, for use in the post function to make groups
+		//	adding the teams, for use in the post function to make groups
 		ResultWindow::studentTeams.push_back(bestSet[i]);
-
-		cout
-				<< "Team for project#" + to_string(bestSet[i].project.ProjectID)
-						+ " ";
-
-		result.append(
-				"PROJECT#" + to_string(bestSet[i].project.ProjectID) + ": ");
+		cout << "Team for project#" + to_string(bestSet[i].project.ProjectID) + " ";
+		result.append("PROJECT#" + to_string(bestSet[i].project.ProjectID) + ": ");
 		result.append("    Score: " + to_string(bestSet[i].TeamScore));
 		if (bestSet[i].project.Priority == 2) {
 			result.append("    !High Priority!");
 		}
 		result.append("\n TEAM: ");
-
 		for (int k = 0; k < teamSize; k++) {
 			cout << to_string(bestSet[i].team[k].StudentID) + " ";
 			result.append(" " + (bestSet[i].team[k].name) + ", ");
 			bestSet[i].team[k].ProjectID = bestSet[i].projectID;
 		}
-
 		result.append("\n");
 		result.append("\n");
 		result.append("\n");
 		cout << endl;
 		cout << "Team Score: " << bestSet[i].TeamScore << endl;
-
-//cout<<"Project:"<<bestSet[i].project.OfficialClassID<<endl;
-
-		//output to the GUI
+		//	output to the GUI
 		string output = "Project #" + to_string(projectPool[i].ProjectID)
 				+ " student team assigned! \n";
 		int length = output.length();
@@ -1250,14 +926,11 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		terminal->text("");
 		terminal->append(output_char);
 		terminal->append(text);
-
 	}
 	result.append("\n");
-
 	cout << "Best Project Set score: " << newProjectSetScore << endl;
 	cout << "Number of Duplicate Students: " << 0 << endl;
-
-	//KEEP TRACK OF TIME THE PROGRAM TAKES TO RUN
+	//	KEEP TRACK OF TIME THE PROGRAM TAKES TO RUN
 	auto stop = high_resolution_clock::now();
 	auto duration = duration_cast<milliseconds>(stop - start);
 	cout << endl;
@@ -1268,14 +941,11 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	cout << "Program Runtime" << endl;
 	cout << "time in milliseconds: ";
 	cout << duration.count() << endl;
-	;
 	cout << endl;
 	mtx.unlock();
-
 	return result;
-}	             	    //END StudentsToProjectsAssignment
+}
 
-//-----TEAM SCORE CALCULATING FUNCTIONS------
 
 /*********************************************************
  * AvailabilityTeamScore

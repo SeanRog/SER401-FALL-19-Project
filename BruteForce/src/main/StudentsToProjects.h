@@ -33,6 +33,40 @@ public:
 	StudentsToProjects();
 	~StudentsToProjects();
 
+	/*********************************************************
+	 * 	StudentsToProjectsAssignment
+	 *
+	 *	Authors: Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers
+	 *	Description:
+	 *		This function assigns the students taken in, to the projects taken in.
+	 *  	It finds all the possible team combinations for all the students, for each project.
+	 *  	It stores the top number of teams (user specified) for all the combinations for each project.
+	 *  	Then, based on those top teams it finds the combination of combinations of the horizontal mapping
+	 *  	of teams to the projects. It stores the highest scoring teams to projects set, that has no duplicate
+	 *  	students. If this can not be found, it stores the highest scoring teams to projects set, with the least
+	 *  	amount of duplicate students. It then swaps out the duplicate students, with the highest scoring replacement
+	 *  	student for that project, making sure that there is no negative affinity on the team.
+	 *
+	 *	Arguments:
+	 *		Student studentPool[],
+	 *		Project projectPool[],
+	 *		const int numStudents,
+	 *		const int numProjects,
+	 *		const int numSkills,
+	 *		const int teamSize,
+	 *		const int numTopTeams,
+	 *		Fl_Progress *progressBar,
+	 *		int progressIncrement,
+	 *		Fl_Text_Buffer *terminal,
+	 *		int officialClassID)
+	 *
+	 *	Returns: void
+	 *
+	 *	NOTES:
+	 *		For the combination of combinations of the horizontal mapping of student teams to projects,
+	 *		research code was found here:https://www.geeksforgeeks.org/combinations-from-n-arrays-picking-one-element-from-each-array/
+	 *		This was used as a reference when completing this portion of the function.
+	 */
 	string StudentsToProjectsAssignment(
 			Student studentPool[],
 			Project projectPool[],
@@ -58,11 +92,44 @@ public:
 	int ProjectCompareTeamScore(int studentSkills[5], int maxProjectScore);
 	int StudentToStudentSkill(int skillsum1, int skillsum2); //helper function for SkillCompareTeamScore
 	int StudentToStudentAvailibility(Student s1, Student s2); //helper function for AvailabilityTeamScore
+
+	/*********************************************************
+	 *	parseLine(char *line)
+	 * 	Author: Sean Rogers
+	 * 	Description: Used to measure system memory usage
+	 *	Arguments: char* line
+	 *	Returns: integer value.
+	 */
 	int parseLine(char *line);
+
+	/*********************************************************
+	 * 	getValuePhy()
+	 * 	Author: Sean Rogers
+	 * 	Description: Gets the physical memory usage of the program
+	 *	Arguments: nothing
+	 *	Returns: integer value.
+	 */
 	int getValuePhy();
+
+	/*********************************************************
+	 * 	getValueVirt()
+	 * 	Author: Sean Rogers
+	 * 	Description: Gets the virtual memory usage of the program
+	 *	Arguments: nothing
+	 *	Returns: integer value.
+	 */
 	int getValueVirt();
+
+	/*********************************************************
+	 * 	updateProgressBar(int num, Fl_Progress *pb)
+	 * 	Author: Sean Rogers
+	 * 	Description: Updates the progress bar in the GUI window.
+	 *	Arguments: int num, Fl_Progress* pb
+	 *	Returns:integer value.
+	 */
+	void updateProgressBar(int value, Fl_Progress *pW);
+
 	constexpr int toConstInt(int constInt);
-	void updateProgressBar(int value, Fl_Progress *pW); //function to update the progress bar.
 };
 
 #endif /* BRUTEFORCE_SRC_MAIN_STUDENTSTOPROJECTS_H_ */
