@@ -491,9 +491,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 			topscores[j] = 0;
 		}
 		mtx.lock();
-		cout
+		/*cout
 				<< "Project # " + to_string(projectPool[i].ProjectID)
-						+ "  team combinations complete. " << endl;
+						+ "  team combinations complete. " << endl;*/
 
 		//output to the GUI
 		string output = +"Top 5 team combinations found for Project #"
@@ -522,7 +522,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	for (int i2 = 0; i2 < numProjects; i2++) {
 		if (topTeams[i2][0].TeamScore == 0) {
 			mtx.lock();
-			cout
+		/*	cout
 					<< "ERROR: NO TEAMS COULD BE FORMED---------------!!!!!!!!!!!!!!!!!!!"
 					<< endl;
 			//exit(1);
@@ -548,7 +548,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 					}
 				}
 				cout << " " << endl;
-			}
+			}*/
 
 			backWindow3 = new Fl_Window(650, 220,
 					"Capstone Team Assignment System");
@@ -728,7 +728,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	updateProgressBar(progressIncrement * (0.65), progressBar);
 
 	//Print out all the top teams with team scores for each project.
-	cout << "Top " << TOP_TEAMS << " teams for each project" << endl;
+/*	cout << "Top " << TOP_TEAMS << " teams for each project" << endl;
 
 	for (int i = 0; i < numProjects; i++) {
 		Project project = *(projectPool + i);
@@ -762,7 +762,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	}
 	cout << "Best Project Set score: " << BestProjectSetScore << endl;
 	cout << "Number of Duplicate Students: " << threshold << endl;
-
+*/
 	mtx.unlock();
 // START -------------------Duplicate Student Swapping
 
@@ -1094,9 +1094,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 
 		if (studentPool[i].Assigned == false) {
 
-			cout << "Student: " << studentPool[i].name
-					<< " is unassinged!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-					<< endl;
+		//	cout << "Student: " << studentPool[i].name
+		//			<< " is unassinged!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+		//			<< endl;
 			unassignedStudents.push_back(studentPool[i]);
 		}
 	}
@@ -1109,9 +1109,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 			Student duplicateStudent = replaceDuplicateStudent(bestSet,
 					numProjects);
 
-			cout << "Duplicate student ID: " << duplicateStudent.StudentID
-					<< " name: " << duplicateStudent.name
-					<< "  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+		//	cout << "Duplicate student ID: " << duplicateStudent.StudentID
+		//			<< " name: " << duplicateStudent.name
+		//			<< "  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 
 			Student fakeStudent;
 			fakeStudent.StudentID = 99999;
@@ -1193,13 +1193,13 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 
 	//Prints out the best project set found, without duplicates.
 	mtx.lock();
-	cout << endl;
-	cout << "All duplicates Swapped out " << endl;
-	cout << "===============================================" << endl;
+	//cout << endl;
+	//cout << "All duplicates Swapped out " << endl;
+	//cout << "===============================================" << endl;
 	result.append(
 			"RESULT FOR SECTION " + to_string(studentPool[0].ClassID) + ":\n"
 					+ "\n");
-	cout << "RESULT FOR SECTION " + to_string(studentPool[0].ClassID) << endl;
+	//cout << "RESULT FOR SECTION " + to_string(studentPool[0].ClassID) << endl;
 
 	for (int i = 0; i < numProjects; i++) {
 
@@ -1214,9 +1214,9 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		//adding the teams, for use in the post function to make groups
 		ResultWindow::studentTeams.push_back(bestSet[i]);
 
-		cout
-				<< "Team for project#" + to_string(bestSet[i].project.ProjectID)
-						+ " ";
+		//		cout
+		//			<< "Team for project#" + to_string(bestSet[i].project.ProjectID)
+		//				+ " ";
 
 		result.append(
 				"PROJECT#" + to_string(bestSet[i].project.ProjectID) + ": ");
@@ -1227,7 +1227,7 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		result.append("\n TEAM: ");
 
 		for (int k = 0; k < teamSize; k++) {
-			cout << to_string(bestSet[i].team[k].StudentID) + " ";
+		//	cout << to_string(bestSet[i].team[k].StudentID) + " ";
 			result.append(" " + (bestSet[i].team[k].name) + ", ");
 			bestSet[i].team[k].ProjectID = bestSet[i].projectID;
 		}
@@ -1235,8 +1235,8 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 		result.append("\n");
 		result.append("\n");
 		result.append("\n");
-		cout << endl;
-		cout << "Team Score: " << bestSet[i].TeamScore << endl;
+		//cout << endl;
+		//cout << "Team Score: " << bestSet[i].TeamScore << endl;
 
 //cout<<"Project:"<<bestSet[i].project.OfficialClassID<<endl;
 
@@ -1254,22 +1254,22 @@ string StudentsToProjects::StudentsToProjectsAssignment(Student studentPool[],
 	}
 	result.append("\n");
 
-	cout << "Best Project Set score: " << newProjectSetScore << endl;
-	cout << "Number of Duplicate Students: " << 0 << endl;
+	//cout << "Best Project Set score: " << newProjectSetScore << endl;
+	//cout << "Number of Duplicate Students: " << 0 << endl;
 
 	//KEEP TRACK OF TIME THE PROGRAM TAKES TO RUN
 	auto stop = high_resolution_clock::now();
 	auto duration = duration_cast<milliseconds>(stop - start);
-	cout << endl;
-	cout << endl;
-	cout << getValueVirt() + getValuePhy()
-			<< " KB of memory usage: End of program" << endl;
-	cout << endl;
-	cout << "Program Runtime" << endl;
-	cout << "time in milliseconds: ";
-	cout << duration.count() << endl;
-	;
-	cout << endl;
+	//cout << endl;
+	//cout << endl;
+	//cout << getValueVirt() + getValuePhy()
+	//		<< " KB of memory usage: End of program" << endl;
+	//cout << endl;
+	//cout << "Program Runtime" << endl;
+	//cout << "time in milliseconds: ";
+	//cout << duration.count() << endl;
+	//;
+	//cout << endl;
 	mtx.unlock();
 
 	return result;

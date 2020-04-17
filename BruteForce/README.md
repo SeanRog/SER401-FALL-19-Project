@@ -1,11 +1,11 @@
-# ASU Capstone Team Assignment System
+# CLIQUE: The ASU Capstone Team Assignment System
 
 
-<img src="./Images/CapstoneTeamsLogo1.png" width="200">
+<img src="./Images/CliqueLogo2.png" height="300">
 
 ## Development Team
 
-The Capstone Team Assignment System was developed by five ASU-online senior software engineering students during the Fall 2019 and Spring 2020 semesters. 
+Clique, (the Capstone Team Assignment System) was developed by five ASU-online senior software engineering students during the Fall 2019 and Spring 2020 semesters. 
 Our sponsor for this project was the software engineering ASU instructor, Mr.Douglas Sandy. 
 The initial conception of the idea is also credited to Mr.Douglas Sandy
 

@@ -6,3 +6,4 @@ Exec=gnome-terminal -e "bash -c 'cd ~/git/SER401-FALL-19-Project35/BruteForce/;m
 Terminal=false
 Name=Capstone Teams
 Icon=/home/myles/git/SER401-FALL-19-Project35/BruteForce/Images/CapstoneTeamsLogo1.png
+Name[en_US]=Clique

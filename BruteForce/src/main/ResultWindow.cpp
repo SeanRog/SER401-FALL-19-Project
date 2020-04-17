@@ -125,7 +125,7 @@ constexpr int toConstInt(int constInt) {
 ResultWindow::ResultWindow() {
 
 	/***** Creates the main window frame *****/
-	windowResult = new Fl_Window(1500, 800, "Capstone Team Assignment Results");
+	windowResult = new Fl_Window(1500, 800, "CLIQUE - Results");
 
 
 	/***** Creates the Title Box *****/
@@ -654,7 +654,7 @@ void ResultWindow::calculateStats() {
  */
 void ResultWindow::postGroups(Fl_Widget *w) {
 
-	cout << "Post Groups clicked" << endl;
+	//cout << "Post Groups clicked" << endl;
 
 	/* Initializing canvas connection */
 	CookieManager canvas;
@@ -665,10 +665,10 @@ void ResultWindow::postGroups(Fl_Widget *w) {
 	/* loops through courses to match section to class*/
 	for (int i = 0; i < courses.size(); i++) {
 
-		cout << "Here 1 " << endl;
+		//cout << "Here 1 " << endl;
 		int groupCategory_ID = canvas.postGroupCategories(cookies, courses[i]);
 
-		cout << groupCategory_ID << endl;
+		//cout << groupCategory_ID << endl;
 
 		course_group.push_back(
 				make_pair(courses[i].OfficialClassID, groupCategory_ID));
@@ -692,7 +692,7 @@ void ResultWindow::postGroups(Fl_Widget *w) {
 								course_group[k].first, course_group[k].second,
 								studentTeams[i].project.ProjectID);
 
-						cout << group_ID << endl;
+						//cout << group_ID << endl;
 
 						//edit the group and add in the students
 						canvas.putStudentstoGroups(cookies, studentTeams[i],
@@ -724,7 +724,7 @@ void ResultWindow::recommenderSystemWindow(Fl_Widget *w) {
 
 	// MAIN WINDOW
 	windowRecommender = new Fl_Window(840, 640,
-			"Student Team Replacement Recommendation System");
+			"CLIQUE - Team Replacement Recommendation System");
 
 	//Title box
 	Fl_Box *titleBox = new Fl_Box(140, 10, 690, 30,

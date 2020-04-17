@@ -270,7 +270,7 @@ void SteamPunkGUI1::MainWindow2() {
 	// Setting up S.P. GUI window
 	const char windowMainStr[] =
 			"_______________________________________________\nCAPSTONE TEAM ASSIGNMENT SYSTEM";
-	windowMain = new Fl_Window(750, 450, "Capstone Team Assignment System");
+	windowMain = new Fl_Window(750, 450, "CLIQUE - Steampunk");
 	windowMain->color(DARK_TAUPE);
 
 
@@ -343,7 +343,7 @@ void SteamPunkGUI1::MainWindow2() {
 			Fl_Text_Display *aboutTextDisplay;
 			Fl_Text_Buffer *aboutBuffer;
 			const char AboutStr[] =
-					"\nThe Capstone Team Assignment System\n was developed "
+					"\nCLIQUE, [Team Assignment System]\n was developed "
 							"by five senior software \n engineering students during the \n Fall 2019 and Spring 2020 semesters.\n "
 							"\n SOFTWARE TEAM ";
 			const char TeamStr[] =
@@ -377,7 +377,7 @@ void SteamPunkGUI1::MainWindow2() {
 
 
 			/***** The  "Why" for the application on right side *****/
-			aboutBox2 = new Fl_Box(375, 55, 355, 30, "About The Software");
+			aboutBox2 = new Fl_Box(375, 55, 355, 30, "About Clique");
 			aboutBox2->box(FL_FLAT_BOX);
 			aboutBox2->color(DARK_TAUPE);
 			aboutBox2->labelcolor(LIGHT_CREAM);
@@ -512,7 +512,7 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 
 
 	/***** Sets up new GUI window for program progress *****/
-	progressWindow = new Fl_Window(870, 800, "Team Assignment Progress");
+	progressWindow = new Fl_Window(870, 800, "CLIQUE - Progress Window");
 	progressWindow->begin();
 
 
@@ -732,7 +732,7 @@ void SteamPunkGUI1::ProgressTeamsButtonClick(Fl_Widget *w) {
 
 	/* Loads up progress window */
 	TeamsButton->deactivate();
-	progressBox->label("Team Assignment System Running...");
+	progressBox->label("Clique Team Assignment Running...");
 	progressBox->labelfont(FL_HELVETICA);
 	progressBox->labelsize(15);
 	progressBox->labelcolor(LIGHT_CREAM);
@@ -822,7 +822,7 @@ void okClickSP(Fl_Widget *w) {
 void errorMessageSP() {
 
 	/* Setting up GUI window */
-	backWindowSP = new Fl_Window(650, 220, "Capstone Team Assignment System");
+	backWindowSP = new Fl_Window(650, 220, "CLIQUE");
 	backWindowSP->begin();
 
 
@@ -878,7 +878,7 @@ void errorMessageSP() {
  */
 static void destroyWindowCb1(GtkWidget *widget, GtkWidget *window) {
 
-	cout << "Exiting mini-browser" << endl;
+	cout << "Mini-Browser Exited" << endl;
 	gtk_main_quit();
 
 	if (Auth1 != true) {
@@ -958,8 +958,8 @@ static void getCookiesCB1(WebKitCookieManager *manager,
  */
 static gboolean load_changedWebViewCb1(WebKitWebView *webView,GtkWidget *window) {
 
-	cout << "listening" << endl;
-	cout << webkit_web_view_get_uri(webView) << endl;
+	//cout << "listening" << endl;
+	//cout << webkit_web_view_get_uri(webView) << endl;
 	void *data;
 
 
@@ -977,7 +977,7 @@ static gboolean load_changedWebViewCb1(WebKitWebView *webView,GtkWidget *window)
 		//check to see if the login success page is done loading.
 		if (webkit_web_view_is_loading(webView) == false) {
 
-			cout << "Canvas reached! authentication complete!" << endl;
+			//cout << "Canvas reached! authentication complete!" << endl;
 
 			Auth1 = true;
 			usleep(50000);
@@ -1077,8 +1077,6 @@ void mini_browserSP() {
 	// Run the main GTK+ event loop
 	gtk_main();
 
-	//terminate the window
-	cout << "Website running" << endl;
 
 }
 
@@ -1137,12 +1135,13 @@ void SteamPunkGUI1::StartButtonClick(Fl_Widget *w) {
 
 	if (error == false) {
 
-		cout<<"Working"<<endl;
-
 		/* if the user is not authenticated yet,
 		* open the mini-browser for canvas authentication */
 		if (Authenticated != true) {
 			Auth1 = false;
+			//DO NOT REMOVE THIS COUT STATEMENT!!!!
+			cout<<"Mini-Browser Opened"<<endl;
+
 			mini_browserSP();
 		}
 
@@ -1175,7 +1174,7 @@ int SteamPunkGUI1::handle(int event) {
 	switch (event) {
 	case FL_PUSH:
 
-		cout << "FL_PUSH" << endl;
+		//cout << "FL_PUSH" << endl;
 		Fl_PNG_Image TeamLogo2("./Images/button2.png");
 		generateTeams->image(TeamLogo2);
 		return 1;

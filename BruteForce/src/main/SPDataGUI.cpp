@@ -192,7 +192,7 @@ SPDataGUI::SPDataGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 	ClassSection Courses[NUM_CLASS_SECTIONS];
 	CSJson.getAllClassSectionJsonObjects(CLASS_SECTION_FILE, Courses);
 
-	cout<<"Read in all courses!"<<endl;
+	//cout<<"Read in all courses!"<<endl;
 
 	string courses[NUM_CLASS_SECTIONS];
 	AllCourseNames = courses;
@@ -201,12 +201,12 @@ SPDataGUI::SPDataGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 	for (int i = 0; i < NUM_CLASS_SECTIONS; i++) {
 
 		AllCourseNames[i] = AllCourses[i].Course_Code;
-		cout<<AllCourseNames[i]<<endl;
+		//cout<<AllCourseNames[i]<<endl;
 
 	}
 
 	remove("allCourses.json");
-
+	cout<<"\n\n\n\n\n\n\n"<<endl;
 
 	// Initialize components in scope, but not on main data entry gui
 	GenerateTeamsButton = NULL;
@@ -242,7 +242,7 @@ SPDataGUI::SPDataGUI(Fl_Window *win, vector<SoupCookie> cookies) {
 
 
 	// Set up Class Selector Window
-	masterWindow = new Fl_Window(750, 800, "Capstone Team Assignment System");
+	masterWindow = new Fl_Window(750, 800, "CLIQUE - Steampunk");
 	scroll =  new Fl_Scroll(0,0,750,800);
 	scroll->color(DARK_TAUPE);
 
@@ -530,7 +530,7 @@ void SPDataGUI::FindCoursesClick(Fl_Widget *w) {
 			int length = course.length();
 			char course_char[length + 1];
 			strcpy(course_char, course.c_str());
-			cout << course << endl;
+			//cout << course << endl;
 			classBrowser->add(course_char);
 
 		}
@@ -560,7 +560,7 @@ void SPDataGUI::FindCoursesClick(Fl_Widget *w) {
 void SPDataGUI::GobackClick(Fl_Widget *w) {
 
 	/* Sets up GUI window */
-	backWindow = new Fl_Window(650, 220, "Capstone Team Assignment System");
+	backWindow = new Fl_Window(650, 220, "CLIQUE");
 	backWindow->begin();
 
 
@@ -687,7 +687,7 @@ void SPDataGUI::ConfirmClick(Fl_Widget *w) {
 
 
 	/* Sets up GUI window */
-	confirmWindow = new Fl_Window(850, 220, "Confirmation Window");
+	confirmWindow = new Fl_Window(850, 220, "CLIQUE - Confirmation Window");
 
 
 	//course selection values
@@ -743,7 +743,7 @@ void SPDataGUI::ConfirmClick(Fl_Widget *w) {
 		for (int i = 0; i < course_count; i++) {
 
 			s[i] = selections[i];
-			cout<<selections[i]<<endl;
+			//cout<<selections[i]<<endl;
 
 		}
 
@@ -855,7 +855,7 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 
 	for (int j = 0; j < num_of_selected_courses; j++) {
 
-		cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
+		//cout<<classes[j].Course_Name<<"  "<<SelectedCourses[j].Course_Code<<endl;
 		selectedcourses.push_back(classes[j]);
 
 	}
@@ -881,7 +881,7 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 
 
 	// debug students
-	cout << endl << "Debugging Students" << endl;
+	/*cout << endl << "Debugging Students" << endl;
 	for (int j = 0; j < allStudents.size(); j++){
 
 		for (int k = 0; k < allStudents.at(j).size(); k++){
@@ -906,7 +906,7 @@ void SPDataGUI::GenerateTeamsClick(Fl_Widget *w) {
 				cout << allStudents.at(j).at(k).Availability[x] << endl;
 			}
 		}
-	}
+	}*/
 
 
 	/* sending over variables, running main window */
