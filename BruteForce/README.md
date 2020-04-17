@@ -1,7 +1,7 @@
 # CLIQUE: The ASU Capstone Team Assignment System
 
 
-<img src="./Images/CliqueLogo2.png" height="300">
+<img src="./Images/CliqueLogo1.png" height="300">
 
 ## Development Team
 
