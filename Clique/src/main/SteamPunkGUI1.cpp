@@ -404,7 +404,7 @@ void SteamPunkGUI1::MainWindow2() {
 						"all possible combinations to arrive at\n"
 						"the most optimal solution taking more\n"
 						"years than there are atoms in the\n"
-						"universe!\n"
+						"universe!\n \n"
 						"The team has devised a software solution\n "
 						"that reduces this time to minutes, \n"
 						"and provides excellent student teams\n "
