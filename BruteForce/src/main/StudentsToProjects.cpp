@@ -55,6 +55,7 @@ StudentsToProjects::StudentsToProjects() {}
 StudentsToProjects::~StudentsToProjects() {}
 //Function to convert integers into constant expressions.
 constexpr int StudentsToProjects::toConstInt(int constInt) {return constInt;}
+// function to close window when ok button is clicked
 void OkClick3(Fl_Widget *w) {exit(1);}
 
 /*********************************************************
@@ -62,8 +63,7 @@ void OkClick3(Fl_Widget *w) {exit(1);}
  * 	Author: Sean Rogers
  * 	Description: Used to measure system memory usage
  *	Arguments: char* line
- *	Returns: integer value.
- */
+ *	Returns: integer value.		*/
 int StudentsToProjects::parseLine(char *line) {
 	// This assumes that a digit will be found and the line ends in " Kb".
 	int i = strlen(line);
@@ -80,8 +80,7 @@ int StudentsToProjects::parseLine(char *line) {
  * 	Author: Sean Rogers
  * 	Description: Gets the physical memory usage of the program
  *	Arguments: nothing
- *	Returns: integer value.
- */
+ *	Returns: integer value.	 */
 int StudentsToProjects::getValuePhy() { //Note: this value is in KB!
 	FILE *file = fopen("/proc/self/status", "r");
 	int result = -1;
@@ -101,8 +100,7 @@ int StudentsToProjects::getValuePhy() { //Note: this value is in KB!
  * 	Author: Sean Rogers
  * 	Description: Gets the virtual memory usage of the program
  *	Arguments: nothing
- *	Returns: integer value.
- */
+ *	Returns: integer value. 	*/
 int StudentsToProjects::getValueVirt() { //Note: this value is in KB!
 	FILE *file = fopen("/proc/self/status", "r");
 	int result = -1;
@@ -122,8 +120,7 @@ int StudentsToProjects::getValueVirt() { //Note: this value is in KB!
  * 	Author: Sean Rogers
  * 	Description: Updates the progress bar in the GUI window.
  *	Arguments: int num, Fl_Progress* pb
- *	Returns:integer value.
- */
+ *	Returns:integer value. 	*/
 void StudentsToProjects::updateProgressBar(int num, Fl_Progress *pb) {
 	progressBarValue += pb->value() + num;
 	pb->value(progressBarValue / 100.0);
@@ -166,8 +163,7 @@ void StudentsToProjects::updateProgressBar(int num, Fl_Progress *pb) {
  *	NOTES:
  *		For the combination of combinations of the horizontal mapping of student teams to projects,
  *		research code was found here:https://www.geeksforgeeks.org/combinations-from-n-arrays-picking-one-element-from-each-array/
- *		This was used as a reference when completing this portion of the function.
- */
+ *		This was used as a reference when completing this portion of the function. 	*/
 string StudentsToProjects::StudentsToProjectsAssignment(
 		Student studentPool[],
 		Project projectPool[],
@@ -939,27 +935,18 @@ string StudentsToProjects::StudentsToProjectsAssignment(
 	return result;
 }
 
-
 /*********************************************************
- * AvailabilityTeamScore
+ * 	AvailabilityTeamScore
+ *	Author: Myles Colina
+ *	Description:
+ *		This function returns a score of 0-20 determining
+ * 		the quality of the team by comparing the Availability of students
+ * 		on a team to each other.
  *
- * Author: Myles Colina
- *
- * Description:
- * 	This function returns a score of 0-20 determining
- * 	the quality of the team by comparing the Availability of students
- * 	on a team to each other.
- *
- *Arguments:
- *	Student team[]
- *
- *Returns:
- *  integer value from 0 to 20.
- */
+ *	Arguments: Student team[]
+ * 	Returns: integer value from 0 to 20. 	*/
 int StudentsToProjects::AvailabilityTeamScore(Student team[5]) {
-
 	int timeCompareScore = 0;
-
 	// 10 calls to StudentToStudentAvailibility. One for each possible combination
 	// of every student in the team to each-other.
 	timeCompareScore += StudentToStudentAvailibility(team[0], team[1]);
@@ -972,40 +959,28 @@ int StudentsToProjects::AvailabilityTeamScore(Student team[5]) {
 	timeCompareScore += StudentToStudentAvailibility(team[2], team[3]);
 	timeCompareScore += StudentToStudentAvailibility(team[2], team[4]);
 	timeCompareScore += StudentToStudentAvailibility(team[3], team[4]);
-
 	//timeCompareScore contains a score 0-40
-
 	//configure the score from 0-40 to 0-20
 	float percent = 0;
 	float max = 40;
 	percent = timeCompareScore / max;
 	percent = percent * 20;
 	percent = (int) percent;
-
 	//return the score 0-20
 	return percent;
 }
+
 /*********************************************************
- * AvailabilityTeamScore4
- *
- * Author: Myles Colina
- *
- * Description:
- * (For teams of 4)
- * 	This function returns a score of 0-20 determining
- * 	the quality of the team by comparing the Availability of students
- * 	on a team to each other.
- *
- *Arguments:
- *	Student team[]
- *
- *Returns:
- *  integer value from 0 to 20.
- */
+ * 	AvailabilityTeamScore4
+ * 	Author: Myles Colina
+ * 	Description: (For teams of 4)
+ * 		This function returns a score of 0-20 determining
+ * 		the quality of the team by comparing the Availability of students
+ * 		on a team to each other.
+ * 	Arguments: Student team[]
+ * 	Returns: integer value from 0 to 20. 	*/
 int StudentsToProjects::AvailabilityTeamScore4(Student team4[5]) {
-
 	int timeCompareScore = 0;
-
 	Student team[4];
 	vector<Student> tempteam;
 	for (int i = 0; i < 5; i++) {
@@ -1013,12 +988,9 @@ int StudentsToProjects::AvailabilityTeamScore4(Student team4[5]) {
 			tempteam.push_back(team4[i]);
 		}
 	}
-
 	for (int i = 0; i < 4; i++) {
-
 		team[i] = tempteam[i];
 	}
-
 	// 6 calls to StudentToStudentAvailibility. One for each possible combination
 	// of every student in the team to each-other.
 	timeCompareScore += StudentToStudentAvailibility(team[0], team[1]);
@@ -1027,7 +999,6 @@ int StudentsToProjects::AvailabilityTeamScore4(Student team4[5]) {
 	timeCompareScore += StudentToStudentAvailibility(team[1], team[2]);
 	timeCompareScore += StudentToStudentAvailibility(team[1], team[3]);
 	timeCompareScore += StudentToStudentAvailibility(team[2], team[3]);
-
 	//timeCompareScore contains a score 0-24
 	//configure the score from 0-24 to 0-20
 	float percent = 0;
@@ -1035,30 +1006,21 @@ int StudentsToProjects::AvailabilityTeamScore4(Student team4[5]) {
 	percent = timeCompareScore / max;
 	percent = percent * 20;
 	percent = (int) percent;
-
 	//cout<<"Team of 4 availability score: "<<percent<<"  +++++++++"<<endl;
 	//return the score 0-20
 	return percent;
 }
+
 /*********************************************************
- * StudentToStudentAvailibility
- *
- * Author: Myles Colina
- *
- * Description:
- * 	helper function for AvailabilityTeamScore, compares 2 students
- * 	returns an Availability comparison score of 0 - 4.
- *
- *Arguments:
- *	Student s1, Student s2
- *
- *Returns:
- *  integer value from 0 to 4.
- */
+ * 	StudentToStudentAvailibility
+ * 	Author: Myles Colina
+ * 	Description:
+ * 		helper function for AvailabilityTeamScore, compares 2 students
+ * 		returns an Availability comparison score of 0 - 4.
+ * 	Arguments: Student s1, Student s2
+ * 	Returns: integer value from 0 to 4. 	*/
 int StudentsToProjects::StudentToStudentAvailibility(Student s1, Student s2) {
-
 	int score = 0;
-
 	//checks preferred weekday selections
 	if (s1.Availability[0] == s2.Availability[0]) {
 		score += 2;
@@ -1067,7 +1029,6 @@ int StudentsToProjects::StudentToStudentAvailibility(Student s1, Student s2) {
 			| (s1.Availability[0] == s2.Availability[1])) {
 		score += 2;
 	}
-
 	//checks preferred weekend selections
 	if (s1.Availability[2] == s2.Availability[2]) {
 		score += 2;
@@ -1080,101 +1041,55 @@ int StudentsToProjects::StudentToStudentAvailibility(Student s1, Student s2) {
 }
 
 /*********************************************************
- * SkillCompareTeamScore
- *
- * Author: Myles Colina
- *
- * Description:
- * 	This function returns a score of 0-40 determining
- * 	the quality of the team by comparing the student's skills to each other
- *
- *Arguments:
- *	Student team[]
- *
- *Returns:
- *  integer value from 0 to 40.
- */
+ * 	SkillCompareTeamScore
+ *	Author: Myles Colina
+ * 	Description:
+ * 		This function returns a score of 0-40 determining
+ * 		the quality of the team by comparing the student's skills to each other
+ * 	Arguments: Student team[]
+ * 	Returns: integer value from 0 to 40. 	*/
 int StudentsToProjects::SkillCompareTeamScore(int studentSkills[5]) {
-
 	int teamCompareScore = 0;
-
-	teamCompareScore += StudentToStudentSkill(studentSkills[0],
-			studentSkills[1]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[0],
-			studentSkills[2]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[0],
-			studentSkills[3]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[0],
-			studentSkills[4]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[1],
-			studentSkills[2]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[1],
-			studentSkills[3]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[1],
-			studentSkills[4]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[2],
-			studentSkills[3]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[2],
-			studentSkills[4]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[3],
-			studentSkills[4]);
-
+	teamCompareScore += StudentToStudentSkill(studentSkills[0], studentSkills[1]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[0], studentSkills[2]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[0], studentSkills[3]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[0], studentSkills[4]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[1], studentSkills[2]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[1], studentSkills[3]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[1], studentSkills[4]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[2], studentSkills[3]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[2], studentSkills[4]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[3], studentSkills[4]);
 	return teamCompareScore;
-
 }
 
 /*********************************************************
- * SkillCompareTeamScore4
- *
- * Author: Myles Colina
- *
- * Description:
- * (For teams of 4)
- * 	This function returns a score of 0-40 determining
- * 	the quality of the team by comparing the student's skills to each other
- *
- *Arguments:
- *	Student team[]
- *	int NUM_SKILLS
- *
- *Returns:
- *  integer value from 0 to 40.
- */
-int StudentsToProjects::SkillCompareTeamScore4(int studentSkills4[5],
-		int NUM_SKILLS) {
-
+ * 	SkillCompareTeamScore4
+ * 	Author: Myles Colina
+ * 	Description: (For teams of 4)
+ * 		This function returns a score of 0-40 determining
+ * 		the quality of the team by comparing the student's skills to each other
+ * 	Arguments: Student team[], int NUM_SKILLS
+ * 	Returns: integer value from 0 to 40. 	*/
+int StudentsToProjects::SkillCompareTeamScore4(int studentSkills4[5], int NUM_SKILLS) {
 	int teamCompareScore = 0;
-
 	int studentSkills[4];
 	vector<int> tempskills;
-
 	int noSkillStudent;
 	for (int i = 0; i < 5; i++) {
-
 		if (studentSkills4[i] != 0) {
-
 			tempskills.push_back(studentSkills4[i]);
 		}
-
 	}
-
 	for (int i = 0; i < 4; i++) {
 		studentSkills[i] = tempskills[i];
 	}
-
-	teamCompareScore += StudentToStudentSkill(studentSkills[0],
-			studentSkills[1]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[0],
-			studentSkills[2]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[0],
-			studentSkills[3]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[1],
-			studentSkills[2]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[1],
-			studentSkills[3]);
-	teamCompareScore += StudentToStudentSkill(studentSkills[2],
-			studentSkills[3]);
-
+	teamCompareScore += StudentToStudentSkill(studentSkills[0], studentSkills[1]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[0], studentSkills[2]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[0], studentSkills[3]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[1], studentSkills[2]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[1], studentSkills[3]);
+	teamCompareScore += StudentToStudentSkill(studentSkills[2], studentSkills[3]);
 	//Score contains a score 0-24
 	//configure the score from 0-24 to 0-40
 	float percent = 0;
@@ -1182,82 +1097,53 @@ int StudentsToProjects::SkillCompareTeamScore4(int studentSkills4[5],
 	percent = teamCompareScore / max;
 	percent = percent * 40;
 	percent = (int) percent;
-
-	//cout<<"Team of 4 skill to skill score: "<<percent<<"  ++++++++++++++++++"<<endl;
-	//return the score 0-40
+	//	cout<<"Team of 4 skill to skill score: "<<percent<<"  ++++++++++++++++++"<<endl;
+	//	return the score 0-40
 	return percent;
-
 	return teamCompareScore;
-
 }
 
 /*********************************************************
- * StudentToStudentSkill
- *
- * Author: Myles Colina
- *
- * Description:
- * 	helper function for SkillCompareTeamScore
- * 	returns a student to student comparison score of 0 - 4.
- *
- *Arguments:
- *	Student s1, Student s2
- *
- *Returns:
- *  integer value from 0 to 4.
- */
+ *	StudentToStudentSkill
+ * 	Author: Myles Colina
+ * 	Description:
+ * 		helper function for SkillCompareTeamScore
+ * 	 	returns a student to student comparison score of 0 - 4.
+ * 	Arguments: Student s1, Student s2
+ * 	Returns: integer value from 0 to 4. 	*/
 int StudentsToProjects::StudentToStudentSkill(int skillsum1, int skillsum2) {
-
 	int score = skillsum1 - skillsum2;
 	score = abs(score);
-
 	if (score == 0 || score == 1) {
 		return 4;
-
 	} else if (score == 2 || score == 3) {
 		return 3;
-
 	} else if (score == 4 || score == 5) {
 		return 2;
-
 	} else if (score > 5 && score < 9) {
 		return 1;
-
 	} else if (score >= 9) {
 		return 0;
-
 	}
-
 }
 
 /*********************************************************
- * ProjectCompareTeamScore
- *
- * Author: Myles Colina
- *
- * Description:
- * 	This function returns a score of 0-40 determining
- * 	the quality of the team by comparing the max skills a team could have
- *  on a certain project, to the team's overall skills.
- *
- *Arguments:
- *	int studentSkills[5] -(each element is sum of each students skills for that project)
- *	int maxProjectScore - (integer that stores the maximum skill sum a team could possibly have
- *						  for this project.)
- *
- *Returns:
- *  integer value from 0 to 40.
- *
- */
-int StudentsToProjects::ProjectCompareTeamScore(int studentSkills[5],
-		int maxProjectScore) {
-
+ * 	ProjectCompareTeamScore
+ * 	Author: Myles Colina
+ * 	Description:
+ * 		This function returns a score of 0-40 determining
+ * 		the quality of the team by comparing the max skills a team could have
+ *  	on a certain project, to the team's overall skills.
+ * 	Arguments:
+ *		int studentSkills[5] -(each element is sum of each students skills for that project)
+ *		int maxProjectScore - (integer that stores the maximum skill sum a team could possibly have
+ *			for this project.)
+ * 	Returns: integer value from 0 to 40. 	*/
+int StudentsToProjects::ProjectCompareTeamScore(int studentSkills[5], int maxProjectScore) {
 	int teamSkillSum = 0;
-
 	for (int i = 0; i < 5; i++) {
 		teamSkillSum += studentSkills[i];
 	}
-
 	//calculate percentage
 	float percent = 0;
 	float max = 0;
@@ -1265,64 +1151,48 @@ int StudentsToProjects::ProjectCompareTeamScore(int studentSkills[5],
 	percent = teamSkillSum / max;
 	percent = percent * 40;
 	percent = (int) percent;
-
 	//increase the initial score, because getting a perfect score in this area
 	//is nearly impossible. most scores will be low, so increase to better
 	//reflect the quality of the assignment.
 	percent = (int) (percent + (percent * 0.50));
-
 	//cap score at 40.
 	if (percent >= 40) {
 		percent = 40;
 	}
-
 	//return the score 0-40
 	return percent;
-
 }
 
 /*********************************************************
- * getDuplicatesOfStudents
- *
- * Author: Matthew Cilibraise
- *
- * Description:
- *   This function returns the number of duplicate students in a set of teams.
- *   Stores the IDs of unique students and compares the student IDs of the
- *   teams to that.
- *
- *Arguments:
- *	 Team currentSet[] - (array containing all the teams in the set)
- *	 int size  - (the number of teams to check in the array)
- *
- *Returns:
- *  integer value depicting the number of duplicate students.
- *
- */
+ * 	getDuplicatesOfStudents
+ * 	Author: Matthew Cilibraise
+ * 	Description:
+ *  	This function returns the number of duplicate students in a set of teams.
+ *   	Stores the IDs of unique students and compares the student IDs of the
+ *   	teams to that.
+ * 	Arguments:
+ *	 	Team currentSet[] - (array containing all the teams in the set)
+ *	 	int size  - (the number of teams to check in the array)
+ * 	Returns: integer value depicting the number of duplicate students. 	*/
 int StudentsToProjects::getDuplicatesOfStudents(Team currentSet[], int size) {
-
 	// (Debugging)show what's in currentSet
-	/*    for (int i = 0 ; i < size ; i++){
-	 cout << "students in team: ";
-	 for (int j = 0 ; j < 5 ; j++){
-	 cout << currentSet[i].team[j].StudentID << ", ";
-	 }
-	 cout << endl;
-	 }*/
-
+/*	for (int i = 0 ; i < size ; i++){
+ 	 	 cout << "students in team: ";
+ 	 	 for (int j = 0 ; j < 5 ; j++){
+	 	 	 cout << currentSet[i].team[j].StudentID << ", ";
+	 	 }
+	 	 cout << endl;
+	 }	*/
 	int numDuplicates = 0;
 	int numStudentIDs = size * 5;
 	int uniqueStudents[numStudentIDs];
-
 	for (int k = 0; k < numStudentIDs; k++) {
 		uniqueStudents[k] = -1;
 	}
 	//fill unique students with the students in the first team.
 	for (int i = 0; i < 5; i++) {
 		uniqueStudents[i] = currentSet[0].team[i].StudentID;
-
 	}
-
 	int num = 5;
 	int num2 = 0;
 	bool isduplicate = false;
@@ -1338,12 +1208,10 @@ int StudentsToProjects::getDuplicatesOfStudents(Team currentSet[], int size) {
 					//cout << " DUPLICATE FOUND" << endl;
 				}
 			}            	 //end k loop
-
 			//if the current student is not a duplicate, add them to the array of
 			//unique studetnIDs.
 			if (isduplicate == false) {
 				for (int k = 0; k < numStudentIDs; k++) {
-
 					if (uniqueStudents[k] == -1) {
 						uniqueStudents[k] = currentSet[i].team[j].StudentID;
 						num2 = 1;
@@ -1355,53 +1223,38 @@ int StudentsToProjects::getDuplicatesOfStudents(Team currentSet[], int size) {
 			num += num2;
 			num2 = 0;
 		}             //end j loop
-
 	}             //end i loop
-
 	return numDuplicates;
 }
 
 /*********************************************************
- * replaceDuplicatesOfStudent
- *
- * Author: Matthew Cilibraise, Myles Colina
- *
- * Description:
- *   This function returns the studetn ID of a single duplicate student
- *
- *Arguments:
- *	 Team currentSet[] - (array containing all the teams in the set)
- *	 int size  - (the number of teams to check in the array)
- *
- *Returns:
- *  integer value depicting student ID number of a duplicate student.
- *
- */
-Student StudentsToProjects::replaceDuplicateStudent(Team currentSet[],
-		int size) {
-
+ * 	replaceDuplicatesOfStudent
+ *	Author: Matthew Cilibraise, Myles Colina
+ * 	Description: This function returns the studetn ID of a single duplicate student
+ * 	Arguments:
+ *		Team currentSet[] - (array containing all the teams in the set)
+ *	 	int size  - (the number of teams to check in the array)
+ * 	Returns: integer value depicting student ID number of a duplicate student. 	*/
+Student StudentsToProjects::replaceDuplicateStudent(Team currentSet[], int size) {
 	// (Debugging)show what's in currentSet
-	/*    for (int i = 0 ; i < size ; i++){
-	 cout << "students in team: ";
-	 for (int j = 0 ; j < 5 ; j++){
-	 cout << currentSet[i].team[j].StudentID << ", ";
-	 }
-	 cout << endl;
-	 }*/
+/*	for (int i = 0 ; i < size ; i++){
+		cout << "students in team: ";
+		for (int j = 0 ; j < 5 ; j++){
+			 cout << currentSet[i].team[j].StudentID << ", ";
+		 }
+	 	 cout << endl;
+	 }	*/
 	Student student;
 	int numDuplicates = 0;
 	int numStudentIDs = size * 5;
 	int uniqueStudents[numStudentIDs];
-
 	for (int k = 0; k < numStudentIDs; k++) {
 		uniqueStudents[k] = -1;
 	}
 	//fill unique students with the students in the first team.
 	for (int i = 0; i < 5; i++) {
 		uniqueStudents[i] = currentSet[0].team[i].StudentID;
-
 	}
-
 	int num = 5;
 	int num2 = 0;
 	bool isduplicate = false;
@@ -1419,13 +1272,12 @@ Student StudentsToProjects::replaceDuplicateStudent(Team currentSet[],
 					}
 					//cout << " DUPLICATE FOUND" << endl;
 				}
-			}            	 //end k loop
-
+			}
+			//end k loop
 			//if the current student is not a duplicate, add them to the array of
 			//unique studetnIDs.
 			if (isduplicate == false) {
 				for (int k = 0; k < numStudentIDs; k++) {
-
 					if (uniqueStudents[k] == -1) {
 						uniqueStudents[k] = currentSet[i].team[j].StudentID;
 						num2 = 1;
@@ -1434,80 +1286,61 @@ Student StudentsToProjects::replaceDuplicateStudent(Team currentSet[],
 				}
 			}
 			isduplicate = false;
-
 			num += num2;
 			num2 = 0;
-		}             //end j loop
-
-	}             //end i loop
-
+		}
+		//end j loop
+	}
+	//end i loop
 	return student;
 }
 
 /*********************************************************
- * NegativeAffinityCheck
- *
- * Author: Matthew Cilibraise
- *
- * Description:
- * function checks to see if any students have negative affinity toward one another.
- * If negative affinity between team members IS NOT found, function will return a boolean value of false,
- * If negative affinity between team member IS found, function will return a boolean value of true.
- *
- *Arguments:
- *	Student team[5] (the team of students to check)
- *
- *Returns:
- *  boolean value depicting whether the team has negative affinity or not.
- *  True - If negative affinity between team members IS found
- *  False- If negative affinity between team members IS NOT found
- *
- */
+ * 	NegativeAffinityCheck
+ *	Author: Matthew Cilibraise
+ * 	Description:
+ * 		function checks to see if any students have negative affinity toward one another.
+ * 		If negative affinity between team members IS NOT found, function will return a boolean value of false,
+ * 		If negative affinity between team member IS found, function will return a boolean value of true.
+ * 	Arguments: Student team[5] (the team of students to check)
+ * 	Returns: boolean value depicting whether the team has negative affinity or not.
+ *  	True - If negative affinity between team members IS found
+ *  	False- If negative affinity between team members IS NOT found 	 */
 bool StudentsToProjects::NegativeAffinityCheck(Student team[5]) {
 	// start of with negativeAffinity being false - meaning we have not found negative affinity.
 	// We will return true if we find an instance of negative affinity in this team combination.
 	bool negativeAffinity = false;
 	// We begin with an outer loop of that will examine each student in the team
-	for (int studentTeamCounter = 0; studentTeamCounter < 5;
-			studentTeamCounter++) {
-
+	for (int studentTeamCounter = 0; studentTeamCounter < 5; studentTeamCounter++) {
 		// if the current student's affinity list is empty - we don't need about comparing any other students - so on to the next iteration
 		if (team[studentTeamCounter].StudentAffinity.empty()) {
 			continue;
 		} else {
 			// lets take a look at the current students affinity list
-			for (int currentStudentAffinityCounter = 0;
-					currentStudentAffinityCounter
-							< team[studentTeamCounter].StudentAffinity.size();
-					currentStudentAffinityCounter++) {
+			for (int currentStudentAffinityCounter = 0; currentStudentAffinityCounter < team[studentTeamCounter].StudentAffinity.size(); currentStudentAffinityCounter++) {
 				// next we will loop through all other students comparing the current students affinity to other students, checking for negative affinity.
-				for (int otherStudentsCounter = 0; otherStudentsCounter < 5;
-						otherStudentsCounter++) {
-
+				for (int otherStudentsCounter = 0; otherStudentsCounter < 5; otherStudentsCounter++) {
 					// because we are looping, if the current student happens to be the other student, lets continue to the next iteration.
-					if (team[studentTeamCounter].StudentID
-							== team[otherStudentsCounter].StudentID) {
+					if (team[studentTeamCounter].StudentID == team[otherStudentsCounter].StudentID) {
 						continue;
 						// next for each student id in the current students affinity list, lets see if the other student has the same Student ID
 						// and if the affinity boolean value is false, meaning negative affinity. The current student doesn't want to work with
 						// the other student. In this case we will change our negativeAffinity flag to true. We can break out of this function with
 						// one instance of negative affinity. The team won't work.
 					} else {
-						if (((team[studentTeamCounter].StudentAffinity.at(
-								currentStudentAffinityCounter).first).compare(
-								team[otherStudentsCounter].ASUriteID) == 0)
-								&& (team[studentTeamCounter].StudentAffinity.at(
-										currentStudentAffinityCounter).second
-										== false)) {
+						if (((team[studentTeamCounter].StudentAffinity.at(currentStudentAffinityCounter).first).compare(team[otherStudentsCounter].ASUriteID) == 0)
+								&& (team[studentTeamCounter].StudentAffinity.at(currentStudentAffinityCounter).second== false)) {
 							negativeAffinity = true;
 							break;
 						}
-					} // end otherStudentsCounter loop
+					}
+					// end otherStudentsCounter loop
 				}
 				if (negativeAffinity == true) {
 					break;
 				}
-			} // end currentStudentAffinityCounter loop
+			}
+			// end currentStudentAffinityCounter loop
 		}
 		if (negativeAffinity == true) {
 			break;
@@ -1517,102 +1350,68 @@ bool StudentsToProjects::NegativeAffinityCheck(Student team[5]) {
 }
 
 /*********************************************************
- * NegativeAffinityCheck
- *
- * Author: Matthew Cilibraise, Myles Colina
- *
- * Description:
- * function checks to see how many students (if any) have positive affinity toward one another.
- * This function returns the number of positive matches, for use as a tie-breaker when finding
- * team combinations.
- *
- *Arguments:
- *	Student team[5] (the team of students to check)
- *
- *Returns:
- *  int value depicting how many positive affinity matches there are.
- */
+ * 	PositiveAffinityCheck
+ * 	Author: Matthew Cilibraise, Myles Colina
+ * 	Description:
+ * 		function checks to see how many students (if any) have positive affinity toward one another.
+ * 		This function returns the number of positive matches, for use as a tie-breaker when finding
+ * 		team combinations.
+ * 	Arguments: Student team[5] (the team of students to check)
+ * 	Returns: int value depicting how many positive affinity matches there are. 	*/
 int StudentsToProjects::PositiveAffinityCheck(Student team[5]) {
-
 	//the number of positive affinity matches on this team
 	int positiveAffinityCount = 0;
-
 	// We begin with an outer loop of that will examine each student in the team
-	for (int studentTeamCounter = 0; studentTeamCounter < 5;
-			studentTeamCounter++) {
-
+	for (int studentTeamCounter = 0; studentTeamCounter < 5; studentTeamCounter++) {
 		// if the current student's affinity list is empty - we don't need about comparing any other students - so on to the next iteration
 		if (team[studentTeamCounter].StudentAffinity.empty()) {
 			continue;
 		} else {
 			// lets take a look at the current student's affinity list
-			for (int currentStudentAffinityCounter = 0;
-					currentStudentAffinityCounter
-							< team[studentTeamCounter].StudentAffinity.size();
-					currentStudentAffinityCounter++) {
+			for (int currentStudentAffinityCounter = 0; currentStudentAffinityCounter < team[studentTeamCounter].StudentAffinity.size(); currentStudentAffinityCounter++) {
 				// next we will loop through all other students comparing the current students affinity to other students, checking for negative affinity.
-				for (int otherStudentsCounter = 0; otherStudentsCounter < 5;
-						otherStudentsCounter++) {
-
+				for (int otherStudentsCounter = 0; otherStudentsCounter < 5; otherStudentsCounter++) {
 					// because we are looping, if the current student happens to be the other student, lets continue to the next iteration.
-					if (team[studentTeamCounter].StudentID
-							== team[otherStudentsCounter].StudentID) {
+					if (team[studentTeamCounter].StudentID == team[otherStudentsCounter].StudentID) {
 						continue;
 						// next for each student id in the current students affinity list, lets see if the other student has the same Student ID
 						// and if the affinity boolean value is true, meaning positive affinity. The current student wants to work with
 						// the other student. In this case we will increment the positive affinity counter.
 					} else {
-						if (((team[studentTeamCounter].StudentAffinity.at(
-								currentStudentAffinityCounter).first).compare(
-								team[otherStudentsCounter].ASUriteID) == 0)
-								&& (team[studentTeamCounter].StudentAffinity.at(
-										currentStudentAffinityCounter).second
-										== true)) {
+						if (((team[studentTeamCounter].StudentAffinity.at(currentStudentAffinityCounter).first).compare(team[otherStudentsCounter].ASUriteID) == 0)
+								&& (team[studentTeamCounter].StudentAffinity.at(currentStudentAffinityCounter).second == true)) {
 							positiveAffinityCount = positiveAffinityCount + 1;
 						}
-					} // end otherStudentsCounter loop
+					}
+					// end otherStudentsCounter loop
 				}
-
-			} // end currentStudentAffinityCounter loop
+			}
+			// end currentStudentAffinityCounter loop
 		}
-
-	} // end studentTeamCounter loop
-
+	}
+	// end studentTeamCounter loop
 	//cout<<"Team for Project#"<<team->ProjectID<<"   Positive Affinity Matches: "<<positiveAffinityCount<<endl;
 	return positiveAffinityCount;
 }
 
 /*********************************************************
- * NDA_IPRCheck(
- *
- *
- * Description:
- * function checks to see if any students on this team do not want to sign an NDA or IPR agreement.
- * returns false if there the project requires an NDA or an IPR, and a student on the team does not
- * agree to sign one of them.
- *
- *Arguments:
- *	Student team[5] (the team of students to check)
- *	Project project
- *
- *Returns:
- *  boolean value
- *
- */
+ * 	NDA_IPRCheck(
+ *	Description:
+ * 		function checks to see if any students on this team do not want to sign an NDA or IPR agreement.
+ * 		returns false if there the project requires an NDA or an IPR, and a student on the team does not
+ * 		agree to sign one of them.
+ * 	Arguments:
+ *		Student team[5] (the team of students to check)
+ *		Project project
+ * 	Returns: boolean value 	*/
 bool StudentsToProjects::NDA_IPRCheck(Student team[5], Project project) {
-
 	for (int i = 0; i < 5; i++) {
-
 		if ((team[i].NDA == false) && (project.NDA == true)) {
 			return false;
 		}
-
 		if ((team[i].IPR == false) && (project.IPR == true)) {
 			return false;
 		}
-
 	}
-
 	return true;
-
 }
