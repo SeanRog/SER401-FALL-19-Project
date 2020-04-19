@@ -94,6 +94,7 @@
 #include <FL/Fl_Input_.H>
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Chart.H>
+#include <FL/Fl_Scroll.H>
 
 using namespace std;
 
@@ -126,7 +127,8 @@ ResultWindow::ResultWindow() {
 
 	/***** Creates the main window frame *****/
 	windowResult = new Fl_Window(1500, 800, "CLIQUE - Results");
-
+	scroll1 =  new Fl_Scroll(0,0,1500,800);
+	scroll1->color(ASU_GREY);//background color
 
 	/***** Creates the Title Box *****/
 	Fl_Box *titleBox = new Fl_Box(450, 10, 300, 50,
@@ -559,7 +561,8 @@ void ResultWindow::addText() {
 	classChart->add(0, "", ASU_MAROON);
 
 	/* Show  and run the result window */
-	windowResult->resizable(textDisplay);
+	scroll1->end();
+	windowResult->resizable(scroll1);
 	windowResult->color(ASU_GREY);
 	windowResult->show();
 	windowResult->end();
@@ -725,6 +728,8 @@ void ResultWindow::recommenderSystemWindow(Fl_Widget *w) {
 	// MAIN WINDOW
 	windowRecommender = new Fl_Window(840, 640,
 			"CLIQUE - Team Replacement Recommendation System");
+	scroll2 =  new Fl_Scroll(0,0,840,640);
+	scroll2->color(ASU_GREY);//background color
 
 	//Title box
 	Fl_Box *titleBox = new Fl_Box(140, 10, 690, 30,
@@ -796,6 +801,8 @@ void ResultWindow::recommenderSystemWindow(Fl_Widget *w) {
 	//button callback
 	FindReplacements->callback(static_recommender, this);
 
+	scroll2->end();
+	windowRecommender->resizable(scroll2);
 	windowRecommender->color(ASU_GREY);
 	windowRecommender->show();
 	windowRecommender->end();
