@@ -123,6 +123,7 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
+#include <FL/Fl_Scroll.H>
 #include <FL/names.h>
 
 using namespace std;
@@ -192,6 +193,8 @@ public:
 	Fl_Button *generateTeams;
 	Fl_Int_Input *inputprojects;
 	Fl_Int_Input *inputstudents;
+	Fl_Scroll *scroll1;
+	Fl_Scroll *scroll2;
 
 
 	/***** functions for class *****/

@@ -40,7 +40,7 @@ Clone it locally using git and use make commands to run the software once instal
 
 ```
 $ git clone https://github.com/SeanRog/SER401-FALL-19-Project35
-$ cd ./SER401-FALL-19-Project35/BruteForce
+$ cd ./SER401-FALL-19-Project35/Clique
 $ chmod u+x install.sh
 $ sudo ./install.sh
 ```

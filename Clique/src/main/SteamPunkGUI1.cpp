@@ -127,6 +127,7 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
+#include <FL/Fl_Scroll.H>
 
 
 using namespace std;
@@ -272,7 +273,8 @@ void SteamPunkGUI1::MainWindow2() {
 			"_______________________________________________\nCAPSTONE TEAM ASSIGNMENT SYSTEM";
 	windowMain = new Fl_Window(750, 450, "CLIQUE - Steampunk");
 	windowMain->color(DARK_TAUPE);
-
+	scroll1 =  new Fl_Scroll(0,0,750,450);
+	scroll1->color(DARK_TAUPE);//background color
 
 	/***** Setting up 2 tabs *****/ {
 	Fl_Tabs *tabs = new Fl_Tabs(10, 10, 730, 350);
@@ -444,6 +446,8 @@ void SteamPunkGUI1::MainWindow2() {
 
 
 	/***** running the gears and showing the window *****/
+	scroll1->end();
+	windowMain->resizable(scroll1);
 	windowMain->show();
 	windowMain->end();
 
@@ -514,6 +518,8 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	/***** Sets up new GUI window for program progress *****/
 	progressWindow = new Fl_Window(870, 800, "CLIQUE - Progress Window");
 	progressWindow->begin();
+	scroll2 =  new Fl_Scroll(0,0,870,800);
+	scroll2->color(DARK_TAUPE);//background color
 
 
 	/***** border or edge coloring boxes *****/
@@ -599,7 +605,8 @@ void SteamPunkGUI1::TeamsButtonClick(Fl_Widget *w) {
 	progressWindow->box(FL_BORDER_BOX);
 
 	doneButton->deactivate();
-
+	scroll2->end();
+	progressWindow->resizable(scroll2);
 	progressWindow->end();
 	progressWindow->show();
 	progressBar->value(0);
