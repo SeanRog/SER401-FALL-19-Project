@@ -9,15 +9,9 @@
  *   process.
  *
  *
-<<<<<<< HEAD
- * @author(s) Elizabeth Marquise, Myles Colina, Sean Rogers, Cristi Deleo, Matthew Cilibraise
- * Copyright (C) 2020, ASU Capstone Project
- * All Rights Reserved
-=======
  *  Copyright (C) 2020 ASU
  *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
  *	initial idea contributed by Douglas Sandy, All rights reserved
->>>>>>> dev2
  *
  *
  * List of Functions:

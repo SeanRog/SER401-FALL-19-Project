@@ -2,24 +2,101 @@
  * Utility.cpp
  *
  * Description:
- * The Utility class is a series of external functions that can be called
- * to perform repeated calculations in the system. These include methods
- * such as initializing student and project pools, determining the size of
- * an incoming data file, and performing matrix multiplication to extract
- * weighted values.
+ * 		The Utility class is a series of external functions that can be
+ * 		called to perform repeated calculations in the system. These
+ * 		include methods such as initializing student and project pools,
+ * 		determining the size of an incoming data file, and performing
+ * 		matrix multiplication to extract weighted values.
  *
- *
- *  Created on: Oct. 29, 2019
- *      Authors: Fall 2019 Team 35 (Matthew, Cristi, Myles, Elizabeth, Sean)
- *
- * List of function:
- *  (see header file Utility.h)
  *
  *  Copyright (C) 2020 ASU
  *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
  *	initial idea contributed by Douglas Sandy, All rights reserved
+ *
+ *
+ * List of Functions:
+ * void initProjectPool(string filename, Project projectPool[],int numProjects)
+ * 		- Initializes the project pool
+ *
+ * void initstudentPool(string filename, Student studentPool[],int numStudents)
+ * 		- Initializes the Student pool
+ *
+ * void initClassSectionPool(string filename, ClassSection classSectionPool[],
+ *  Student studentPool[],int numClassSections, int numStudents)
+ * 		- Initializes the Class Section pool
+ *
+ * void initProjectStudentSkills(Project projectPool[], Student studentPool[],
+ *  int projectStudentSkills[], int numProjects, int numStudents, int numSkills)
+ *  	- completes a dot product matrix of project skills x student skills
+ *  	in order to created weighted values representing a student's skill
+ *  	strength compared to a projects recommended skills.
+ *
+ * int getSizeOfJson(string filename, string key)
+ * 		- returns the size of a Json data file
+ *
+ * int getProjectXskill(Project projectPool[], int i, int j)
+ * 		- returns a project's skill value
+ *
+ * int getSkillXstudent(Student studentPool[], int i, int j)
+ * 		- returns a student's skill value
+ *
+ * vector<vector<int>> calcProjectXStudentMatrix(vector<Student> students,
+ *	vector<Project> projects)
+ *		- Deprecated method used to calculate and return vector of
+ *		ProjectxStudent weighted skills.use initProjectStudentSkills
+ *		instead for better runtime.
+ *
+ * void projectTypePartition(Project projectPool[], int numProjects,
+ *  char t0, char t1, char t2)
+ *		- Partitions the project pool by project type
+ *
+ * void projectPriorityPartition(Project projectPool[], int numProjects,
+ *  int t0, int t1, int t2)
+ *  	- Partitions the project pool by project priority
+ *
+  * void tPriorityPartition(Project projectPool[], int numProjects,
+ *  int t0, int t1, int t2)
+ *  	- Partitions the project pool by project priority
+ *
+ * void classSectionTypePartition(ClassSection classSectionPool[],
+ *  int numClassSections, char t0, char t1)
+ *		- Partitions the class section by type.
+ *
+ * void printIntMatrix(vector<vector<int>> a)
+ * 		- prints an int matrix
+ *
+ * int ** ProjectToSectionPercentages(vector<vector<Student>> studentList,
+ *  vector<Project> projectList, int numProjects, int NumOfClassSections)
+ * 		- Function returns a 2d array  [number of projects][ number of class
+ * 		sections] containing the percentages, 0-100, of how the students
+ * 	 	in a class section compare to that project
+ *
+ * void arrayProjectToSectionPercentages(Project projectPool[],
+ *  Student studentPool[], ClassSection classSectionPool[],
+ *  int percentMatrix[], int numProjects, int numStudents,
+ *  int numClassSections, int numSkills)
+ * 		- ARRAY VERSION. Function calculates the  percentages, 0-100,
+ * 		of how the students in a class section compare to that project
+ *
+ * void projectToSectionAssignment(Project projectPool[],
+ *  Student studentPool[], ClassSection classSectionPool[], int numProjects,
+ *	int numStudents, int numClassSections, int numSkills, int studentsInSections[])
+ *   	- This function assigns the projects to class sections based on the
+ *   	Project's type and priority, the class section percentage scores, and
+ *   	the minimum number of projects each class section can have.
+ *
+ * void makeProjectJSON(int numProj, int numSkill)
+ * 		- creates a new Json file  with random data
+ *
+ * void makeProjectCSV(int numProj, int numSkill)
+ * 		- creates a new CSV file with random data
  */
 
+
+/********* BEGINNING OF INCLUSIONS **********/
+
+
+/* Class Inclusions */
 #include "Utility.h"
 #include "json/json.h"
 #include "ProjectJson.h"
@@ -30,6 +107,8 @@
 #include "ClassSection.h"
 #include "FakeStudentNames.h"
 
+
+/* Library Inclusions */
 #include <iostream>
 #include <utility>
 #include <algorithm>
@@ -43,112 +122,106 @@
 
 using namespace std;
 
-Utility::Utility() {
-	// TODO Auto-generated constructor stub
-}
 
-Utility::~Utility() {
-	// TODO Auto-generated destructor stub
-}
+
+
+/********* BEGINNING OF PROGRAM CODE **********/
+
+
+/* Constructor & Destructor */
+Utility::Utility() { }
+Utility::~Utility() { }
+
 
 /***********************************************
  * initProjectPool
  *
- * Description:
- * Initializes the project pool
+ * Description: Initializes the project pool
  *
- * Arguments:
- * filename - name of data file
- * projectPool[] - pointer to the project pool
- * numProjects - integer value of the number of projects to be initialized
+ * Arguments: string, project[], int
  *
- * returns -
- * void method.
+ * returns - void
  */
 void Utility::initProjectPool(string filename, Project projectPool[],
 		int numProjects) {
+
 	ProjectJson PJson;
 	for (int i = 0; i < numProjects; i++) {
+
 		*(projectPool + i) = PJson.getProjectJsonObject(filename, i);
+
 	}
 }
+
 
 /***********************************************
  * initStudentPool
  *
- * Description:
- * Initializes the student pool
+ * Description: Initializes the student pool
  *
- * Arguments:
- * filename - name of data file
- * studentPool[] - pointer to the student pool
- * numStudents - integer value of the number of students to be initialized
+ * Arguments: string, Student[], int
  *
- * returns -
- * void method.
+ * returns - void
  */
 void Utility::initStudentPool(string filename, Student studentPool[],
 		int numStudents) {
+
 	StudentJson SJson;
 	for (int i = 0; i < numStudents; i++) {
+
 		*(studentPool + i) = SJson.getStudentJsonObject(filename, i);
+
 	}
 }
+
 
 /***********************************************
  * initClassSectionPool
  *
- * Description:
- * Initializes the classSection pool
+ * Description: Initializes the classSection pool
  *
- * Arguments:
- * filename - name of data file
- * classSectionPool[] - pointer to the classSection pool
- * studentPool[] - pointer to the studentPool
- * numClassSections - integer value of the number of classSections.
- * numStudents - integer value of the number of students to be initialized
+ * Arguments: string, classSection[], student[], int, int
  *
- * returns -
- * void method.
+ * returns - void
  */
 void Utility::initClassSectionPool(string filename,
 		ClassSection classSectionPool[], Student studentPool[],
 		int numClassSections, int numStudents) {
+
+
 	ClassSectionJson CSJson;
 	Student student;
 	ClassSection classSection;
 
 	for (int i = 0; i < numClassSections; i++) {
+
 		classSection = CSJson.getClassSectionJsonObject(filename, i);
 		int count = 0;
+
 		for (int j = 0; j < numStudents; j++) {
 			student = *(studentPool + j);
 			if (student.ClassID == classSection.ClassID) {
 				count++;
 			}
 		}
+
 		classSection.Enrollment = count;
 		*(classSectionPool + i) = classSection;
+
 	}
 }
+
+
 /***********************************************
  * initProjectStudentSkills
  *
- * Description:
- * completes a dot product matrix of project skills x student skills
- * in order to created weighted values representing a student's skill strength
- * compared to a projects recommended skills.
+ * Description: completes a dot product matrix of project skills x
+ * student skills in order to created weighted values representing
+ * a student's skill strength compared to a projects recommended skills.
  *
- * Arguments:
- * projectPool[] - pointer to the projectPool
- * studentPool[] - pointer to the studentPool
- * projectStudentSkills[] - pointer to the array storing weighted values
- * numProjects - integer value of the number of projects.
- * numStudents - integer value of the number of students
- * numSkills - integer value of the number of skills evaluated
+ * Arguments: project[],  Student[], int, int, int, int
  *
- * returns -
- * void method.
+ * returns - void
  */
 void Utility::initProjectStudentSkills(Project projectPool[],
 		Student studentPool[], int projectStudentSkills[], int numProjects,
@@ -157,97 +230,104 @@ void Utility::initProjectStudentSkills(Project projectPool[],
 	int score = 0;
 
 	for (int i = 0; i < numProjects; i++) {
+
 		Project project;
 		project = *(projectPool + i);
+
 		for (int j = 0; j < numStudents; j++) {
+
 			Student student;
 			student = *(studentPool + j);
 			score = 0;
+
 			for (int k = 0; k < numSkills; k++) {
 				score += project.Skills[k] * student.Skills[k];
 			}
 
 			*(projectStudentSkills + (i * numStudents) + j) = score;
+
 		}
 	}
 }
 
+
 /***********************************************
  * getSizeOfJson
  *
- * Description:
- * returns the size of a Json data file
+ * Description: returns the size of a Json data file
  *
- * Arguments-
- * filename - name of Json data file
- * key - value to be targeted and counted
+ * Arguments - string, string
  *
- * returns -
- * obj[key].size()
+ * returns - int
  */
 int Utility::getSizeOfJson(string filename, string key) {
+
 	ifstream ifs(filename);
 	Json::Reader reader;
 	Json::Value obj;
 	reader.parse(ifs, obj);
-
 	return obj[key].size();
+
 }
+
 
 /*************************************************
  * getProjectXskill
  *
- * Description:
- * returns a project's skill value to be used in matrix multiplication
+ * Description: returns a project's skill value
  *
- * Arguments:
- * projectPool[] - pointer to the project pool
- * i - row value of project
- * j - column value of skill
+ * Arguments: Project[], int, int
  *
- * Returns:
- * project.Skills[j] - current iteration project's skill value.
+ * Returns: int
  */
 int Utility::getProjectXskill(Project projectPool[], int i, int j) {
+
 	Project project;
 	project = *(projectPool + i);
 	return project.Skills[j];
+
 }
 
-/*/*************************************************
+
+/**************************************************
  * getSkillXstudent
  *
- * Description:
- * returns a student's skill value to be used in matrix multiplication
+ * Description: returns a student's skill value
  *
- * Arguments:
- * studentPool[] - pointer to the project pool
- * i - row value of Student
- * j - column value of skill
+ * Arguments: Student[], int, int
  *
- * Returns:
- * student.Skills[j] - current iteration student's skill value.
+ * Returns: int
  */
 int Utility::getSkillXstudent(Student studentPool[], int i, int j) {
+
 	Student student;
 	student = *(studentPool + i);
 	return student.Skills[j];
+
 }
 
-/*/*************************************************
+
+/**************************************************
  * calcProjectXStudentMatrix
  *
- * Description:
- * Deprecated method used to calculate and return vector of ProjectxStudent weighted skills.
- * use initProjectStudentSkills instead for better runtime.
+ * Description: Deprecated method used to calculate and return
+ * vector of ProjectxStudent weighted skills.use initProjectStudentSkills
+ * instead for better runtime.
+ *
+ * Arguments: vector<Student>, vector<Project>
+ *
+ * Returns: vector<vector<int>>
  */
 vector<vector<int>> Utility::calcProjectXStudentMatrix(vector<Student> students,
 		vector<Project> projects) {
+
 	int numStudents = students.size();
 	int numProjects = projects.size();
 	int numSkills = (sizeof(students.at(0).Skills)
 			/ sizeof(*students.at(0).Skills));
 	vector<vector<int>> projectXstudentMatrix;
+
+
 	// create projectXskill matrix
 	int projectXskill[numProjects][numSkills] = { 0 };
 	for (int i = 0; i < numProjects; i++) {
@@ -255,6 +335,8 @@ vector<vector<int>> Utility::calcProjectXStudentMatrix(vector<Student> students,
 			projectXskill[i][j] = projects.at(i).Skills[j];
 		}
 	}
+
+
 	// create skillXstudent matrix transposing skills and students
 	int skillXstudent[numSkills][numStudents] = { 0 };
 	for (int i = 0; i < numSkills; i++) {
@@ -262,29 +344,30 @@ vector<vector<int>> Utility::calcProjectXStudentMatrix(vector<Student> students,
 			skillXstudent[i][j] = students.at(j).Skills[i];
 		}
 	}
-	//cout << "\t";
+
 	for (int i = 0; i < numStudents; i++) {
 		//cout << "st" << students.at(i).StudentID << "\t";
 	}
 	cout << endl;
+
 	int projectXstudent[numProjects][numStudents];
 	for (int rows = 0; rows < numProjects; rows++) {
-		// print project name to projectxstudent matrix
-		//string p = to_string(rows);
-		//cout << "p" + p + "\t";
+
 		// do the multiplication
 		for (int cols = 0; cols < numStudents; cols++) {
+
 			projectXstudent[rows][cols] = { 0 };
 			for (int inner = 0; inner < numSkills; inner++) {
+
 				projectXstudent[rows][cols] = projectXstudent[rows][cols]
 						+ projectXskill[rows][inner]
 								* skillXstudent[inner][cols];
 
 			}
-			//cout << projectXstudent[rows][cols] << "\t\t";
 		}
-		//cout << "\n";
 	}
+
+
 	for (int i = 0; i < numProjects; i++) {
 		vector<int> currProject;
 		for (int j = 0; j < numStudents; j++) {
@@ -293,24 +376,19 @@ vector<vector<int>> Utility::calcProjectXStudentMatrix(vector<Student> students,
 		}
 		projectXstudentMatrix.push_back(currProject);
 	}
+
 	return projectXstudentMatrix;
-} // end calcProjectXStudentMatrix
+}
+
 
 /*************************************************
  * projectTypePartition
- * AUTHOR: CRISTI DELEO
  *
- * Description:
- *  Partitions the project pool by project type
- *  (ONLINE = O | GROUND = G | HYBRID = H)
+ * Description: Partitions the project pool by project type
  *
- * Arguments:
- * Project projectPool[],
- * int numProjects,
- *	char t0, char t1, char t2
+ * Arguments: Project[], int, char, char, char
  *
- * Returns:
- *    nothing
+ * Returns: nothing
  */
 void Utility::projectTypePartition(Project projectPool[], int numProjects,
 		char t0, char t1, char t2) {
@@ -354,21 +432,15 @@ void Utility::projectTypePartition(Project projectPool[], int numProjects,
 	}
 }
 
+
 /*************************************************
  * projectPriorityPartition
- * AUTHOR: CRISTI DELEO
  *
- * Description:
- *  Partitions the project pool by project priority
- *  (PRIMARY = 2 | SECONDARY = 1 | TERTIARY = 0)
+ * Description: Partitions the project pool by project priority
  *
- * Arguments:
- * Project projectPool[],
- * int numProjects,
- *	int t0, int t1, int t2
+ * Arguments: Project[], int, int, int, int
  *
- * Returns:
- *    nothing
+ * Returns: void
  */
 void Utility::projectPriorityPartition(Project projectPool[], int numProjects,
 		int t0, int t1, int t2) {
@@ -402,7 +474,8 @@ void Utility::projectPriorityPartition(Project projectPool[], int numProjects,
 		}
 	}
 
-// SORT ONLINE PROJECTS
+
+	// SORT ONLINE PROJECTS
 	start = 0;
 	t0Index = start;
 	end = endO - 1;
@@ -441,7 +514,7 @@ void Utility::projectPriorityPartition(Project projectPool[], int numProjects,
 		};
 	}
 
-// SORT GROUND PROJECTS
+	// SORT GROUND PROJECTS
 	start = endO;
 	t0Index = start;
 	end = endG - 1;
@@ -480,7 +553,8 @@ void Utility::projectPriorityPartition(Project projectPool[], int numProjects,
 		};
 	}
 
-// SORT HYBRID PROJECTS
+
+	// SORT HYBRID PROJECTS
 	start = endG;
 	t0Index = start;
 	end = endH - 1;
@@ -520,6 +594,16 @@ void Utility::projectPriorityPartition(Project projectPool[], int numProjects,
 	}
 }
 
+
+/*************************************************
+ * PriorityPartition
+ *
+ * Description: Partitions the project pool by priority
+ *
+ * Arguments: Project[], int, int, int, int
+ *
+ * Returns: void
+ */
 void Utility::PriorityPartition(Project projectPool[], int numProjects, int t0,
 		int t1, int t2) {
 
@@ -527,7 +611,8 @@ void Utility::PriorityPartition(Project projectPool[], int numProjects, int t0,
 	int end = numProjects - 1;
 	int t0Index = 0;
 
-// SORT PROJECTS
+
+	// SORT PROJECTS
 	start = 0;
 	t0Index = start;
 
@@ -565,23 +650,17 @@ void Utility::PriorityPartition(Project projectPool[], int numProjects, int t0,
 			i++;
 		};
 	}
-
 }
+
 
 /*************************************************
  * classSectionTypePartition
  *
- * Description:
- *  Partitions the class section by type.
- *  (ONLINE = O | GROUND = G )
+ * Description: Partitions the class section by type.
  *
- * Arguments:
- * Project projectPool[],
- * int numProjects,
- *	char t0, char t1
+ * Arguments: ClassSection[], int, char, char
  *
- * Returns:
- *    nothing
+ * Returns: void
  */
 void Utility::classSectionTypePartition(ClassSection classSectionPool[],
 		int numClassSections, char t0, char t1) {
@@ -600,19 +679,18 @@ void Utility::classSectionTypePartition(ClassSection classSectionPool[],
 	}
 }
 
+
 /*************************************************
  * printIntMatrix
  *
- * Description:
- *  Prints an int matrix
+ * Description: Prints an int matrix
  *
- * Arguments:
- * vector<vector<int>> a
+ * Arguments: vector<vector<int>> a
  *
- * Returns:
- *    nothing
+ * Returns: void
  */
 void Utility::printIntMatrix(vector<vector<int>> a) {
+
 	cout << endl;
 	for (int i = 0; i < a.size(); i++) {
 		for (int j = 0; j < a.at(i).size(); j++) {
@@ -620,35 +698,35 @@ void Utility::printIntMatrix(vector<vector<int>> a) {
 		}
 		cout << endl;
 	}
+
 }
+
 
 /*************************************************
  * ProjectToSectionPercentages
  *
- * Description:
- *   Function returns a 2d array [number of projects] [ number of class sections]
- *   containing the percentages, 0-100, of how the students in a class section compare to that project
+ * Description: Function returns a 2d array
+ *  [number of projects][ number of class sections]
+ *  containing the percentages, 0-100, of how the students
+ *  in a class section compare to that project
  *
- * Arguments:
- * vector<vector<Student>> studentList,
- * vector<Project> projectList,
- * int numProjects,
- * int NumOfClassSections
+ * Arguments: vector<vector<students>> vector<project>, int, int
  *
- * Returns:
- *    int 2d array
+ * Returns: int[][]
  */
 int** Utility::ProjectToSectionPercentages(vector<vector<Student>> studentList,
 		vector<Project> projectList, int numProjects, int NumOfClassSections) {
 
-	//create a 2d array containing the sum of all the students skills, for each skill.
+
+	/* create a 2d array containing the sum of all the students skills,
+	 * for each skill. */
 	int SectionSkills[NumOfClassSections][7] = { 0 };
 	int numStudentsByClass[NumOfClassSections];
-
 	Student student;
 	Project project;
 
 	for (int i = 0; i < NumOfClassSections; i++) {
+
 		//number of students in class sections
 		int numStudents = studentList[i].size();
 		numStudentsByClass[i] = numStudents;
@@ -661,17 +739,6 @@ int** Utility::ProjectToSectionPercentages(vector<vector<Student>> studentList,
 		}
 	}
 
-	//Print out to make sure Section Skills is correct.
-	/*cout <<endl;
-	 cout<<"Class Section Skills Matrix"<<endl;
-	 for (int i = 0; i < NumOfClassSections; ++i)
-	 {
-	 for (int j = 0; j < 7; j++)
-	 {
-	 cout << SectionSkills[i][j] << ' ';
-	 }
-	 cout <<endl;
-	 }*/
 
 	//create skillXproject matrix
 	int skillXproject[numProjects][7] = { 0 };
@@ -682,15 +749,6 @@ int** Utility::ProjectToSectionPercentages(vector<vector<Student>> studentList,
 		}
 	}
 
-	//Print out to make sure skillXproject is correct
-	/*cout <<endl;
-	 cout<<"Project Skills Matrix"<<endl;
-	 for (int i = 0; i < 7; ++i) {
-	 for (int j = 0; j < numProjects; j++) {
-	 cout << skillXproject[i][j] << ' ';
-	 }
-	 cout <<endl;
-	 }*/
 
 	// Calculate Project x Section skills Matrix
 	int projectXsection[numProjects][NumOfClassSections];
@@ -707,15 +765,6 @@ int** Utility::ProjectToSectionPercentages(vector<vector<Student>> studentList,
 		}
 	}
 
-	//Print out to make sure projectXsection is correct
-	/* cout <<endl;
-	 cout<<"projectXsection Matrix"<<endl;
-	 for (int i = 0; i < numProjects; ++i) {
-	 for (int j = 0; j < NumOfClassSections; j++) {
-	 cout << projectXsection[i][j] << ' ';
-	 }
-	 cout <<endl;
-	 }*/
 
 	//create a 2d array for the projects, containing the maximum
 	//skill score sum a student could have on that project.
@@ -729,13 +778,6 @@ int** Utility::ProjectToSectionPercentages(vector<vector<Student>> studentList,
 		ProjectSkills[i][0] = sum * 4;
 	}
 
-	//Print out to make sure ProjectSkills is correct
-	/*	  cout <<endl;
-	 cout<<"ProjectSkills Matrix"<<endl;
-	 for (int i = 0; i < numProjects; ++i) {
-	 cout << ProjectSkills[i][0] << ' ';
-	 cout <<endl;
-	 }*/
 
 	//gets the percentages and stores them in a new 2d matrix.
 	int **percentMatrix = 0;
@@ -755,31 +797,29 @@ int** Utility::ProjectToSectionPercentages(vector<vector<Student>> studentList,
 			percentMatrix[i][j] = percent;
 		}
 	}
+
 	return percentMatrix;
-}    //end ProjectToSectionPercentages
+
+}
+
 
 // ARRAY VERSION
 /*************************************************
  * arrayProjectToSectionPercentages
  *
- * Description:
- *   ARRAY VERSION. Function calculates the percentages, 0-100, of how the students
- *    in a class section compare to that project
+ * Description: ARRAY VERSION. Function calculates the
+ * percentages, 0-100, of how the students in a class
+ * section compare to that project
  *
- * Arguments:
- * Project projectPool[],
- * Student studentPool[],
- * ClassSection classSectionPool[],
- * int percentMatrix[], int numProjects, int numStudents,
- * int numClassSections, int numSkills
+ * Arguments: project[], Student[], ClassSection[],
+ *  int, int, int, int, int
  *
- * Returns:
- *    nothing
+ * Returns: void
  */
 void Utility::arrayProjectToSectionPercentages(Project projectPool[],
-		Student studentPool[], ClassSection classSectionPool[],
-		int percentMatrix[], int numProjects, int numStudents,
-		int numClassSections, int numSkills) {
+	Student studentPool[], ClassSection classSectionPool[],
+	int percentMatrix[], int numProjects, int numStudents,
+	int numClassSections, int numSkills) {
 
 	//create a 2d array containing the sum of all the students skills, for each skill.
 	int SectionSkills[numClassSections * numSkills] = { 0 };
@@ -853,8 +893,8 @@ void Utility::arrayProjectToSectionPercentages(Project projectPool[],
 			percentMatrix[(i * numClassSections) + j] = percent;
 		}
 	}
-	//return  percentMatrix;
-}    //end ProjectToSectionPercentages
+}
+
 
 /*************************************************
  * projectToSectionAssignment
@@ -867,24 +907,18 @@ void Utility::arrayProjectToSectionPercentages(Project projectPool[],
  *   based on the number of students in that class section.
  *   The extra projects are discarded (assigned to non-existent class section, 99999).
  *
- * Arguments:
- * Project projectPool[],
- * Student studentPool[],
- * ClassSection classSectionPool[],
- * int numProjects, int numStudents, int numClassSections,
- * int numSkills, int studentsInSections[]
+ * Arguments: project[], Student[], ClassSection[], int, int, int, int int
  *
- * Returns:
- *    nothing
+ * Returns: void
  */
 void Utility::projectToSectionAssignment(Project projectPool[],
-		Student studentPool[], ClassSection classSectionPool[], int numProjects,
-		int numStudents, int numClassSections, int numSkills,
-		int studentsInSections[]) {
+	Student studentPool[], ClassSection classSectionPool[],
+	int numProjects, int numStudents, int numClassSections,
+	int numSkills, int studentsInSections[]) {
+
 
 	//create a 2d array containing the sum of all the students skills, for each skill.
 	int SectionSkills[numClassSections * numSkills] = { 0 };
-
 	Student student;
 	Project project;
 	ClassSection classSection;
@@ -903,9 +937,9 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 		}
 	}
 
+
 	//create skillXproject matrix
 	int skillXproject[numProjects * numSkills];
-
 	for (int i = 0; i < numProjects; i++) {
 		for (int j = 0; j < numSkills; j++) {
 			project = *(projectPool + i);
@@ -913,13 +947,12 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 		}
 	}
 
+
 	// Calculate Project x Section skills Matrix
 	int projectXsection[numProjects * numClassSections] = { 0 };
-
 	for (int i = 0; i < numProjects; i++) {
 
 		project = *(projectPool + i);
-
 		for (int j = 0; j < numClassSections; j++) {
 
 			classSection = *(classSectionPool + j);
@@ -935,7 +968,9 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 		}
 	}
 
-	//vector to store the minimum number of projects that should be assigned to each class section.
+
+	// vector to store the minimum number of
+	// projects that should be assigned to each class section.
 	vector<int> MinProjectsPerClassSection;
 	for (int i = 0; i < numClassSections; i++) {
 		int minNumProjects = calc_projects(studentsInSections[i], 5, 4);
@@ -946,20 +981,22 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 				<< minNumProjects << endl;
 	}
 
+
 	//increment vector to store the number of projects that have been assigned to a class section.
 	vector<int> ProjectsToClassCount;
 	for (int i = 0; i < numClassSections; i++) {
 		ProjectsToClassCount.push_back(0);
 	}
 
-	//--Assignment of class sections begins here.-----
 
+	//--Assignment of class sections begins here.-----
 	int highestScore;
 	int currentScore;
 	int highestClassSection;
 	int randInt;
 	char online = 'O';
 	char ground = 'G';
+
 	//vector to store all class sections
 	vector<ClassSection> ClassSections;
 	//vector to store all online class sections
@@ -981,6 +1018,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 
 	}
 
+
 	cout << "All projects to be assigned" << endl;
 
 	for (int i = 0; i < numProjects; i++) {
@@ -988,11 +1026,12 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 		project = *(projectPool + i);
 		highestScore = 0;
 		highestClassSection = 0;
-
 		cout << project.ProjectID << endl;
 
-//Assign the Online projects
+
+		//Assign the Online projects
 		if (projectPool[i].Type == 'O') {
+
 
 			//refill vector if empty
 			if (OnlineClassSections.empty()) {
@@ -1000,10 +1039,10 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 					classSection = *(classSectionPool + k);
 					if (classSection.Type == 'O') {
 						OnlineClassSections.push_back(*(classSectionPool + k));
-
 					}
 				}
 			}
+
 
 			for (int j = 0; j < OnlineClassSections.size(); j++) {
 
@@ -1028,6 +1067,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 				}
 			}
 
+
 			// Checks to make sure the highest score is greater than 0
 			// If highest score = 0, then project and class section
 			// types did not match
@@ -1051,7 +1091,8 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 
 			}
 
-//Assign the Ground Projects
+
+		//Assign the Ground Projects
 		} else if (projectPool[i].Type == 'G') {
 
 			//refill vector if empty
@@ -1060,16 +1101,17 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 					classSection = *(classSectionPool + k);
 					if (classSection.Type == 'G') {
 						GroundClassSections.push_back(*(classSectionPool + k));
-
 					}
 				}
 			}
+
 
 			for (int j = 0; j < GroundClassSections.size(); j++) {
 
 				classSection = GroundClassSections[j];
 				currentScore = projectXsection[(i * numClassSections)
 						+ GroundClassSections[j].ClassID];
+
 
 				//make sure that this class section has not reached the minNumOfProjects added.
 				if (ProjectsToClassCount[GroundClassSections[j].ClassID]
@@ -1087,6 +1129,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 					}
 				}
 			}
+
 
 			// Checks to make sure the highest score is greater than 0
 			// If highest score = 0, then project and class section
@@ -1108,10 +1151,10 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 						}
 					}
 				}
-
 			}
 
-//Assign the Hybrid Projects
+
+		//Assign the Hybrid Projects
 		} else {
 
 			//refill vector if empty
@@ -1143,6 +1186,7 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 				}
 			}
 
+
 			// Checks to make sure the highest score is greater than 0
 			// If highest score = 0, then project and class section
 			// types did not match
@@ -1158,7 +1202,6 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 							//increment the number of projects added to this class section
 							ProjectsToClassCount[classSection.ClassID]++;
 							ClassSections.erase(ClassSections.begin() + j);
-
 						}
 					}
 				}
@@ -1167,14 +1210,12 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 
 				ClassSections.clear();
 				for (int k = 0; k < numClassSections; k++) {
-
 					ClassSections.push_back(*(classSectionPool + k));
 				}
 
 				for (int j = 0; j < ClassSections.size(); j++) {
 					if (ProjectsToClassCount[ClassSections[j].ClassID]
 							< MinProjectsPerClassSection[ClassSections[j].ClassID]) {
-
 						projectPool[i].ClassID = ClassSections[j].ClassID;
 						ProjectsToClassCount[ClassSections[j].ClassID]++;
 						break;
@@ -1184,13 +1225,11 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 						//assign it a value of 99999.
 						projectPool[i].ClassID = 99999;
 					}
-
 				}
 			}
-
 		}
-
 	}		  // end i num projects loop
+
 
 	//Final check to make sure that all class sections have the minimum number of porjects needed.
 	for (int j = 0; j < ClassSections.size(); j++) {
@@ -1212,53 +1251,54 @@ void Utility::projectToSectionAssignment(Project projectPool[],
 							<< projectPool[k].ProjectID << endl;
 				}
 			}
-
 		}
 	}
 
 	for (int k = 0; k < numClassSections; k++) {
 		cout << "Class section #" << k << " Number of Projects assigned: "
 				<< ProjectsToClassCount[k] << endl;
-
 	}
 
 }		  //end ProjectToSectionPercentages
 
+
 /*************************************************
  * makeProjectJSON
  *
- * Description:
- *   This function creates a new Json file with random data for
- *   a specified number of projects.
+ * Description:This function creates a new Json file
+ * with random data for a specified number of projects.
  *
- * Arguments:
- * int numProj, - number of projects to create in the Json file
- * int numSkill
+ * Arguments: int, int
  *
- * Returns:
- *    nothing
+ * Returns: void
  */
 void Utility::makeProjectJSON(int numProj, int numSkill) {
+
 
 	// Variables
 	ofstream file;
 	int numProjects = numProj;
 	int numSkills = numSkill;
 
+
 	// opening file in out(write) mode
 	// ios::out Open for output operations.
 	file.open("newProjects.json", ios::out);
 
+
 	//Start of JSON file
 	file << "{ \n\"projects\":[\n";
 
+
 	//Loops through projectID to print
 	for (int projectID = 1; projectID < (numProjects + 1); projectID++) {
+
 
 		/*Prints out schema: {"ProjectID": (projectID#),the projectID
 		 * number is set to have width of 3 if the number (e.g. 1)
 		 * is less than 3, it will fill with 0's. (e.g. 001)     */
 		file << "{\"ProjectID\": " << projectID << ",\n";
+
 
 		/*Prints out schema: {"NDA": bool, */
 		/*Prints out schema: {"IPR": bool, */
@@ -1272,6 +1312,7 @@ void Utility::makeProjectJSON(int numProj, int numSkill) {
 			file << "\"IPR\": false,\n";
 		}
 
+
 		/*Prints out schema: {"NDA": bool, */
 		/*Prints out schema: {"IPR": bool, */
 		//5 percent of projects will require students use shared hardware.
@@ -1282,9 +1323,11 @@ void Utility::makeProjectJSON(int numProj, int numSkill) {
 			file << "\"sharedHardware\": false,\n";
 		}
 
+
 		/*Prints out schema: "Priority": (Priority), priority can be
 		 * 0,1, or 2. This file randomizes it between the three options.  */
 		file << " \"Priority\": " << rand() % (2 + 1) << ",\n";
+
 
 		/*Prints out schema: "Skills": [(skills)], generates Skills from
 		 * numSkills. Randomizes values between 0-4 for each skill.      */
@@ -1297,11 +1340,9 @@ void Utility::makeProjectJSON(int numProj, int numSkill) {
 			}
 		}
 
+
 		/*Prints out schema: "Type": O/G/H, right now 80% is hybrid
 		 * 10% online and 10% ground projects    */
-
-		//file << " \"Type\": ";
-		//      file << "\"H\" },\n\n";
 		file << " \"Type\": ";
 		percent = (int) numProjects * (0.10);
 		if (projectID < (percent + 1)) {
@@ -1315,49 +1356,49 @@ void Utility::makeProjectJSON(int numProj, int numSkill) {
 			file << "\"H\" },\n\n";
 		}
 	}
-	file << "]\n}";
 
+	file << "]\n}";
 	file.close();
 
 }
 
+
 /*************************************************
  * makeProjectCSV
  *
- * Description:
- *   This function creates a new CSV file with random data for
- *   a specified number of projects.
+ * Description: creates a new CSV file with random
+ * data for a specified number of projects.
  *
- * Arguments:
- * int numProj, - number of projects to create in the CSV file
- * int numSkill
+ * Arguments: int, int
  *
- * Returns:
- *    nothing
+ * Returns: void
  */
 void Utility::makeProjectCSV(int numProj, int numSkill) {
-	string skills[14] =
-			{ "ArtificialIntelligence", "WebApplicationProgramming",
-					"IOSMobileApplicationProgramming",
-					"AndroidMobileApplicationProgramming",
-					"Sensing/Control/Embedded", "DesktopApplicationProgramming",
-					"DatabaseProgramming", "NetworkSecurity", "C", "C++", "C#",
-					"Java", "JavaScript", "Python" };
+
 	// Variables
+	string skills[14] = { "ArtificialIntelligence",
+	  "WebApplicationProgramming", "IOSMobileApplicationProgramming",
+	  "AndroidMobileApplicationProgramming", "Sensing/Control/Embedded",
+	  "DesktopApplicationProgramming", "DatabaseProgramming",
+	  "NetworkSecurity", "C", "C++", "C#", "Java", "JavaScript", "Python" };
+
 	ofstream file;
 	int numProjects = numProj;
 	int numSkills = numSkill;
+
 
 	// opening file in out(write) mode
 	// ios::out Open for output operations.
 	file.open("newProjects.csv", ios::out);
 
+
 	//Start of CSV file
-	file
-			<< "Company,Submitter Name,Submitter Title,Submitter Email,Submitter Contact Phone #,Technical Contact Name,Technical Contact Title,Technical Contact E-mail,Technical Contact Phone Number,Project Motivation,Project Description,Project Deliverables,Technology Areas,PreferredLanguageSkills,RequiresNDA,RequiresIPR,RequiresSharedHardware,Type,Section,Priority\n";
+	file << "Company,Submitter Name,Submitter Title,Submitter Email,Submitter Contact Phone #,Technical Contact Name,Technical Contact Title,Technical Contact E-mail,Technical Contact Phone Number,Project Motivation,Project Description,Project Deliverables,Technology Areas,PreferredLanguageSkills,RequiresNDA,RequiresIPR,RequiresSharedHardware,Type,Section,Priority\n";
+
 
 	//Loops through projectID to print
 	for (int projectID = 1; projectID < (numProjects + 1); projectID++) {
+
 
 		/*Prints out schema: {"ProjectID": (projectID#),the projectID
 		 * number is set to have width of 3 if the number (e.g. 1)
@@ -1375,14 +1416,7 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 		file << "Project Motivation" << projectID << ",";
 		file << "Project Description" << projectID << ",";
 		file << "Project Deliverables" << projectID << ",";
-		/*file << "Technology Areas" << projectID << ",";
-		 file << "Preferred Language Skills" << projectID << ",";
-		 file << "Requires NDA" << projectID << ",";
-		 file << "Requires IPR" << projectID << ",";
-		 file << "Requires Shared Hardware" << projectID << ",";
-		 file << "Type" << projectID << ",";
-		 file << "Section" << projectID << ",";
-		 file << "Priority" << projectID;*/
+
 
 		/*Prints out schema: "Skills": [(skills)], generates Skills from
 		 * numSkills. Randomizes values between 0-4 for each skill.      */
@@ -1421,6 +1455,8 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 		} catch (range_error &e) {
 			cout << "Index out of range" << endl;
 		}
+
+
 		/*Prints out schema: {"NDA": bool, */
 		/*Prints out schema: {"IPR": bool, */
 		//25 percent of projects will require students sign an IPR and NDA agreement.
@@ -1433,6 +1469,7 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 			file << "0,";
 		}
 
+
 		//5 percent of projects will require students use shared hardware.
 		percent = (int) numProjects * (0.05);
 		if (projectID < (percent + 1)) {
@@ -1440,6 +1477,7 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 		} else {
 			file << "0,";
 		}
+
 
 		/*Prints out schema: "Type": O/G/H, right now 80% is hybrid
 		 * 10% online and 10% ground projects    */
@@ -1467,6 +1505,7 @@ void Utility::makeProjectCSV(int numProj, int numSkill) {
 	file.close();
 
 }	//end makeProjectsCSV
+
 
 /*************************************************
  * generateTestStudents
