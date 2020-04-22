@@ -9,15 +9,9 @@
  *   process.
  *
  *
-<<<<<<< HEAD
- * @author(s) Elizabeth Marquise, Myles Colina, Sean Rogers, Cristi Deleo, Matthew Cilibraise
- * Copyright (C) 2020, ASU Capstone Project
- * All Rights Reserved
-=======
  *  Copyright (C) 2020 ASU
  *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
  *	initial idea contributed by Douglas Sandy, All rights reserved
->>>>>>> dev2
  *
  *
  * List of Functions:
@@ -104,6 +98,7 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Output.H>
+#include <FL/Fl_Scroll.H>
 
 
 using namespace std;
@@ -123,6 +118,7 @@ Fl_Progress *progressBar;//progress bar
 Fl_Text_Buffer *terminal;//progress window  text display
 int tempProj, tempStud, textInput, numCourses;
 Fl_Window *optionWindow; //FL Option selection window
+Fl_Scroll *scroll;
 
 
 /*********************************************************
@@ -764,6 +760,10 @@ int main() {
 	optionWindow = new Fl_Window(650, 320, "CLIQUE");
 	optionWindow->begin();
 	optionWindow->color(ASU_WHITE);
+	scroll =  new Fl_Scroll(0,0,650,320);
+	scroll->color(ASU_WHITE);//background color
+
+
 
 
 	// Border and edge boxes
@@ -815,7 +815,8 @@ int main() {
 
 	// Stylizing and running window
 	optionWindow->box(FL_BORDER_BOX);
-	optionWindow->resizable(promptBox1);
+	scroll->end();
+	optionWindow->resizable(scroll);
 	optionWindow->end();
 	optionWindow->show();
 	Fl::run();

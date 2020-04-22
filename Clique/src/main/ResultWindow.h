@@ -84,6 +84,7 @@
 #include <FL/Fl_Input_.H>
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Chart.H>
+#include <FL/Fl_Scroll.H>
 
 using namespace std;
 
@@ -141,6 +142,7 @@ public:
 	Fl_Box *labelBox3, *labelBox4, *labelBox5;
 	Fl_Box *labelBox1, *labelBox2;
 	Fl_Chart *pieChart, *barChart, *classChart;
+	Fl_Scroll *scroll1;
 
 	//Recommender window
 	Fl_Window *windowRecommender;
@@ -149,7 +151,7 @@ public:
 	Fl_Button *FindReplacements;
 	Fl_Input *inputStudent;
 	Fl_Box *backBox;
-
+	Fl_Scroll *scroll2;
 	/***** functions for class *****/
 	ResultWindow();
 	~ResultWindow();

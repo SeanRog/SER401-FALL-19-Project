@@ -143,6 +143,7 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
+#include <FL/Fl_Scroll.H>
 
 
 using namespace std;
@@ -273,6 +274,8 @@ void MainWindow::MainWindow2() {
 			"_______________________________________________\nCAPSTONE TEAM ASSIGNMENT SYSTEM";
 	windowMain = new Fl_Window(750, 450, "CLIQUE");
 	windowMain->color(ASU_WHITE);
+	scroll1 =  new Fl_Scroll(0,0,750,450);
+	scroll1->color(ASU_WHITE);//background color
 
 
 	/***** Setting up 2 tabs *****/ {
@@ -427,6 +430,8 @@ void MainWindow::MainWindow2() {
 
 
 	/***** Running and showing the window *****/
+	scroll1->end();
+	windowMain->resizable(scroll1);
 	windowMain->show();
 	windowMain->end();
 	Fl::run();
@@ -464,6 +469,8 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 	/***** Sets up new GUI window for program progress *****/
 	progressWindow = new Fl_Window(570, 500, "CLIQUE - Progress Window");
 	progressWindow->begin();
+	scroll2 =  new Fl_Scroll(0,0,570,500);
+	scroll2->color(ASU_WHITE);//background color
 
 
 	/***** border or edge coloring boxes *****/
@@ -537,7 +544,8 @@ void MainWindow::TeamsButtonClick(Fl_Widget *w) {
 
 
 	/***** Stylizing and running progress window *****/
-	progressWindow->resizable(progressBar);
+	scroll2->end();
+	progressWindow->resizable(scroll2);
 	progressWindow->color(ASU_WHITE);
 	progressWindow->box(FL_BORDER_BOX);
 

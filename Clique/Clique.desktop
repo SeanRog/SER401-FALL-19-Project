@@ -2,8 +2,8 @@
 Version=1.0
 Type=Application
 Categories=Application;
-Exec=gnome-terminal -e "bash -c 'cd ~/git/SER401-FALL-19-Project35/BruteForce/;make run;'"
+Exec=gnome-terminal -e "bash -c 'cd ~/git/SER401-FALL-19-Project35/Clique/;make run;'"
 Terminal=false
 Name=Capstone Teams
-Icon=/home/myles/git/SER401-FALL-19-Project35/BruteForce/Images/CapstoneTeamsLogo1.png
+Icon=/home/myles/git/SER401-FALL-19-Project35/Clique/Images/CapstoneTeamsLogo1.png
 Name[en_US]=Clique

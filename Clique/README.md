@@ -33,6 +33,10 @@ This project is written in C++.
 This project utilizes third party software, namely: 
 * JsonCPP, libcurl, fltk-1.3.5, gtk, webkit2, boost.
 
+## Video Tutorial
+Here is a tutorial video going over the installation and how to use the application.
+https://www.youtube.com/watch?v=oZRtO0qsZb0&feature=youtu.be 
+
 ## Setup
 To run this project, various installs are neccessary.
 Clone it locally using git and use make commands to run the software once installed.
@@ -40,7 +44,7 @@ Clone it locally using git and use make commands to run the software once instal
 
 ```
 $ git clone https://github.com/SeanRog/SER401-FALL-19-Project35
-$ cd ./SER401-FALL-19-Project35/BruteForce
+$ cd ./SER401-FALL-19-Project35/Clique
 $ chmod u+x install.sh
 $ sudo ./install.sh
 ```

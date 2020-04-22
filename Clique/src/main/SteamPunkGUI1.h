@@ -111,6 +111,7 @@
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Text_Buffer.H>
+#include <FL/Fl_Scroll.H>
 #include <FL/names.h>
 
 
@@ -179,6 +180,7 @@ public:
 	Fl_Box *imageBox;
 	Fl_Text_Display *terminalTextDisplay;
 	Fl_Text_Buffer *terminalBuffer;
+	Fl_Scroll *scroll2;
 
 	//main window
 	Fl_Window *windowMain;
@@ -193,6 +195,7 @@ public:
 	Fl_Box *gearBox2;
 	Fl_Box *gearBox3;
 	Fl_Box *gearBox4;
+	Fl_Scroll *scroll1;
 
 
 	// Class functions
