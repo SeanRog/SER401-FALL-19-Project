@@ -29,7 +29,7 @@
 
 #include "Student.h"
 
-namespace std;
+namespace std {
 
 class StudentJson {
 public:
@@ -40,5 +40,5 @@ public:
 	void StudentWriter(string filename);
 	Student getStudentJsonObject(string filename, int i);
 };
-
+}
 #endif /* BRUTEFORCE_SRC_MAIN_STUDENTJSON_H_ */
