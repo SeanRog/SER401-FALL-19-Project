@@ -1,14 +1,13 @@
-/*
- * Student.h
+/*	Student.h
  *
- * Description:
- * Student to project allocation requires a model of a student in such a manner
- * that allows for the system to allocate students based on target characteristics
- * and partitioning student populations into managed clusters. Unique identifiers
- * are captured, such as the StudentID, and relational attributes are defined, such
- * as the class # ClassID, that helps keep track of what projects are available
- * to each instance of a student. Each instance of a student represents
- * a real student seeking to matched up with the best project possible allowed.
+ * 	Description:
+ * 		Student to project allocation requires a model of a student in such a manner
+ * 		that allows for the system to allocate students based on target characteristics
+ * 		and partitioning student populations into managed clusters. Unique identifiers
+ * 		are captured, such as the StudentID, and relational attributes are defined, such
+ * 		as the class # ClassID, that helps keep track of what projects are available
+ * 		to each instance of a student. Each instance of a student represents
+ * 		a real student seeking to matched up with the best project possible allowed.
  *
  *  Copyright (C) 2020 ASU
  *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
@@ -26,11 +25,8 @@
 
 using namespace std;
 
-//template<std::size_t ArraySize>
 struct Student {
-
 public:
-
 	string ASUriteID; //unique String ID for each ASU student.
 	string name; //Student's first and last name.
 	int StudentID; //Unique integer identifying the student uniquely in the whole student population.
@@ -41,7 +37,6 @@ public:
 	int PoolID;		//for use in determining index number in StudetsToProjects.
 	bool Assigned; //for use to see if the student is assigned to a project yet.
 	int ProjectID; //Value given once the student is assigned to a project.
-
 	/* Skills - Students are given a survey in which they indicate their familiarity or
 	 * 			strengths among [seven] predefined skills. Skills will hold an integer array
 	 * 			that stores integer values. Each value represents the strength or value of each
@@ -50,7 +45,6 @@ public:
 	 */
 	int Skills[14];
 	double skillAverage; //Average skill of the student, used from skills above
-
 	/* vector<pair<int,bool>> StudentAffinity	- Students, additionally, are allowed in indicate other students that they
 	 * 											would prefer to work with and not work with. This is defined as the
 	 * 											the student's affinity toward other students. Affinity is instrumental
@@ -63,7 +57,6 @@ public:
 	 * 											[0]PeerID | 0 = negative affinity | 1 = positive affinity
 	 */
 	vector<pair<string, bool> > StudentAffinity;
-
 	/* Availability -	Students indicate their preferred meeting times on the student survey.
 	 * 					A students preferred meeting times are stored in an integer array
 	 * 					containing [Four] availability slots represented by the number of elements
@@ -79,15 +72,10 @@ public:
 	 *					|4 = Early Evening: 4:00PM - 8:00PM |5 = Evening:      8:00PM - 12:00AM |
 	 */
 	int Availability[4];
-	/*
-	 * Default Student Constructor
-	 *
-	 * Creates default student object
-	 */
-	Student() {
-	}
-	/*
-	 * Defined Student Constructor
+
+	Student() {}
+
+	/*Defined Student Constructor
 	 *
 	 * Creates defined student object with specific attributes
 	 *
@@ -98,26 +86,22 @@ public:
 	 * vector<pair<int,bool>> aff - Student's affinity vector
 	 * int times[] - student's availablity or preferred meeting times array
 	 */
-	Student(int stID, int cID, int s[], vector<pair<string, bool> > aff,
-			int times[]) {
-
+	Student(int stID, int cID, int s[], vector<pair<string, bool> > aff,int times[]) {
 		StudentID = stID;
 		ClassID = cID;
-
 		for (int i = 0; i < 7; i++) {
 			Skills[i] = s[i];
 		}
-
 		for (int i = 0; i < aff.size(); i++) {
 			pair<string, bool> x = { aff[i].first, aff[i].second };
 			StudentAffinity.push_back(x);
 		}
-
 		for (int i = 0; i < 4; i++) {
 			Availability[i] = times[i];
 		}
 	}
 
+	// overloaded operator for comparing students
 	bool operator==(const Student &studentToCompare) const {
 		if (this->StudentID == StudentID) {
 			return true;
