@@ -33,6 +33,10 @@ This project is written in C++.
 This project utilizes third party software, namely: 
 * JsonCPP, libcurl, fltk-1.3.5, gtk, webkit2, boost.
 
+## Developer Documentation
+
+See the [documentation folder](https://github.com/SeanRog/SER401-FALL-19-Project35/tree/dev/Documentation) for developer information, such as the UML diagrams, the algorithm overview diagram, the template project csv file,  and important developer info.
+
 ## Video Tutorial
 Here is a tutorial video going over the installation and how to use the application.
 https://www.youtube.com/watch?v=oZRtO0qsZb0&feature=youtu.be 
