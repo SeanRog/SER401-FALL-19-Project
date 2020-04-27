@@ -2,18 +2,35 @@
  * CookieManager.cpp
  *
  * Description:
+ * 		This class contains all the HTTP request functions for connecting to Canvas.
+ *		This class utilIzes libcurl to make the HTTP requests.
+ *		HTTP GET requests include getting the students roster data, and the
+ *		student quiz data directly from Canvas.
+ *		This class uses the cookie data read in via the mini-browser authentication
+ *		to authenticate the user, and maintain the authenticated session for
+ *		repeated HTTP requests.
  *
+ *		-Post functions
+ *		The ability to post student groups to canvas has been implemented,
+ *		but has not been tested as of yet.
+ *
+ *		-For a list of functions, see CookieManager.h
  * 
  *  Copyright (C) 2020 ASU
  *	Matthew Cilibraise, Myles Colina, Cristi DeLeo, Elizabeth Marquise, Sean Rogers,
  *	initial idea contributed by Douglas Sandy, All rights reserved
  *
  */
+
+/********* BEGINNING OF INCLUSIONS **********/
+
+/* Class Inclusions */
 #include "CookieManager.h"
 #include "Utility.h"
 #include "Student.h"
 #include "Team.h"
 
+/* Library Inclusions */
 #include <gtk/gtk.h>
 #include <webkit2/webkit2.h>
 #include <libsoup/soup.h>
@@ -25,7 +42,6 @@
 #include <string>
 #include <cstdlib>
 #include <stdio.h>
-
 #include <stdlib.h>
 #include <sstream>
 #include <map>
@@ -33,10 +49,14 @@
 
 using namespace std;
 
+/********* BEGINNING OF PROGRAM CODE **********/
+
+//constructor
 CookieManager::CookieManager() {
 
 }
 
+//destructor
 CookieManager::~CookieManager() {
 	// TODO Auto-generated destructor stub
 }
@@ -46,201 +66,7 @@ constexpr char* toConstChar(char *constInt) {
 	return constInt;
 }
 
-/***********************************************
- * newHttpSession
- *
- * Description:
- * Initializes a new HTTP session
- *
- * Arguments:
- * 
- *
- * returns -
- * 
- */
-int CookieManager::newHttpSession(const char *hostURL) {
-
-	CURL *curl;
-
-	CURLcode res;
-	std::string readBuffer;
-	struct curl_slist *headers = NULL;
-
-	curl_global_init(CURL_GLOBAL_DEFAULT);
-
-	curl = curl_easy_init();
-
-	if (curl) {
-
-		curl_easy_setopt(curl, CURLOPT_URL, hostURL);
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-		curl_easy_setopt(curl, CURLOPT_NETRC, CURL_NETRC_REQUIRED);
-
-		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt"); /* start cookie engine */
-		curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
-
-		headers = curl_slist_append(headers, "Content-Type: application/json");
-		//headers = curl_slist_append(headers, 
-		//    "Authorization: Bearer <ENTER TOKEN HERE>");
-
-		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-
-		printf("Erasing curl's knowledge of cookies!\n\n");
-		curl_easy_setopt(curl, CURLOPT_COOKIELIST, "ALL");
-
-		res = curl_easy_perform(curl);
-
-		if (!res) {
-			/* extract all known cookies */
-			struct curl_slist *cookies = NULL;
-			res = curl_easy_getinfo(curl, CURLINFO_COOKIELIST, &cookies);
-
-			if (!res && cookies) {
-				/* a linked list of cookies in cookie file format */
-				struct curl_slist *each = cookies;
-
-				while (each) {
-					printf("if(!res) while loop: !\n\n");
-					printf("%s\n", each->data);
-
-					each = each->next;
-				}
-				/* we must free these cookies when we're done */
-				curl_slist_free_all(cookies);
-			}
-		}
-
-		if (res != CURLE_OK) {
-			fprintf(stderr, "Curl perform failed: %s\n\n",
-					curl_easy_strerror(res));
-			return 1;
-		}
-
-		curl_easy_cleanup(curl);
-
-		//std::cout << readBuffer << std::endl;
-	}
-	curl_global_cleanup();
-	return 0;
-}
-
-/***********************************************
- * newHttpsSession
- *
- * Description:
- * Initializes the a new session
- *
- * Arguments:
- * 
- *
- * returns -
- * 
- */
-int CookieManager::newHttpsSession(const char *hostURL) {
-	CURL *curl;
-	CURLcode res;
-	std::string readBuffer;
-	struct curl_slist *headers = NULL;
-
-	curl_global_init(CURL_GLOBAL_DEFAULT);
-
-	/*  SKIP_PEER_VERIFICATION
-	 * If you want to connect to a site who isn't using a certificate that is
-	 * signed by one of the certs in the CA bundle you have, you can skip the
-	 * verification of the server's certificate. This makes the connection
-	 * A LOT LESS SECURE.
-	 *
-	 * If you have a CA cert for the server stored someplace else than in the
-	 * default bundle, then the CURLOPT_CAPATH option might come handy for
-	 * you.
-	 *
-	 * curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-	 
-	 SKIP_HOSTNAME_VERIFICATION
-	 *
-	 * If the site you're connecting to uses a different host name that what
-	 * they have mentioned in their server certificate's commonName (or
-	 * subjectAltName) fields, libcurl will refuse to connect. You can skip
-	 * this check, but this will make the connection less secure.
-	 * 
-	 * curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-	 */
-
-	curl = curl_easy_init();
-
-	if (curl) {
-
-		//curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/4.0");
-		curl_easy_setopt(curl, CURLOPT_AUTOREFERER, 1);
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
-
-		curl_easy_setopt(curl, CURLOPT_URL, hostURL);
-
-		//curl_easy_setopt(curl, CURLOPT_LOGIN_OPTIONS, "AUTH=*");
-		//curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1L);
-		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "./cookies.txt"); /* start cookie engine */
-		curl_easy_setopt(curl, CURLOPT_COOKIEJAR, "./cookies.txt");
-
-		headers = curl_slist_append(headers, "Content-Type: application/json");
-		headers = curl_slist_append(headers,
-				"Authorization: Bearer <ENTER TOKEN HERE>");
-
-		//curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-
-		printf("Erasing curl's knowledge of cookies!\n\n");
-		//curl_easy_setopt(curl, CURLOPT_COOKIELIST, "RELAOD");
-
-		res = curl_easy_perform(curl);
-
-		if (!res) {
-			/* extract all known cookies */
-			struct curl_slist *cookies = NULL;
-			res = curl_easy_getinfo(curl, CURLINFO_COOKIELIST, &cookies);
-
-			if (!res && cookies) {
-				/* a linked list of cookies in cookie file format */
-				struct curl_slist *each = cookies;
-
-				while (each) {
-					printf("if(!res) while loop: !\n\n");
-					printf("%s\n", each->data);
-
-					each = each->next;
-				}
-				/* we must free these cookies when we're done */
-				curl_slist_free_all(cookies);
-			}
-		}
-
-		if (res != CURLE_OK) {
-			fprintf(stderr, "Curl perform failed: %s\n\n",
-					curl_easy_strerror(res));
-			return 1;
-		}
-
-		curl_easy_cleanup(curl);
-
-		//std::cout << readBuffer << std::endl;
-	}
-	curl_global_cleanup();
-	return 0;
-}
-
-/*
- * Simple HTTPS GET
- */
-size_t CookieManager::WriteCallback(void *contents, size_t size, size_t nmemb,
-		void *userp) {
-	((std::string*) userp)->append((char*) contents, size * nmemb);
-	return size * nmemb;
-}
-
+//function to print the cookies for debugging purposes.
 void CookieManager::print_cookies(CURL *curl) {
 	CURLcode res;
 	struct curl_slist *cookies;
