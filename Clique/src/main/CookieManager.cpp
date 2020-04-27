@@ -66,6 +66,13 @@ constexpr char* toConstChar(char *constInt) {
 	return constInt;
 }
 
+//function to write data
+size_t CookieManager::WriteCallback(void *contents, size_t size, size_t nmemb,
+		void *userp) {
+	((std::string*) userp)->append((char*) contents, size * nmemb);
+	return size * nmemb;
+}
+
 //function to print the cookies for debugging purposes.
 void CookieManager::print_cookies(CURL *curl) {
 	CURLcode res;
