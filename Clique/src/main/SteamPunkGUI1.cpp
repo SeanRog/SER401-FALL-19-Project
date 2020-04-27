@@ -1013,13 +1013,16 @@ static gboolean load_changedWebViewCb1(WebKitWebView *webView,GtkWidget *window)
  */
 void mini_browserSP() {
 
-	int argc;
-	char **argv;
-
+	int argc = 1;
+	//char **argv;
+	char **argv = new char *[2];
+	argv[0] = "";
+	argv[1] = NULL;
+	//&argc = 0x7f90496aaf1c 0x7f18c9de7f1c 0x7f2d6b748f1c
+	//&argv = 0x7f90496aaf20 0x7f18c9de7f20 0x7f2d6b748f20
 
 	//Initialize GTK+
 	gtk_init(&argc, &argv);
-
 
 	// Create an 800x600 window that will contain the browser instance
 	main_windowSP = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -1083,7 +1086,7 @@ void mini_browserSP() {
 
 	// Run the main GTK+ event loop
 	gtk_main();
-
+	delete[] argv;
 
 }
 

@@ -697,7 +697,8 @@ void threadFunction(Student studentPool[], Project projectPool[],
 	mtx.unlock();
 
 }
-
+int argc = 0;
+char **argv;
 
 /*************************************************************************************
  * Steampunk_Option(Fl_Widget *w)
@@ -748,8 +749,9 @@ void ASU_Option(Fl_Widget *w) {
  *
  * Returns: int value 0.
  */
-int main() {
-
+int main(int argcc, char **argvv) {
+	argv = argvv;
+	argc = argcc;
 	// Variables
 	Utility util;
 	util.makeStudentCSV(50, 14);

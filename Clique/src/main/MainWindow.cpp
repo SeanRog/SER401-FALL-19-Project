@@ -1007,13 +1007,17 @@ static gboolean load_changedWebViewCb(WebKitWebView *webView, GtkWidget *window)
  */
 void mini_browser() {
 
-	int argc;
-	char **argv;
+	int argc = 1;
+	char **argv = new char *[2];
+	argv[0] = "";
+	argv[1] = NULL;
+	cout << &argc << " " << &argv << endl;
 
-
+	//argc fail 0x7ffe520cc2ec
+	//argv fail 0x7ffe520cc2f0
 	//Initialize GTK+
 	gtk_init(&argc, &argv);
-
+	cout << "this worked1" << endl;
 
 	// Create an 800x600 window that will contain the browser instance
 	main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
