@@ -3,6 +3,8 @@
 This document contains important information about the code base for developers.
 The video going over the installation and use of the application can be found here: https://www.youtube.com/watch?v=oZRtO0qsZb0&feature=youtu.be 
 
+The video going over the code demonstration can be found here: https://youtu.be/q6lxlGQhQWY
+
 ### Development Team
 
 SOFTWARE TEAM 
