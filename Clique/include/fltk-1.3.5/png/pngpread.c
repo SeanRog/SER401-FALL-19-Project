@@ -223,6 +223,21 @@ png_push_read_chunk(png_structrp png_ptr, png_inforp info_ptr)
    {
       if ((png_ptr->mode & PNG_AFTER_IDAT) != 0)
          png_ptr->mode |= PNG_HAVE_CHUNK_AFTER_IDAT;
+   else
+   {
+      png_alloc_size_t limit = PNG_SIZE_MAX;
+# ifdef PNG_SET_USER_LIMITS_SUPPORTED
+      if (png_ptr->user_chunk_malloc_max > 0 &&
+          png_ptr->user_chunk_malloc_max < limit)
+         limit = png_ptr->user_chunk_malloc_max;
+# elif PNG_USER_CHUNK_MALLOC_MAX > 0
+      if (PNG_USER_CHUNK_MALLOC_MAX < limit)
+         limit = PNG_USER_CHUNK_MALLOC_MAX;
+# endif
+      if (png_ptr->push_length > limit)
+         png_chunk_error(png_ptr, "chunk data is too large");
+   }
+
 
       /* If we reach an IDAT chunk, this means we have read all of the
        * header chunks, and we can start reading the image (or if this
